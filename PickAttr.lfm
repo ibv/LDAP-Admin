@@ -1,0 +1,104 @@
+object PickAttributesDlg: TPickAttributesDlg
+  Left = 420
+  Top = 207
+  BorderStyle = bsDialog
+  Caption = 'Select attributes'
+  ClientHeight = 376
+  ClientWidth = 409
+  Color = clBtnFace
+  ParentFont = True
+  Position = poScreenCenter
+  OnClose = FormClose
+  PixelsPerInch = 96
+  object SrcLabel: TLabel
+    Left = 8
+    Top = 8
+    Width = 145
+    Height = 16
+    AutoSize = False
+    Caption = 'Available:'
+  end
+  object DstLabel: TLabel
+    Left = 224
+    Top = 8
+    Width = 145
+    Height = 16
+    AutoSize = False
+    Caption = 'Use:'
+  end
+  object IncludeBtn: TSpeedButton
+    Left = 192
+    Top = 32
+    Width = 24
+    Height = 24
+    Caption = '>'
+    OnClick = IncludeBtnClick
+  end
+  object IncAllBtn: TSpeedButton
+    Left = 192
+    Top = 64
+    Width = 24
+    Height = 24
+    Caption = '>>'
+    OnClick = IncAllBtnClick
+  end
+  object ExcludeBtn: TSpeedButton
+    Left = 192
+    Top = 96
+    Width = 24
+    Height = 24
+    Caption = '<'
+    Enabled = False
+    OnClick = ExcludeBtnClick
+  end
+  object ExAllBtn: TSpeedButton
+    Left = 192
+    Top = 128
+    Width = 24
+    Height = 24
+    Caption = '<<'
+    Enabled = False
+    OnClick = ExcAllBtnClick
+  end
+  object OKBtn: TButton
+    Left = 127
+    Top = 340
+    Width = 75
+    Height = 25
+    Anchors = [akRight, akBottom]
+    Caption = 'OK'
+    Default = True
+    ModalResult = 1
+    TabOrder = 0
+  end
+  object CancelBtn: TButton
+    Left = 207
+    Top = 340
+    Width = 75
+    Height = 25
+    Anchors = [akRight, akBottom]
+    Cancel = True
+    Caption = 'Cancel'
+    ModalResult = 2
+    TabOrder = 1
+  end
+  object SrcList: TListBox
+    Left = 8
+    Top = 24
+    Width = 177
+    Height = 281
+    ItemHeight = 13
+    MultiSelect = True
+    Sorted = True
+    TabOrder = 2
+  end
+  object DstList: TListBox
+    Left = 224
+    Top = 24
+    Width = 177
+    Height = 281
+    ItemHeight = 13
+    MultiSelect = True
+    TabOrder = 3
+  end
+end

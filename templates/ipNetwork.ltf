@@ -1,0 +1,47 @@
+<template>
+     <name>IP Network Entry</name>
+     <description>Network Range</description>
+     <author>Jon Gretar</author>
+     <version>1.0</version>
+     <email>jon.borgthorsson@gmail.com</email>
+     <website>ldapadmin.sf.net</website>
+
+     <rdn>cn</rdn>
+     
+     <attribute>
+         <name>objectclass</name>
+         <value>top</value>
+         <value>ipNetwork</value>         
+     </attribute>
+
+
+     <attribute type="text">
+         <name>cn</name>
+		 <description>Common Name</description>
+     </attribute>
+
+
+     <attribute type="text">
+         <name>ipNetworkNumber</name>
+         <description>Network</description>
+     </attribute>
+ 
+     <attribute type="text">
+         <name>manager</name>
+         <description>Manager's DN</description>
+     </attribute>
+	 
+     <attribute type="text">
+         <name>description</name>
+         <description>Description</description>
+     </attribute>
+	 
+</template>
+
+
+
+
+
+
+
+

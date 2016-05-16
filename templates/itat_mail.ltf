@@ -1,0 +1,140 @@
+<template>
+	<name>Mail Account</name>
+	<description>ITaT Schema</description>
+	<author>Martin Sahaj</author>
+	<version>1.0</version>
+	<email>sahaj@itat.sk</email>
+	<website>www.itat.skr</website>
+
+	<rdn>uid</rdn>
+	<extends>user</extends>
+
+	<attribute>
+		<name>objectclass</name>
+		<value>top</value>
+		<value>ItatUser</value>
+	</attribute>
+	<attribute type="text">
+		<name>mail</name>
+		<description>Mail</description>
+		<value>%mail%</value>
+		<control type="grid"/>
+	</attribute>
+	<attribute type="text">
+		<name>mailSendAs</name>
+		<description>Mail Send As</description>
+		<value>%mail%</value>
+	</attribute>
+	<attribute type="text">
+		<name>mailbox</name>
+		<description>Mailbox dir</description>
+		<value>%mailbox%</value>
+	</attribute>
+
+	<attribute type="text">
+		<name>accountActive</name>
+		<description>Active mail</description>
+		<control type="checkbox">
+			<true>TRUE</true>
+			<false>FALSE</false>
+		</control>
+		<value>TRUE</value>
+	</attribute>
+
+	<attribute type="text">
+		<name>delete</name>
+		<description>Marked to delete</description>
+		<control type="checkbox">
+			<true>TRUE</true>
+			<false>FALSE</false>
+		</control>
+		<value>FALSE</value>
+	</attribute>
+ 	
+	<control type="tabbedpanel">
+		<tab>
+			<caption>Fetchmail</caption>
+				
+			<attribute type="text">
+			<name>FMEnable</name>
+			<description>Fetchmail</description>
+			<control type="checkbox">
+				<true>TRUE</true>
+				<false>FALSE</false>
+			</control>
+			<value>FALSE</value>
+			</attribute>
+			
+			<attribute type="text">
+			<name>FMMailServerType</name>
+			<description>Fetch Type (POP3/IMAP)</description>
+			<control type="combo">
+				<items>
+					<item>POP3</item>
+					<item>IMAP</item>
+				</items>
+			</control>
+			</attribute>
+			
+			<attribute type="text">
+			<name>FMMail</name>
+			<description>Mail address to fetch</description>
+			<value>%FMMail%</value>
+			</attribute>
+			
+			<attribute type="text">
+			<name>FMMailServer</name>
+			<description>Mail server from fetch mail</description>
+			<value>%FMMailServer%</value>
+			</attribute>
+			
+			<attribute type="text">
+			<name>FMUserName</name>
+			<description>Username</description>
+			<value>%FMUsername%</value>
+			</attribute>
+			
+			<attribute type="text">
+			<name>FMUserPasswd</name>
+			<description>Password</description>
+			<value>%FMUserPasswd%</value>
+			</attribute>
+			
+		</tab>	
+		
+		<tab>
+			<caption>Forward</caption>
+			
+			<attribute type="text">
+			<name>forwardActive</name>
+			<description>Forward active</description>
+			<control type="checkbox">
+				<true>TRUE</true>
+				<false>FALSE</false>
+			</control>
+			<value>FALSE</value>
+			</attribute>
+     
+			<attribute type="text">
+			<name>forwardAddress</name>
+			<description>Forward address</description>
+			<value>%forwardAddress%</value>
+			</attribute>
+		</tab>
+		
+		<tab>
+			<caption>Autoreply</caption>
+			
+				<attribute type="text">
+					<name>vacationActive</name>
+					<description>Vacation active</description>
+	 				<control type="checkbox">
+						<true>TRUE</true>
+						<false>FALSE</false>
+					</control>
+					<value>FALSE</value>
+				</attribute>
+				
+		</tab>
+	</control>
+</template>

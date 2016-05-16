@@ -1,0 +1,924 @@
+object SearchFrm: TSearchFrm
+  Left = 482
+  Height = 537
+  Top = 181
+  Width = 730
+  Caption = 'Search'
+  ClientHeight = 537
+  ClientWidth = 730
+  Color = clBtnFace
+  Constraints.MinHeight = 409
+  Constraints.MinWidth = 473
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  KeyPreview = True
+  OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
+  OnDeactivate = FormDeactivate
+  OnDestroy = FormDestroy
+  OnKeyPress = FormKeyPress
+  Position = poMainFormCenter
+  LCLVersion = '1.6.0.4'
+  object StatusBar: TStatusBar
+    Left = 0
+    Height = 19
+    Top = 518
+    Width = 730
+    Panels = <    
+      item
+        Width = 50
+      end    
+      item
+        Width = 50
+      end>
+    SimplePanel = False
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 172
+    Top = 29
+    Width = 730
+    Align = alTop
+    BorderWidth = 3
+    ClientHeight = 172
+    ClientWidth = 730
+    TabOrder = 1
+    object Panel2: TPanel
+      Left = 4
+      Height = 164
+      Top = 4
+      Width = 722
+      Align = alClient
+      BevelOuter = bvNone
+      ClientHeight = 164
+      ClientWidth = 722
+      TabOrder = 0
+      object Panel40: TPanel
+        Left = 0
+        Height = 164
+        Top = 0
+        Width = 722
+        Align = alClient
+        BevelOuter = bvNone
+        ClientHeight = 164
+        ClientWidth = 722
+        TabOrder = 0
+        object Panel41: TPanel
+          Left = 0
+          Height = 49
+          Top = 0
+          Width = 722
+          Align = alTop
+          BevelOuter = bvNone
+          ClientHeight = 49
+          ClientWidth = 722
+          TabOrder = 0
+          object Label5: TLabel
+            Left = 6
+            Height = 13
+            Top = 10
+            Width = 29
+            Caption = 'Path:'
+            ParentColor = False
+          end
+          object Bevel1: TBevel
+            Left = 6
+            Height = 10
+            Top = 26
+            Width = 710
+            Anchors = [akTop, akLeft, akRight]
+            Shape = bsBottomLine
+          end
+          object cbBasePath: TComboBox
+            Left = 46
+            Height = 20
+            Top = 6
+            Width = 578
+            Anchors = [akTop, akLeft, akRight]
+            ItemHeight = 0
+            TabOrder = 0
+          end
+          object PathBtn: TButton
+            Left = 631
+            Height = 23
+            Top = 5
+            Width = 81
+            Anchors = [akTop, akRight]
+            Caption = '&Browse...'
+            OnClick = PathBtnClick
+            TabOrder = 1
+          end
+        end
+        object Panel4: TPanel
+          Left = 0
+          Height = 115
+          Top = 49
+          Width = 722
+          Align = alClient
+          BevelOuter = bvNone
+          ClientHeight = 115
+          ClientWidth = 722
+          TabOrder = 1
+          object PageControl: TPageControl
+            Left = 0
+            Height = 115
+            Top = 0
+            Width = 625
+            ActivePage = TabSheet1
+            Align = alClient
+            TabIndex = 0
+            TabOrder = 0
+            object TabSheet1: TTabSheet
+              Caption = '&Search'
+              ClientHeight = 80
+              ClientWidth = 617
+              object Label6: TLabel
+                Left = 24
+                Height = 13
+                Top = 0
+                Width = 37
+                Caption = '&Name:'
+                ParentColor = False
+              end
+              object Label7: TLabel
+                Left = 24
+                Height = 13
+                Top = 40
+                Width = 37
+                Caption = '&E-Mail:'
+                ParentColor = False
+              end
+              object sbCustom1: TSpeedButton
+                Left = 584
+                Height = 21
+                Top = 16
+                Width = 21
+                AllowAllUp = True
+                Anchors = [akTop, akRight]
+                Glyph.Data = {
+                  36030000424D3603000000000000360000002800000010000000100000000100
+                  1800000000000003000000000000000000000000000000000000000000000000
+                  0000000000000000000000000000000000000000000000000000000000000000
+                  0000000000000000000000000000000000000000000000000000000000000000
+                  0000000000000000000000000000000000000000000000000000000000000000
+                  0000000000000000000000006640496640496640496640496640496640496640
+                  49664049664049000000000000000000000000000000000000000000664049FF
+                  FFFFE0E0E0E3E3E3E7E7E7EAEAEAEDEDEDF0F0F0664049000000000000000000
+                  000000000000000000000000664049FFFFFFDEDEDEE1E1E18989898B8B8B8D8D
+                  8DEEEEEE664049000000000000000000000000000000000000000000664049FF
+                  FFFFDBDBDBDFDFDFE2E2E2E5E5E5E8E8E8ECECEC664049000000000000000000
+                  6640496640496640496640496640496640496640496640496640498888888B8B
+                  8BE9E9E9664049000000000000000000664049FFFFFFABABABE3E3E3E7E7E7EA
+                  EAEAEDEDEDEEEFF065434CDADEDFDEE2E3E3E6E665404A000000000000000000
+                  664049FFFFFF0000009D9D9D7C7C7C7D7D7D7D8081E2EBED6A5D6A7E7F8A7E7F
+                  8A7F7883664D577FBFFF000000000000000000000000000000000000BCBCBCE4
+                  E5E5DDE6E8C7E3EB789AAB7FADBD7FADBD789AAB6D6F7C79D2E8000000000000
+                  664049FFFFFF000000A8A8A886868687898A87999EACDDEBA4D3E2D1EFF8D1F0
+                  F8AAE3F284D4EB7DD3EB000000000000664049FFFFFFA4A4A4DADADADDDDDDDC
+                  DFE0C8DFE5A7DDECCCE8F0F6FAFBF6FAFBCFECF490D9EE7BD2EC000000000000
+                  6640498C6F7781616981616981616980646D7F7F8A8CB8CBCCE7EFF6FAFBF6FA
+                  FBCFECF491DAEE7BD2EC00000000000066404966404966404966404966404966
+                  434D695D6A7898ABA4D1E2D1EFF7D1EFF7AAE2F284D4EB7DD3EB000000000000
+                  0000000000000000000000000000007FFFFF79D2E87CD0E984D4ED88D2E788D2
+                  E784D4ED7CD0E979D2E800000000000000000000000000000000000000000000
+                  00003FBFFF6EC7DD7ACDE679D1E879D1E87ACDE66EC7DD7FBFFF
+                }
+                GroupIndex = 1
+                OnClick = sbCustom1Click
+              end
+              object sbCustom2: TSpeedButton
+                Left = 584
+                Height = 21
+                Top = 56
+                Width = 21
+                AllowAllUp = True
+                Anchors = [akTop, akRight]
+                Glyph.Data = {
+                  36030000424D3603000000000000360000002800000010000000100000000100
+                  1800000000000003000000000000000000000000000000000000000000000000
+                  0000000000000000000000000000000000000000000000000000000000000000
+                  0000000000000000000000000000000000000000000000000000000000000000
+                  0000000000000000000000000000000000000000000000000000000000000000
+                  0000000000000000000000006640496640496640496640496640496640496640
+                  49664049664049000000000000000000000000000000000000000000664049FF
+                  FFFFE0E0E0E3E3E3E7E7E7EAEAEAEDEDEDF0F0F0664049000000000000000000
+                  000000000000000000000000664049FFFFFFDEDEDEE1E1E18989898B8B8B8D8D
+                  8DEEEEEE664049000000000000000000000000000000000000000000664049FF
+                  FFFFDBDBDBDFDFDFE2E2E2E5E5E5E8E8E8ECECEC664049000000000000000000
+                  6640496640496640496640496640496640496640496640496640498888888B8B
+                  8BE9E9E9664049000000000000000000664049FFFFFFABABABE3E3E3E7E7E7EA
+                  EAEAEDEDEDEEEFF065434CDADEDFDEE2E3E3E6E665404A000000000000000000
+                  664049FFFFFF0000009D9D9D7C7C7C7D7D7D7D8081E2EBED6A5D6A7E7F8A7E7F
+                  8A7F7883664D577FBFFF000000000000000000000000000000000000BCBCBCE4
+                  E5E5DDE6E8C7E3EB789AAB7FADBD7FADBD789AAB6D6F7C79D2E8000000000000
+                  664049FFFFFF000000A8A8A886868687898A87999EACDDEBA4D3E2D1EFF8D1F0
+                  F8AAE3F284D4EB7DD3EB000000000000664049FFFFFFA4A4A4DADADADDDDDDDC
+                  DFE0C8DFE5A7DDECCCE8F0F6FAFBF6FAFBCFECF490D9EE7BD2EC000000000000
+                  6640498C6F7781616981616981616980646D7F7F8A8CB8CBCCE7EFF6FAFBF6FA
+                  FBCFECF491DAEE7BD2EC00000000000066404966404966404966404966404966
+                  434D695D6A7898ABA4D1E2D1EFF7D1EFF7AAE2F284D4EB7DD3EB000000000000
+                  0000000000000000000000000000007FFFFF79D2E87CD0E984D4ED88D2E788D2
+                  E784D4ED7CD0E979D2E800000000000000000000000000000000000000000000
+                  00003FBFFF6EC7DD7ACDE679D1E879D1E87ACDE66EC7DD7FBFFF
+                }
+                GroupIndex = 2
+                OnClick = sbCustom2Click
+              end
+              object edCustom1: TEdit
+                Left = 160
+                Height = 19
+                Top = 16
+                Width = 420
+                Anchors = [akTop, akLeft, akRight]
+                Color = clInfoBk
+                Enabled = False
+                TabOrder = 2
+              end
+              object edName: TEdit
+                Left = 24
+                Height = 19
+                Top = 16
+                Width = 556
+                Anchors = [akTop, akLeft, akRight]
+                TabOrder = 0
+              end
+              object edCustom2: TEdit
+                Left = 160
+                Height = 19
+                Top = 56
+                Width = 420
+                Anchors = [akTop, akLeft, akRight]
+                Color = clInfoBk
+                Enabled = False
+                TabOrder = 3
+              end
+              object edEmail: TEdit
+                Left = 24
+                Height = 19
+                Top = 56
+                Width = 556
+                Anchors = [akTop, akLeft, akRight]
+                TabOrder = 1
+              end
+            end
+            object TabSheet2: TTabSheet
+              Caption = '&Custom'
+              ClientHeight = 80
+              ClientWidth = 617
+              ImageIndex = 1
+              OnResize = TabSheet2Resize
+              object Label1: TLabel
+                Left = 8
+                Height = 13
+                Top = 8
+                Width = 31
+                Caption = 'Filter:'
+                ParentColor = False
+              end
+              object Memo1: TMemo
+                Left = 40
+                Height = 49
+                Top = 8
+                Width = 563
+                Font.Color = clWindowText
+                Font.Height = -12
+                Font.Name = 'Courier New'
+                ParentFont = False
+                TabOrder = 0
+              end
+              object cbFilters: TComboBox
+                Left = 40
+                Height = 20
+                Top = 60
+                Width = 426
+                ItemHeight = 0
+                OnChange = cbFiltersChange
+                OnDropDown = cbFiltersDropDown
+                TabOrder = 1
+              end
+              object SaveFilterBtn: TButton
+                Left = 469
+                Height = 23
+                Top = 60
+                Width = 65
+                Anchors = []
+                Caption = 'Sa&ve'
+                Enabled = False
+                OnClick = SaveFilterBtnClick
+                TabOrder = 2
+              end
+              object DeleteFilterBtn: TButton
+                Left = 538
+                Height = 23
+                Top = 60
+                Width = 65
+                Anchors = []
+                Caption = '&Delete'
+                Enabled = False
+                OnClick = DeleteFilterBtnClick
+                TabOrder = 3
+              end
+            end
+            object TabSheet3: TTabSheet
+              Caption = '&Options'
+              ClientHeight = 80
+              ClientWidth = 617
+              ImageIndex = 2
+              OnResize = TabSheet3Resize
+              object Label4: TLabel
+                Left = 20
+                Height = 13
+                Top = 12
+                Width = 59
+                Alignment = taRightJustify
+                Caption = 'Attributes:'
+                ParentColor = False
+              end
+              object Label2: TLabel
+                Left = 4
+                Height = 13
+                Top = 52
+                Width = 74
+                Alignment = taRightJustify
+                Caption = 'Search level:'
+                ParentColor = False
+              end
+              object Label3: TLabel
+                Left = 256
+                Height = 13
+                Top = 52
+                Width = 119
+                Alignment = taRightJustify
+                Caption = 'Dereference aliases:'
+                ParentColor = False
+              end
+              object cbAttributes: TComboBox
+                Left = 72
+                Height = 20
+                Top = 8
+                Width = 449
+                Anchors = [akTop, akLeft, akRight]
+                ItemHeight = 0
+                TabOrder = 0
+              end
+              object edAttrBtn: TButton
+                Left = 528
+                Height = 23
+                Top = 8
+                Width = 76
+                Anchors = [akTop]
+                Caption = 'Edit...'
+                OnClick = edAttrBtnClick
+                TabOrder = 1
+              end
+              object cbSearchLevel: TComboBox
+                Left = 72
+                Height = 21
+                Top = 48
+                Width = 161
+                ItemHeight = 0
+                Items.Strings = (
+                  'This entry only'
+                  'Next level'
+                  'Entire subtree'
+                )
+                Style = csDropDownList
+                TabOrder = 2
+              end
+              object cbDerefAliases: TComboBox
+                Left = 360
+                Height = 21
+                Top = 48
+                Width = 161
+                Anchors = [akTop, akLeft, akRight]
+                ItemHeight = 0
+                Items.Strings = (
+                  'Never'
+                  'When searching'
+                  'When finding'
+                  'Always'
+                )
+                Style = csDropDownList
+                TabOrder = 3
+              end
+            end
+            object TabSheet4: TTabSheet
+              Caption = '&Regular Expressions'
+              ClientHeight = 80
+              ClientWidth = 617
+              ImageIndex = 3
+              OnResize = TabSheet4Resize
+              object Label8: TLabel
+                Left = 11
+                Height = 13
+                Top = 10
+                Width = 57
+                Alignment = taRightJustify
+                Caption = 'Evaluator:'
+                ParentColor = False
+              end
+              object cbRegExp: TComboBox
+                Left = 64
+                Height = 20
+                Top = 60
+                Width = 402
+                ItemHeight = 0
+                OnChange = cbRegExpChange
+                OnDropDown = cbRegExpDropDown
+                TabOrder = 4
+              end
+              object btnSaveRegEx: TButton
+                Left = 469
+                Height = 23
+                Top = 59
+                Width = 65
+                Anchors = []
+                Caption = 'Sa&ve'
+                Enabled = False
+                OnClick = btnSaveRegExClick
+                TabOrder = 5
+              end
+              object btnDeleteRegEx: TButton
+                Left = 538
+                Height = 23
+                Top = 59
+                Width = 65
+                Anchors = []
+                Caption = '&Delete'
+                Enabled = False
+                OnClick = btnDeleteRegExClick
+                TabOrder = 6
+              end
+              object edRegExp: TEdit
+                Left = 64
+                Height = 19
+                Top = 7
+                Width = 537
+                TabOrder = 0
+              end
+              object cbxReGreedy: TCheckBox
+                Left = 64
+                Height = 26
+                Top = 35
+                Width = 105
+                Caption = 'Greedy mode'
+                Checked = True
+                State = cbChecked
+                TabOrder = 1
+              end
+              object cbxReCase: TCheckBox
+                Left = 205
+                Height = 26
+                Top = 35
+                Width = 112
+                Caption = 'Case sensitive'
+                Checked = True
+                State = cbChecked
+                TabOrder = 2
+              end
+              object cbxReMultiline: TCheckBox
+                Left = 352
+                Height = 26
+                Top = 35
+                Width = 130
+                Caption = 'Multiline matching'
+                TabOrder = 3
+              end
+            end
+          end
+          object Panel3: TPanel
+            Left = 625
+            Height = 115
+            Top = 0
+            Width = 97
+            Align = alRight
+            BevelOuter = bvNone
+            ClientHeight = 115
+            ClientWidth = 97
+            TabOrder = 1
+            object StartBtn: TBitBtn
+              Left = 6
+              Height = 25
+              Top = 18
+              Width = 83
+              Action = ActStart
+              Caption = 'Sta&rt'
+              ParentShowHint = False
+              ShowHint = True
+              TabOrder = 0
+            end
+            object ClearAllBtn: TButton
+              Left = 6
+              Height = 25
+              Top = 50
+              Width = 83
+              Action = ActClearAll
+              ParentShowHint = False
+              ShowHint = True
+              TabOrder = 1
+            end
+          end
+        end
+      end
+    end
+  end
+  object ResultPanel: TPanel
+    Left = 0
+    Height = 317
+    Top = 201
+    Width = 730
+    Align = alClient
+    BorderWidth = 3
+    TabOrder = 2
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Height = 29
+    Top = 0
+    Width = 730
+    ButtonHeight = 28
+    ButtonWidth = 28
+    Caption = 'ToolBar1'
+    DisabledImages = MainFrm.ImageList
+    Images = MainFrm.ImageList
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 3
+    object btnSearch: TToolButton
+      Left = 1
+      Hint = 'Search'
+      Top = 2
+      Caption = 'Search'
+      Down = True
+      Grouped = True
+      ImageIndex = 20
+      OnClick = btnSearchModifyClick
+      Style = tbsCheck
+    end
+    object btnModify: TToolButton
+      Left = 29
+      Hint = 'Modify'
+      Top = 2
+      Caption = 'Modify'
+      Grouped = True
+      ImageIndex = 38
+      OnClick = btnSearchModifyClick
+      Style = tbsCheck
+    end
+    object ToolButton7: TToolButton
+      Left = 57
+      Height = 28
+      Top = 2
+      Width = 8
+      Caption = 'ToolButton7'
+      ImageIndex = 6
+      Style = tbsSeparator
+    end
+    object ToolButton1: TToolButton
+      Left = 65
+      Top = 2
+      Action = ActLoad
+    end
+    object ToolButton6: TToolButton
+      Left = 93
+      Top = 2
+      Action = ActSave
+    end
+    object ToolButton8: TToolButton
+      Left = 121
+      Height = 28
+      Top = 2
+      Width = 8
+      Caption = 'ToolButton8'
+      ImageIndex = 32
+      Style = tbsSeparator
+    end
+    object ToolButton3: TToolButton
+      Left = 129
+      Top = 2
+      Action = ActEdit
+    end
+    object ToolButton4: TToolButton
+      Left = 157
+      Top = 2
+      Action = ActProperties
+    end
+    object ToolButton5: TToolButton
+      Left = 185
+      Top = 2
+      Action = ActGoto
+    end
+    object ToolButton2: TToolButton
+      Left = 213
+      Height = 28
+      Top = 2
+      Width = 8
+      Caption = 'ToolButton2'
+      ImageIndex = 19
+      Style = tbsSeparator
+    end
+    object ToolButton9: TToolButton
+      Left = 221
+      Top = 2
+      Action = ActClose
+    end
+  end
+  object PopupMenu1: TPopupMenu
+    Images = MainFrm.ImageList
+    left = 72
+    top = 392
+    object pbGoto: TMenuItem
+      Action = ActGoto
+      Bitmap.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000064000000640000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000008020FF0080
+        20FF008020FF0000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000008020FF40C0
+        40FF40C040FF008020FF00000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000008020FF40C0
+        40FF40C040FF008020FF008000FF000000000000000000000000008020FF0080
+        20FF008020FF008020FF008020FF008020FF008020FF008020FF008020FF40C0
+        40FF40C040FF40C040FF008020FF008020FF0000000000000000008020FF0080
+        20FF80E0A0FF40E080FF40E080FF40E080FF40E080FF40E080FF40C060FF40C0
+        60FF40C060FF40C040FF40C040FF40C040FF008020FF00000000008020FF0080
+        20FF80E0A0FF40E080FF40E080FF40E080FF40E080FF40E080FF40C060FF40C0
+        60FF40C060FF40C040FF40C040FF40C040FF008020FF008020FF008020FF0080
+        20FF80E0A0FF80E0A0FF80E0A0FF80E0A0FF40E080FF40E080FF40E080FF40E0
+        80FF40E080FF40C060FF40C060FF40C060FF008020FF008020FF008020FF0080
+        20FF008020FF008020FF008020FF008020FF008020FF008020FF008020FF40E0
+        80FF40E080FF40E080FF40C060FF008020FF008020FF00000000008020FF0080
+        20FF008020FF008020FF008020FF008020FF008020FF008020FF008020FF40E0
+        80FF40E080FF40E080FF008020FF008020FF0000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000008020FF40E0
+        80FF40E080FF008020FF008020FF000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000008020FF0080
+        20FF008020FF008020FF00000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000008020FF0080
+        20FF008020FF0000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000
+      }
+    end
+    object Editentry1: TMenuItem
+      Action = ActEdit
+      Bitmap.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        200000000000000400006400000064000000000000000000000000000000B781
+        83FFB78183FFB78183FFB78183FFB78183FFB78183FFB78183FFB78183FFB781
+        83FFB78183FFB78183FFB78183FFB78183FF000000000000000000000000C7A7
+        9CFFFEEED4FFF7E3C5FFF6DFBCFFF5DBB4FFF3D7ABFFF3D3A2FFF1CF9AFFF0CF
+        97FFF0CF98FFF0CF98FFF5D49AFFB78183FF000000000000000000000000C7A7
+        9EFFFDEFD9FF07103EFF4D3E6AFF483957FFF2D7B2FFF1D4A9FFF1D0A2FFEECC
+        99FFEECC97FFEECC97FFF3D199FFB78183FF000000000000000000000000C7A9
+        A1FFFEF3E3FF4A3D53FF554DAEFF4B459AFF484250FFF2D7B2FFF1D4ABFFF0D0
+        A3FFEECC9AFFEECC97FFF3D199FFB78183FF000000000000000000000000C9AC
+        A5FFFFF7EBFF4D4863FF919EE9FF4B56BCFF4E56A8FF3E4153FFF2D7B2FFF1D4
+        AAFFF0D0A1FFEFCD99FFF3D198FFB78183FF000000000000000000000000CEB2
+        AAFFFFFCF4FFFAEFE4FF3F467AFF8EA4F1FF4B55BBFF515AAFFF454B55FFF1D7
+        B2FFF1D3AAFFF0D0A1FFF3D29BFFB78183FF000000000000000000000000D3B7
+        AFFFFFFFFDFFFBF4ECFFFAEFE3FF4A497CFF9B9BEEFF565FC7FF4C5BAFFF4351
+        7FFFF2D7B1FFF0D4A9FFF5D5A3FFB78183FF000000000000000000000000D7BB
+        B2FFFFFFFFFFFEF9F5FFFBF3ECFFFAEFE2FF544F97FF939BEAFF5168C7FF4153
+        AAFF495594FFF2D8B2FFF6D9ACFFB78183FF000000000000000000000000DABE
+        B3FFFFFFFFFFFFFEFDFFFDF8F4FFFBF3ECFFF9EFE3FF595995FFA2B0F1FF5D77
+        CCFF5964BBFF4D4F90FFF8DDB4FFB78183FF000000000000000000000000DEC1
+        B5FFFFFFFFFFFFFFFFFFFFFEFDFFFEF9F4FFFBF3EBFFFAEFE2FF55568EFFA6AB
+        E8FF7179CBFF5B68B8FF505991FFB78183FF000000000000000000000000E2C5
+        B5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFDFFFDF9F4FFFBF3EBFFFAEEE2FF685F
+        91FFAEB8EDFF587ABCFF5588BEFF3083C7FF000000000000000000000000E5C7
+        B7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFDFFFDF8F3FFFDF6ECFFF1E1
+        D5FF556390FF689AC7FFA0DDFFFF3083C7FF3083C7FF0000000000000000E9CB
+        B8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFCFFFFFEF9FFE3CF
+        C9FFBF8C76FF3083C7FF3083C7FFA4E6FFFF3083C7FF0000000000000000ECCD
+        BAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE4D4
+        D2FFC89A7FFFFAC577FF3083C7FF3083C7FF000000000000000000000000EACA
+        B6FFFCF7F4FFFCF7F3FFFBF6F3FFFBF6F3FFFAF5F3FFF9F5F3FFF9F5F3FFE1D0
+        CEFFC7977CFFCF9B86FF0000000000000000000000000000000000000000E9C6
+        B1FFEBCCB8FFEBCCB8FFEBCCB8FFEBCBB8FFEACBB8FFEACBB8FFEACCB9FFDABB
+        B0FFB8857AFF0000000000000000000000000000000000000000
+      }
+    end
+    object N2: TMenuItem
+      Caption = '-'
+    end
+    object Move1: TMenuItem
+      Action = ActMove
+    end
+    object Copy1: TMenuItem
+      Action = ActCopy
+    end
+    object Delete1: TMenuItem
+      Action = ActDelete
+      Bitmap.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000064000000640000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000732DEFF0732DEFF000000000732
+        DEFF0732DEFF0000000000000000000000000000000000000000000000000000
+        00000000000000000000000000000732DEFF0732DEFF00000000000000000732
+        DEFF0732DEFF0732DEFF00000000000000000000000000000000000000000000
+        000000000000000000000732DEFF0732DEFF0000000000000000000000000732
+        DEFF0732DDFF0732DEFF0732DEFF000000000000000000000000000000000000
+        0000000000000732DEFF0732DEFF000000000000000000000000000000000000
+        00000534EDFF0732DFFF0732DEFF0732DEFF0000000000000000000000000000
+        00000732DEFF0732DEFF00000000000000000000000000000000000000000000
+        000000000000000000000732DEFF0732DEFF0732DDFF000000000732DDFF0732
+        DEFF0732DEFF0000000000000000000000000000000000000000000000000000
+        00000000000000000000000000000732DDFF0633E6FF0633E6FF0633E9FF0732
+        DCFF000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000633E3FF0732E3FF0534EFFF0000
+        0000000000000000000000000000000000000000000000000000000000000000
+        00000000000000000000000000000732DDFF0534EDFF0533E9FF0434EFFF0434
+        F5FF000000000000000000000000000000000000000000000000000000000000
+        000000000000000000000434F4FF0534EFFF0533EBFF00000000000000000434
+        F4FF0335F8FF0000000000000000000000000000000000000000000000000000
+        0000000000000335FCFF0534EFFF0434F8FF0000000000000000000000000000
+        00000335FCFF0335FBFF00000000000000000000000000000000000000000000
+        00000335FBFF0335FBFF0335FCFF000000000000000000000000000000000000
+        0000000000000335FBFF0335FBFF000000000000000000000000000000000335
+        FBFF0335FBFF0335FBFF00000000000000000000000000000000000000000000
+        00000000000000000000000000000335FBFF00000000000000000335FBFF0335
+        FBFF0335FBFF0000000000000000000000000000000000000000000000000000
+        00000000000000000000000000000000000000000000000000000335FBFF0335
+        FBFF000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000
+      }
+    end
+    object N3: TMenuItem
+      Caption = '-'
+    end
+    object Save1: TMenuItem
+      Action = ActSave
+      Bitmap.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000064000000640000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        000097433FFF97433FFFB59A9BFFB59A9BFFB59A9BFFB59A9BFFB59A9BFFB59A
+        9BFFB59A9BFF933030FF97433FFF000000000000000000000000000000009743
+        3FFFD66868FFC66060FFE5DEDFFF92292AFF92292AFFE4E7E7FFE0E3E6FFD9DF
+        E0FFCCC9CCFF8F201FFFAF4646FF97433FFF0000000000000000000000009743
+        3FFFD06566FFC25F5FFFE9E2E2FF92292AFF92292AFFE2E1E3FFE2E6E8FFDDE2
+        E4FFCFCCCFFF8F2222FFAD4646FF97433FFF0000000000000000000000009743
+        3FFFD06565FFC15D5DFFECE4E4FF92292AFF92292AFFDFDDDFFFE1E6E8FFE0E5
+        E7FFD3D0D2FF8A1E1EFFAB4444FF97433FFF0000000000000000000000009743
+        3FFFD06565FFC15B5CFFEFE6E6FFEDE5E5FFE5DEDFFFE0DDDFFFDFE0E2FFE0E1
+        E3FFD6D0D2FF962A2AFFB24A4AFF97433FFF0000000000000000000000009743
+        3FFFCD6263FFC86060FFC96767FFCC7272FFCA7271FFC66969FFC46464FFCC6D
+        6CFFCA6667FFC55D5DFFCD6565FF97433FFF0000000000000000000000009743
+        3FFFB65553FFC27B78FFD39D9CFFD7A7A5FFD8A7A6FFD8A6A5FFD7A09FFFD5A0
+        9FFFD7A9A7FFD8ABABFFCC6667FF97433FFF0000000000000000000000009743
+        3FFFCC6667FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9
+        F9FFF9F9F9FFF9F9F9FFCC6667FF97433FFF0000000000000000000000009743
+        3FFFCC6667FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9
+        F9FFF9F9F9FFF9F9F9FFCC6667FF97433FFF0000000000000000000000009743
+        3FFFCC6667FFF9F9F9FFCDCDCDFFCDCDCDFFCDCDCDFFCDCDCDFFCDCDCDFFCDCD
+        CDFFCDCDCDFFF9F9F9FFCC6667FF97433FFF0000000000000000000000009743
+        3FFFCC6667FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9
+        F9FFF9F9F9FFF9F9F9FFCC6667FF97433FFF0000000000000000000000009743
+        3FFFCC6667FFF9F9F9FFCDCDCDFFCDCDCDFFCDCDCDFFCDCDCDFFCDCDCDFFCDCD
+        CDFFCDCDCDFFF9F9F9FFCC6667FF97433FFF0000000000000000000000009743
+        3FFFCC6667FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9
+        F9FFF9F9F9FFF9F9F9FFCC6667FF97433FFF0000000000000000000000000000
+        000097433FFFF9F9F9FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9F9FFF9F9
+        F9FFF9F9F9FFF9F9F9FF97433FFF000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000
+      }
+    end
+    object Saveselected1: TMenuItem
+      Action = ActSaveSelected
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object pbProperties: TMenuItem
+      Action = ActProperties
+      Bitmap.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        200000000000000400006400000064000000000000000000000000000000B781
+        83FFB78183FFB78183FFB78183FFB78183FFB78183FFB78183FFB78183FFB781
+        83FFB78183FFB78183FFB78183FFB78183FF000000000000000000000000C7A7
+        9CFFFEEED4FFF7E3C5FFDAAB85FFD9A880FFD7A579FFD7A273FFD59F6DFFD49F
+        6BFFD49F6CFFD49F6CFFF5D49AFFB78183FF000000000000000000000000C7A7
+        9EFFFDEFD9FF993300FF993300FF993300FF993300FF993300FF993300FF9933
+        00FF993300FFD29D6BFFF3D199FFB78183FF000000000000000000000000C7A9
+        A1FFFEF3E3FF993300FFFEFEFEFFFEFEFEFFFEFEFEFF8EA4FDFFB8C6FDFFFEFE
+        FEFF993300FFD29D6BFFF3D199FFB78183FF000000000000000000000000C9AC
+        A5FFFFF7EBFF993300FFFEFEFEFFFAFBFEFF7E98FCFF0335FBFF597AFCFFFEFE
+        FEFF993300FFD39D6DFFF3D198FFB78183FF000000000000000000000000CEB2
+        AAFFFFFCF4FF993300FFD6DEFEFF4368FCFF0335FBFF4066FCFF0436FBFFD9E0
+        FEFF993300FFD4A072FFF3D29BFFB78183FF000000000000000000000000D3B7
+        AFFFFFFFFDFF993300FF5274FCFF1442FBFFBCC9FDFFEFF2FEFF1A47FBFF4F72
+        FCFF973304FFD4A378FFF5D5A3FFB78183FF000000000000000000000000D7BB
+        B2FFFFFFFFFF993300FFE4EAFEFFD9E0FEFFFEFEFEFFFEFEFEFF98ACFDFF0335
+        FBFF643459FFD6A67EFFF6D9ACFFB78183FF000000000000000000000000DABE
+        B3FFFFFFFFFF993300FFFEFEFEFFFEFEFEFFFEFEFEFFFEFEFEFFFEFEFEFF5677
+        FCFF0335FBFFD8A883FFDBAA80FFB78183FF000000000000000000000000DEC1
+        B5FFFFFFFFFF993300FF993300FF993300FF993300FF993300FF993300FF8F33
+        11FF2235C8FF0335FBFFD4A882FFA2635DFF000000000000000000000000E2C5
+        B5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFDFFFDF9F4FFFBF3EBFFFAEEE2FFFAED
+        DCFFFCEFD9FF0335FBFF0335FBFF0335FBFF000000000000000000000000E5C7
+        B7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFDFFFDF8F3FFFDF6ECFFF1E1
+        D5FFC6A194FFB59489FFB08F81FF0335FBFF000000000000000000000000E9CB
+        B8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFCFFFFFEF9FFE3CF
+        C9FFBF8C76FFE8B270FFECA54AFFC58768FF000000000000000000000000ECCD
+        BAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE4D4
+        D2FFC89A7FFFFAC577FFCD9377FF00000000000000000000000000000000EACA
+        B6FFFCF7F4FFFCF7F3FFFBF6F3FFFBF6F3FFFAF5F3FFF9F5F3FFF9F5F3FFE1D0
+        CEFFC7977CFFCF9B86FF0000000000000000000000000000000000000000E9C6
+        B1FFEBCCB8FFEBCCB8FFEBCCB8FFEBCBB8FFEACBB8FFEACBB8FFEACCB9FFDABB
+        B0FFB8857AFF0000000000000000000000000000000000000000
+      }
+    end
+  end
+  object ActionList: TActionList
+    Images = MainFrm.ImageList
+    OnUpdate = ActionListUpdate
+    left = 72
+    top = 448
+    object ActStart: TAction
+      Caption = '&Start'
+      Hint = 'Start searching'
+      ImageIndex = 20
+      OnExecute = ActStartExecute
+    end
+    object ActGoto: TAction
+      Caption = '&Go to...'
+      Hint = 'Find entry in LDAP tree'
+      ImageIndex = 30
+      OnExecute = ActGotoExecute
+    end
+    object ActProperties: TAction
+      Caption = '&Properties...'
+      Hint = 'Edit object properties'
+      ImageIndex = 16
+      OnExecute = ActPropertiesExecute
+    end
+    object ActSave: TAction
+      Caption = '&Save'
+      ImageIndex = 31
+      OnExecute = ActSaveExecute
+    end
+    object ActEdit: TAction
+      Caption = '&Edit entry...'
+      Hint = 'Edit with raw editor'
+      ImageIndex = 14
+      OnExecute = ActEditExecute
+    end
+    object ActClose: TAction
+      Caption = '&Close'
+      Hint = 'Close'
+      ImageIndex = 18
+      OnExecute = ActCloseExecute
+    end
+    object ActClearAll: TAction
+      Caption = 'Clear a&ll'
+      Hint = 'Clear all search results'
+      OnExecute = ActClearAllExecute
+    end
+    object ActLoad: TAction
+      Caption = '&Load'
+      ImageIndex = 48
+      OnExecute = ActLoadExecute
+    end
+    object ActCopy: TAction
+      Caption = 'Co&py...'
+      OnExecute = ActCopyExecute
+    end
+    object ActMove: TAction
+      Caption = '&Move...'
+      OnExecute = ActMoveExecute
+    end
+    object ActDelete: TAction
+      Caption = '&Delete'
+      ImageIndex = 12
+      OnExecute = ActDeleteExecute
+    end
+    object ActSaveSelected: TAction
+      Caption = 'Save selected...'
+      OnExecute = ActSaveExecute
+    end
+  end
+  object SaveDialog: TSaveDialog
+    DefaultExt = '.*.ldif'
+    Filter = 'Ldif file, Windows format (CR/LF) (*.ldif)|*.ldif|Ldif file, Unix format (LF only) (*.ldif)|*.ldif|CSV (Comma-separated) (*.csv)|*.csv|XML (*.xml)|*.xml'
+    Options = [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing]
+    left = 144
+    top = 448
+  end
+  object OpenDialog: TOpenDialog
+    left = 224
+    top = 449
+  end
+end

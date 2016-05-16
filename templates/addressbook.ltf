@@ -1,0 +1,118 @@
+<template>
+     <name>Addressbook Entry</name>
+     <description>Sample Addressbook Entry</description>
+     <author>Tihomir Karlovic</author>
+     <version>2.0</version>
+     <email>tk1065@users.sourceforge.net</email>
+     <website>ldapadmin.sf.net</website>
+
+     <rdn>cn</rdn>
+     <extends>user</extends>
+
+     <attribute>
+          	<name>objectclass</name>
+    		<value>top</value>
+    		<value>inetOrgPerson</value>         
+     </attribute>
+
+     <attribute>
+		<name>cn</name>
+	     	<value>%givenName%.%sn%</value>
+     </attribute>
+     
+     <control type="panel">
+		<caption>Name</caption>
+		<bevel>lowered</bevel>
+
+     		<attribute type="text">
+			<description>First name</description>
+         		<name>givenName</name>
+     		</attribute>
+
+     		<attribute type="text">
+         		<name>sn</name>
+	   		<control type="edit">
+				<caption>Last name</caption>
+         		</control>
+     		</attribute>
+     </control>
+
+     <control type = "tabbedpanel">
+		<tab>
+
+			<caption>Business</caption>
+
+   			<attribute type="text">
+	      		<name>title</name>
+	         		<control type="combo">
+      	        		<items>
+            	        		<item>Vice President</item>
+              		  		<item>Administrator</item>
+			  			<item>Product Manager</item>
+	              		</items>
+      	   		</control>
+     			</attribute>			
+
+		     <attribute type="text">
+		         <name>telephoneNumber</name>
+		     </attribute>
+
+		     <attribute type="text">
+		         <name>mail</name>
+			   <value>%cn%@%o%</value>
+			   <control type="grid"/>
+	           </attribute>
+
+		</tab>
+		<tab>
+
+		     <caption>Company</caption>
+
+		     <attribute type="text">
+		         <name>o</name>
+		         <description>Organization</description>
+		     </attribute>
+
+     			<attribute type="text">
+         			<name>l</name>
+         			<description>City</description>
+     			</attribute>
+
+		     <attribute type="text">
+	      	   <name>postalCode</name>
+		     </attribute>
+
+		     <attribute type="text">
+		         <name>street</name>
+		     </attribute>
+
+		</tab>
+		<tab>
+			<caption>Personal</caption>
+
+			<attribute type="text">				
+				<name>homePostalAddress</name>
+				<description>Home address</description>
+			</attribute>
+
+			<attribute type="text">
+				<name>homePhone</name>
+				<description>Home phone</description>
+			</attribute>
+
+			<attribute type="text">
+				<name>mobile</name>
+				<description>Mobile phone</description>
+			</attribute>
+		</tab>
+	</control>
+ 
+</template>
+
+
+
+
+
+
+
+

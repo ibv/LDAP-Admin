@@ -1,0 +1,1153 @@
+/* VER150
+  Generiert vom Borland Delphi Pascal Compiler
+  da -GD or --drc beim Compilieren angegeben war.
+
+  Sie enthält Compiler-generierte Ressourcen, die mit der ausführbaren Datei verbunden sind.
+  Wenn sie leer ist, wurden keine vom Compiler generierten Ressourcen mit der 
+  produzierten ausführbaren Datei verbunden.
+*/
+
+#define JConsts_sChangeJPGSize 64960
+#define JConsts_sJPEGError 64961
+#define JConsts_sJPEGImageFile 64962
+#define DECHash_sHashingOverflowError 64963
+#define DECHash_sHashNotInitialized 64964
+#define OleConst_SCannotActivate 64965
+#define OleConst_SNoWindowHandle 64966
+#define OleConst_SInvalidLicense 64967
+#define OleConst_SNotLicensed 64968
+#define OleConst_sNoRunningObject 64969
+#define Constant_stExpectedButReceived 64976
+#define Constant_stMissingOperator 64977
+#define Constant_stInvalidOperator 64978
+#define Constant_stRegCntMatching 64979
+#define Constant_stRegApplying 64980
+#define Constant_stConvErrSambaRid 64981
+#define Constant_stEmptyFile 64982
+#define Constant_XML_NO_OPENING_TAG 64983
+#define Constant_SAVE_SEARCH_FILTER 64984
+#define Constant_SAVE_MODIFY_FILTER 64985
+#define Constant_SAVE_MODIFY_LOG_FILTER 64986
+#define ComConst_SOleError 64987
+#define ComConst_SNoMethod 64988
+#define ComConst_SVarNotObject 64989
+#define ComConst_STooManyParams 64990
+#define ComConst_SDCOMNotInstalled 64991
+#define Constant_stScriptSetErr 64992
+#define Constant_stSequentialID 64993
+#define Constant_stSkipRecord 64994
+#define Constant_stStopTLSError 64995
+#define Constant_stTimeFormat 64996
+#define Constant_stTooManyArgs 64997
+#define Constant_stUnclosedParam 64998
+#define Constant_stUnclosedStr 64999
+#define Constant_stUnknownValueType 65000
+#define Constant_stUnsupportedAuth 65001
+#define Constant_stUnsuppScript 65002
+#define Constant_stUserBreak 65003
+#define Constant_stWritePropRO 65004
+#define Constant_stRegexError 65005
+#define Constant_stNoOpeningParenthesys 65006
+#define Constant_stNoClosingParenthesys 65007
+#define Constant_stNumObjects 65008
+#define Constant_stPassDiff 65009
+#define Constant_stPassFor 65010
+#define Constant_stPropReadOnly 65011
+#define Constant_stRegexFailed 65012
+#define Constant_stReqMail 65013
+#define Constant_stReqNoEmpty 65014
+#define Constant_stRequired 65015
+#define Constant_stResetAutolock 65016
+#define Constant_stRetrieving 65017
+#define Constant_stSaslSSL 65018
+#define Constant_stSchemaNoSubentry 65019
+#define Constant_stScriptNoProc 65020
+#define Constant_stScriptNotEvent 65021
+#define Constant_stScriptNotSupp 65022
+#define Constant_stScriptParamType 65023
+#define Constant_stLdifInvOp 65024
+#define Constant_stLdifNotExpected 65025
+#define Constant_stLdifSuccess 65026
+#define Constant_stLdifUrlNotSupp 65027
+#define Constant_stMenuAssignTempl 65028
+#define Constant_stMenuLocateTempl 65029
+#define Constant_stMoveOverlap 65030
+#define Constant_stNeedElevated 65031
+#define Constant_stNoActiveConn 65032
+#define Constant_stNoMoreChecks 65033
+#define Constant_stNoMoreNums 65034
+#define Constant_stNoPosixID 65035
+#define Constant_stNoRdn 65036
+#define Constant_stNoSchema 65037
+#define Constant_stNotEnoughArgs 65038
+#define Constant_stNumber 65039
+#define Constant_stInvalidFilter 65040
+#define Constant_stInvalidTagValue 65041
+#define Constant_stInvalidTimeFmt 65042
+#define Constant_stInvalidURL 65043
+#define Constant_stLdapError 65044
+#define Constant_stLdapErrorEx 65045
+#define Constant_stLdifEFold 65046
+#define Constant_stLdifEInvMode 65047
+#define Constant_stLdifENoCol 65048
+#define Constant_stLdifENoDn 65049
+#define Constant_stLdifEof 65050
+#define Constant_stLdifEVer 65051
+#define Constant_stLdifFailure 65052
+#define Constant_stLdifInvalidUrl 65053
+#define Constant_stLdifInvAttrName 65054
+#define Constant_stLdifInvChType 65055
+#define Constant_stDeleteSubmenu 65056
+#define Constant_stDelNamingAttr 65057
+#define Constant_stDuplicateSC 65058
+#define Constant_stEmptyArg 65059
+#define Constant_stErrExtMethName 65060
+#define Constant_stEvTypeEvTypeErr 65061
+#define Constant_stExtConfirmAssoc 65062
+#define Constant_stFileOverwrite 65063
+#define Constant_stGetProcAddrErr 65064
+#define Constant_stGidNotSamba 65065
+#define Constant_stGroupMailReq 65066
+#define Constant_stGroupNameReq 65067
+#define Constant_stIdentIsnotValid 65068
+#define Constant_stInteger 65069
+#define Constant_stInvalidArgIndex 65070
+#define Constant_stInvalidCmdVer 65071
+#define Constant_stCantStorPass 65072
+#define Constant_stCertConfirmConn 65073
+#define Constant_stCertInvalidName 65074
+#define Constant_stCertInvalidSig 65075
+#define Constant_stCertInvalidTime 65076
+#define Constant_stCertNotFound 65077
+#define Constant_stCertSelfSigned 65078
+#define Constant_stClassNotFound 65079
+#define Constant_stCntObjects 65080
+#define Constant_stCntSubentries 65081
+#define Constant_stConfirmDel 65082
+#define Constant_stConfirmDelAccnt 65083
+#define Constant_stConfirmMultiDel 65084
+#define Constant_stDateFormat 65085
+#define Constant_stDeleteAll 65086
+#define Constant_stDeleteMenuItem 65087
+#define Constant_mcUser 65088
+#define Constant_mcComputer 65089
+#define Constant_mcGroup 65090
+#define Constant_mcMailingList 65091
+#define Constant_mcTransportTable 65092
+#define Constant_mcOu 65093
+#define Constant_mcHost 65094
+#define Constant_mcLocality 65095
+#define Constant_mcGroupOfUN 65096
+#define Constant_mcAlias 65097
+#define Constant_stConnectSuccess 65098
+#define Constant_stAbortScript 65099
+#define Constant_stAccntExist 65100
+#define Constant_stAccntNameReq 65101
+#define Constant_stAskTreeCopy 65102
+#define Constant_stAskTreeMove 65103
+#define Constant_cSurname 65104
+#define Constant_cText 65105
+#define Constant_cUnknown 65106
+#define Constant_cUser 65107
+#define Constant_cUsername 65108
+#define Constant_cUserPrompt 65109
+#define Constant_cValue 65110
+#define Constant_cView 65111
+#define Constant_cViewPic 65112
+#define Constant_cWarning 65113
+#define Constant_cSaveSrchResults 65114
+#define Constant_cSaveBatchToFile 65115
+#define Constant_cLoadBatchFromFile 65116
+#define Constant_cSaveBatchProtocol 65117
+#define Constant_mcNew 65118
+#define Constant_mcEntry 65119
+#define Constant_cPropertiesOf 65120
+#define Constant_cRegistryCfgName 65121
+#define Constant_cRetry 65122
+#define Constant_cSambaDomain 65123
+#define Constant_cSASLCurrUSer 65124
+#define Constant_cSaveToLdap 65125
+#define Constant_cSearchBase 65126
+#define Constant_cSearchResults 65127
+#define Constant_cSelectAliasDir 65128
+#define Constant_cSelectEntry 65129
+#define Constant_cServer 65130
+#define Constant_cSetPassword 65131
+#define Constant_cSkip 65132
+#define Constant_cSkipAll 65133
+#define Constant_cSmartDelete 65134
+#define Constant_cSmtpAddress 65135
+#define Constant_cNewItem 65136
+#define Constant_cNewSubmenu 65137
+#define Constant_cNewValue 65138
+#define Constant_cNext 65139
+#define Constant_cObjectclass 65140
+#define Constant_cOk 65141
+#define Constant_cOldValue 65142
+#define Constant_cOperation 65143
+#define Constant_cParentDir 65144
+#define Constant_cPassword 65145
+#define Constant_cPath 65146
+#define Constant_cPickAccounts 65147
+#define Constant_cPickGroups 65148
+#define Constant_cPickMembers 65149
+#define Constant_cPreparing 65150
+#define Constant_cProgress 65151
+#define Constant_cFinish 65152
+#define Constant_cHex 65153
+#define Constant_cHomeDir 65154
+#define Constant_cHostName 65155
+#define Constant_cImage 65156
+#define Constant_cInformation 65157
+#define Constant_cIpAddress 65158
+#define Constant_cMaildrop 65159
+#define Constant_cModifyOk 65160
+#define Constant_cModifySkipped 65161
+#define Constant_cMore 65162
+#define Constant_cMoveTo 65163
+#define Constant_cMoving 65164
+#define Constant_cName 65165
+#define Constant_cNew 65166
+#define Constant_cNewEntry 65167
+#define Constant_cCopyTo 65168
+#define Constant_cDecimal 65169
+#define Constant_cDelete 65170
+#define Constant_cDeleting 65171
+#define Constant_cDescription 65172
+#define Constant_cDetails 65173
+#define Constant_cEdit 65174
+#define Constant_cEditAddress 65175
+#define Constant_cEditEntry 65176
+#define Constant_cEditHost 65177
+#define Constant_cEditValue 65178
+#define Constant_cEnglish 65179
+#define Constant_cEnterNewValue 65180
+#define Constant_cEnterPasswd 65181
+#define Constant_cEnterRDN 65182
+#define Constant_cError 65183
+#define Constant_cAddAttribute 65184
+#define Constant_cAddConn 65185
+#define Constant_cAddHost 65186
+#define Constant_cAddValue 65187
+#define Constant_cAnonymousConn 65188
+#define Constant_cAppName 65189
+#define Constant_cAttribute 65190
+#define Constant_cAttributeName 65191
+#define Constant_cBinary 65192
+#define Constant_cBrowse 65193
+#define Constant_cCancel 65194
+#define Constant_cCert 65195
+#define Constant_cClose 65196
+#define Constant_cColumnNames 65197
+#define Constant_cConfirm 65198
+#define Constant_cCopying 65199
+#define ComStrs_sPageIndexError 65200
+#define ComStrs_sInvalidComCtl32 65201
+#define ComStrs_sDateTimeMax 65202
+#define ComStrs_sDateTimeMin 65203
+#define ComStrs_sNeedAllowNone 65204
+#define ComStrs_sFailSetCalDateTime 65205
+#define ComStrs_sFailSetCalMaxSelRange 65206
+#define ComStrs_sFailSetCalMinMaxRange 65207
+#define ComStrs_sFailsetCalSelRange 65208
+#define WinHelpViewer_hNoKeyword 65209
+#define Constant_LAC_NOTLAC 65210
+#define Constant_BAD_XML_DOCUMENT 65211
+#define Constant_XML_BAD_CLOSE_TAG 65212
+#define Constant_XML_UNEXPECTED_CLOSE_TAG 65213
+#define Constant_cAdd 65214
+#define Constant_cAddAddress 65215
+#define ExtCtrls_clNameWindowFrame 65216
+#define ExtCtrls_clNameWindowText 65217
+#define ComStrs_sTabFailClear 65218
+#define ComStrs_sTabFailDelete 65219
+#define ComStrs_sTabFailRetrieve 65220
+#define ComStrs_sTabFailGetObject 65221
+#define ComStrs_sTabFailSet 65222
+#define ComStrs_sTabFailSetObject 65223
+#define ComStrs_sTabMustBeMultiLine 65224
+#define ComStrs_sInvalidIndex 65225
+#define ComStrs_sInsertError 65226
+#define ComStrs_sInvalidOwner 65227
+#define ComStrs_sRichEditInsertError 65228
+#define ComStrs_sRichEditLoadFail 65229
+#define ComStrs_sRichEditSaveFail 65230
+#define ComStrs_sUDAssociated 65231
+#define ExtCtrls_clNameDefault 65232
+#define ExtCtrls_clNameGrayText 65233
+#define ExtCtrls_clNameHighlight 65234
+#define ExtCtrls_clNameHighlightText 65235
+#define ExtCtrls_clNameInactiveBorder 65236
+#define ExtCtrls_clNameInactiveCaption 65237
+#define ExtCtrls_clNameInactiveCaptionText 65238
+#define ExtCtrls_clNameInfoBk 65239
+#define ExtCtrls_clNameInfoText 65240
+#define ExtCtrls_clNameMenu 65241
+#define ExtCtrls_clNameMenuText 65242
+#define ExtCtrls_clNameNone 65243
+#define ExtCtrls_clNameScrollBar 65244
+#define ExtCtrls_clName3DDkShadow 65245
+#define ExtCtrls_clName3DLight 65246
+#define ExtCtrls_clNameWindow 65247
+#define ExtCtrls_clNameFuchsia 65248
+#define ExtCtrls_clNameAqua 65249
+#define ExtCtrls_clNameWhite 65250
+#define ExtCtrls_clNameMoneyGreen 65251
+#define ExtCtrls_clNameSkyBlue 65252
+#define ExtCtrls_clNameCream 65253
+#define ExtCtrls_clNameMedGray 65254
+#define ExtCtrls_clNameActiveBorder 65255
+#define ExtCtrls_clNameActiveCaption 65256
+#define ExtCtrls_clNameAppWorkSpace 65257
+#define ExtCtrls_clNameBackground 65258
+#define ExtCtrls_clNameBtnFace 65259
+#define ExtCtrls_clNameBtnHighlight 65260
+#define ExtCtrls_clNameBtnShadow 65261
+#define ExtCtrls_clNameBtnText 65262
+#define ExtCtrls_clNameCaptionText 65263
+#define HelpIntfs_hNothingFound 65264
+#define HelpIntfs_hNoContext 65265
+#define HelpIntfs_hNoTopics 65266
+#define ExtCtrls_clNameBlack 65267
+#define ExtCtrls_clNameMaroon 65268
+#define ExtCtrls_clNameGreen 65269
+#define ExtCtrls_clNameOlive 65270
+#define ExtCtrls_clNameNavy 65271
+#define ExtCtrls_clNamePurple 65272
+#define ExtCtrls_clNameTeal 65273
+#define ExtCtrls_clNameGray 65274
+#define ExtCtrls_clNameSilver 65275
+#define ExtCtrls_clNameRed 65276
+#define ExtCtrls_clNameLime 65277
+#define ExtCtrls_clNameYellow 65278
+#define ExtCtrls_clNameBlue 65279
+#define Consts_SNoDefaultPrinter 65280
+#define Consts_SDuplicateMenus 65281
+#define Consts_SPictureLabel 65282
+#define Consts_SPictureDesc 65283
+#define Consts_SPreviewLabel 65284
+#define Consts_SCannotOpenAVI 65285
+#define Consts_SDockedCtlNeedsName 65286
+#define Consts_SDockTreeRemoveError 65287
+#define Consts_SDockZoneNotFound 65288
+#define Consts_SDockZoneHasNoCtl 65289
+#define Consts_SMultiSelectRequired 65290
+#define Consts_SSeparator 65291
+#define Consts_SErrorSettingCount 65292
+#define Consts_SListBoxMustBeVirtual 65293
+#define Consts_SNoGetItemEventHandler 65294
+#define HelpIntfs_hNoTableOfContents 65295
+#define Consts_SmkcRight 65296
+#define Consts_SmkcDown 65297
+#define Consts_SmkcIns 65298
+#define Consts_SmkcDel 65299
+#define Consts_SmkcShift 65300
+#define Consts_SmkcCtrl 65301
+#define Consts_SmkcAlt 65302
+#define Consts_srNone 65303
+#define Consts_SOutOfRange 65304
+#define Consts_sAllFilter 65305
+#define Consts_SInsertLineError 65306
+#define Consts_SInvalidClipFmt 65307
+#define Consts_SIconToClipboard 65308
+#define Consts_SCannotOpenClipboard 65309
+#define Consts_SDefault 65310
+#define Consts_SInvalidMemoSize 65311
+#define Consts_SMsgDlgRetry 65312
+#define Consts_SMsgDlgIgnore 65313
+#define Consts_SMsgDlgAll 65314
+#define Consts_SMsgDlgNoToAll 65315
+#define Consts_SMsgDlgYesToAll 65316
+#define Consts_SmkcBkSp 65317
+#define Consts_SmkcTab 65318
+#define Consts_SmkcEsc 65319
+#define Consts_SmkcEnter 65320
+#define Consts_SmkcSpace 65321
+#define Consts_SmkcPgUp 65322
+#define Consts_SmkcPgDn 65323
+#define Consts_SmkcEnd 65324
+#define Consts_SmkcHome 65325
+#define Consts_SmkcLeft 65326
+#define Consts_SmkcUp 65327
+#define Consts_SVMetafiles 65328
+#define Consts_SVEnhMetafiles 65329
+#define Consts_SVIcons 65330
+#define Consts_SVBitmaps 65331
+#define Consts_SMaskErr 65332
+#define Consts_SMaskEditErr 65333
+#define Consts_SMsgDlgWarning 65334
+#define Consts_SMsgDlgError 65335
+#define Consts_SMsgDlgInformation 65336
+#define Consts_SMsgDlgConfirm 65337
+#define Consts_SMsgDlgYes 65338
+#define Consts_SMsgDlgNo 65339
+#define Consts_SMsgDlgOK 65340
+#define Consts_SMsgDlgCancel 65341
+#define Consts_SMsgDlgHelp 65342
+#define Consts_SMsgDlgAbort 65343
+#define Consts_SInvalidPrinter 65344
+#define Consts_SDeviceOnPort 65345
+#define Consts_SGroupIndexTooLow 65346
+#define Consts_SNoMDIForm 65347
+#define Consts_SControlParentSetToSelf 65348
+#define Consts_SOKButton 65349
+#define Consts_SCancelButton 65350
+#define Consts_SYesButton 65351
+#define Consts_SNoButton 65352
+#define Consts_SHelpButton 65353
+#define Consts_SCloseButton 65354
+#define Consts_SIgnoreButton 65355
+#define Consts_SRetryButton 65356
+#define Consts_SAbortButton 65357
+#define Consts_SAllButton 65358
+#define Consts_SCannotDragForm 65359
+#define Consts_SWindowDCError 65360
+#define Consts_SWindowClass 65361
+#define Consts_SCannotFocus 65362
+#define Consts_SParentRequired 65363
+#define Consts_SParentGivenNotAParent 65364
+#define Consts_SMDIChildNotVisible 65365
+#define Consts_SVisibleChanged 65366
+#define Consts_SCannotShowModal 65367
+#define Consts_SScrollBarRange 65368
+#define Consts_SPropertyOutOfRange 65369
+#define Consts_SMenuIndexError 65370
+#define Consts_SMenuReinserted 65371
+#define Consts_SMenuNotFound 65372
+#define Consts_SNoTimers 65373
+#define Consts_SNotPrinting 65374
+#define Consts_SPrinting 65375
+#define Consts_SInvalidMetafile 65376
+#define Consts_SInvalidPixelFormat 65377
+#define Consts_SInvalidImage 65378
+#define Consts_SScanLine 65379
+#define Consts_SChangeIconSize 65380
+#define Consts_SOleGraphic 65381
+#define Consts_SUnknownExtension 65382
+#define Consts_SUnknownClipboardFormat 65383
+#define Consts_SOutOfResources 65384
+#define Consts_SNoCanvasHandle 65385
+#define Consts_SInvalidImageSize 65386
+#define Consts_SInvalidImageList 65387
+#define Consts_SReplaceImage 65388
+#define Consts_SImageIndexError 65389
+#define Consts_SImageReadFail 65390
+#define Consts_SImageWriteFail 65391
+#define RTLConsts_SReadOnlyProperty 65392
+#define RTLConsts_SRegCreateFailed 65393
+#define RTLConsts_SRegGetDataFailed 65394
+#define RTLConsts_SRegSetDataFailed 65395
+#define RTLConsts_SResNotFound 65396
+#define RTLConsts_SSeekNotImplemented 65397
+#define RTLConsts_SSortedListError 65398
+#define RTLConsts_STooManyDeleted 65399
+#define RTLConsts_SUnknownGroup 65400
+#define RTLConsts_SUnknownProperty 65401
+#define RTLConsts_SWriteError 65402
+#define Consts_SInvalidTabIndex 65403
+#define Consts_SInvalidTabPosition 65404
+#define Consts_SInvalidTabStyle 65405
+#define Consts_SInvalidBitmap 65406
+#define Consts_SInvalidIcon 65407
+#define RTLConsts_SIndexOutOfRange 65408
+#define RTLConsts_SInvalidImage 65409
+#define RTLConsts_SInvalidName 65410
+#define RTLConsts_SInvalidProperty 65411
+#define RTLConsts_SInvalidPropertyElement 65412
+#define RTLConsts_SInvalidPropertyPath 65413
+#define RTLConsts_SInvalidPropertyType 65414
+#define RTLConsts_SInvalidPropertyValue 65415
+#define RTLConsts_SInvalidRegType 65416
+#define RTLConsts_SInvalidStringGridOp 65417
+#define RTLConsts_SListCapacityError 65418
+#define RTLConsts_SListCountError 65419
+#define RTLConsts_SListIndexError 65420
+#define RTLConsts_SMemoryStreamError 65421
+#define RTLConsts_SPropertyException 65422
+#define RTLConsts_SReadError 65423
+#define SysConst_SLongDayNameSat 65424
+#define RTLConsts_SAncestorNotFound 65425
+#define RTLConsts_SAssignError 65426
+#define RTLConsts_SBitsIndexError 65427
+#define RTLConsts_SCantWriteResourceStreamError 65428
+#define RTLConsts_SCheckSynchronizeError 65429
+#define RTLConsts_SClassNotFound 65430
+#define RTLConsts_SDuplicateClass 65431
+#define RTLConsts_SDuplicateItem 65432
+#define RTLConsts_SDuplicateName 65433
+#define RTLConsts_SDuplicateString 65434
+#define RTLConsts_SFCreateErrorEx 65435
+#define RTLConsts_SFixedColTooBig 65436
+#define RTLConsts_SFixedRowTooBig 65437
+#define RTLConsts_SFOpenErrorEx 65438
+#define RTLConsts_SGridTooLarge 65439
+#define SysConst_SLongMonthNameOct 65440
+#define SysConst_SLongMonthNameNov 65441
+#define SysConst_SLongMonthNameDec 65442
+#define SysConst_SShortDayNameSun 65443
+#define SysConst_SShortDayNameMon 65444
+#define SysConst_SShortDayNameTue 65445
+#define SysConst_SShortDayNameWed 65446
+#define SysConst_SShortDayNameThu 65447
+#define SysConst_SShortDayNameFri 65448
+#define SysConst_SShortDayNameSat 65449
+#define SysConst_SLongDayNameSun 65450
+#define SysConst_SLongDayNameMon 65451
+#define SysConst_SLongDayNameTue 65452
+#define SysConst_SLongDayNameWed 65453
+#define SysConst_SLongDayNameThu 65454
+#define SysConst_SLongDayNameFri 65455
+#define SysConst_SShortMonthNameJun 65456
+#define SysConst_SShortMonthNameJul 65457
+#define SysConst_SShortMonthNameAug 65458
+#define SysConst_SShortMonthNameSep 65459
+#define SysConst_SShortMonthNameOct 65460
+#define SysConst_SShortMonthNameNov 65461
+#define SysConst_SShortMonthNameDec 65462
+#define SysConst_SLongMonthNameJan 65463
+#define SysConst_SLongMonthNameFeb 65464
+#define SysConst_SLongMonthNameMar 65465
+#define SysConst_SLongMonthNameApr 65466
+#define SysConst_SLongMonthNameMay 65467
+#define SysConst_SLongMonthNameJun 65468
+#define SysConst_SLongMonthNameJul 65469
+#define SysConst_SLongMonthNameAug 65470
+#define SysConst_SLongMonthNameSep 65471
+#define SysConst_SVarNotImplemented 65472
+#define SysConst_SVarUnexpected 65473
+#define SysConst_SExternalException 65474
+#define SysConst_SAssertionFailed 65475
+#define SysConst_SIntfCastError 65476
+#define SysConst_SSafecallException 65477
+#define SysConst_SAssertError 65478
+#define SysConst_SAbstractError 65479
+#define SysConst_SModuleAccessViolation 65480
+#define SysConst_SOSError 65481
+#define SysConst_SUnkOSError 65482
+#define SysConst_SShortMonthNameJan 65483
+#define SysConst_SShortMonthNameFeb 65484
+#define SysConst_SShortMonthNameMar 65485
+#define SysConst_SShortMonthNameApr 65486
+#define SysConst_SShortMonthNameMay 65487
+#define SysConst_SArgumentMissing 65488
+#define SysConst_SDispatchError 65489
+#define SysConst_SReadAccess 65490
+#define SysConst_SWriteAccess 65491
+#define SysConst_SVarArrayCreate 65492
+#define SysConst_SVarArrayBounds 65493
+#define SysConst_SVarArrayLocked 65494
+#define SysConst_SInvalidVarCast 65495
+#define SysConst_SInvalidVarOp 65496
+#define SysConst_SInvalidVarNullOp 65497
+#define SysConst_SInvalidVarOpWithHResultWithPrefix 65498
+#define SysConst_SVarTypeCouldNotConvert 65499
+#define SysConst_SVarTypeConvertOverflow 65500
+#define SysConst_SVarOverflow 65501
+#define SysConst_SVarInvalid 65502
+#define SysConst_SVarBadType 65503
+#define SysConst_SIntOverflow 65504
+#define SysConst_SInvalidOp 65505
+#define SysConst_SZeroDivide 65506
+#define SysConst_SOverflow 65507
+#define SysConst_SUnderflow 65508
+#define SysConst_SInvalidPointer 65509
+#define SysConst_SInvalidCast 65510
+#define SysConst_SAccessViolationArg3 65511
+#define SysConst_SAccessViolationNoArg 65512
+#define SysConst_SStackOverflow 65513
+#define SysConst_SControlC 65514
+#define SysConst_SPrivilege 65515
+#define SysConst_SOperationAborted 65516
+#define SysConst_SException 65517
+#define SysConst_SExceptTitle 65518
+#define SysConst_SInvalidFormat 65519
+#define SysConst_SInvalidInteger 65520
+#define SysConst_SInvalidFloat 65521
+#define SysConst_SInvalidDateTime 65522
+#define SysConst_STimeEncodeError 65523
+#define SysConst_SDateEncodeError 65524
+#define SysConst_SOutOfMemory 65525
+#define SysConst_SInOutError 65526
+#define SysConst_SFileNotFound 65527
+#define SysConst_SInvalidFilename 65528
+#define SysConst_STooManyOpenFiles 65529
+#define SysConst_SAccessDenied 65530
+#define SysConst_SEndOfFile 65531
+#define SysConst_SDiskFull 65532
+#define SysConst_SInvalidInput 65533
+#define SysConst_SDivByZero 65534
+#define SysConst_SRangeError 65535
+STRINGTABLE
+BEGIN
+	JConsts_sChangeJPGSize,	"Die Größe einer JPEG-Grafik kann nicht verändert werden"
+	JConsts_sJPEGError,	"JPEG-Fehler #%d"
+	JConsts_sJPEGImageFile,	"JPEG-Grafikdatei"
+	DECHash_sHashingOverflowError,	"Hash function have to many bits processed"
+	DECHash_sHashNotInitialized,	"Hash must be initialized"
+	OleConst_SCannotActivate,	"Aktivierung des OLE-Steuerelements misslungen"
+	OleConst_SNoWindowHandle,	"Das Fenster-Handle des OLE-Elements nicht verfügbar"
+	OleConst_SInvalidLicense,	"Lizenz-Information für %s ist ungültig"
+	OleConst_SNotLicensed,	"Lizenz-Information für %s nicht gefunden. Sie können dieses Steuerelement im Entwurfsmodus nicht verwenden"
+	OleConst_sNoRunningObject,	"Es kann kein Zeiger auf ein ausgeführtes Objekt geholt werden, dass mit OLE für %s/%s registriert ist"
+	Constant_stExpectedButReceived,	"Expected \"=\" but recieved \""
+	Constant_stMissingOperator,	"Missing operator!"
+	Constant_stInvalidOperator,	"Invalid operator \"%s\"!"
+	Constant_stRegCntMatching,	"%s %d object(s) match regular expression."
+	Constant_stRegApplying,	"Applying regular expression..."
+	Constant_stConvErrSambaRid,	"Error converting sambaNextRid:"
+	Constant_stEmptyFile,	"File %s is empty!"
+	Constant_XML_NO_OPENING_TAG,	"No opening tag!"
+	Constant_SAVE_SEARCH_FILTER,	"Ldif file, Windows format (CR/LF) (*.ldif)|*.ldif|Ldif file, Unix format (LF only) (*.ldif)|*.ldif|CSV (Comma-separated) (*.csv)|*.csv|XML (*.xml)|*.xml"
+	Constant_SAVE_MODIFY_FILTER,	"LdapAdmin batch file (*.lab)|*.lab"
+	Constant_SAVE_MODIFY_LOG_FILTER,	"Text file (*.txt)|*.txt"
+	ComConst_SOleError,	"OLE-Fehler %.8x"
+	ComConst_SNoMethod,	"Die Methode '%s' wird vom Automatisierungsobjekt nicht unterstützt"
+	ComConst_SVarNotObject,	"Variante referenziert kein Automatisierungsobjekt"
+	ComConst_STooManyParams,	"Dispatch-Methoden unterstützen maximal 64 Parameter."
+	ComConst_SDCOMNotInstalled,	"DCOM ist nicht installiert"
+	Constant_stScriptSetErr,	"Could not convert set to integer!"
+	Constant_stSequentialID,	"Activating this option could cause a significant network traffic with large user databases. Unless you REALLY need sequential id's, leave the default option (random) on!"
+	Constant_stSkipRecord,	"%s\n\rSkip this record?"
+	Constant_stStopTLSError,	"Stop TLS Failed! The connection will be closed due to unrecoverable error."
+	Constant_stTimeFormat,	"time format"
+	Constant_stTooManyArgs,	"Too many arguments!"
+	Constant_stUnclosedParam,	"Invalid (Unclosed) parameter!"
+	Constant_stUnclosedStr,	"Unclosed string!"
+	Constant_stUnknownValueType,	"Unknown value type.\nkey:%s\nvalue:%s\""
+	Constant_stUnsupportedAuth,	"Unsupported authentication method: %s!"
+	Constant_stUnsuppScript,	"Unsupported script type: "
+	Constant_stUserBreak,	"User break!"
+	Constant_stWritePropRO,	"Can not write to read only property!"
+	Constant_stRegexError,	"Error in regex filter: %s\r%s"
+	Constant_stNoOpeningParenthesys,	"Missing opening parenthesys!"
+	Constant_stNoClosingParenthesys,	"Missing closing parenthesys!"
+	Constant_stNumObjects,	"%d objects"
+	Constant_stPassDiff,	"Passwords do not match!"
+	Constant_stPassFor,	"Password for : %s"
+	Constant_stPropReadOnly,	"Property is read only!"
+	Constant_stRegexFailed,	"Regexp validation failed!"
+	Constant_stReqMail,	"At least one E-Mail address must be defined!"
+	Constant_stReqNoEmpty,	"%s must have a value!"
+	Constant_stRequired,	"%s is required!"
+	Constant_stResetAutolock,	"This account has been locked down by SAMBA server! Do you want to reset the autolock flag and enable it now?"
+	Constant_stRetrieving,	"Reading: %d objects retrieved. Press ESC to abort..."
+	Constant_stSaslSSL,	"SASL encryption can not be used over an SSL connection!"
+	Constant_stSchemaNoSubentry,	"Can't find SubschemaSubentry"
+	Constant_stScriptNoProc,	"Procedure \"%s\" could not be located."
+	Constant_stScriptNotEvent,	"Property '%s' is not an event!"
+	Constant_stScriptNotSupp,	"'%s' does not support '%s' event !"
+	Constant_stScriptParamType,	"Unsupported parameter type!"
+	Constant_stLdifInvOp,	"Line %d: Invalid operation \"%s\"!"
+	Constant_stLdifNotExpected,	"Line %d: Expected \"%s\" but found \"%s\"!"
+	Constant_stLdifSuccess,	"%d Object(s) succesfully imported!"
+	Constant_stLdifUrlNotSupp,	"URL method not supported!"
+	Constant_stMenuAssignTempl,	"A template name must not be empty!"
+	Constant_stMenuLocateTempl,	"The template \"%s\" which is assigned to this action could not be located!"
+	Constant_stMoveOverlap,	"Cannot move: Source and destination paths overlap!"
+	Constant_stNeedElevated,	"On Vista or higher, LDAPAdmin must be executed with elevated privileges for this operation to succesfully complete!"
+	Constant_stNoActiveConn,	"Connection error: could not locate active connection!"
+	Constant_stNoMoreChecks,	"Do not perform this check in the future."
+	Constant_stNoMoreNums,	"Pool depleted! No more available free id's for %s!"
+	Constant_stNoPosixID,	"You should disable id creation only if you use a server side id assignment! Otherwise, you will not be able to create any users or groups."
+	Constant_stNoRdn,	"You have to enter the unique name (rdn) for this entry!"
+	Constant_stNoSchema,	"Can't load LDAP schema"
+	Constant_stNotEnoughArgs,	"Not enough arguments!"
+	Constant_stNumber,	"number"
+	Constant_stInvalidFilter,	"Invalid or unsupported filter type!"
+	Constant_stInvalidTagValue,	"Invalid value %s for <%s>!"
+	Constant_stInvalidTimeFmt,	"Invalid time format!"
+	Constant_stInvalidURL,	"Invalid URL format!"
+	Constant_stLdapError,	"LDAP error: %s!"
+	Constant_stLdapErrorEx,	"LDAP error! %s: %s."
+	Constant_stLdifEFold,	"Line %d: Empty line may not be folded!"
+	Constant_stLdifEInvMode,	"Internal error: Invalid LDIF mode!"
+	Constant_stLdifENoCol,	"Line %d: Missing \":\"."
+	Constant_stLdifENoDn,	"Line %d: dn expected but %s found!"
+	Constant_stLdifEof,	"End of file reached!"
+	Constant_stLdifEVer,	"Invalid version value: %s!"
+	Constant_stLdifFailure,	"%d Object(s) could not be imported!"
+	Constant_stLdifInvalidUrl,	"Invalid URL!"
+	Constant_stLdifInvAttrName,	"Line %d: Invalid attribute name, expected \"%s\" but found \"%s\"!"
+	Constant_stLdifInvChType,	"Line %d: Invalid changetype \"%s\"!"
+	Constant_stDeleteSubmenu,	"Delete this submenu?"
+	Constant_stDelNamingAttr,	"Attribute %s is the naming value of this entry! Do you want to delete it?"
+	Constant_stDuplicateSC,	"Shortcut '%s' is already assigned to '%s' menu item!"
+	Constant_stEmptyArg,	"Empty argument!"
+	Constant_stErrExtMethName,	"Error extracting method name!"
+	Constant_stEvTypeEvTypeErr,	"Error setting %s event: %s event type is not supported!"
+	Constant_stExtConfirmAssoc,	"LDAPAdmin is currently not your default LDAP browser.\nWould you like to make it your default LDAP browser?"
+	Constant_stFileOverwrite,	"File '%s' exists, overwrite?"
+	Constant_stGetProcAddrErr,	"Cannot GetProcAddress of %s."
+	Constant_stGidNotSamba,	"Selected primary group is not a Samba group or it does not map to user domain. Do you still want to continue?"
+	Constant_stGroupMailReq,	"You have to enter at least one mail address for this group!"
+	Constant_stGroupNameReq,	"You have to enter a name for this group!"
+	Constant_stIdentIsnotValid,	"\"%s\" is not a valid %s!"
+	Constant_stInteger,	"integer number"
+	Constant_stInvalidArgIndex,	"Invalid Argument Index: %d"
+	Constant_stInvalidCmdVer,	"Invalid LDAP version in command line: %s"
+	Constant_stCantStorPass,	"This storage does not allow to keep the password"
+	Constant_stCertConfirmConn,	"The server you are trying to connect to is using a certificate which could not be verified!\n\r\n\r%s\n\rDo you want to proceed?"
+	Constant_stCertInvalidName,	"The name of the security certificate is invalid or does not match the server name!"
+	Constant_stCertInvalidSig,	"Signature check failed!"
+	Constant_stCertInvalidTime,	"The security certificate has expired or is not yet valid!"
+	Constant_stCertNotFound,	"Issuer certificate not found"
+	Constant_stCertSelfSigned,	"The certificate is self-signed root certificate"
+	Constant_stClassNotFound,	"Class %s not found!"
+	Constant_stCntObjects,	"%d object(s) retrieved."
+	Constant_stCntSubentries,	"%d subentries"
+	Constant_stConfirmDel,	"Delete entry \"%s\"?"
+	Constant_stConfirmDelAccnt,	"Delete account \"%s\"?"
+	Constant_stConfirmMultiDel,	"Delete %d entries?"
+	Constant_stDateFormat,	"date format"
+	Constant_stDeleteAll,	"\"%s\"\n\rThis directory entry is not empty (it contains further leaves). Delete all recursively?"
+	Constant_stDeleteMenuItem,	"Delete this menu item?"
+	Constant_mcUser,	"&User..."
+	Constant_mcComputer,	"&Computer..."
+	Constant_mcGroup,	"&Group..."
+	Constant_mcMailingList,	"&Mailing list..."
+	Constant_mcTransportTable,	"&Transport table..."
+	Constant_mcOu,	"&Organizational unit..."
+	Constant_mcHost,	"&Host..."
+	Constant_mcLocality,	"&Locality..."
+	Constant_mcGroupOfUN,	"Grou&p of unique names..."
+	Constant_mcAlias,	"Alias..."
+	Constant_stConnectSuccess,	"Connection is successful."
+	Constant_stAbortScript,	"Do you want to abort the script?"
+	Constant_stAccntExist,	"Account with this name already exists.\n\rDo you want to overwrite it?"
+	Constant_stAccntNameReq,	"You have to enter a name for this connection!"
+	Constant_stAskTreeCopy,	"Copy %s to %s?"
+	Constant_stAskTreeMove,	"Move %s to %s?"
+	Constant_cSurname,	"Second name"
+	Constant_cText,	"Text"
+	Constant_cUnknown,	"Unknown"
+	Constant_cUser,	"User: %s"
+	Constant_cUsername,	"Username"
+	Constant_cUserPrompt,	"User Prompt"
+	Constant_cValue,	"Value"
+	Constant_cView,	"&View:"
+	Constant_cViewPic,	"View picture: "
+	Constant_cWarning,	"Warning"
+	Constant_cSaveSrchResults,	"Save search results"
+	Constant_cSaveBatchToFile,	"Save batch to file"
+	Constant_cLoadBatchFromFile,	"Load batch from file"
+	Constant_cSaveBatchProtocol,	"Save protocol"
+	Constant_mcNew,	"&New..."
+	Constant_mcEntry,	"&Entry..."
+	Constant_cPropertiesOf,	"Properties of %s"
+	Constant_cRegistryCfgName,	"Private"
+	Constant_cRetry,	"&Retry"
+	Constant_cSambaDomain,	"Samba Domain"
+	Constant_cSASLCurrUSer,	"Use current user credentials"
+	Constant_cSaveToLdap,	"Save to LDAP"
+	Constant_cSearchBase,	"Search base"
+	Constant_cSearchResults,	"Search results:"
+	Constant_cSelectAliasDir,	"Select alias directory"
+	Constant_cSelectEntry,	"Select entry"
+	Constant_cServer,	"Server: %s"
+	Constant_cSetPassword,	"Set password..."
+	Constant_cSkip,	"&Skip"
+	Constant_cSkipAll,	"Skip &all"
+	Constant_cSmartDelete,	"&Smart delete"
+	Constant_cSmtpAddress,	"SMTP Address:"
+	Constant_cNewItem,	"New item"
+	Constant_cNewSubmenu,	"New submenu"
+	Constant_cNewValue,	"New value"
+	Constant_cNext,	"&Next"
+	Constant_cObjectclass,	"Objectclass"
+	Constant_cOk,	"&OK"
+	Constant_cOldValue,	"Old value"
+	Constant_cOperation,	"Operation:"
+	Constant_cParentDir,	"Parent directory:"
+	Constant_cPassword,	"Password:"
+	Constant_cPath,	"Path: %s"
+	Constant_cPickAccounts,	"Choose Accounts"
+	Constant_cPickGroups,	"Choose Groups"
+	Constant_cPickMembers,	"Choose members"
+	Constant_cPreparing,	"Preparing..."
+	Constant_cProgress,	"Progress:"
+	Constant_cFinish,	"&Finish"
+	Constant_cHex,	"Hex:"
+	Constant_cHomeDir,	"Home Directory"
+	Constant_cHostName,	"Host Name:"
+	Constant_cImage,	"Image"
+	Constant_cInformation,	"Information"
+	Constant_cIpAddress,	"IP Address"
+	Constant_cMaildrop,	"Maildrop"
+	Constant_cModifyOk,	"Ok."
+	Constant_cModifySkipped,	"Skipped."
+	Constant_cMore,	"More..."
+	Constant_cMoveTo,	"Move %s to..."
+	Constant_cMoving,	"Moving..."
+	Constant_cName,	"Name"
+	Constant_cNew,	"<<new>>"
+	Constant_cNewEntry,	"New entry"
+	Constant_cCopyTo,	"Copy %s to..."
+	Constant_cDecimal,	"Decimal:"
+	Constant_cDelete,	"&Delete"
+	Constant_cDeleting,	"Deleting:"
+	Constant_cDescription,	"Description"
+	Constant_cDetails,	"&Details"
+	Constant_cEdit,	"&Edit"
+	Constant_cEditAddress,	"Edit Address"
+	Constant_cEditEntry,	"Edit entry"
+	Constant_cEditHost,	"Edit Host"
+	Constant_cEditValue,	"Edit value"
+	Constant_cEnglish,	"English"
+	Constant_cEnterNewValue,	"Enter new value:"
+	Constant_cEnterPasswd,	"Enter password"
+	Constant_cEnterRDN,	"Enter rdn:"
+	Constant_cError,	"Error"
+	Constant_cAddAttribute,	"Add attribute..."
+	Constant_cAddConn,	"New connection"
+	Constant_cAddHost,	"Add Host"
+	Constant_cAddValue,	"Add value"
+	Constant_cAnonymousConn,	"Anonymous connection"
+	Constant_cAppName,	"LDAP Admin"
+	Constant_cAttribute,	"Attribute"
+	Constant_cAttributeName,	"Attribute name:"
+	Constant_cBinary,	"Binary"
+	Constant_cBrowse,	"&Browse..."
+	Constant_cCancel,	"&Cancel"
+	Constant_cCert,	"Certificate"
+	Constant_cClose,	"&Close"
+	Constant_cColumnNames,	"Name,DN"
+	Constant_cConfirm,	"Confirmation"
+	Constant_cCopying,	"Copying..."
+	ComStrs_sPageIndexError,	"%d ist ein ungültiger Wert für PageIndex. PageIndex muß zwischen 0 und %d liegen"
+	ComStrs_sInvalidComCtl32,	"Dieses Element benötigt COMCTL32.DLL in der Version 4.70 oder höher"
+	ComStrs_sDateTimeMax,	"Das Datum überschreitet das Maximum von %s"
+	ComStrs_sDateTimeMin,	"Das Datum unterschreitet das Minimum von %s"
+	ComStrs_sNeedAllowNone,	"Um das Datum zu setzen, müssen Sie im Modus ShowCheckbox sein"
+	ComStrs_sFailSetCalDateTime,	"Kalenderzeit oder -datum konnte nicht gesetzt werden"
+	ComStrs_sFailSetCalMaxSelRange,	"Der max. Auswahlbereich konnte nicht gesetzt werden"
+	ComStrs_sFailSetCalMinMaxRange,	"Der max./min. Bereich des Kalenders konnte nicht gesetzt werden"
+	ComStrs_sFailsetCalSelRange,	"Der ausgewählte Bereich des Kalenders kann nicht gesetzt werden"
+	WinHelpViewer_hNoKeyword,	"Es wurden keine Schlüsselwörter für die Hilfe angegeben."
+	Constant_LAC_NOTLAC,	"The file \"%s\" is not an Ldap Admin accounts file"
+	Constant_BAD_XML_DOCUMENT,	"Not a well formed XML file."
+	Constant_XML_BAD_CLOSE_TAG,	"The \"%s\" is expected, but the \"%s\" is received"
+	Constant_XML_UNEXPECTED_CLOSE_TAG,	"Unexpected closing tag \"%s\""
+	Constant_cAdd,	"&Add"
+	Constant_cAddAddress,	"Add Address"
+	ExtCtrls_clNameWindowFrame,	"Fensterrahmen"
+	ExtCtrls_clNameWindowText,	"Fenstertext"
+	ComStrs_sTabFailClear,	"Register-Element konnte nicht geleert werden"
+	ComStrs_sTabFailDelete,	"Registerseite mit Index %d konnte nicht gelöscht werden"
+	ComStrs_sTabFailRetrieve,	"Registerseite mit Index %d konnte nicht gelesen werden"
+	ComStrs_sTabFailGetObject,	"Objekt mit Index %d konnte nicht gelesen werden"
+	ComStrs_sTabFailSet,	"Registerseite '%s' mit Index %d konnte nicht gesetzt werden"
+	ComStrs_sTabFailSetObject,	"Objekt mit Index %d konnte nicht gesetzt werden"
+	ComStrs_sTabMustBeMultiLine,	"Bei TabPosition tpLeft und tpRight muss MultiLine True sein"
+	ComStrs_sInvalidIndex,	"Ungültiger Index"
+	ComStrs_sInsertError,	"Eintrag kann nicht eingefügt werden"
+	ComStrs_sInvalidOwner,	"Ungültiger Besitzer"
+	ComStrs_sRichEditInsertError,	"Fehler bei Einfügen von RichEdit-Zeile"
+	ComStrs_sRichEditLoadFail,	"Das Laden des Streams ist misslungen"
+	ComStrs_sRichEditSaveFail,	"Das Speichern des Streams ist misslungen"
+	ComStrs_sUDAssociated,	"%s ist bereits mit %s verknüpft"
+	ExtCtrls_clNameDefault,	"Vorgabe"
+	ExtCtrls_clNameGrayText,	"Grauer Text"
+	ExtCtrls_clNameHighlight,	"Hervorgehobener Hintergrund"
+	ExtCtrls_clNameHighlightText,	"Hervorgehobener Text"
+	ExtCtrls_clNameInactiveBorder,	"Inaktiver Rahmen"
+	ExtCtrls_clNameInactiveCaption,	"Inaktiver Titel"
+	ExtCtrls_clNameInactiveCaptionText,	"Inaktiver Titeltext"
+	ExtCtrls_clNameInfoBk,	"Info-Hintergrund"
+	ExtCtrls_clNameInfoText,	"Info-Text"
+	ExtCtrls_clNameMenu,	"Menühintergrund"
+	ExtCtrls_clNameMenuText,	"Menütext"
+	ExtCtrls_clNameNone,	"Ohne"
+	ExtCtrls_clNameScrollBar,	"Bildlaufleiste"
+	ExtCtrls_clName3DDkShadow,	"3D Dunkler Schatten"
+	ExtCtrls_clName3DLight,	"3D Hell"
+	ExtCtrls_clNameWindow,	"Fensterhintergrund"
+	ExtCtrls_clNameFuchsia,	"Fuchsie"
+	ExtCtrls_clNameAqua,	"Aquamarin"
+	ExtCtrls_clNameWhite,	"Weiß"
+	ExtCtrls_clNameMoneyGreen,	"Dollargrün"
+	ExtCtrls_clNameSkyBlue,	"Himmelblau"
+	ExtCtrls_clNameCream,	"Creme"
+	ExtCtrls_clNameMedGray,	"Mittelgrau"
+	ExtCtrls_clNameActiveBorder,	"Aktiver Rahmen"
+	ExtCtrls_clNameActiveCaption,	"Aktive Titelleiste"
+	ExtCtrls_clNameAppWorkSpace,	"Anwendungsarbeitsbereich"
+	ExtCtrls_clNameBackground,	"Hintergrund"
+	ExtCtrls_clNameBtnFace,	"Schalterfläche"
+	ExtCtrls_clNameBtnHighlight,	"Schalterhervorhebung"
+	ExtCtrls_clNameBtnShadow,	"Schalterschatten"
+	ExtCtrls_clNameBtnText,	"Schaltertext"
+	ExtCtrls_clNameCaptionText,	"Titeltext"
+	HelpIntfs_hNothingFound,	"Für %s sind keine Hilfeinformationen vorhanden."
+	HelpIntfs_hNoContext,	"Keine kontextsensitive Hilfe installiert"
+	HelpIntfs_hNoTopics,	"Es ist keine themenbasierte Hilfe installiert."
+	ExtCtrls_clNameBlack,	"Schwarz"
+	ExtCtrls_clNameMaroon,	"Braun"
+	ExtCtrls_clNameGreen,	"Grün"
+	ExtCtrls_clNameOlive,	"Olivgrün"
+	ExtCtrls_clNameNavy,	"Dunkelblau"
+	ExtCtrls_clNamePurple,	"Purpur"
+	ExtCtrls_clNameTeal,	"Grünblau"
+	ExtCtrls_clNameGray,	"Grau"
+	ExtCtrls_clNameSilver,	"Silber"
+	ExtCtrls_clNameRed,	"Rot"
+	ExtCtrls_clNameLime,	"Limone"
+	ExtCtrls_clNameYellow,	"Gelb"
+	ExtCtrls_clNameBlue,	"Blau"
+	Consts_SNoDefaultPrinter,	"Zur Zeit ist kein Standard-Drucker gewählt"
+	Consts_SDuplicateMenus,	"Menü '%s' wird bereits von einem anderen Formular benutzt"
+	Consts_SPictureLabel,	"Grafik:"
+	Consts_SPictureDesc,	" (%dx%d)"
+	Consts_SPreviewLabel,	"Vorschau"
+	Consts_SCannotOpenAVI,	"AVI kann nicht geöffnet werden"
+	Consts_SDockedCtlNeedsName,	"Angedocktes Steuerelement muss einen Namen haben."
+	Consts_SDockTreeRemoveError,	"Fehler beim Entfernen des Steuerelements aus der Andock-Hierarchie"
+	Consts_SDockZoneNotFound,	" - Andockzone nicht gefunden"
+	Consts_SDockZoneHasNoCtl,	" - Andockzone besitzt kein Steuerelement"
+	Consts_SMultiSelectRequired,	"Mehrfachauswahl muss für diese Funktion aktiviert sein"
+	Consts_SSeparator,	"Separator"
+	Consts_SErrorSettingCount,	"Fehler beim Setzen von %s.Count"
+	Consts_SListBoxMustBeVirtual,	"Stil des Listenfeldes (%s) muss virtuell sein, damit Count gesetzt werden kann"
+	Consts_SNoGetItemEventHandler,	"Es wurde keine OnGetItem-Ereignisbehandlung zugewiesen"
+	HelpIntfs_hNoTableOfContents,	"Inhaltsverzeichnis konnte nicht gefunden werden"
+	Consts_SmkcRight,	"Rechts"
+	Consts_SmkcDown,	"Nach unten"
+	Consts_SmkcIns,	"Einfg"
+	Consts_SmkcDel,	"Entf"
+	Consts_SmkcShift,	"Umsch+"
+	Consts_SmkcCtrl,	"Strg+"
+	Consts_SmkcAlt,	"Alt+"
+	Consts_srNone,	"(Ohne)"
+	Consts_SOutOfRange,	"Wert muss zwischen %d und %d liegen"
+	Consts_sAllFilter,	"Alle"
+	Consts_SInsertLineError,	"Zeile kann nicht eingefügt werden"
+	Consts_SInvalidClipFmt,	"Ungültiges Format der Zwischenablage"
+	Consts_SIconToClipboard,	"Zwischenablage unterstützt keine Symbole"
+	Consts_SCannotOpenClipboard,	"Zwischenablage kann nicht geöffnet werden"
+	Consts_SDefault,	"Vorgabe"
+	Consts_SInvalidMemoSize,	"Text überschreitet Memo-Kapazität"
+	Consts_SMsgDlgRetry,	"&Wiederholen"
+	Consts_SMsgDlgIgnore,	"&Ignorieren"
+	Consts_SMsgDlgAll,	"&Alle"
+	Consts_SMsgDlgNoToAll,	"&Alle Nein"
+	Consts_SMsgDlgYesToAll,	"A&lle Ja"
+	Consts_SmkcBkSp,	"Rück"
+	Consts_SmkcTab,	"Tab"
+	Consts_SmkcEsc,	"Esc"
+	Consts_SmkcEnter,	"Enter"
+	Consts_SmkcSpace,	"Leerzeichen"
+	Consts_SmkcPgUp,	"BildAuf"
+	Consts_SmkcPgDn,	"BildAb"
+	Consts_SmkcEnd,	"Ende"
+	Consts_SmkcHome,	"Start"
+	Consts_SmkcLeft,	"Links"
+	Consts_SmkcUp,	"Nach oben"
+	Consts_SVMetafiles,	"Metadateien"
+	Consts_SVEnhMetafiles,	"Erweiterte Metadateien"
+	Consts_SVIcons,	"Symbole"
+	Consts_SVBitmaps,	"Bitmaps"
+	Consts_SMaskErr,	"Ungültiger Eingabewert"
+	Consts_SMaskEditErr,	"Ungültiger Eingabewert. Mit der Taste ESC machen Sie die Änderungen rückgängig."
+	Consts_SMsgDlgWarning,	"Warnung"
+	Consts_SMsgDlgError,	"Fehler"
+	Consts_SMsgDlgInformation,	"Informationen"
+	Consts_SMsgDlgConfirm,	"Bestätigung"
+	Consts_SMsgDlgYes,	"&Ja"
+	Consts_SMsgDlgNo,	"&Nein"
+	Consts_SMsgDlgOK,	"OK"
+	Consts_SMsgDlgCancel,	"Abbrechen"
+	Consts_SMsgDlgHelp,	"&Hilfe"
+	Consts_SMsgDlgAbort,	"&Abbrechen"
+	Consts_SInvalidPrinter,	"Ausgewählter Drucker ist ungültig"
+	Consts_SDeviceOnPort,	"%s an %s"
+	Consts_SGroupIndexTooLow,	"GroupIndex kann nicht kleiner sein als der GroupIndex eines vorhergehenden Menüelementes"
+	Consts_SNoMDIForm,	"Formular kann nicht erstellt werden. Zur Zeit sind keine MDI-Formulare aktiv"
+	Consts_SControlParentSetToSelf,	"Steuerelement kann nicht sich selbst als Vorfahr haben"
+	Consts_SOKButton,	"OK"
+	Consts_SCancelButton,	"Abbrechen"
+	Consts_SYesButton,	"&Ja"
+	Consts_SNoButton,	"&Nein"
+	Consts_SHelpButton,	"&Hilfe"
+	Consts_SCloseButton,	"&Schließen"
+	Consts_SIgnoreButton,	"&Ignorieren"
+	Consts_SRetryButton,	"&Wiederholen"
+	Consts_SAbortButton,	"Abbrechen"
+	Consts_SAllButton,	"&Alle"
+	Consts_SCannotDragForm,	"Formulare können nicht gezogen werden"
+	Consts_SWindowDCError,	"Fehler beim Erstellen des Fenster-Gerätekontexts"
+	Consts_SWindowClass,	"Fehler beim Erzeugen einer Fensterklasse"
+	Consts_SCannotFocus,	"Ein deaktiviertes oder unsichtbares Fenster kann nicht den Fokus erhalten"
+	Consts_SParentRequired,	"Element '%s' hat kein übergeordnetes Fenster"
+	Consts_SParentGivenNotAParent,	"Das angegebene übergeordnete Element ist kein übergeordnetes Element von '%s'"
+	Consts_SMDIChildNotVisible,	"Untergeordnetes MDI-Formular kann nicht verborgen werden"
+	Consts_SVisibleChanged,	"Eigenschaft Visible kann in OnShow oder OnHide nicht verändert werden"
+	Consts_SCannotShowModal,	"Aus einem sichtbaren Fenster kann kein modales gemacht werden"
+	Consts_SScrollBarRange,	"Eigenschaft Scrollbar außerhalb des zulässigen Bereichs"
+	Consts_SPropertyOutOfRange,	"Eigenschaft %s außerhalb des gültigen Bereichs"
+	Consts_SMenuIndexError,	"Menüindex außerhalb des zulässigen Bereichs"
+	Consts_SMenuReinserted,	"Menü zweimal eingefügt"
+	Consts_SMenuNotFound,	"Untermenü ist nicht im Menü"
+	Consts_SNoTimers,	"Nicht genügend Timer verfügbar"
+	Consts_SNotPrinting,	"Der Drucker druckt aktuell nicht"
+	Consts_SPrinting,	"Druckvorgang läuft"
+	Consts_SInvalidMetafile,	"Metadatei ist ungültig"
+	Consts_SInvalidPixelFormat,	"Ungültiges Pixel-Format"
+	Consts_SInvalidImage,	"Ungültiges Bild"
+	Consts_SScanLine,	"Bereichsüberschreitung bei Zeilenindex"
+	Consts_SChangeIconSize,	"Die Größe eines Symbols kann nicht geändert werden"
+	Consts_SOleGraphic,	"Ungültige Operation für TOleGraphic"
+	Consts_SUnknownExtension,	"Unbekannte Bilddateierweiterung (.%s)"
+	Consts_SUnknownClipboardFormat,	"Format der Zwischenablage wird nicht unterstützt"
+	Consts_SOutOfResources,	"Systemressourcen erschöpft."
+	Consts_SNoCanvasHandle,	"Leinwand/Bild erlaubt kein Zeichnen"
+	Consts_SInvalidImageSize,	"Ungültige Grafikgröße"
+	Consts_SInvalidImageList,	"Ungültige ImageList"
+	Consts_SReplaceImage,	"Bild kann nicht ersetzt werden"
+	Consts_SImageIndexError,	"Ungültiger ImageList-Index"
+	Consts_SImageReadFail,	"ImageList-Daten konnten nicht aus dem Stream gelesen werden"
+	Consts_SImageWriteFail,	"ImageList-Daten konnten nicht in den Stream geschrieben werden"
+	RTLConsts_SReadOnlyProperty,	"Eigenschaft kann nur gelesen werden"
+	RTLConsts_SRegCreateFailed,	"Erzeugung von Schlüssel %s misslungen"
+	RTLConsts_SRegGetDataFailed,	"Fehler beim Holen der Daten für '%s'"
+	RTLConsts_SRegSetDataFailed,	"Fehler beim Setzen der Daten für '%s'"
+	RTLConsts_SResNotFound,	"Ressource %s wurde nicht gefunden"
+	RTLConsts_SSeekNotImplemented,	"%s.Seek nicht implementiert"
+	RTLConsts_SSortedListError,	"Operation für sortierte Listen nicht zulässig"
+	RTLConsts_STooManyDeleted,	"Zu viele Zeilen oder Spalten gelöscht"
+	RTLConsts_SUnknownGroup,	"%s befindet sich nicht in einer Gruppe für Klassenregistrierungen"
+	RTLConsts_SUnknownProperty,	"Eigenschaft %s existiert nicht."
+	RTLConsts_SWriteError,	"Stream-Schreibfehler"
+	Consts_SInvalidTabIndex,	"Registerindex außerhalb des zulässigen Bereichs"
+	Consts_SInvalidTabPosition,	"Position des Register ist nicht mit dem aktuellen Register-Stil kompatibel."
+	Consts_SInvalidTabStyle,	"Register-Stil ist mit der aktuellen Position nicht kompatibel."
+	Consts_SInvalidBitmap,	"Bitmap ist ungültig"
+	Consts_SInvalidIcon,	"Ungültiges Symbol"
+	RTLConsts_SIndexOutOfRange,	"Gitterindex außerhalb des zulässigen Bereichs"
+	RTLConsts_SInvalidImage,	"Ungültiges Stream-Format"
+	RTLConsts_SInvalidName,	"''%s'' ist kein gültiger Komponentenname"
+	RTLConsts_SInvalidProperty,	"Ungültiger Eigenschaftswert"
+	RTLConsts_SInvalidPropertyElement,	"Ungültiges Eigenschaftselement: %s"
+	RTLConsts_SInvalidPropertyPath,	"Ungültiger Pfad für Eigenschaft"
+	RTLConsts_SInvalidPropertyType,	"Ungültiger Eigenschaftstyp: %s"
+	RTLConsts_SInvalidPropertyValue,	"Ungültiger Eigenschaftswert"
+	RTLConsts_SInvalidRegType,	"Ungültiger Datentyp für '%s'"
+	RTLConsts_SInvalidStringGridOp,	"Es können keine Zeilen des Tabellengitters gelöscht oder eingefügt werden"
+	RTLConsts_SListCapacityError,	"Kapazität der Liste ist erschöpft (%d)"
+	RTLConsts_SListCountError,	"Zu viele Einträge in der Liste (%d)"
+	RTLConsts_SListIndexError,	"Listenindex überschreitet das Maximum (%d)"
+	RTLConsts_SMemoryStreamError,	"Expandieren des Speicher-Stream wegen Speichermangel nicht möglich"
+	RTLConsts_SPropertyException,	"Fehler beim Lesen von %s%s%s: %s"
+	RTLConsts_SReadError,	"Stream-Lesefehler"
+	SysConst_SLongDayNameSat,	"Samstag"
+	RTLConsts_SAncestorNotFound,	"Vorfahr für '%s' nicht gefunden"
+	RTLConsts_SAssignError,	"%s kann nicht zu %s zugewiesen werden"
+	RTLConsts_SBitsIndexError,	"Bits-Index außerhalb des zulässigen Bereichs"
+	RTLConsts_SCantWriteResourceStreamError,	"In einen zum Lesen geöffneten Ressourcen-Stream kann nicht geschrieben werden"
+	RTLConsts_SCheckSynchronizeError,	"CheckSynchronize wurde vom Thread $%x aufgerufen, der NICHT der Haupt-Thread ist."
+	RTLConsts_SClassNotFound,	"Klasse %s nicht gefunden"
+	RTLConsts_SDuplicateClass,	"Klasse mit der Bezeichnung %s existiert bereits"
+	RTLConsts_SDuplicateItem,	"Liste gestattet keine doppelten Einträge ($0%x)"
+	RTLConsts_SDuplicateName,	"Komponente mit der Bezeichnung %s existiert bereits"
+	RTLConsts_SDuplicateString,	"In der Stringliste sind Duplikate nicht erlaubt"
+	RTLConsts_SFCreateErrorEx,	"Datei \"%s\" kann nicht erstellt werden. %s"
+	RTLConsts_SFixedColTooBig,	"Die Anzahl fester Spalten muss kleiner sein als die Spaltenanzahl"
+	RTLConsts_SFixedRowTooBig,	"Die Anzahl fester Zeilen muss kleiner sein als die Zeilenanzahl"
+	RTLConsts_SFOpenErrorEx,	"Datei %s kann nicht geöffnet werden. %s"
+	RTLConsts_SGridTooLarge,	"Gitter zu groß für Operation"
+	SysConst_SLongMonthNameOct,	"Oktober"
+	SysConst_SLongMonthNameNov,	"November"
+	SysConst_SLongMonthNameDec,	"Dezember"
+	SysConst_SShortDayNameSun,	"So"
+	SysConst_SShortDayNameMon,	"Mo"
+	SysConst_SShortDayNameTue,	"Di"
+	SysConst_SShortDayNameWed,	"Mi"
+	SysConst_SShortDayNameThu,	"Do"
+	SysConst_SShortDayNameFri,	"Fr"
+	SysConst_SShortDayNameSat,	"Sa"
+	SysConst_SLongDayNameSun,	"Sonntag"
+	SysConst_SLongDayNameMon,	"Montag"
+	SysConst_SLongDayNameTue,	"Dienstag"
+	SysConst_SLongDayNameWed,	"Mittwoch"
+	SysConst_SLongDayNameThu,	"Donnerstag"
+	SysConst_SLongDayNameFri,	"Freitag"
+	SysConst_SShortMonthNameJun,	"Jun"
+	SysConst_SShortMonthNameJul,	"Jul"
+	SysConst_SShortMonthNameAug,	"Aug"
+	SysConst_SShortMonthNameSep,	"Sep"
+	SysConst_SShortMonthNameOct,	"Okt"
+	SysConst_SShortMonthNameNov,	"Nov"
+	SysConst_SShortMonthNameDec,	"Dez"
+	SysConst_SLongMonthNameJan,	"Januar"
+	SysConst_SLongMonthNameFeb,	"Februar"
+	SysConst_SLongMonthNameMar,	"März"
+	SysConst_SLongMonthNameApr,	"April"
+	SysConst_SLongMonthNameMay,	"Mai"
+	SysConst_SLongMonthNameJun,	"Juni"
+	SysConst_SLongMonthNameJul,	"Juli"
+	SysConst_SLongMonthNameAug,	"August"
+	SysConst_SLongMonthNameSep,	"September"
+	SysConst_SVarNotImplemented,	"Operation nicht unterstützt"
+	SysConst_SVarUnexpected,	"Unerwarteter Variant-Fehler"
+	SysConst_SExternalException,	"Externe Exception %x"
+	SysConst_SAssertionFailed,	"Auswertung von assert fehlgeschlagen"
+	SysConst_SIntfCastError,	"Schnittstelle nicht unterstützt"
+	SysConst_SSafecallException,	"Exception in safecall-Methode"
+	SysConst_SAssertError,	"%s (%s, Zeile %d)"
+	SysConst_SAbstractError,	"Abstrakter Fehler"
+	SysConst_SModuleAccessViolation,	"Zugriffsverletzung bei Adresse %p in Modul '%s'. %s von Adresse %p"
+	SysConst_SOSError,	"Systemfehler.  Code: %d.\r\n%s"
+	SysConst_SUnkOSError,	"Ein Aufruf einer Betriebssystemfunktion ist fehlgeschlagen"
+	SysConst_SShortMonthNameJan,	"Jan"
+	SysConst_SShortMonthNameFeb,	"Feb"
+	SysConst_SShortMonthNameMar,	"Mär"
+	SysConst_SShortMonthNameApr,	"Apr"
+	SysConst_SShortMonthNameMay,	"Mai"
+	SysConst_SArgumentMissing,	"Kein Argument für Format '%s'"
+	SysConst_SDispatchError,	"Variant-Methodenaufruf nicht unterstützt"
+	SysConst_SReadAccess,	"Lesen"
+	SysConst_SWriteAccess,	"Schreiben"
+	SysConst_SVarArrayCreate,	"Fehler beim Erzeugen von Variante oder sicherem Array"
+	SysConst_SVarArrayBounds,	"Variante oder sicherer Array-Index außerhalb des gültigen Bereichs"
+	SysConst_SVarArrayLocked,	"Variante oder sicherer Array ist gesperrt"
+	SysConst_SInvalidVarCast,	"Ungültige Variant-Typumwandlung"
+	SysConst_SInvalidVarOp,	"Ungültige Variant-Operation"
+	SysConst_SInvalidVarNullOp,	"Ungültige NULL-Variant-Operation"
+	SysConst_SInvalidVarOpWithHResultWithPrefix,	"Ungültige Variant-Operation (%s%.8x)\n%s"
+	SysConst_SVarTypeCouldNotConvert,	"Variante des Typs (%s) konnte nicht in Typ (%s) konvertiert werden"
+	SysConst_SVarTypeConvertOverflow,	"Überlauf bei der Konvertierung einer Variante vom Typ (%s) in Typ (%s)"
+	SysConst_SVarOverflow,	"Variant-Überlauf"
+	SysConst_SVarInvalid,	"Ungültiges Argument"
+	SysConst_SVarBadType,	"Ungültiger Variant-Typ"
+	SysConst_SIntOverflow,	"Integerüberlauf"
+	SysConst_SInvalidOp,	"Ungültige Gleitkommaoperation"
+	SysConst_SZeroDivide,	"Gleitkommadivision durch Null"
+	SysConst_SOverflow,	"Gleitkommaüberlauf"
+	SysConst_SUnderflow,	"Gleitkommaunterlauf"
+	SysConst_SInvalidPointer,	"Ungültige Zeigeroperation"
+	SysConst_SInvalidCast,	"Ungültige Typumwandlung"
+	SysConst_SAccessViolationArg3,	"Zugriffsverletzung bei Adresse %p. %s von Adresse %p"
+	SysConst_SAccessViolationNoArg,	"Zugriffsverletzung"
+	SysConst_SStackOverflow,	"Stack-Überlauf"
+	SysConst_SControlC,	"Strg+C gedrückt"
+	SysConst_SPrivilege,	"Privilegierte Anweisung"
+	SysConst_SOperationAborted,	"Operation abgebrochen"
+	SysConst_SException,	"Exception %s in Modul %s bei %p.\r\n%s%s\r\n"
+	SysConst_SExceptTitle,	"Anwendungsfehler"
+	SysConst_SInvalidFormat,	"Format '%s' ungültig oder nicht kompatibel mit Argument"
+	SysConst_SInvalidInteger,	"'%s' ist kein gültiger Integerwert"
+	SysConst_SInvalidFloat,	"'%s' ist kein gültiger Gleitkommawert"
+	SysConst_SInvalidDateTime,	"'%s' ist keine gültige Datums- und Uhrzeitangabe"
+	SysConst_STimeEncodeError,	"Ungültiges Argument zum Codieren der Uhrzeit"
+	SysConst_SDateEncodeError,	"Ungültiges Argument zum Codieren des Datums"
+	SysConst_SOutOfMemory,	"Zu wenig Arbeitsspeicher"
+	SysConst_SInOutError,	"E/A-Fehler %d"
+	SysConst_SFileNotFound,	"Datei nicht gefunden"
+	SysConst_SInvalidFilename,	"Ungültiger Dateiname"
+	SysConst_STooManyOpenFiles,	"Zu viele geöffnete Dateien"
+	SysConst_SAccessDenied,	"Dateizugriff verweigert"
+	SysConst_SEndOfFile,	"Versuch hinter dem Dateiende zu lesen"
+	SysConst_SDiskFull,	"Zu wenig Speicherplatz"
+	SysConst_SInvalidInput,	"Ungültige numerische Eingabe"
+	SysConst_SDivByZero,	"Division durch Null"
+	SysConst_SRangeError,	"Fehler bei Bereichsprüfung"
+END
+

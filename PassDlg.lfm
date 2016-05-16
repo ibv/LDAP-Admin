@@ -1,0 +1,133 @@
+object PasswordDlg: TPasswordDlg
+  Left = 411
+  Height = 124
+  Top = 220
+  Width = 420
+  BorderStyle = bsDialog
+  Caption = 'Set Password'
+  ClientHeight = 124
+  ClientWidth = 420
+  Color = clBtnFace
+  OnCloseQuery = FormCloseQuery
+  ParentFont = True
+  Position = poScreenCenter
+  LCLVersion = '1.6.0.4'
+  object Label1: TLabel
+    Left = 33
+    Height = 15
+    Top = 14
+    Width = 95
+    Caption = '&New password:'
+    Font.Height = -13
+    Font.Name = 'Sans'
+    ParentColor = False
+    ParentFont = False
+  end
+  object Label2: TLabel
+    Left = 13
+    Height = 14
+    Top = 44
+    Width = 115
+    Caption = '&Confirm password:'
+    Font.Height = -12
+    Font.Name = 'Sans'
+    ParentColor = False
+    ParentFont = False
+  end
+  object lbMethod: TLabel
+    Left = 3
+    Height = 15
+    Top = 76
+    Width = 125
+    Caption = 'Encryption method:'
+    Font.Height = -13
+    Font.Name = 'Sans'
+    ParentColor = False
+    ParentFont = False
+  end
+  object Password: TEdit
+    Left = 131
+    Height = 21
+    Top = 7
+    Width = 202
+    EchoMode = emPassword
+    PasswordChar = '*'
+    TabOrder = 0
+  end
+  object OKBtn: TButton
+    Left = 336
+    Height = 25
+    Top = 6
+    Width = 75
+    Caption = '&OK'
+    Default = True
+    ModalResult = 1
+    TabOrder = 5
+  end
+  object CancelBtn: TButton
+    Left = 336
+    Height = 25
+    Top = 39
+    Width = 75
+    Cancel = True
+    Caption = '&Cancel'
+    ModalResult = 2
+    TabOrder = 6
+  end
+  object Password2: TEdit
+    Left = 131
+    Height = 21
+    Top = 40
+    Width = 202
+    EchoMode = emPassword
+    PasswordChar = '*'
+    TabOrder = 1
+  end
+  object cbMethod: TComboBox
+    Left = 131
+    Height = 23
+    Top = 72
+    Width = 105
+    DropDownCount = 12
+    ItemHeight = 0
+    Items.Strings = (
+      'Plain text'
+      'Unix Crypt'
+      'MD5 Crypt'
+      'MD2'
+      'MD4'
+      'MD5'
+      'SHA1'
+      'SMD5'
+      'SSHA'
+      'SHA-256 Crypt'
+      'SHA-512 Crypt'
+      'RIPEMD-160'
+    )
+    Style = csDropDownList
+    TabOrder = 2
+  end
+  object cbSambaPassword: TCheckBox
+    Left = 240
+    Height = 26
+    Top = 94
+    Width = 138
+    Caption = '&Samba password'
+    Checked = True
+    State = cbChecked
+    TabOrder = 4
+    Visible = False
+  end
+  object cbPosixPassword: TCheckBox
+    Left = 240
+    Height = 26
+    Top = 70
+    Width = 125
+    Caption = '&Posix password'
+    Checked = True
+    OnClick = cbPosixPasswordClick
+    State = cbChecked
+    TabOrder = 3
+    Visible = False
+  end
+end

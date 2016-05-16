@@ -1,0 +1,29 @@
+inherited PickupDlg: TPickupDlg
+  OnClose = FormClose
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  inherited Panel1: TPanel
+    object FilterLbl: TLabel[0]
+      Left = 7
+      Top = 250
+      Width = 25
+      Height = 13
+      Anchors = [akLeft, akBottom]
+      Caption = '&Filter:'
+      FocusControl = FilterEdit
+    end
+    inherited ListView: TListView
+      OwnerData = True
+      OnData = ListViewData
+    end
+    object FilterEdit: TEdit
+      Left = 34
+      Top = 247
+      Width = 217
+      Height = 21
+      Anchors = [akLeft, akRight, akBottom]
+      TabOrder = 3
+      OnChange = FilterEditChange
+    end
+  end
+end

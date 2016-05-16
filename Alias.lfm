@@ -1,0 +1,149 @@
+object AliasDlg: TAliasDlg
+  Left = 571
+  Top = 303
+  BorderStyle = bsDialog
+  Caption = 'Alias'
+  ClientHeight = 349
+  ClientWidth = 585
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  Position = poScreenCenter
+  OnClose = FormClose
+  OnDestroy = FormDestroy
+  PixelsPerInch = 96
+  object Button1: TButton
+    Left = 420
+    Top = 313
+    Width = 75
+    Height = 25
+    Caption = 'OK'
+    Default = True
+    ModalResult = 1
+    TabOrder = 2
+  end
+  object Button2: TButton
+    Left = 500
+    Top = 313
+    Width = 75
+    Height = 25
+    Cancel = True
+    Caption = 'Cancel'
+    ModalResult = 2
+    TabOrder = 3
+  end
+  object GroupBox1: TGroupBox
+    Left = 8
+    Top = 112
+    Width = 569
+    Height = 185
+    Caption = 'Alias'
+    TabOrder = 1
+    object Label1: TLabel
+      Left = 14
+      Top = 10
+      Width = 69
+      Height = 13
+      Caption = 'Create alias in:'
+    end
+    object Label2: TLabel
+      Left = 14
+      Top = 58
+      Width = 54
+      Height = 13
+      Caption = 'Alias name:'
+    end
+    object Label4: TLabel
+      Left = 14
+      Top = 106
+      Width = 40
+      Height = 13
+      Caption = 'Alias dn:'
+    end
+    object Label5: TLabel
+      Left = 174
+      Top = 77
+      Width = 6
+      Height = 13
+      Caption = '='
+    end
+    object edAliasDir: TEdit
+      Left = 14
+      Top = 26
+      Width = 505
+      Height = 21
+      TabOrder = 0
+      OnChange = edAliasDNChange
+    end
+    object btnAliasDir: TButton
+      Left = 528
+      Top = 25
+      Width = 24
+      Height = 23
+      Caption = '...'
+      TabOrder = 1
+      OnClick = btnAliasDirClick
+    end
+    object edAliasNameValue: TEdit
+      Left = 190
+      Top = 74
+      Width = 329
+      Height = 21
+      TabOrder = 2
+      OnChange = edAliasDNChange
+    end
+    object edAliasDN: TEdit
+      Left = 14
+      Top = 122
+      Width = 505
+      Height = 21
+      Enabled = False
+      TabOrder = 3
+    end
+    object cbAliasNameAttr: TComboBox
+      Left = 14
+      Top = 74
+      Width = 153
+      Height = 21
+      ItemHeight = 13
+      Sorted = True
+      TabOrder = 4
+      OnChange = edAliasDNChange
+    end
+  end
+  object GroupBox2: TGroupBox
+    Left = 8
+    Top = 8
+    Width = 569
+    Height = 89
+    Caption = 'Object'
+    TabOrder = 0
+    object Label3: TLabel
+      Left = 14
+      Top = 10
+      Width = 42
+      Height = 13
+      Caption = 'Entry dn:'
+    end
+    object edObjectDN: TEdit
+      Left = 14
+      Top = 26
+      Width = 505
+      Height = 21
+      TabOrder = 0
+      OnChange = edObjectDNChange
+    end
+    object btnObjDN: TButton
+      Left = 528
+      Top = 25
+      Width = 24
+      Height = 23
+      Caption = '...'
+      TabOrder = 1
+      OnClick = btnObjDNClick
+    end
+  end
+end
