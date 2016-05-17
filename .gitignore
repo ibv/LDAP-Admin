@@ -4,7 +4,6 @@
 *.so
 *.dylib
 *.lrs
-*.res
 *.compiled
 *.dbg
 *.ppu
