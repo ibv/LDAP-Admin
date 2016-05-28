@@ -27,14 +27,19 @@ unit Lang;
 
 interface
 
-uses Forms, Xml, XmlLoader, Classes;
+uses
+    {$ifdef FPC}
+    LResources, DelphiReader,
+    {$endif}
+    Forms, Xml, XmlLoader, Classes;
 
 const
   MAX_STRING_ID = 580;
   LANG_EXT      = 'llf';
 
 type
-  TMyReader = class(TReader);
+  ///TMyReader = class(TReader);
+  TMyReader = class(TDelphiReader);
 
   PPatchBlock = ^TPatchBlock;
   TPatchBlock = packed record
@@ -105,7 +110,7 @@ uses
      WinHelpViewer, {$ENDIF}
   Consts, OleConst, ComStrs, jconsts, Windows,
 {$ELSE}
-  LCLIntf, LCLType, LMessages,
+  LCLIntf, LCLType, LMessages, RtlConsts,
 {$ENDIF}
   TypInfo, Config, SysUtils,
      Dialogs, Constant, Graphics,
@@ -117,7 +122,7 @@ var
 begin
   if ResStringRec = nil then exit;
 
-  Result := LanguageLoader.Translator.GetString(ResStringRec.Identifier);
+  ///Result := LanguageLoader.Translator.GetString(ResStringRec.Identifier);
 
   {if Result = '' then with LanguageLoader.Translator do
   begin
@@ -126,12 +131,12 @@ begin
     fRedirectStr.Enable;
   end;}
 
-  if (Result = '') then
-    if (ResStringRec.Identifier < 64*1024) then  // direct API call
-      SetString(Result, Buffer, LoadString(FindResourceHInstance(ResStringRec.Module^),
-                ResStringRec.Identifier, Buffer, SizeOf(Buffer)))
-    else
-      Result := PChar(ResStringRec.Identifier);
+  ///if (Result = '') then
+  ///  if (ResStringRec.Identifier < 64*1024) then  // direct API call
+  ///    SetString(Result, Buffer, LoadString(FindResourceHInstance(ResStringRec.Module^),
+  ///              ResStringRec.Identifier, Buffer, SizeOf(Buffer)))
+  ///  else
+  ///    Result := PChar(ResStringRec.Identifier);
 end;
 
 procedure THookForm.HookDoCreate;
@@ -148,12 +153,12 @@ end;
 
 procedure TRedirectCode.Enable;
 begin
-  fPatchPtr^ := fPatchBlock;
+  ///fPatchPtr^ := fPatchBlock;
 end;
 
 procedure TRedirectCode.Disable;
 begin
-  fPatchPtr^ := fSaveBlock;
+  ///fPatchPtr^ := fSaveBlock;
 end;
 
 constructor TRedirectCode.Create(OldProc, NewProc: Pointer);
@@ -164,8 +169,8 @@ begin
   fPatchPtr := OldProc;
   move(fPatchPtr^, fSaveBlock, SizeOf(TPatchBlock));
 
-  if not VirtualProtect(fPatchPtr, SizeOf(TPatchBlock), PAGE_EXECUTE_READWRITE, @OldProtection) then
-    RaiseLastWin32Error;
+  ///if not VirtualProtect(fPatchPtr, SizeOf(TPatchBlock), PAGE_EXECUTE_READWRITE, @OldProtection) then
+  ///  RaiseLastWin32Error;
 
   fPatchBlock.OpCode := $E9;
   fPatchBlock.RelJump := LongInt(NewProc) - LongInt(OldProc) - SizeOf(TPatchBlock);
@@ -288,7 +293,8 @@ begin
         begin
           nj := Nodes[j];
           PropInfo := GetPropInfo(ct, nj.Name);
-          if Assigned(PropInfo) and (PropInfo^.PropType^^.Kind = tkClass) then
+          ///if Assigned(PropInfo) and (PropInfo^.PropType^^.Kind = tkClass) then
+          if Assigned(PropInfo) and (PropInfo^.PropType^.Kind = tkClass) then
           begin
             obj := TObject(Integer(GetPropValue(ct, nj.Name)));
             if obj is TStrings then
@@ -313,10 +319,12 @@ procedure TTranslator.RestoreForm(Form: TCustomForm);
 var
   rs: TResourceStream;
   Node: TXmlNode;
-  Reader: TReader;
+  ///Reader: TReader;
+  Reader: TDelphiReader;
   Flags: TFilerFlags;
   Pos: Integer;
   ComponentName: string;
+
 
   procedure RestoreProperty(ct: TPersistent; Node: TXmlNode); forward;
 
@@ -326,35 +334,36 @@ var
   begin
     case Reader.NextValue of
       { vaList: }
-      vaInt8, vaInt16, vaInt32:
+      dvaInt8, dvaInt16, dvaInt32:
         SetPropValue(ct, PropName, IntToStr(Reader.ReadInteger));
-      vaExtended:
+      dvaExtended:
         SetPropValue(ct, PropName, FloatToStr(Reader.ReadFloat));
-      vaSingle:
+      dvaSingle:
         SetPropValue(ct, PropName, FloatToStr(Reader.ReadSingle));
-      vaCurrency:
+      dvaCurrency:
         SetPropValue(ct, PropName, FloatToStr(Reader.ReadCurrency));
-      vaDate:
+      dvaDate:
         SetPropValue(ct, PropName, FloatToStr(Reader.ReadDate));
-      vaWString:
-        SetPropValue(ct, PropName, Reader.ReadWideString);
-      vaString, vaLString:
+      dvaWString:
+        ///SetPropValue(ct, PropName, Reader.ReadWideString);
         SetPropValue(ct, PropName, Reader.ReadString);
-      vaIdent, vaFalse, vaTrue, vaNil, vaNull:
+      dvaString, dvaLString:
+        SetPropValue(ct, PropName, Reader.ReadString);
+      dvaIdent, dvaFalse, dvaTrue, dvaNil, dvaNull:
         SetPropValue(ct, PropName, Reader.ReadIdent);
       { vaBinary:
         vaSet: }
-      vaCollection:
+      dvaCollection:
         begin
           Reader.ReadValue;
           i := 0;
           while not Reader.EndOfList do
           begin
-            if Reader.NextValue in [vaInt8, vaInt16, vaInt32] then
+            if Reader.NextValue in [dvaInt8, dvaInt16, dvaInt32] then
               RestoreValue(ct, Node, PropName);
             if ct is TListView then
             begin
-              Reader.CheckValue(vaList);
+              Reader.CheckValue(dvaList);
               while not Reader.EndOfList do RestoreProperty(TListView(ct).Columns[i], Node[i]);
               Reader.ReadListEnd;
             end
@@ -364,7 +373,7 @@ var
           end;
           Reader.ReadListEnd;
         end;
-      vaInt64:
+      dvaInt64:
         SetPropValue(ct, PropName, IntToStr(Reader.ReadInt64));
     end;
   end;
@@ -418,6 +427,7 @@ var
     end;
   end;
 
+
 begin
   if not Assigned(fXmlForms) then
     exit;
@@ -430,7 +440,8 @@ begin
   rs := TResourceStream.Create(HInstance, Form.ClassName, RT_RCDATA);
   try
     try
-      Reader := TReader.Create(rs, 4096);
+      ///Reader := TReader.Create(rs, 4096);
+      Reader := TDelphiReader.Create(rs);
       Reader.ReadSignature;
       RestoreProperties;
     finally
@@ -463,7 +474,7 @@ begin
   inherited;
   fXmlTree:=TXmlTree.Create;
   fXmlTree.Markups := true;
-
+  (*
   fRedirectForm := TRedirectCode.Create(@THookForm.DoCreate, @THookForm.HookDoCreate);
   fRedirectStr := TRedirectCode.Create(@System.LoadResString, @HookLoadResString);
 
@@ -1454,7 +1465,9 @@ SysConst_SUnkWin32Error}
   //fStringTable[$10000 - PResStringRec(@HelpIntfs.hNoTopics).Identifier] := 502;
   fStringTable[$10000 - PResStringRec(@Constant.cPickMembers).Identifier] := 503;
   {$ENDIF}
+  *)
 end;
+
 
 destructor TTranslator.Destroy;
 begin
@@ -1505,7 +1518,11 @@ initialization
   try
     FileExtension := LANG_EXT;
     Paths := GlobalConfig.ReadString('LanguageDir');
+    {$ifdef mswindows}
     AddPath(ExtractFileDir(application.ExeName) + '\*.' + LANG_EXT);
+    {$else}
+    AddPath(ExtractFileDir(application.ExeName) + '/*.' + LANG_EXT);
+    {$endif}
   except
     on E: Exception do
       MessageDlg(E.Message, mtError, [mbOK], 0);

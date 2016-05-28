@@ -1,0 +1,1989 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<lang>
+  <language>Deutsch (DE)</language>
+  <version>1.0</version>
+  <author>Tihomir Karlovic</author>
+  <forms>
+    <AboutDlg>
+      <component name="BtnClose">
+        <Caption>Schließen</Caption>
+      </component>
+    </AboutDlg>
+    <AccountCopyDlg>
+      <component name="Label1">
+        <Caption>Neuer Name:</Caption>
+      </component>
+      <component name="Label2">
+        <Caption>Speicher:</Caption>
+      </component>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+    </AccountCopyDlg>
+    <ADPassDlg>
+      <caption>Passwort setzen</caption>
+      <component name="Label1">
+        <Caption>Neues Passwort:</Caption>
+      </component>
+      <component name="Label2">
+        <Caption>Bestätigen:</Caption>
+      </component>
+      <component name="CancelBtn">
+        <Caption>&amp;Abbrechen</Caption>
+      </component>
+    </ADPassDlg>
+    <AliasDlg>
+      <component name="Button2">
+        <Caption>Abbrechen</Caption>
+      </component>
+      <component name="GroupBox1">
+        <Caption>Alias</Caption>
+      </component>
+      <component name="Label1">
+        <Caption>Alias erstellen in:</Caption>
+      </component>
+      <component name="Label2">
+        <Caption>Aliasname:</Caption>
+      </component>
+      <component name="Label4">
+        <Caption>DN:</Caption>
+      </component>
+      <component name="GroupBox2">
+        <Caption>Objekt</Caption>
+      </component>
+      <component name="Label3">
+        <Caption>DN:</Caption>
+      </component>
+    </AliasDlg>
+    <ComputerDlg>
+      <caption>Computerkonto erstellen</caption>
+      <component name="Label1">
+        <Caption>Computername:</Caption>
+      </component>
+      <component name="Label2">
+        <Caption>Beschreibung</Caption>
+      </component>
+      <component name="Label3">
+        <Caption>Domäne:</Caption>
+      </component>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+    </ComputerDlg>
+    <ConfigDlg>
+      <caption>Optionen</caption>
+      <component name="TabSheet1">
+        <Caption>Applikation</Caption>
+      </component>
+      <component name="GroupBox1">
+        <Caption>LDAP Verzeichnis</Caption>
+      </component>
+      <component name="cbIdObject">
+        <Caption>Objekte erkennen</Caption>
+      </component>
+      <component name="cbEnforceContainer">
+        <Caption>Nur Containerobjekte sind erweiterbar</Caption>
+      </component>
+      <component name="cbSmartDelete">
+        <Caption>Beim löschen Verweise entfernen</Caption>
+      </component>
+      <component name="cbTemplateIcons">
+        <Caption>Template icons</Caption>
+      </component>
+      <component name="GroupBox3">
+        <Caption>Start</Caption>
+      </component>
+      <component name="cbConnect">
+        <Caption>Beim Start verbinden mit:</Caption>
+      </component>
+      <component name="SetDefBtn">
+        <Caption>Als standard LDAP-Browser festlegen</Caption>
+      </component>
+      <component name="CheckAssocCbk">
+        <Caption>Beim start immer überprüfen</Caption>
+      </component>
+      <component name="GroupBox4">
+        <Caption>Suche</Caption>
+      </component>
+      <component name="Label2">
+        <Caption>Schnellsuche:</Caption>
+      </component>
+      <component name="Label4">
+        <Caption>Suchfilter:</Caption>
+      </component>
+      <component name="TabSheet2">
+        <Caption>Templates</Caption>
+      </component>
+      <component name="GroupBox2">
+        <Caption>Dateien</Caption>
+      </component>
+      <component name="Label1">
+        <Caption>Templateverzeichnisse:</Caption>
+      </component>
+      <component name="btnAdd">
+        <Caption>Hinzufügen...</Caption>
+      </component>
+      <component name="btnDel">
+        <Caption>Entfernen</Caption>
+      </component>
+      <component name="GroupBox5">
+        <Caption>Optionen</Caption>
+      </component>
+      <component name="cbTemplateExtensions">
+        <Caption>Templates dürfen Eigenschaftsdialoge erweitern</Caption>
+      </component>
+      <component name="cbTemplateAutoload">
+        <Caption>Beim Bearbeiten von Einträgen Templates automatisch laden</Caption>
+      </component>
+      <component name="cbTemplateProperties">
+        <Caption>Templates als Eigenschaftsobjekte verwenden</Caption>
+      </component>
+      <component name="TabSheet3">
+        <Caption>Lokalisierung</Caption>
+      </component>
+      <component name="GroupBox6">
+        <Caption>Sprachen</Caption>
+      </component>
+      <component name="Label5">
+        <Caption>Verzeichnisse:</Caption>
+      </component>
+      <component name="btnAddLang">
+        <Caption>Hinzufügen...</Caption>
+      </component>
+      <component name="btnDelLang">
+        <Caption>Entfernen</Caption>
+      </component>
+      <component name="GroupBox7">
+        <Caption>Transcodierung</Caption>
+      </component>
+      <component name="Label3">
+        <Caption>Zeichentabelle:</Caption>
+      </component>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+    </ConfigDlg>
+    <ConnListFrm>
+      <caption>Verbindungen</caption>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+      <component name="ToolButton3">
+        <hint>Ansicht ändern</hint>
+      </component>
+      <component name="ActNewAccount">
+        <caption>Neu...</caption>
+        <hint>Neue Verbindung einrichten</hint>
+      </component>
+      <component name="ActDeleteAccount">
+        <caption>Löschen</caption>
+        <hint>Verbindung löschen</hint>
+      </component>
+      <component name="ActRenameAccount">
+        <caption>Umbenennen</caption>
+        <hint>Verbindung umbenennen</hint>
+      </component>
+      <component name="ActNewStorage">
+        <hint>Speicher einrichten</hint>
+      </component>
+      <component name="ActOpenStorage">
+        <hint>Speicher öffnen</hint>
+      </component>
+      <component name="ActCopyAccount">
+        <Caption>Kopieren...</Caption>
+      </component>
+      <component name="ActPropertiesAccount">
+        <Caption>Eigenschaften...</Caption>
+      </component>
+      <component name="ActDeleteStrorage">
+        <hint>Speicher löschen</hint>
+      </component>
+      <component name="vmSmall">
+        <caption>Symbole</caption>
+      </component>
+      <component name="vmLarge">
+        <caption>Kacheln</caption>
+      </component>
+      <component name="vmList">
+        <caption>Liste</caption>
+      </component>
+      <component name="vmTable">
+        <caption>Details</caption>
+      </component>
+    </ConnListFrm>
+    <ConnPropDlg>
+      <caption>Verbindungseigenschaften</caption>
+      <component name="Label1">
+        <Caption>Verbindungsname:</Caption>
+      </component>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+      <component name="TestBtn">
+        <Caption>Verbinung überprüfen</Caption>
+      </component>
+      <component name="TabSheet1">
+        <Caption>Allgemein</Caption>
+      </component>
+      <component name="AccountBox">
+        <Caption>Verbindung</Caption>
+      </component>
+      <component name="Label4">
+        <Caption>Benutzername:</Caption>
+      </component>
+      <component name="Label5">
+        <Caption>Passwort:</Caption>
+      </component>
+      <component name="cbAnonymous">
+        <Caption>Anonyme Verbindung</Caption>
+      </component>
+      <component name="ConnectionBox">
+        <Caption>Verbindung:</Caption>
+      </component>
+      <component name="Label2">
+        <Caption>Host:</Caption>
+      </component>
+      <component name="Label3">
+        <Caption>Port:</Caption>
+      </component>
+      <component name="Label7">
+        <Caption>Version:</Caption>
+      </component>
+      <component name="Label6">
+        <Caption>Base:</Caption>
+      </component>
+      <component name="FetchDnBtn">
+        <Caption>DNs abrufen</Caption>
+      </component>
+      <component name="rbSimpleAuth">
+        <Caption>Einfache Authentifizierung</Caption>
+      </component>
+      <component name="rbGssApi">
+        <Caption>GSS-API</Caption>
+      </component>
+      <component name="cbSSL">
+        <Caption>SSL</Caption>
+      </component>
+      <component name="cbSASL">
+        <Caption>SASL</Caption>
+      </component>
+      <component name="cbTLS">
+        <Caption>TLS</Caption>
+      </component>
+      <component name="TabSheet2">
+        <Caption>Optionen</Caption>
+      </component>
+      <component name="GroupBox1">
+        <Caption>Suche</Caption>
+      </component>
+      <component name="Label15">
+        <Caption>Seitengröße:</Caption>
+      </component>
+      <component name="Label14">
+        <Caption>Zeitlimit:</Caption>
+      </component>
+      <component name="Label13">
+        <Caption>Größenlimit:</Caption>
+      </component>
+      <component name="Label8">
+        <Caption>Aliase dereferenzieren:</Caption>
+      </component>
+      <component name="cbDerefAliases">
+        <items>Nie,Beim suchen,Wenn gefunden,Immer</items>
+      </component>
+      <component name="cbxPagedSearch">
+        <Caption>Paged-Suche</Caption>
+      </component>
+      <component name="GroupBox2">
+        <Caption>Weiterleitungen</Caption>
+      </component>
+      <component name="Label10">
+        <Caption>Weiterleitungen verfolgen:</Caption>
+      </component>
+      <component name="cbReferrals">
+        <items>Aktivieren,Deaktivieren</items>
+      </component>
+      <component name="Label11">
+        <Caption>Anzahl Knoten:</Caption>
+      </component>
+      <component name="TabSheet3">
+        <Caption>Attribute</Caption>
+      </component>
+      <component name="cbxShowAttrs">
+        <Caption>Operationsattribute anzeigen:</Caption>
+      </component>
+      <component name="btnAdd">
+        <Caption>Hinzufügen</Caption>
+      </component>
+      <component name="btnRemove">
+        <Caption>Entfernen</Caption>
+      </component>
+    </ConnPropDlg>
+    <CopyDlg>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+      <component name="Label1">
+        <Caption>Zielserver:</Caption>
+      </component>
+      <component name="Label2">
+        <Caption>Zielname:</Caption>
+      </component>
+    </CopyDlg>
+    <CustomMenuDlg>
+      <caption>Menü anpassen</caption>
+      <component name="btnCancel">
+        <Caption>Abbrechen</Caption>
+      </component>
+      <component name="Label1">
+        <Caption>Text:</Caption>
+      </component>
+      <component name="GroupBox1">
+        <Caption>Aktion</Caption>
+      </component>
+      <component name="rbDisabled">
+        <Caption>Deaktiviert</Caption>
+      </component>
+      <component name="rbDefaultAction">
+        <Caption>Standardaktion</Caption>
+      </component>
+      <component name="rbTemplate">
+        <Caption>Template</Caption>
+      </component>
+      <component name="cbCtrl">
+        <Caption>Strg</Caption>
+      </component>
+      <component name="cbShift">
+        <Caption>Shift</Caption>
+      </component>
+      <component name="cbAlt">
+        <Caption>Alt</Caption>
+      </component>
+    </CustomMenuDlg>
+    <EditEntryFrm>
+      <component name="Label1">
+        <Caption>in:</Caption>
+      </component>
+      <component name="Label3">
+        <Caption>Rdn:</Caption>
+      </component>
+      <component name="SaveBtn">
+        <hint>Speichern und schließen</hint>
+      </component>
+      <component name="DeleteCellsBtn">
+        <hint>Spalte löschen</hint>
+      </component>
+      <component name="SchemaCheckBtn">
+        <hint>Schemaüberprüfing</hint>
+      </component>
+      <component name="UndoBtn">
+        <hint>Rückgängig</hint>
+      </component>
+      <component name="CutBtn">
+        <hint>Ausschneiden</hint>
+      </component>
+      <component name="CopyBtn">
+        <hint>Kopieren</hint>
+      </component>
+      <component name="PasteBtn">
+        <hint>Einfügen</hint>
+      </component>
+      <component name="DeleteBtn">
+        <hint>Löschen</hint>
+      </component>
+      <component name="ExitBtn">
+        <hint>Änderungen verwerfen und schließen</hint>
+      </component>
+      <component name="OcSheet">
+        <Caption>Bearbeiten</Caption>
+      </component>
+      <component name="TemplateSheet">
+        <Caption>Templates</Caption>
+      </component>
+      <component name="mbFile">
+        <Caption>Datei</Caption>
+      </component>
+      <component name="mbEdit">
+        <Caption>Bearbeiten</Caption>
+      </component>
+      <component name="ActSave">
+        <Caption>Speichern und schließen</Caption>
+      </component>
+      <component name="ActClose">
+        <Caption>Schließen</Caption>
+      </component>
+      <component name="ActDeleteRow">
+        <Caption>Spalte löschen</Caption>
+      </component>
+      <component name="ActUndo">
+        <Caption>Wiederherstellen</Caption>
+      </component>
+      <component name="ActCut">
+        <Caption>Ausschneiden</Caption>
+      </component>
+      <component name="ActCopy">
+        <Caption>Kopieren</Caption>
+      </component>
+      <component name="ActPaste">
+        <Caption>Einfügen</Caption>
+      </component>
+      <component name="ActDelete">
+        <Caption>Löschen</Caption>
+      </component>
+      <component name="ActLoadFile">
+        <Caption>Datei laden...</Caption>
+      </component>
+      <component name="ActSaveFile">
+        <Caption>In Datei speichern...</Caption>
+      </component>
+      <component name="ActBinView">
+        <Caption>Binärdaten ansehen...</Caption>
+      </component>
+      <component name="ActSchemaCheck">
+        <Caption>Schemaüberprüfung</Caption>
+      </component>
+      <component name="ActFindInSchema">
+        <Caption>In Schema finden...</Caption>
+      </component>
+      <component name="ActPicView">
+        <Caption>Bild ansehen...</Caption>
+      </component>
+      <component name="ActCertView">
+        <Caption>Zertifikat ansehen...</Caption>
+      </component>
+      <component name="TemplateListBox">
+        <items>Alle</items>
+      </component>
+    </EditEntryFrm>
+    <ExportDlg>
+      <caption>LDIF Export</caption>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+      <component name="Label1">
+        <Caption>Dateiname:</Caption>
+      </component>
+      <component name="Label4">
+        <Caption>Export:</Caption>
+      </component>
+      <component name="SubDirsCbk">
+        <Caption>Unterverzeichnisse einschließen</Caption>
+      </component>
+      <component name="Label2">
+        <Caption>Progress:</Caption>
+      </component>
+      <component name="Label5">
+        <Caption>Exportieren:</Caption>
+      </component>
+    </ExportDlg>
+    <GroupDlg>
+      <caption>Gruppe erstellen</caption>
+      <component name="Label1">
+        <Caption>Name:</Caption>
+      </component>
+      <component name="Label2">
+        <Caption>Beschreibung:</Caption>
+      </component>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+      <component name="TabSheet1">
+        <Caption>Mitglieder</Caption>
+      </component>
+      <component name="AddUserBtn">
+        <Caption>Hinzufügen</Caption>
+      </component>
+      <component name="RemoveUserBtn">
+        <Caption>Entfernen</Caption>
+      </component>
+      <component name="TabSheet2">
+        <Caption>Samba</Caption>
+      </component>
+      <component name="Label3">
+        <Caption>Sambadomäne:</Caption>
+      </component>
+      <component name="Label4">
+        <Caption>NT-Rid:</Caption>
+      </component>
+      <component name="Label5">
+        <Caption>Anzeigename:</Caption>
+      </component>
+      <component name="RadioGroup1">
+        <Caption>Gruppentyp:</Caption>
+        <items>Domänengruppe,"Lokale Gruppe",Standardgruppe:</items>
+      </component>
+      <component name="cbSambaGroup">
+        <Caption>Samba Domänenzuordnung</Caption>
+      </component>
+      <component name="cbBuiltin">
+        <items>Domänen-Admins,Domänen-Benutzer,Domänen-Gäste</items>
+      </component>
+    </GroupDlg>
+    <HexView>
+      <caption>Binäransicht</caption>
+      <component name="Label1">
+        <Caption>Dezimal:</Caption>
+      </component>
+      <component name="Label3">
+        <Caption>Binär:</Caption>
+      </component>
+      <component name="Label2">
+        <Caption>Adresse:</Caption>
+      </component>
+      <component name="Label4">
+        <Caption>Größe:</Caption>
+      </component>
+      <component name="pbHex">
+        <Caption>Hexadezimale Anzeige:</Caption>
+      </component>
+      <component name="pbDezimal">
+        <Caption>Dezimale Anzeige</Caption>
+      </component>
+      <component name="Button2">
+        <Caption>Schließen</Caption>
+      </component>
+    </HexView>
+    <HostDlg>
+      <caption>Host erstellen</caption>
+      <component name="NameLabel">
+        <Caption>Hostname:</Caption>
+      </component>
+      <component name="IPLabel">
+        <Caption>IP Adresse:</Caption>
+      </component>
+      <component name="Label2">
+        <Caption>Beschreibung:</Caption>
+      </component>
+      <component name="GroupBox1">
+        <Caption>Zusätzliche Hostnamen:</Caption>
+      </component>
+      <component name="AddHostBtn">
+        <Caption>Hinzufügen</Caption>
+      </component>
+      <component name="EditHostBtn">
+        <Caption>Bearbeiten</Caption>
+      </component>
+      <component name="DelHostBtn">
+        <Caption>Entfernen</Caption>
+      </component>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+    </HostDlg>
+    <ImportDlg>
+      <caption>LDIF Import</caption>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+      <component name="Label1">
+        <Caption>Dateiname:</Caption>
+      </component>
+      <component name="Label6">
+        <Caption>Verworfene Einträge speichern in:</Caption>
+      </component>
+      <component name="cbStopOnError">
+        <Caption>Bei Fehler anhalten</Caption>
+      </component>
+      <component name="Label2">
+        <Caption>Fortschritt:</Caption>
+      </component>
+      <component name="Label5">
+        <Caption>Importieren:</Caption>
+      </component>
+      <component name="errLabel">
+        <Caption>FEHLER!</Caption>
+      </component>
+    </ImportDlg>
+    <InputDlg>
+      <component name="Eingabe">
+        <Caption />
+      </component>
+      <component name="CancelBtn">
+        <caption>Abbrechen</caption>
+      </component>
+    </InputDlg>
+    <LocalityDlg>
+      <caption>Neue Lokalität</caption>
+      <component name="NameLabel">
+        <Caption>Name:</Caption>
+      </component>
+      <component name="Label18">
+        <Caption>Straße:</Caption>
+      </component>
+      <component name="Label19">
+        <Caption>Land/Provinz:</Caption>
+      </component>
+      <component name="Label1">
+        <Caption>Beschreibung:</Caption>
+      </component>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+    </LocalityDlg>
+    <MailGroupDlg>
+      <component name="Label1">
+        <Caption>Name:</Caption>
+      </component>
+      <component name="Label2">
+        <Caption>Beschreibung:</Caption>
+      </component>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+      <component name="TabSheet1">
+        <Caption>Mitglieder</Caption>
+      </component>
+      <component name="AddUserBtn">
+        <Caption>Hinzufügen</Caption>
+      </component>
+      <component name="RemoveUserBtn">
+        <Caption>Entfernen</Caption>
+      </component>
+      <component name="TabSheet2">
+        <Caption>E-Mail Adressen</Caption>
+      </component>
+      <component name="Label3">
+        <Caption>Mail-Routing Addrese:</Caption>
+      </component>
+      <component name="AddMailBtn">
+        <Caption>Hinzufügen</Caption>
+      </component>
+      <component name="EditMailBtn">
+        <Caption>Bearbeiten</Caption>
+      </component>
+      <component name="DelMailBtn">
+        <Caption>Entfernen</Caption>
+      </component>
+    </MailGroupDlg>
+    <MainFrm>
+      <component name="Label1">
+        <Caption>Finde:</Caption>
+      </component>
+      <component name="mbNew">
+        <Caption>Neu</Caption>
+      </component>
+      <component name="pbNew">
+        <Caption>Neu</Caption>
+      </component>
+      <component name="mbEdit">
+        <Caption>Bearbeiten</Caption>
+      </component>
+      <component name="mbView">
+        <Caption>Ansicht</Caption>
+      </component>
+      <component name="mbTools">
+        <Caption>Extras</Caption>
+      </component>
+      <component name="mbLanguage">
+        <Caption>Sprache</Caption>
+      </component>
+      <component name="mbGetTemplates">
+        <Caption>Templates herunterladen...</Caption>
+      </component>
+      <component name="ActConnect">
+        <Caption>Verbinden...</Caption>
+        <hint>Verbindung herstellen</hint>
+      </component>
+      <component name="ActDisconnect">
+        <Caption>Trennen...</Caption>
+        <hint>Verbindung trennen</hint>
+      </component>
+      <component name="ActExit">
+        <Caption>Beenden</Caption>
+        <hint>LdapAdmin verlassen</hint>
+      </component>
+      <component name="UndoBtn">
+        <hint>Rückgängig</hint>
+      </component>
+      <component name="RedoBtn">
+        <hint>Wiederrufen</hint>
+      </component>
+      <component name="ActSchema">
+        <Caption>Schema...</Caption>
+        <hint>Schema anzeigen</hint>
+      </component>
+      <component name="ActImport">
+        <Caption>Importieren...</Caption>
+      </component>
+      <component name="ActExport">
+        <Caption>Exportieren...</Caption>
+      </component>
+      <component name="ActPreferences">
+        <Caption>Verbindungseinstellungen...</Caption>
+      </component>
+      <component name="ActAbout">
+        <Caption>About...</Caption>
+      </component>
+      <component name="ActPassword">
+        <Caption>Passwort setzen...</Caption>
+      </component>
+      <component name="ActEditEntry">
+        <Caption>Eintrag bearbeiten...</Caption>
+        <hint>Eintrag bearbeiten</hint>
+      </component>
+      <component name="ActCopyEntry">
+        <Caption>Kopieren...</Caption>
+      </component>
+      <component name="ActMoveEntry">
+        <Caption>Verschieben...</Caption>
+      </component>
+      <component name="ActDeleteEntry">
+        <Caption>Löschen</Caption>
+        <hint>Eintrag löschen</hint>
+      </component>
+      <component name="ActRefresh">
+        <Caption>Aktualisieren</Caption>
+        <hint>Ansicht aktualisieren</hint>
+      </component>
+      <component name="ActSearch">
+        <Caption>Suchen...</Caption>
+        <hint>Suchen</hint>
+      </component>
+      <component name="ActProperties">
+        <Caption>Eigenschaften...</Caption>
+        <hint>Objekteigenschaften anzeigen</hint>
+      </component>
+      <component name="ActViewBinary">
+        <Caption>Binäransicht...</Caption>
+      </component>
+      <component name="ActValues">
+        <Caption>Attributswerte anzeigen</Caption>
+      </component>
+      <component name="ActEntries">
+        <Caption>Einträge anzeigen</Caption>
+      </component>
+      <component name="ActIconView">
+        <Caption>Symbole</Caption>
+      </component>
+      <component name="ActListView">
+        <Caption>Liste</Caption>
+      </component>
+      <component name="ActOptions">
+        <Caption>Optionen...</Caption>
+      </component>
+      <component name="ActLocateEntry">
+        <Caption>Eintrag finden (Schnellsuche)...</Caption>
+      </component>
+      <component name="ActCopy">
+        <Caption>Kopieren</Caption>
+      </component>
+      <component name="ActCopyDn">
+        <Caption>DN Kopieren</Caption>
+      </component>
+      <component name="ActCopyValue">
+        <Caption>Attributswert kopieren</Caption>
+      </component>
+      <component name="ActCopyName">
+        <Caption>Attributsname kopieren</Caption>
+      </component>
+      <component name="ActRenameEntry">
+        <Caption>Umbenennen...</Caption>
+      </component>
+      <component name="ActFindInSchema">
+        <Caption>In Schema finden...</Caption>
+      </component>
+      <component name="ActModifySet">
+        <Caption>Batchbearbeitung...</Caption>
+        <hint>Batchbearbeitung</hint>
+      </component>
+      <component name="ActEditValue">
+        <Caption>Wert ändern...</Caption>
+      </component>
+      <component name="ActAlias">
+        <Caption>Alias erstellen...</Caption>
+      </component>
+      <component name="ActCustomizeMenu">
+        <Caption>Menu anpassen...</Caption>
+      </component>
+      <component name="pbViewCert">
+        <Caption>Zertifikat anzeigen...</Caption>
+      </component>
+      <component name="pbViewPicture">
+        <Caption>Bild anzeigen...</Caption>
+      </component>
+      <component name="ValueListView">
+        <columns>
+          <column>
+            <caption>Attribut</caption>
+          </column>
+          <column>
+            <caption>Wert</caption>
+          </column>
+          <column>
+            <caption>Typ</caption>
+          </column>
+          <column>
+            <caption>Größe</caption>
+          </column>
+        </columns>
+      </component>
+    </MainFrm>
+    <OuDlg>
+      <component name="NameLabel">
+        <Caption>Name:</Caption>
+      </component>
+      <component name="Label18">
+        <Caption>Straße:</Caption>
+      </component>
+      <component name="Label19">
+        <Caption>Land/Provinz:</Caption>
+      </component>
+      <component name="Label24">
+        <Caption>PLZ:</Caption>
+      </component>
+      <component name="Label31">
+        <Caption>Ort:</Caption>
+      </component>
+      <component name="Label1">
+        <Caption>Beschreibung:</Caption>
+      </component>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+    </OuDlg>
+    <PasswordDlg>
+      <component name="Label1">
+        <Caption>Neues Passwort:</Caption>
+      </component>
+      <component name="Label2">
+        <Caption>Passwort bestätigen:</Caption>
+      </component>
+      <component name="lbMethod">
+        <Caption>Verschlüsselung:</Caption>
+      </component>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+      <component name="cbSambaPassword">
+        <Caption>Sambapasswort</Caption>
+      </component>
+      <component name="cbPosixPassword">
+        <Caption>Posixpasswort</Caption>
+      </component>
+    </PasswordDlg>
+    <PickAttributesDlg>
+      <caption>Attribute wählen</caption>
+      <component name="SrcLabel">
+        <Caption>Verfügbar:</Caption>
+      </component>
+      <component name="DstLabel">
+        <Caption>Ausgewählt:</Caption>
+      </component>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+    </PickAttributesDlg>
+    <PickupDlg>
+      <caption>Mitgliederauswahl</caption>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+    </PickupDlg>
+    <ViewPicFrm>
+      <component name="btnSave">
+        <hint>Änderungen speichern und schließen</hint>
+      </component>
+      <component name="btnToFile">
+        <hint>In Datei speichern</hint>
+      </component>
+      <component name="btnFromFile">
+        <hint>Aus Datei laden</hint>
+      </component>
+      <component name="btnCopy">
+        <hint>In die Zwischenablage kopieren</hint>
+      </component>
+      <component name="btnPaste">
+        <hint>Aus Zwischenablage einfügen</hint>
+      </component>
+      <component name="btnFitToPicture">
+        <hint>Fenster an Bildgröße anpassen</hint>
+      </component>
+      <component name="btnResize">
+        <hint>Bild an Fenstergröße anpassen</hint>
+      </component>
+    </ViewPicFrm>
+    <PrefDlg>
+      <caption>Verbindungseinstellungen</caption>
+      <component name="tsPosix">
+        <Caption>Posix</Caption>
+      </component>
+      <component name="gbDefaults">
+        <Caption>Standards:</Caption>
+      </component>
+      <component name="lblHomeDir">
+        <Caption>Benutzerverzeichniss:</Caption>
+      </component>
+      <component name="lblLoginShell">
+        <Caption>Loginshell:</Caption>
+      </component>
+      <component name="lblUsername">
+        <Caption>Benutzername:</Caption>
+      </component>
+      <component name="lblDisplayname">
+        <Caption>Anzeigename:</Caption>
+      </component>
+      <component name="gbGroups">
+        <Caption>Gruppen:</Caption>
+      </component>
+      <component name="lblPosixGroup">
+        <Caption>Posixgruppe:</Caption>
+      </component>
+      <component name="SetBtn">
+        <Caption>Setzen...</Caption>
+      </component>
+      <component name="cbxExtendGroups">
+        <Caption>Erweitere Posixgruppen mit:</Caption>
+      </component>
+      <component name="tsID">
+        <Caption>ID Einstellungen</Caption>
+      </component>
+      <component name="gbUserLimits">
+        <Caption>Benutzer-ID Einschrenkungen:</Caption>
+      </component>
+      <component name="lblFirstUId">
+        <Caption>Erstes UID:</Caption>
+      </component>
+      <component name="LastUid">
+        <Caption>Letztes UID:</Caption>
+      </component>
+      <component name="gbGroupLimits">
+        <Caption>Gruppen-ID Einschrenkungen:</Caption>
+      </component>
+      <component name="lblFirstGid">
+        <Caption>Estes GID:</Caption>
+      </component>
+      <component name="lblLastUid">
+        <Caption>Letztes UID:</Caption>
+      </component>
+      <component name="gbId">
+        <Caption>ID Erstellung:</Caption>
+        <items>"Benutzer und Gruppen ID's nicht erstellen","Zufallsbenutzer und -gruppen ID's erstellen","Sequentielle ID's erstellen"</items>
+      </component>
+      <component name="gbSambaDefaults">
+        <Caption>Standardeinstellungen:</Caption>
+      </component>
+      <component name="lblHomeShare">
+        <Caption>Homeshare:</Caption>
+      </component>
+      <component name="lblProfilePath">
+        <Caption>Profilpfad:</Caption>
+      </component>
+      <component name="lblHomeDrive">
+        <Caption>Homelaufwerk:</Caption>
+      </component>
+      <component name="lblScript">
+        <Caption>Anmeldeskript:</Caption>
+      </component>
+      <component name="cbxLMPasswords">
+        <Caption>LANMAN-Passwörter</Caption>
+      </component>
+      <component name="lblNetbios">
+        <Caption>NETBIOS-Name:</Caption>
+      </component>
+      <component name="lblDomainName">
+        <Caption>Domänenname:</Caption>
+      </component>
+      <component name="tsMail">
+        <Caption>E-Mail</Caption>
+      </component>
+      <component name="gbMailDefaults">
+        <Caption>Standardeinstellungen:</Caption>
+      </component>
+      <component name="lblMD">
+        <Caption>Standard-Maildrop:</Caption>
+      </component>
+      <component name="lblMA">
+        <Caption>Standard E-Mail Adresse:</Caption>
+      </component>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+      <component name="BtnWizard">
+        <Caption>Standards erstellen...</Caption>
+      </component>
+    </PrefDlg>
+    <PrefWizDlg>
+      <caption>Assistent für neue Verbindungen</caption>
+      <component name="Label1">
+        <Caption>Klicken Sie zum Fortfahren auf Weiter...</Caption>
+      </component>
+      <component name="Label2">
+        <Caption>Dieser Assistent unterstützt Sie bei der Erstellung von Standardeinstellungen für diese Verbindung.</Caption>
+      </component>
+      <component name="ListView1">
+        <columns>Typ,Beispiel,Einstellung</columns>
+        <items></items>
+      </component>
+      <component name="Label3">
+        <Caption>Wählen Sie ein Format für Benutzername:</Caption>
+      </component>
+      <component name="Label4">
+        <Caption>Geben Sie Samba NETBIOS Server- and Domänenname:</Caption>
+      </component>
+      <component name="Label5">
+        <Caption>Server NETBIOS-Name:</Caption>
+      </component>
+      <component name="Label6">
+        <Caption>Samba Domänenname:</Caption>
+      </component>
+      <component name="Label7">
+        <Caption>Geben Sie ihre Mail-Domäne und Maildrop-Adresse (nur Postfix):</Caption>
+      </component>
+      <component name="Label8">
+        <Caption>Maildomäne:</Caption>
+      </component>
+      <component name="Label9">
+        <Caption>Maildrop-Server:</Caption>
+      </component>
+      <component name="Label11">
+        <Caption>Wählen Sie ein Format für Anzeigename:</Caption>
+      </component>
+      <component name="ListView1">
+        <columns>
+          <column>
+            <caption>Typ</caption>
+          </column>
+          <column>
+            <caption>Beispiel</caption>
+          </column>
+          <column>
+            <caption>Parameter</caption>
+          </column>
+        </columns>
+        <items>
+          <item>
+            <caption>Vorname.Nachname</caption>
+            <subitems>reiner.zufall,%f.%l</subitems>
+          </item>
+          <item>
+            <caption>Nachname.Vorname</caption>
+            <subitems>zufall.reiner,%l.%f</subitems>
+          </item>
+          <item>
+            <caption>Anfangsbuchstabe Vorname, Nachname</caption>
+            <subitems>rzufall,%F%l</subitems>
+          </item>
+          <item>
+            <caption>Anfangsbuchstabe Nachname.Vorname</caption>
+            <subitems>zreiner,%L%f</subitems>
+          </item>
+          <item>
+            <caption>Nachname</caption>
+            <subitems>zufall,%l</subitems>
+          </item>
+          <item>
+            <caption>Vorname</caption>
+            <subitems>reiner,%f</subitems>
+          </item>
+        </items>
+      </component>
+      <component name="ListView2">
+        <columns>
+          <column>
+            <caption>Typ</caption>
+          </column>
+          <column>
+            <caption>Beispiel</caption>
+          </column>
+          <column>
+            <caption>Parameter</caption>
+          </column>
+        </columns>
+        <items>
+          <item>
+            <caption>Nachname, Vorname</caption>
+            <subitems>"Zufall, Reiner","%l, %f"</subitems>
+          </item>
+          <item>
+            <caption>Vorname, Nachname</caption>
+            <subitems>"Reiner Zufall","%f %l"</subitems>
+          </item>
+          <item>
+            <caption>Anfangsbuchstabe Vorname, Nachname</caption>
+            <subitems>"R. Zufall", "%F. %l"</subitems>
+          </item>
+        </items>
+      </component>
+      <component name="btnNext">
+        <Caption>&amp;Weiter &gt;</Caption>
+      </component>
+      <component name="btnBack">
+        <Caption>&lt; &amp;Zurück</Caption>
+      </component>
+      <component name="btnCancel">
+        <Caption>&amp;Abbrechen</Caption>
+      </component>
+    </PrefWizDlg>
+    <SambaAdvancedDlg>
+      <caption>Erweiterte Samba-Einstellungen</caption>
+      <component name="Label1">
+        <Caption>Erlaubte Workstations:</Caption>
+      </component>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+      <component name="FlagsGroup">
+        <Caption>Zusätzliche Samba Flags:</Caption>
+      </component>
+      <component name="cbNoExpire">
+        <Caption>Passwort läuft nie ab</Caption>
+      </component>
+      <component name="cbDomTrust">
+        <Caption>Domänen-Vertrauensstellung</Caption>
+      </component>
+      <component name="cbHomeReq">
+        <Caption>Homeverzeichniss erforderlich</Caption>
+      </component>
+      <component name="cbServerTrust">
+        <Caption>Server-Vertrauensstellung</Caption>
+      </component>
+      <component name="AddBtn">
+        <Caption>Hinzufügen...</Caption>
+      </component>
+      <component name="RemoveBtn">
+        <Caption>Entfernen</Caption>
+      </component>
+      <component name="GroupBox1">
+        <Caption>Samba-Konto läuft ab:</Caption>
+      </component>
+      <component name="rbNever">
+        <Caption>Nie</Caption>
+      </component>
+      <component name="rbAt">
+        <Caption>Am</Caption>
+      </component>
+    </SambaAdvancedDlg>
+    <SchemaDlg>
+      <component name="UndoBtn">
+        <hint>Zurück</hint>
+      </component>
+      <component name="RedoBtn">
+        <hint>Vorwärts</hint>
+      </component>
+      <component name="Label1">
+        <Caption>Suche:</Caption>
+      </component>
+      <component name="btnSave">
+        <hint>Schema exportieren</hint>
+      </component>
+      <component name="btnClose">
+        <hint>Schließen</hint>
+      </component>
+      <component name="WholeWordsCbx">
+        <Caption>Nur ganze Wörter</Caption>
+      </component>
+      <component name="pmCopy">
+        <Caption>Kopieren...</Caption>
+      </component>
+      <component name="pmUndo">
+        <Caption>Wiederherstellen</Caption>
+      </component>
+      <component name="pmOpen">
+        <Caption>Öffnen</Caption>
+      </component>
+      <component name="pmOpenNewTab">
+        <Caption>In neuem Tab öffnen</Caption>
+      </component>
+    </SchemaDlg>
+    <SearchFrm>
+      <caption>Suche</caption>
+      <component name="Label5">
+        <Caption>Pfad:</Caption>
+      </component>
+      <component name="PathBtn">
+        <Caption>Durchsuchen...</Caption>
+      </component>
+      <component name="TabSheet1">
+        <Caption>Suchen</Caption>
+      </component>
+      <component name="Label6">
+        <Caption>Name:</Caption>
+      </component>
+      <component name="Label7">
+        <Caption>E-Mail:</Caption>
+      </component>
+      <component name="TabSheet2">
+        <Caption>Benutzerdefiniert</Caption>
+      </component>
+      <component name="Label1">
+        <Caption>Filter:</Caption>
+      </component>
+      <component name="SaveFilterBtn">
+        <Caption>Speichern</Caption>
+      </component>
+      <component name="DeleteFilterBtn">
+        <Caption>Löschen</Caption>
+      </component>
+      <component name="TabSheet3">
+        <Caption>Optionen</Caption>
+      </component>
+      <component name="Label4">
+        <Caption>Attribute:</Caption>
+      </component>
+      <component name="Label2">
+        <Caption>Suchebene:</Caption>
+      </component>
+      <component name="Label3">
+        <Caption>Aliase dereferenzieren:</Caption>
+      </component>
+      <component name="edAttrBtn">
+        <Caption>Bearbeiten...</Caption>
+      </component>
+      <component name="cbSearchLevel">
+        <items>"Dieser Eintrag","Nächste Ebene","Gesamtes Unterverzeichnis"</items>
+      </component>
+      <component name="cbDerefAliases">
+        <left>360</left>
+        <width>170</width>
+        <items>Nie,"Beim suchen","Wenn gefunden",Immer</items>
+      </component>
+      <component name="StartBtn">
+        <Caption>Starten</Caption>
+      </component>
+      <component name="ClearAllBtn">
+        <height>56</height>
+        <WordWrap>true</WordWrap>
+        <Caption>Ergebnisse löschen</Caption>
+      </component>
+      <component name="btnSearch">
+        <hint>Suchen</hint>
+      </component>
+      <component name="btnModify">
+        <hint>Batchbearbeitung</hint>
+      </component>
+      <component name="ActStart">
+        <Caption>Start</Caption>
+        <hint>Suche starten</hint>
+      </component>
+      <component name="ActGoto">
+        <Caption>Gehe...</Caption>
+        <hint>Eintrag im LDAP Verzeichniss lokalisieren</hint>
+      </component>
+      <component name="ActProperties">
+        <Caption>Eigenschaften...</Caption>
+        <hint>Objekteigenschaften anzeigen</hint>
+      </component>
+      <component name="ActSave">
+        <Caption>Speichern</Caption>
+        <hint>Suchergebnisse exportieren</hint>
+      </component>
+      <component name="ActEdit">
+        <Caption>Eintrag bearbeiten...</Caption>
+        <hint>Eintrag bearbeiten</hint>
+      </component>
+      <component name="ActClose">
+        <Caption>Schließen</Caption>
+        <hint>Schließen</hint>
+      </component>
+      <component name="ActClearAll">
+        <Caption>Ergebnisse löschen</Caption>
+      </component>
+    </SearchFrm>
+    <TransportDlg>
+      <caption>Neue Transporttabelle</caption>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+    </TransportDlg>
+    <UserDlg>
+      <caption>Neue Benutzer</caption>
+      <component name="AccountSheet">
+        <Caption>Benutzerkonto</Caption>
+      </component>
+      <component name="Label1">
+        <Caption>Vorname:</Caption>
+      </component>
+      <component name="Label2">
+        <Caption>Nachname:</Caption>
+      </component>
+      <component name="Label3">
+        <Caption>Anzeigename:</Caption>
+      </component>
+      <component name="Label4">
+        <Caption>Benutzername:</Caption>
+      </component>
+      <component name="Label5">
+        <Caption>Initialen:</Caption>
+      </component>
+      <component name="Label9">
+        <Caption>Benutzerverzeichniss:</Caption>
+      </component>
+      <component name="Label12">
+        <Caption>Gecos:</Caption>
+      </component>
+      <component name="Label14">
+        <Caption>Login-Shell:</Caption>
+      </component>
+      <component name="GroupBox1">
+        <Caption>Kontoeigenschaften</Caption>
+      </component>
+      <component name="cbShadow">
+        <Caption>Shadow-Konto</Caption>
+      </component>
+      <component name="cbMail">
+        <Caption>Mailkonto</Caption>
+      </component>
+      <component name="cbSamba">
+        <Caption>Sambakonto</Caption>
+      </component>
+      <component name="RadioGroup1">
+        <Caption>Konto läuft ab</Caption>
+      </component>
+      <component name="ShadowPropertiesGroup">
+        <Caption>Kontoeigenschaften</Caption>
+      </component>
+      <component name="Label35">
+        <Caption>Min Shadow:</Caption>
+      </component>
+      <component name="Label37">
+        <Caption>Shadow Warnung:</Caption>
+      </component>
+      <component name="Label38">
+        <Caption>Letzte Änderung:</Caption>
+      </component>
+      <component name="Label39">
+        <Caption>Max Shadow:</Caption>
+      </component>
+      <component name="Label40">
+        <Caption>Shadow Passwortfrist:</Caption>
+      </component>
+      <component name="RadioGroup1">
+        <items>Nie,Am</items>
+      </component>
+      <component name="SambaSheet">
+        <Caption>Samba</Caption>
+      </component>
+      <component name="Label6">
+        <Caption>Anmeldeskript:</Caption>
+      </component>
+      <component name="Label7">
+        <Caption>Laufwerk:</Caption>
+      </component>
+      <component name="Label8">
+        <Caption>Profilpfad:</Caption>
+      </component>
+      <component name="Label13">
+        <Caption>Benutzershare:</Caption>
+      </component>
+      <component name="Label21">
+        <Caption>Beschreibung:</Caption>
+      </component>
+      <component name="Label36">
+        <Caption>Domäne:</Caption>
+      </component>
+      <component name="cbPwdMustChange">
+        <Caption>Benutzer muss Passwort bei der nächsten Anmeldung ändern</Caption>
+      </component>
+      <component name="cbPwdCantChange">
+        <Caption>Benutzer kann das Passwort nicht ändern</Caption>
+      </component>
+      <component name="BtnAdvanced">
+        <Caption>Weitere...</Caption>
+      </component>
+      <component name="cbAccntDisabled">
+        <Caption>Konto ist deaktiviert</Caption>
+      </component>
+      <component name="MailSheet">
+        <Caption>Mail</Caption>
+      </component>
+      <component name="Label10">
+        <Caption>Maildrop:</Caption>
+      </component>
+      <component name="Label11">
+        <Caption>E-Mail Adressen:</Caption>
+      </component>
+      <component name="AddMailBtn">
+        <Caption>Hinzufügen</Caption>
+      </component>
+      <component name="EditMailBtn">
+        <Caption>Bearbeiten</Caption>
+      </component>
+      <component name="DelMailBtn">
+        <Caption>Entfernen</Caption>
+      </component>
+      <component name="OfficeSheet">
+        <Caption>Geschäftlich</Caption>
+      </component>
+      <component name="Label15">
+        <Caption>Pager:</Caption>
+      </component>
+      <component name="Label18">
+        <Caption>Adresse:</Caption>
+      </component>
+      <component name="Label19">
+        <Caption>Land/Region:</Caption>
+      </component>
+      <component name="Label22">
+        <Caption>Telefon:</Caption>
+      </component>
+      <component name="Label24">
+        <Caption>PLZ:</Caption>
+      </component>
+      <component name="Label25">
+        <Caption>Büro:</Caption>
+      </component>
+      <component name="Label27">
+        <Caption>Position:</Caption>
+      </component>
+      <component name="Label29">
+        <Caption>Firma:</Caption>
+      </component>
+      <component name="Label30">
+        <Caption>Fax:</Caption>
+      </component>
+      <component name="Label31">
+        <Caption>Ort:</Caption>
+      </component>
+      <component name="PrivateSheet">
+        <Caption>Privat</Caption>
+      </component>
+      <component name="Label17">
+        <Caption>Adresse:</Caption>
+      </component>
+      <component name="Label23">
+        <Caption>Fax:</Caption>
+      </component>
+      <component name="Label26">
+        <Caption>Telefon:</Caption>
+      </component>
+      <component name="Label28">
+        <Caption>Mobil:</Caption>
+      </component>
+      <component name="OpenPictureBtn">
+        <Caption>Öffnen...</Caption>
+      </component>
+      <component name="DeleteJpegBtn">
+        <Caption>Löschen</Caption>
+      </component>
+      <component name="GroupSheet">
+        <Caption>Mitgliedschaft</Caption>
+      </component>
+      <component name="Label34">
+        <Caption>Mitglied:</Caption>
+      </component>
+      <component name="Label33">
+        <Caption>Primäre Gruppe:</Caption>
+      </component>
+      <component name="AddGroupBtn">
+        <Caption>Hinzufügen</Caption>
+      </component>
+      <component name="RemoveGroupBtn">
+        <Caption>Entfernen</Caption>
+      </component>
+      <component name="PrimaryGroupBtn">
+        <Caption>Setzen...</Caption>
+      </component>
+      <component name="cbxGroups">
+        <items>"Alle Gruppen","Posix Gruppen","Samba Gruppen","Mail Gruppen"</items>
+      </component>
+      <component name="CancelBtn">
+        <Caption>Abbrechen</Caption>
+      </component>
+    </UserDlg>
+  </forms>
+  <strings>
+    <s1>&amp;Hinzufügen</s1>
+    <s2>Adresse hinzufügen</s2>
+    <s3>Wert</s3>
+    <s4>&amp;Anzeigen:</s4>
+    <s5>Bild anzeigen: </s5>
+    <s6>Warnung</s6>
+    <s7>&amp;Wiederholen</s7>
+    <s8>Samba Domain</s8>
+    <s9>Aktuelle Benutzerdaten verwenden</s9>
+    <s10>In LDAP speichern</s10>
+    <s11>Suchbasis</s11>
+    <s12>Suchergebnisse:</s12>
+    <s13>Alias Verzeichniss</s13>
+    <s14>Eintrag auswählen</s14>
+    <s15>Server: %s</s15>
+    <s16>Kennwort setzen...</s16>
+    <s17>&amp;Überspringen</s17>
+    <s18>Alle überspringen</s18>
+    <s19>&amp;Verweise entfernen</s19>
+    <s20>SMTP Adresse:</s20>
+    <s21>Nachname</s21>
+    <s22>Text</s22>
+    <s23>Neues Untermenü</s23>
+    <s24>Neues Wert</s24>
+    <s25>&amp;Nächste</s25>
+    <s26>Objektklasse</s26>
+    <s27>&amp;OK</s27>
+    <s28>Altes Wert</s28>
+    <s29>Operation:</s29>
+    <s30>Übergeordnete Verzeichniss:</s30>
+    <s31>Passwort:</s31>
+    <s32>Pfad: %s</s32>
+    <s33>Verbindungen wählen</s33>
+    <s34>Gruppen wählen</s34>
+    <s35>Vorbereiten...</s35>
+    <s36>Fortschritt:</s36>
+    <s37>Eigenschaften von %s</s37>
+    <s38>Eigene</s38>
+    <s39>Hex:</s39>
+    <s40>Benutzerverzeichniss</s40>
+    <s41>Hostname:</s41>
+    <s42>Image</s42>
+    <s43>Information</s43>
+    <s44>IP Adresse</s44>
+    <s45>Maildrop</s45>
+    <s46>Ok.</s46>
+    <s47>Übersprüngen.</s47>
+    <s48>Weitere...</s48>
+    <s49>Verschiebe %s nach...</s49>
+    <s50>Eintrag wird verschoben...</s50>
+    <s51>Name</s51>
+    <s52>&lt;&lt;neu&gt;&gt;</s52>
+    <s53>Neue Eintrag</s53>
+    <s54>Neue Element</s54>
+    <s55>Dezimal:</s55>
+    <s56>&amp;Löschen</s56>
+    <s57>Wird gelöscht:</s57>
+    <s58>Beschreibung</s58>
+    <s59>&amp;Details</s59>
+    <s60>&amp;Bearbeiten</s60>
+    <s61>Adresse bearbeiten</s61>
+    <s62>Eintrag bearbeiten</s62>
+    <s63>Host bearbeiten</s63>
+    <s64>Wert bearbeiten</s64>
+    <s65>Englisch</s65>
+    <s66>Wert eintragen:</s66>
+    <s67>Geben Sie Passwort ein</s67>
+    <s68>Tragen Sie rdn ein:</s68>
+    <s69>Fehler</s69>
+    <s70>&amp;Beenden</s70>
+    <s71>Attribut hinzufügen...</s71>
+    <s72>Neue Verbindung</s72>
+    <s73>Host hinzufügen</s73>
+    <s74>Wert hinzufügen</s74>
+    <s75>Anonyme Verbindung</s75>
+    <s76>LDAP Admin</s76>
+    <s77>Attribut</s77>
+    <s78>Attributsname:</s78>
+    <s79>Binär</s79>
+    <s80>&amp;Durschsuchen...</s80>
+    <s81>&amp;Abbrechen</s81>
+    <s82>Zertifikat</s82>
+    <s83>&amp;Schließen</s83>
+    <s84>Bestätigung</s84>
+    <s85>Kopieren...</s85>
+    <s86>Kopiere %s nach...</s86>
+    <s87>&amp;Neu...</s87>
+    <s88>&amp;Eintrag...</s88>
+    <s89>&amp;Benutzer...</s89>
+    <s90>&amp;Computer...</s90>
+    <s91>&amp;Gruppe...</s91>
+    <s92>&amp;Mailliste...</s92>
+    <s93>&amp;Transporttabelle...</s93>
+    <s94>&amp;Organisationseinheit...</s94>
+    <s95>&amp;Host...</s95>
+    <s96>&amp;Lokalität...</s96>
+    <s97>Grou&amp;p of unique names...</s97>
+    <s98>Alias...</s98>
+    <s99>Üngultiger (nich abgeschlossner) Parameter!</s99>
+    <s100>Nicht abgeschlossener String!</s100>
+    <s101>Unbekannter Werttyp.\nkey:%s\nvalue:%s\"</s101>
+    <s102>Nicht unterstütze Authentifizierungsmethode: %s!</s102>
+    <s103>Nicht unterstütze Scriptsprache: </s103>
+    <s104>Abbruch durch Benutzer!</s104>
+    <s105>Einer Nur-Lesen Eigenschaft kann kein Wert zugewiesen werden !</s105>
+    <s106>Ldif-Datei, Windows Format(CR/LF) (*.ldif)|*.ldif|Ldif-Datei, Unix Format (nur LF) (*.ldif)|*.ldif|CSV (Kommagetrent) (*.csv)|*.csv|XML (*.xml)|*.xml</s106>
+    <s107>Textdatei (*.txt)|*.txt</s107>
+    <s108>%s muss ein Wert haben!</s108>
+    <s109>%s ist erforderlich!</s109>
+    <s110>Dieses Konto wurde Serverseitig gesperrt! Möchten Sie Autolock-Flag zurücksetzen um Konto zu entsperren?</s110>
+    <s111>Lesen: %d Objekte gelesen. Drücken Sie Escape-Taste zu beenden...</s111>
+    <s112>SASL encryption can not be used over an SSL connection!</s112>
+    <s113>Kann SubschemaSubentry nicht finden!</s113>
+    <s114>Procedure \%s\" könnte nicht gefunden werden."</s114>
+    <s115>Eigenschaft '%s' ist kein Ereigniss!</s115>
+    <s116>'%s' unterstützt den Ereigniss '%s' nicht!</s116>
+    <s117>Nicht unterstützter Parametertyp!</s117>
+    <s118>Set könnte nicht in Integer kovertiert werden!</s118>
+    <s119>Aktivieren von dieser Option könnte bei sehr großen Benutzerzahlen zu erhöhten Netzwerkverkehr führen. Aktivieren Sie die Option nur wenn Sie unbedingt sequenzielle ID's benötigen!</s119>
+    <s120>%s\n\rEintrag überspringen?</s120>
+    <s121>Fehler bei Stop TLS Befehl! Die Verbindung wird geschlossen.</s121>
+    <s122>Zeitformat</s122>
+    <s123>Zu viele Parameter!</s123>
+    <s124>Verschieben nicht möglich. Der Zielordner ist dem Quellordner untergeordnet!</s124>
+    <s125>Für diese Operation muss LDAPAdmin unter Windows Vista oder höher im administrativen Modus ausgeführt werden!</s125>
+    <s126>Verbindungsfehler: aktive Verbindung könnte nicht gefunden werden!</s126>
+    <s127>In zukunft nicht mehr nachfragen.</s127>
+    <s128>Pool ausgeschopft! Für %s! stehen keine freie ID's zu Verfügung!</s128>
+    <s129>Sie sollten die ID-Erstellung nur dann deaktivieren wenn die ID's serverseitig zugewiesen werden. Anderenfalls werden keine Benutzer oder Gruppen erstellt werden können.</s129>
+    <s130>Sie müssen eine eindeutige Bezeichnung  (rdn)  für dieses Verzeichniseintrag eingeben!</s130>
+    <s131>Könnte LDAP-schema nicht laden!</s131>
+    <s132>Nicht genügend Parameter!</s132>
+    <s133>Zahl</s133>
+    <s134>%d Objekte</s134>
+    <s135>Die eingegebenen Kennwörter stimmen nicht überein!</s135>
+    <s136>Passwort für %s:</s136>
+    <s137>Eigenschaft kann nur gelesen werden!</s137>
+    <s138>Regexp: Gültigkeitsprüfung fehlgeschlagen!</s138>
+    <s139>Es muss mindestens eine E-Mail Adresse eingegeben werden!</s139>
+    <s140>Zeile %d ist leer, Zeilenumbruch nicht möglich!</s140>
+    <s141>Interner Fehler: Ungültige LDIF-Mode!</s141>
+    <s142>Zeile %d: Fehlender \":\".</s142>
+    <s143>Zeile %d: dn erwartet aber %s gefunden!</s143>
+    <s144>Dateiende erreicht!</s144>
+    <s145>Ungültiger Versionswert: %s!</s145>
+    <s146>%d Objekt(e) könnten nicht importiert werden!</s146>
+    <s147>Ungültige URL!</s147>
+    <s148>Zeile %d: Ungültiger Attributsname, \"%s\" wurde erwartet aber \"%s\" wurde gefunden!</s148>
+    <s149>Zeile %d: Ungültiger changetype \"%s\"!</s149>
+    <s150>Zeile %d: Ungültige Operation \"%s\"!</s150>
+    <s151>Zeile %d: \%s\" wurde erwartet aber \"%s\" wurde gefunden!</s151>
+    <s152>%d Objekt(e) erfolgreich importiert!</s152>
+    <s153>URL-Methode ist nicht unterstützt!</s153>
+    <s154>Templatename muss eingegeben werden!</s154>
+    <s155>Mit diese Aktion verknupftes Template \%s\" könnte nicht gefunden werden!"</s155>
+    <s156>LDAPAdmin ist momentan nicht als ihr Standard LDAP-Browser festgelegt.\nMöchten Sie LDAPAdmin als Standardbrowser festlegen?</s156>
+    <s157>Datei '%s' existiert bereits, überschreiben?</s157>
+    <s158>GetProcAddress für %s fehlgeschlagen.</s158>
+    <s159>Die ausgewählte primäre Gruppe ist keine Samba Gruppe bzw. es ist mit keine Benutzerdomäne verknüpft. Wollen Sie trotzdem fortfahren?</s159>
+    <s160>Sie müssen mindestens eine E-Mail Adresse für diese Gruppe festlegen!</s160>
+    <s161>Sie müssen ein Name für diese Gruppe eingeben!</s161>
+    <s162>"\%s\" ist kein gültiges %s!</s162>
+    <s163>Ganzzahl</s163>
+    <s164>Ungültiger Parameter-Index: %d</s164>
+    <s165>Ungültige LDAP-version in Befehlszeile: %s</s165>
+    <s166>Üngultiger oder nicht unterstützter Filtertyp!</s166>
+    <s167>Ungültiges %s für &lt;%s&gt;!</s167>
+    <s168>Ungültiges Zeitformat!</s168>
+    <s169>Ungültiges URL-Format!</s169>
+    <s170>LDAP Fehler: %s!</s170>
+    <s171>LDAP Fehler! %s: %s.</s171>
+    <s172>Das Zertifikat ist ein selbst-signiertes Root-Zertifikat.</s172>
+    <s173>Klasse %s könnte nicht gefunden werden!</s173>
+    <s174>%d Objekt(e) zurückgegeben.</s174>
+    <s175>%d Unterverzeichnisse</s175>
+    <s176>Eintrag "%s" löschen?</s176>
+    <s177>Verbindungskonto "%s" löschen?</s177>
+    <s178>%d Einträge löschen?</s178>
+    <s179>Datumsformat</s179>
+    <s180>"%s"\n\rDas Verzeichniss ist nicht leer (es sind weitere Unterverzeichnisse vorhanden). Alle löschen?"</s180>
+    <s181>Menüeintrag löschen?</s181>
+    <s182>Untermenü löschen?</s182>
+    <s183>Attribut %s ist Namensattribut für dieser Eintrag! Trotzdem löschen?</s183>
+    <s184>Tastaturkürzel '%s' ist bereits dem Menüeintrag '%s' zugewiesen!</s184>
+    <s185>Parameter ist leer!</s185>
+    <s186>Fehler beim extrahieren von Methodennamen! !</s186>
+    <s187>Fehler beim setzen von Ereigniss %s: %s Ereignisstyp ist nicht unterstützt!</s187>
+    <s188>Verbindung erfolgreich.</s188>
+    <s189>Script abbrechen?</s189>
+    <s190>Ein Verbindungsonto mit mit dieser Name ist bereits vorhanden.\n\rMöchten Sie es überschreiben?</s190>
+    <s191>Sie müssen einer Name für diese Verbindung eingeben!</s191>
+    <s192>%s nach %s kopieren?</s192>
+    <s193>%s nach %s verschieben?</s193>
+    <s194>In diesem Speicher können keine Passwörter aufbewahrt werden!</s194>
+    <s195>Das Serverzertifikat konnte nicht validiert werden!\n\r\n\r%s\n\rMöchten Sie trotzdem fortfahren?</s195>
+    <s196>Der CN-Name des Zertifikats ist ungültig oder stimmt nicht mit dem Servernamen überein!</s196>
+    <s197>Signaturprüfung ist fehlgeschlagen!</s197>
+    <s198>Das Sicherheitszertifikat ist abgelaufen oder noch nicht gültig!</s198>
+    <s199>Das Herausgeberzertifikat ist nicht vorhanden, bzw. nicht vertraunswürdig!</s199>
+    <s200>Unbekannt</s200>
+    <s201>Benutzer: %s</s201>
+    <s202>Benutzername</s202>
+    <s203>Benutzereingabe</s203>
+    <s204>\"%s\" ist keine gültige Ldap Admin Kontodatei!</s204>
+    <s205>Nicht wohlgeformtes XML.</s205>
+    <s206>\"%s\" wurde erwartet aber \"%s\" wurde gefunden</s206>
+    <s207>Unerwartetes schliessendes Tag \"%s\"</s207>
+    <s208>Zur Zeit ist kein Standard-Drucker gewählt</s208>
+    <s209>Menü '%s' wird bereits von einem anderen Formular benutzt</s209>
+    <s210>Grafik:</s210>
+    <s211> (%dx%d)</s211>
+    <s212>Vorschau</s212>
+    <s213>AVI kann nicht geöffnet werden</s213>
+    <s214>Angedocktes Steuerelement muss einen Namen haben.</s214>
+    <s215>Fehler beim Entfernen des Steuerelements aus der Andock-Hierarchie</s215>
+    <s216> - Andockzone nicht gefunden</s216>
+    <s217> - Andockzone besitzt kein Steuerelement</s217>
+    <s218>Mehrfachauswahl muss für diese Funktion aktiviert sein</s218>
+    <s219>Separator</s219>
+    <s220>Fehler beim Setzen von %s.Count</s220>
+    <s221>Stil des Listenfeldes (%s) muss virtuell sein, damit Count gesetzt werden kann</s221>
+    <s222>Es wurde keine OnGetItem-Ereignisbehandlung zugewiesen</s222>
+    <s223>Inhaltsverzeichnis konnte nicht gefunden werden</s223>
+    <s224>Rechts</s224>
+    <s225>Nach unten</s225>
+    <s226>Einfg</s226>
+    <s227>Entf</s227>
+    <s228>Umsch+</s228>
+    <s229>Strg+</s229>
+    <s230>Alt+</s230>
+    <s231>(Ohne)</s231>
+    <s232>Wert muss zwischen %d und %d liegen</s232>
+    <s233>Alle</s233>
+    <s234>Zeile kann nicht eingefügt werden</s234>
+    <s235>Ungültiges Format der Zwischenablage</s235>
+    <s236>Zwischenablage unterstützt keine Symbole</s236>
+    <s237>Zwischenablage kann nicht geöffnet werden</s237>
+    <s238>Vorgabe</s238>
+    <s239>Text überschreitet Memo-Kapazität</s239>
+    <s240>&amp;Wiederholen</s240>
+    <s241>&amp;Ignorieren</s241>
+    <s242>&amp;Alle</s242>
+    <s243>&amp;Alle Nein</s243>
+    <s244>A&amp;lle Ja</s244>
+    <s245>Rück</s245>
+    <s246>Tab</s246>
+    <s247>Esc</s247>
+    <s248>Enter</s248>
+    <s249>Leerzeichen</s249>
+    <s250>BildAuf</s250>
+    <s251>BildAb</s251>
+    <s252>Ende</s252>
+    <s253>Start</s253>
+    <s254>Links</s254>
+    <s255>Nach oben</s255>
+    <s256>Metadateien</s256>
+    <s257>Erweiterte Metadateien</s257>
+    <s258>Symbole</s258>
+    <s259>Bitmaps</s259>
+    <s260>Ungültiger Eingabewert</s260>
+    <s261>Ungültiger Eingabewert. Mit der Taste ESC machen Sie die Änderungen rückgängig.</s261>
+    <s262>Warnung</s262>
+    <s263>Fehler</s263>
+    <s264>Informationen</s264>
+    <s265>Bestätigung</s265>
+    <s266>&amp;Ja</s266>
+    <s267>&amp;Nein</s267>
+    <s268>OK</s268>
+    <s269>Abbrechen</s269>
+    <s270>&amp;Hilfe</s270>
+    <s271>&amp;Abbrechen</s271>
+    <s272>Ausgewählter Drucker ist ungültig</s272>
+    <s273>%s an %s</s273>
+    <s274>GroupIndex kann nicht kleiner sein als der GroupIndex eines vorhergehenden Menüelementes</s274>
+    <s275>Formular kann nicht erstellt werden. Zur Zeit sind keine MDI-Formulare aktiv</s275>
+    <s276>Steuerelement kann nicht sich selbst als Vorfahr haben</s276>
+    <s277>OK</s277>
+    <s278>Abbrechen</s278>
+    <s279>&amp;Ja</s279>
+    <s280>&amp;Nein</s280>
+    <s281>&amp;Hilfe</s281>
+    <s282>&amp;Schließen</s282>
+    <s283>&amp;Ignorieren</s283>
+    <s284>&amp;Wiederholen</s284>
+    <s285>Abbrechen</s285>
+    <s286>&amp;Alle</s286>
+    <s287>Formulare können nicht gezogen werden</s287>
+    <s288>Fehler beim Erstellen des Fenster-Gerätekontexts</s288>
+    <s289>Fehler beim Erzeugen einer Fensterklasse</s289>
+    <s290>Ein deaktiviertes oder unsichtbares Fenster kann nicht den Fokus erhalten</s290>
+    <s291>Element '%s' hat kein übergeordnetes Fenster</s291>
+    <s292>Das angegebene übergeordnete Element ist kein übergeordnetes Element von '%s'</s292>
+    <s293>Untergeordnetes MDI-Formular kann nicht verborgen werden</s293>
+    <s294>Eigenschaft Visible kann in OnShow oder OnHide nicht verändert werden</s294>
+    <s295>Aus einem sichtbaren Fenster kann kein modales gemacht werden</s295>
+    <s296>Eigenschaft Scrollbar außerhalb des zulässigen Bereichs</s296>
+    <s297>Eigenschaft %s außerhalb des gültigen Bereichs</s297>
+    <s298>Menüindex außerhalb des zulässigen Bereichs</s298>
+    <s299>Menü zweimal eingefügt</s299>
+    <s300>Untermenü ist nicht im Menü</s300>
+    <s301>Nicht genügend Timer verfügbar</s301>
+    <s302>Der Drucker druckt aktuell nicht</s302>
+    <s303>Druckvorgang läuft</s303>
+    <s304>Metadatei ist ungültig</s304>
+    <s305>Ungültiges Pixel-Format</s305>
+    <s306>Ungültiges Bild</s306>
+    <s307>Bereichsüberschreitung bei Zeilenindex</s307>
+    <s308>Die Größe eines Symbols kann nicht geändert werden</s308>
+    <s309>Ungültige Operation für TOleGraphic</s309>
+    <s310>Unbekannte Bilddateierweiterung (.%s)</s310>
+    <s311>Format der Zwischenablage wird nicht unterstützt</s311>
+    <s312>Systemressourcen erschöpft.</s312>
+    <s313>Leinwand/Bild erlaubt kein Zeichnen</s313>
+    <s314>Ungültige Grafikgröße</s314>
+    <s315>Ungültige ImageList</s315>
+    <s316>Bild kann nicht ersetzt werden</s316>
+    <s317>Ungültiger ImageList-Index</s317>
+    <s318>ImageList-Daten konnten nicht aus dem Stream gelesen werden</s318>
+    <s319>ImageList-Daten konnten nicht in den Stream geschrieben werden</s319>
+    <s320>Eigenschaft kann nur gelesen werden</s320>
+    <s321>Erzeugung von Schlüssel %s misslungen</s321>
+    <s322>Fehler beim Holen der Daten für '%s'</s322>
+    <s323>Fehler beim Setzen der Daten für '%s'</s323>
+    <s324>Ressource %s wurde nicht gefunden</s324>
+    <s325>%s.Seek nicht implementiert</s325>
+    <s326>Operation für sortierte Listen nicht zulässig</s326>
+    <s327>Zu viele Zeilen oder Spalten gelöscht</s327>
+    <s328>%s befindet sich nicht in einer Gruppe für Klassenregistrierungen</s328>
+    <s329>Eigenschaft %s existiert nicht.</s329>
+    <s330>Stream-Schreibfehler</s330>
+    <s331>Registerindex außerhalb des zulässigen Bereichs</s331>
+    <s332>Position des Register ist nicht mit dem aktuellen Register-Stil kompatibel.</s332>
+    <s333>Register-Stil ist mit der aktuellen Position nicht kompatibel.</s333>
+    <s334>Bitmap ist ungültig</s334>
+    <s335>Ungültiges Symbol</s335>
+    <s336>Gitterindex außerhalb des zulässigen Bereichs</s336>
+    <s337>Ungültiges Stream-Format</s337>
+    <s338>'%s' ist kein gültiger Komponentenname</s338>
+    <s339>Ungültiger Eigenschaftswert</s339>
+    <s340>Ungültiges Eigenschaftselement: %s</s340>
+    <s341>Ungültiger Pfad für Eigenschaft</s341>
+    <s342>Ungültiger Eigenschaftstyp: %s</s342>
+    <s343>Ungültiger Eigenschaftswert</s343>
+    <s344>Ungültiger Datentyp für '%s'</s344>
+    <s345>Es können keine Zeilen des Tabellengitters gelöscht oder eingefügt werden</s345>
+    <s346>Kapazität der Liste ist erschöpft (%d)</s346>
+    <s347>Zu viele Einträge in der Liste (%d)</s347>
+    <s348>Listenindex überschreitet das Maximum (%d)</s348>
+    <s349>Expandieren des Speicher-Stream wegen Speichermangel nicht möglich</s349>
+    <s350>Fehler beim Lesen von %s%s%s: %s</s350>
+    <s351>Stream-Lesefehler</s351>
+    <s352>Vorfahr für '%s' nicht gefunden</s352>
+    <s353>%s kann nicht zu %s zugewiesen werden</s353>
+    <s354>Bits-Index außerhalb des zulässigen Bereichs</s354>
+    <s355>In einen zum Lesen geöffneten Ressourcen-Stream kann nicht geschrieben werden</s355>
+    <s356>CheckSynchronize wurde vom Thread $%x aufgerufen, der NICHT der Haupt-Thread ist.</s356>
+    <s357>Klasse %s nicht gefunden</s357>
+    <s358>Klasse mit der Bezeichnung %s existiert bereits</s358>
+    <s359>Liste gestattet keine doppelten Einträge ($0%x)</s359>
+    <s360>Komponente mit der Bezeichnung %s existiert bereits</s360>
+    <s361>In der Stringliste sind Duplikate nicht erlaubt</s361>
+    <s362>Datei \%s\" kann nicht erstellt werden. %s"</s362>
+    <s363>Die Anzahl fester Spalten muss kleiner sein als die Spaltenanzahl</s363>
+    <s364>Die Anzahl fester Zeilen muss kleiner sein als die Zeilenanzahl</s364>
+    <s365>Datei %s kann nicht geöffnet werden. %s</s365>
+    <s366>Gitter zu groß für Operation</s366>
+    <s367>Oktober</s367>
+    <s368>November</s368>
+    <s369>Dezember</s369>
+    <s370>So</s370>
+    <s371>Mo</s371>
+    <s372>Di</s372>
+    <s373>Mi</s373>
+    <s374>Do</s374>
+    <s375>Fr</s375>
+    <s376>Sa</s376>
+    <s377>Sonntag</s377>
+    <s378>Montag</s378>
+    <s379>Dienstag</s379>
+    <s380>Mittwoch</s380>
+    <s381>Donnerstag</s381>
+    <s382>Freitag</s382>
+    <s383>Samstag</s383>
+    <s384>Jun</s384>
+    <s385>Jul</s385>
+    <s386>Aug</s386>
+    <s387>Sep</s387>
+    <s388>Okt</s388>
+    <s389>Nov</s389>
+    <s390>Dez</s390>
+    <s391>Januar</s391>
+    <s392>Februar</s392>
+    <s393>März</s393>
+    <s394>April</s394>
+    <s395>Mai</s395>
+    <s396>Juni</s396>
+    <s397>Juli</s397>
+    <s398>August</s398>
+    <s399>September</s399>
+    <s400>Operation nicht unterstützt</s400>
+    <s401>Unerwarteter Variant-Fehler</s401>
+    <s402>Externe Exception %x</s402>
+    <s403>Auswertung von assert fehlgeschlagen</s403>
+    <s404>Schnittstelle nicht unterstützt</s404>
+    <s405>Exception in safecall-Methode</s405>
+    <s406>%s (%s, Zeile %d)</s406>
+    <s407>Abstrakter Fehler</s407>
+    <s408>Zugriffsverletzung bei Adresse %p in Modul '%s'. %s von Adresse %p</s408>
+    <s409>Systemfehler.  Code: %d.\r\n%s</s409>
+    <s410>Ein Aufruf einer Betriebssystemfunktion ist fehlgeschlagen</s410>
+    <s411>Jan</s411>
+    <s412>Feb</s412>
+    <s413>Mär</s413>
+    <s414>Apr</s414>
+    <s415>Mai</s415>
+    <s416>Kein Argument für Format '%s'</s416>
+    <s417>Variant-Methodenaufruf nicht unterstützt</s417>
+    <s418>Lesen</s418>
+    <s419>Schreiben</s419>
+    <s420>Fehler beim Erzeugen von Variante oder sicherem Array</s420>
+    <s421>Variante oder sicherer Array-Index außerhalb des gültigen Bereichs</s421>
+    <s422>Variante oder sicherer Array ist gesperrt</s422>
+    <s423>Ungültige Variant-Typumwandlung</s423>
+    <s424>Ungültige Variant-Operation</s424>
+    <s425>Ungültige NULL-Variant-Operation</s425>
+    <s426>Ungültige Variant-Operation (%s%.8x)\n%s</s426>
+    <s427>Variante des Typs (%s) konnte nicht in Typ (%s) konvertiert werden</s427>
+    <s428>Überlauf bei der Konvertierung einer Variante vom Typ (%s) in Typ (%s)</s428>
+    <s429>Variant-Überlauf</s429>
+    <s430>Ungültiges Argument</s430>
+    <s431>Ungültiger Variant-Typ</s431>
+    <s432>Integerüberlauf</s432>
+    <s433>Ungültige Gleitkommaoperation</s433>
+    <s434>Gleitkommadivision durch Null</s434>
+    <s435>Gleitkommaüberlauf</s435>
+    <s436>Gleitkommaunterlauf</s436>
+    <s437>Ungültige Zeigeroperation</s437>
+    <s438>Ungültige Typumwandlung</s438>
+    <s439>Zugriffsverletzung bei Adresse %p. %s von Adresse %p</s439>
+    <s440>Zugriffsverletzung</s440>
+    <s441>Stack-Überlauf</s441>
+    <s442>Strg+C gedrückt</s442>
+    <s443>Privilegierte Anweisung</s443>
+    <s444>Operation abgebrochen</s444>
+    <s445>Exception %s in Modul %s bei %p.\r\n%s%s\r\n</s445>
+    <s446>Anwendungsfehler</s446>
+    <s447>Format '%s' ungültig oder nicht kompatibel mit Argument</s447>
+    <s448>'%s' ist kein gültiger Integerwert</s448>
+    <s449>'%s' ist kein gültiger Gleitkommawert</s449>
+    <s450>'%s' ist keine gültige Datums- und Uhrzeitangabe</s450>
+    <s451>Ungültiges Argument zum Codieren der Uhrzeit</s451>
+    <s452>Ungültiges Argument zum Codieren des Datums</s452>
+    <s453>Zu wenig Arbeitsspeicher</s453>
+    <s454>E/A-Fehler %d</s454>
+    <s455>Datei nicht gefunden</s455>
+    <s456>Ungültiger Dateiname</s456>
+    <s457>Zu viele geöffnete Dateien</s457>
+    <s458>Dateizugriff verweigert</s458>
+    <s459>Versuch hinter dem Dateiende zu lesen</s459>
+    <s460>Zu wenig Speicherplatz</s460>
+    <s461>Ungültige numerische Eingabe</s461>
+    <s462>Division durch Null</s462>
+    <s463>Fehler bei Bereichsprüfung</s463>
+    <s464>%d ist ein ungültiger Wert für PageIndex. PageIndex muß zwischen 0 und %d liegen</s464>
+    <s465>Dieses Element benötigt COMCTL32.DLL in der Version 4.70 oder höher</s465>
+    <s466>Das Datum überschreitet das Maximum von %s</s466>
+    <s467>Das Datum unterschreitet das Minimum von %s</s467>
+    <s468>Um das Datum zu setzen, müssen Sie im Modus ShowCheckbox sein</s468>
+    <s469>Kalenderzeit oder -datum konnte nicht gesetzt werden</s469>
+    <s470>Der max. Auswahlbereich konnte nicht gesetzt werden</s470>
+    <s471>Der max./min. Bereich des Kalenders konnte nicht gesetzt werden</s471>
+    <s472>Der ausgewählte Bereich des Kalenders kann nicht gesetzt werden</s472>
+    <s473>Register-Element konnte nicht geleert werden</s473>
+    <s474>Registerseite mit Index %d konnte nicht gelöscht werden</s474>
+    <s475>Registerseite mit Index %d konnte nicht gelesen werden</s475>
+    <s476>Objekt mit Index %d konnte nicht gelesen werden</s476>
+    <s477>Registerseite '%s' mit Index %d konnte nicht gesetzt werden</s477>
+    <s478>Objekt mit Index %d konnte nicht gesetzt werden</s478>
+    <s479>Bei TabPosition tpLeft und tpRight muss MultiLine True sein</s479>
+    <s480>Ungültiger Index</s480>
+    <s481>Eintrag kann nicht eingefügt werden</s481>
+    <s482>Ungültiger Besitzer</s482>
+    <s483>Fehler bei Einfügen von RichEdit-Zeile</s483>
+    <s484>Das Laden des Streams ist misslungen</s484>
+    <s485>Das Speichern des Streams ist misslungen</s485>
+    <s486>%s ist bereits mit %s verknüpft</s486>
+    <s487>OLE-Fehler %.8x</s487>
+    <s488>Die Methode '%s' wird vom Automatisierungsobjekt nicht unterstützt</s488>
+    <s489>Variante referenziert kein Automatisierungsobjekt</s489>
+    <s490>Dispatch-Methoden unterstützen maximal 64 Parameter.</s490>
+    <s491>DCOM ist nicht installiert</s491>
+    <s492>JPEG-Grafikdatei</s492>
+    <s493>Die Größe einer JPEG-Grafik kann nicht verändert werden</s493>
+    <s494>JPEG-Fehler #%d</s494>
+    <s495>Aktivierung des OLE-Steuerelements misslungen</s495>
+    <s496>Das Fenster-Handle des OLE-Elements nicht verfügbar</s496>
+    <s497>Lizenz-Information für %s ist ungültig</s497>
+    <s498>Lizenz-Information für %s nicht gefunden. Sie können dieses Steuerelement im Entwurfsmodus nicht verwenden</s498>
+    <s499>Es kann kein Zeiger auf ein ausgeführtes Objekt geholt werden, dass mit OLE für %s/%s registriert ist</s499>
+    <s500>Für %s sind keine Hilfeinformationen vorhanden.</s500>
+    <s501>Keine kontextsensitive Hilfe installiert</s501>
+    <s502>Es ist keine themenbasierte Hilfe installiert.</s502>
+    <s503>Mitglieder wählen</s503>
+  </strings>
+</lang>

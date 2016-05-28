@@ -1,0 +1,2370 @@
+<lang>
+   <author>pk1</author>
+   <language>Polish (PL) Windows</language>
+   <version>1.0</version>
+   <forms>
+      <AboutDlg>
+         <Caption>Info</Caption>
+         <component name='BtnClose'>
+            <Caption>Zamknij</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Wersja:</Caption>
+         </component>
+         <component name='Label3'>
+            <Caption>Autor:</Caption>
+         </component>
+         <component name='Label4'>
+            <Caption>Web:</Caption>
+         </component>
+         <component name='Label8'>
+            <Caption>(c) 2003-2015 Tihomir Karlovic</Caption>
+         </component>
+      </AboutDlg>
+      <AccountCopyDlg>
+         <Caption>AccountCopyDlg</Caption>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Nowa nazwa: </Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Magazyn:</Caption>
+         </component>
+         <component name='OkBtn'>
+            <Caption>OK</Caption>
+         </component>
+      </AccountCopyDlg>
+      <ADPassDlg>
+         <Caption>Ustaw Has³o</Caption>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Nowe Has³o:</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Powtórz Has³o:</Caption>
+         </component>
+         <component name='OKBtn'>
+            <Caption>OK</Caption>
+         </component>
+      </ADPassDlg>
+      <AliasDlg>
+         <Caption>Alias</Caption>
+         <component name='Button1'>
+            <Caption>OK</Caption>
+         </component>
+         <component name='Button2'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='GroupBox1'>
+            <Caption>Alias</Caption>
+         </component>
+         <component name='GroupBox2'>
+            <Caption>Objekt</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Utwórz alias w:</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Nazwa aliasu:</Caption>
+         </component>
+         <component name='Label3'>
+            <Caption>Wpis dn:</Caption>
+         </component>
+         <component name='Label4'>
+            <Caption>Alias dn:</Caption>
+         </component>
+      </AliasDlg>
+      <BookmarkDlg>
+         <Caption>Zak³adka</Caption>
+         <component name='edBookmark'/>
+         <component name='BookmarkList'>
+            <columns>
+               <column>
+                  <caption>DN</caption>
+               </column>
+            </columns>
+         </component>
+         <component name='btnAdd'>
+            <Caption>Dodaj</Caption>
+         </component>
+         <component name='btnClose'>
+            <Caption>Zamknij</Caption>
+         </component>
+         <component name='btnRemove'>
+            <Caption>Usuñ</Caption>
+         </component>
+         <component name='lblBookmark'>
+            <Caption>Zak³adka:</Caption>
+         </component>
+      </BookmarkDlg>
+	       <ComputerDlg>
+         <Caption>Utwórz Konto Komputera</Caption>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Nawa Komputera:</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Opis</Caption>
+         </component>
+         <component name='Label3'>
+            <Caption>Domena:</Caption>
+         </component>
+         <component name='OKBtn'>
+            <Caption>OK</Caption>
+         </component>
+      </ComputerDlg>
+      <ConfigDlg>
+         <Caption>Options</Caption>
+         <component name='btnAdd'>
+            <Caption>Dodaj...</Caption>
+         </component>
+         <component name='btnAddLang'>
+            <Caption>Dodaj...</Caption>
+         </component>
+         <component name='btnDel'>
+            <Caption>Usuñ</Caption>
+         </component>
+         <component name='btnDelLang'>
+            <Caption>Usuñ</Caption>
+         </component>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='cbConnect'>
+            <Caption>Po³¹cz przy starcie:</Caption>
+         </component>
+         <component name='cbEnforceContainer'>
+            <Caption>Wymuœ obiekt kontenera</Caption>
+         </component>
+         <component name='cbIdObject'>
+            <Caption>Identyfikcja obiektu</Caption>
+         </component>
+         <component name='cbSmartDelete'>
+            <Caption>Usuwanie w trybie Smart</Caption>
+         </component>
+         <component name='cbTemplateAutoload'>
+            <Caption>Automatycznie ³aduj szablon podczas edycji</Caption>
+         </component>
+         <component name='cbTemplateExtensions'>
+            <Caption>Pozwól, aby szablon rozszerza³ funkcjonalnoœæ okna dialogowego</Caption>
+         </component>
+         <component name='cbTemplateIcons'>
+            <Caption>Ikona szablonu</Caption>
+         </component>
+         <component name='cbTemplateProperties'>
+            <Caption>U¿yj szablonów jako w³aœciwoœæ obiektu</Caption>
+         </component>
+         <component name='CheckAssocCbk'>
+            <Caption>Zawsze sprawdzaj powi¹zania</Caption>
+         </component>
+         <component name='GroupBox1'>
+            <Caption>Drzewo LDAP</Caption>
+         </component>
+         <component name='GroupBox2'>
+            <Caption>Pliki</Caption>
+         </component>
+         <component name='GroupBox3'>
+            <Caption>Startup</Caption>
+         </component>
+         <component name='GroupBox4'>
+            <Caption>Szukaj</Caption>
+         </component>
+         <component name='GroupBox5'>
+            <Caption>Opcje</Caption>
+         </component>
+         <component name='GroupBox6'>
+            <Caption>Jêzyk</Caption>
+         </component>
+         <component name='GroupBox7'>
+            <Caption>Kodowanie</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Katalog Szablonów:</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Filtr szybkiego szukania:</Caption>
+         </component>
+         <component name='Label3'>
+            <Caption>Tabela kodowania znaków:</Caption>
+         </component>
+         <component name='Label4'>
+            <Caption>Filtr:</Caption>
+         </component>
+         <component name='Label5'>
+            <Caption>Katalog plików:</Caption>
+         </component>
+         <component name='OKBtn'>
+            <Caption>OK</Caption>
+         </component>
+         <component name='SetDefBtn'>
+            <Caption>Ustaw jako domyœln¹ przegl¹darkê LDAP</Caption>
+         </component>
+         <component name='TabSheet1'>
+            <Caption>Aplikcje</Caption>
+         </component>
+         <component name='TabSheet2'>
+            <Caption>Szablony</Caption>
+         </component>
+         <component name='TabSheet3'>
+            <Caption>Lokalizacja</Caption>
+         </component>
+      </ConfigDlg>
+      <ConnListFrm>
+         <Caption>Po³¹czenia</Caption>
+         <component name='Splitter1'/>
+         <component name='AccountsView'>
+            <columns>
+               <column>
+                  <caption>Baza</caption>
+               </column>
+               <column>
+                  <caption>u¿ytkownik</caption>
+               </column>
+               <column>
+                  <caption>Nazwa</caption>
+               </column>
+               <column>
+                  <caption>Host</caption>
+               </column>
+            </columns>
+         </component>
+         <component name='ActCopyAccount'>
+            <Caption>Kopiuj...</Caption>
+            <Hint>Kopiuj konto</Hint>
+         </component>
+         <component name='ActDeleteAccount'>
+            <Caption>Delete</Caption>
+            <Hint>skasuj konto</Hint>
+         </component>
+         <component name='ActDeleteStrorage'>
+            <Caption>Skasuj Magazyn</Caption>
+            <Hint>Skasuj plik magazynu</Hint>
+         </component>
+         <component name='ActNewAccount'>
+            <Caption>Nowy...</Caption>
+            <Hint>Utwórz nowe konto</Hint>
+         </component>
+         <component name='ActNewStorage'>
+            <Caption>New storage</Caption>
+            <Hint>Utworz nowy plik magazynu</Hint>
+         </component>
+         <component name='ActOpenStorage'>
+            <Caption>ActOpenStorage</Caption>
+            <Hint>Otwórz istniej¹cy plik magazynu</Hint>
+         </component>
+         <component name='ActPropertiesAccount'>
+            <Caption>W³aœciwoœci...</Caption>
+         </component>
+         <component name='ActRenameAccount'>
+            <Caption>Zmieñ</Caption>
+            <Hint>Zmieñ konto</Hint>
+         </component>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='OkBtn'>
+            <Caption>OK</Caption>
+         </component>
+         <component name='Panel2'>
+            <Caption>Panel2</Caption>
+         </component>
+         <component name='ToolBar2'>
+            <Caption>ToolBar2</Caption>
+         </component>
+         <component name='ToolButton2'>
+            <Caption>ToolButton2</Caption>
+         </component>
+         <component name='ToolButton5'>
+            <Caption>ToolButton5</Caption>
+         </component>
+         <component name='ViewBtn'>
+            <Caption>Lista</Caption>
+            <Hint>Zmieñ styl widoku</Hint>
+         </component>
+         <component name='vmLarge'>
+            <Caption>Du¿e ikony</Caption>
+         </component>
+         <component name='vmList'>
+            <Caption>Lista</Caption>
+         </component>
+         <component name='vmSmall'>
+            <Caption>Ma³e ikony</Caption>
+         </component>
+         <component name='vmTable'>
+            <Caption>Tabela</Caption>
+         </component>
+      </ConnListFrm>
+      <ConnPropDlg>
+         <Caption>W³aœciwoœci po³¹czenia</Caption>
+         <component name='AccountBox'>
+            <Caption> Konto </Caption>
+         </component>
+         <component name='btnAdd'>
+            <Caption>Dodaj</Caption>
+         </component>
+         <component name='btnRemove'>
+            <Caption>Usuñ</Caption>
+         </component>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='cbAnonymous'>
+            <Caption>Anonimowe po³¹czenie</Caption>
+         </component>
+         <component name='cbDerefAliases'>
+            <items>Nigdy,Kiedy_Szukam,Kiedy_Znajde,Zawsze</items>
+         </component>
+         <component name='cbReferrals'>
+            <items>W³¹cz,Wy³¹cz</items>
+         </component>
+         <component name='cbSASL'>
+            <Caption>SASL</Caption>
+         </component>
+         <component name='cbSSL'>
+            <Caption>SSL</Caption>
+         </component>
+         <component name='cbTLS'>
+            <Caption>TLS</Caption>
+         </component>
+         <component name='cbxPagedSearch'>
+            <Caption>Szukaj stronicowo</Caption>
+         </component>
+         <component name='cbxShowAttrs'>
+            <Caption>Poka¿ operacyjne atrybuty:</Caption>
+         </component>
+         <component name='ConnectionBox'>
+            <Caption> Po³¹czenie: </Caption>
+         </component>
+         <component name='FetchDnBtn'>
+            <Caption>Przechwyæ DNs</Caption>
+         </component>
+         <component name='GroupBox1'>
+            <Caption>Szukaj</Caption>
+         </component>
+         <component name='GroupBox2'>
+            <Caption>Polecane</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Nazwa Po³¹czenia:</Caption>
+         </component>
+         <component name='Label10'>
+            <Caption>Chase referrals:</Caption>
+         </component>
+         <component name='Label11'>
+            <Caption>Referral hops:</Caption>
+         </component>
+         <component name='Label13'>
+            <Caption>Limit wielkoœci:</Caption>
+         </component>
+         <component name='Label14'>
+            <Caption>Limit czasu:</Caption>
+         </component>
+         <component name='Label15'>
+            <Caption>Wielkoœæ strony:</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Host:</Caption>
+         </component>
+         <component name='Label3'>
+            <Caption>Port:</Caption>
+         </component>
+         <component name='Label4'>
+            <Caption>U¿ytkownik:</Caption>
+         </component>
+         <component name='Label5'>
+            <Caption>Has³o:</Caption>
+         </component>
+         <component name='Label6'>
+            <Caption>Baza:</Caption>
+         </component>
+         <component name='Label7'>
+            <Caption>Wersja:</Caption>
+         </component>
+         <component name='Label8'>
+            <Caption>Dereference aliases:</Caption>
+         </component>
+         <component name='OKBtn'>
+            <Caption>OK</Caption>
+         </component>
+         <component name='PasswordEd'>
+            <Hint>Ten magazyn nie pozwala na przechowywanie hase³</Hint>
+         </component>
+         <component name='rbGssApi'>
+            <Caption>GSS-API</Caption>
+         </component>
+         <component name='rbSimpleAuth'>
+            <Caption>Proste uwierzytelnienie</Caption>
+         </component>
+         <component name='TabSheet1'>
+            <Caption>Ogólny</Caption>
+         </component>
+         <component name='TabSheet2'>
+            <Caption>Opcje</Caption>
+         </component>
+         <component name='TabSheet3'>
+            <Caption>Atrybuty</Caption>
+         </component>
+         <component name='TestBtn'>
+            <Caption>Test po³¹czenia</Caption>
+         </component>
+         <component name='VersionCombo'>
+            <items>2,3</items>
+         </component>
+      </ConnPropDlg>
+      <CopyDlg>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Docelowy serwer:</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Nazwa Wpisu:</Caption>
+         </component>
+         <component name='OKBtn'>
+            <Caption>OK</Caption>
+         </component>
+      </CopyDlg>
+      <CustomMenuDlg>
+         <Caption>Dostosuj Menu</Caption>
+         <component name='btnCancel'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='btnOK'>
+            <Caption>OK</Caption>
+         </component>
+         <component name='cbAlt'>
+            <Caption>Alt</Caption>
+         </component>
+         <component name='cbCtrl'>
+            <Caption>Ctrl</Caption>
+         </component>
+         <component name='cbDefaultAction'>
+            <items>Wpis,U¿ytkownik,Komputer,Grupa,Lista Mailingowa,Tabela Transport,Jednosta Organizacyjna,Grupa o unikatowych nazwach</items>
+         </component>
+         <component name='cbShift'>
+            <Caption>Shift</Caption>
+         </component>
+         <component name='GroupBox1'>
+            <Caption> Akcja </Caption>
+         </component>
+         <component name='GroupBox2'>
+            <Caption>Hotkey</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Opcje:</Caption>
+         </component>
+         <component name='mbAddItem'>
+            <Caption>Dodaj element</Caption>
+         </component>
+         <component name='mbAddSeparator'>
+            <Caption>Dodaj separator</Caption>
+         </component>
+         <component name='mbAddSubmenu'>
+            <Caption>Dodaj podmenu</Caption>
+         </component>
+         <component name='mbDelete'>
+            <Caption>Usuñ...</Caption>
+         </component>
+         <component name='mbTest'>
+            <Caption>Test</Caption>
+         </component>
+         <component name='rbDefaultAction'>
+            <Caption>DomyœlnaAkcja</Caption>
+         </component>
+         <component name='rbDisabled'>
+            <Caption>Wy³¹czone</Caption>
+         </component>
+         <component name='rbTemplate'>
+            <Caption>Szablon</Caption>
+         </component>
+      </CustomMenuDlg>
+      <EditEntryFrm>
+         <component name='ActBinView'>
+            <Caption>Podgl¹d danych binarnych...</Caption>
+         </component>
+         <component name='ActCertView'>
+            <Caption>Podgl¹d Certyfikatu...</Caption>
+         </component>
+         <component name='ActClose'>
+            <Caption>Zamknij bez zapisywania</Caption>
+         </component>
+         <component name='ActCopy'>
+            <Caption>Kopiuj</Caption>
+         </component>
+         <component name='ActCopyName'>
+            <Caption>Kopiuj nazwê atrybutu</Caption>
+         </component>
+         <component name='ActCopyValue'>
+            <Caption>Kopiuj wartoœæ</Caption>
+         </component>
+         <component name='ActCut'>
+            <Caption>Wytnij</Caption>
+         </component>
+         <component name='ActDelete'>
+            <Caption>Usuñ</Caption>
+         </component>
+         <component name='ActDeleteRow'>
+            <Caption>Usuñ wiersz</Caption>
+         </component>
+         <component name='ActFindInSchema'>
+            <Caption>Szukaj schematu...</Caption>
+         </component>
+         <component name='ActLoadFile'>
+            <Caption>£aduj z pliku...</Caption>
+         </component>
+         <component name='ActPaste'>
+            <Caption>Wklej</Caption>
+         </component>
+         <component name='ActPicView'>
+            <Caption>Podgl¹d zdjêcia...</Caption>
+         </component>
+         <component name='ActSave'>
+            <Caption>Zapisz i wyjdŸ</Caption>
+         </component>
+         <component name='ActSaveFile'>
+            <Caption>Zapisz do pliku ...</Caption>
+         </component>
+         <component name='ActSchemaCheck'>
+            <Caption>SprawdŸ schemat</Caption>
+         </component>
+         <component name='ActUndo'>
+            <Caption>Cofnij</Caption>
+         </component>
+         <component name='CopyBtn'>
+            <Hint>Kopiuj</Hint>
+         </component>
+         <component name='CutBtn'>
+            <Hint>Wytnij</Hint>
+         </component>
+         <component name='DeleteBtn'>
+            <Hint>Usuñ</Hint>
+         </component>
+         <component name='DeleteCellsBtn'>
+            <Hint>Usuñ wiersz</Hint>
+         </component>
+         <component name='ExitBtn'>
+            <Hint>WyjdŸ bez zapisywania</Hint>
+         </component>
+         <component name='Label1'>
+            <Caption>w:</Caption>
+         </component>
+         <component name='Label3'>
+            <Caption>Rdn:</Caption>
+         </component>
+         <component name='mbEdit'>
+            <Caption>Edycja</Caption>
+         </component>
+         <component name='mbFile'>
+            <Caption>Plik</Caption>
+         </component>
+         <component name='OcSheet'>
+            <Caption>Edycja</Caption>
+         </component>
+         <component name='Panel3'>
+            <Caption>Panel1</Caption>
+         </component>
+         <component name='PasteBtn'>
+            <Hint>Wklej</Hint>
+         </component>
+         <component name='SaveBtn'>
+            <Hint>Zapisz i wyjdŸ</Hint>
+         </component>
+         <component name='SchemaCheckBtn'>
+            <Hint>Pomoc schematów w³¹cz/wy³¹cz</Hint>
+         </component>
+         <component name='TemplateListBox'>
+            <items>Wszystko</items>
+         </component>
+         <component name='TemplateSheet'>
+            <Caption>Szablony</Caption>
+         </component>
+         <component name='ToolBar1'>
+            <Caption>PasekNarzêdzi1</Caption>
+         </component>
+         <component name='ToolBar2'>
+            <Caption>PasekNarzêdzi2</Caption>
+         </component>
+         <component name='ToolButton4'>
+            <Caption>PrzyciskNarzêdzi4</Caption>
+         </component>
+         <component name='ToolButton6'>
+            <Caption>PrzyciskNarzêdzi6</Caption>
+         </component>
+         <component name='ToolButton8'>
+            <Caption>PrzyciskNarzêdzi8</Caption>
+         </component>
+         <component name='UndoBtn'>
+            <Hint>Cofnij</Hint>
+         </component>
+      </EditEntryFrm>
+      <ExportDlg>
+         <Caption>Eksport do pliku LDIF</Caption>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Nazwa pliku:</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Postêp:</Caption>
+         </component>
+         <component name='Label4'>
+            <Caption>Eksportuj:</Caption>
+         </component>
+         <component name='Label5'>
+            <Caption>Eksportowanie:</Caption>
+         </component>
+         <component name='OKBtn'>
+            <Caption>OK</Caption>
+         </component>
+         <component name='SubDirsCbk'>
+            <Caption>Za³¹cz podkatalogi</Caption>
+         </component>
+      </ExportDlg>
+      <GroupDlg>
+         <Caption>Utwórz Grupê</Caption>
+         <component name='AddUserBtn'>
+            <Caption>Dodaj</Caption>
+         </component>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='cbBuiltin'>
+            <items>Administratorzy Domeny,U¿ytkownicy Domeny,Goœcie Domeny</items>
+         </component>
+         <component name='cbSambaGroup'>
+            <Caption>Mapowanie domeny Samba</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Nazwa Grupy:</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Opis:</Caption>
+         </component>
+         <component name='Label3'>
+            <Caption>Domena Samby:</Caption>
+         </component>
+         <component name='Label4'>
+            <Caption>NT-Rid:</Caption>
+         </component>
+         <component name='Label5'>
+            <Caption>Wyœwietlana nazwa:</Caption>
+         </component>
+         <component name='OkBtn'>
+            <Caption>OK</Caption>
+         </component>
+         <component name='RadioGroup1'>
+            <Caption>Group type:</Caption>
+            <items>Grupa_domenowa,Grupa_lokalna,Grupa_wbudowana:</items>
+         </component>
+         <component name='RemoveUserBtn'>
+            <Caption>Usuñ</Caption>
+         </component>
+         <component name='TabSheet1'>
+            <Caption>Cz³onkowie</Caption>
+         </component>
+         <component name='TabSheet2'>
+            <Caption>Samba</Caption>
+         </component>
+         <component name='UserList'>
+            <columns>
+               <column>
+                  <caption>Œcie¿ka</caption>
+               </column>
+               <column>
+                  <caption>Nazwa</caption>
+               </column>
+            </columns>
+         </component>
+      </GroupDlg>
+      <HexView>
+         <Caption>HexWidok</Caption>
+         <component name='Button2'>
+            <Caption>Zamknij</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Dziesiêtny:</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Adres:</Caption>
+         </component>
+         <component name='Label3'>
+            <Caption>Dwójkowy:</Caption>
+         </component>
+         <component name='Label4'>
+            <Caption>Wielkoœæ:</Caption>
+         </component>
+         <component name='pbDecimal'>
+            <Caption>Widok Dziesiêtny</Caption>
+         </component>
+         <component name='pbHex'>
+            <Caption>Widok Szesnastkowy</Caption>
+         </component>
+      </HexView>
+      <HostDlg>
+         <Caption>Utwórz Host</Caption>
+         <component name='AddHostBtn'>
+            <Caption>Dodaj</Caption>
+         </component>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='DelHostBtn'>
+            <Caption>Usuñ</Caption>
+         </component>
+         <component name='EditHostBtn'>
+            <Caption>Edytuj</Caption>
+         </component>
+         <component name='GroupBox1'>
+            <Caption>Dodatkowe nazwy hosta: </Caption>
+         </component>
+         <component name='IPLabel'>
+            <Caption>Adres IP:</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Opis:</Caption>
+         </component>
+         <component name='NameLabel'>
+            <Caption>Nazwa Hosta:</Caption>
+         </component>
+         <component name='OKBtn'>
+            <Caption>OK</Caption>
+         </component>
+      </HostDlg>
+      <ImportDlg>
+         <Caption>Import z pliku LDIF</Caption>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='cbStopOnError'>
+            <Caption>Zatrzymaj gdy s¹ b³êdy</Caption>
+         </component>
+         <component name='DetailBtn'>
+            <Caption>Szczegó³y;</Caption>
+         </component>
+         <component name='errLabel'>
+            <Caption>B£¥D!</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Nazwa pliku:</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Postêp:</Caption>
+         </component>
+         <component name='Label5'>
+            <Caption>Importowanie:</Caption>
+         </component>
+         <component name='Label6'>
+            <Caption>Zapisz odrzucone rekordy do:</Caption>
+         </component>
+         <component name='OKBtn'>
+            <Caption>OK</Caption>
+         </component>
+      </ImportDlg>
+      <InputDlg>
+         <Caption>Dialog</Caption>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='OKBtn'>
+            <Caption>OK</Caption>
+         </component>
+      </InputDlg>
+      <LdapOpDlg>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='Message'>
+            <Caption>Wiadomoœæ</Caption>
+         </component>
+      </LdapOpDlg>
+      <ListViewDlg>
+         <component name='Panel1'/>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='ListView'>
+            <columns>
+               <column>
+                  <caption/>
+               </column>
+               <column>
+                  <caption/>
+               </column>
+            </columns>
+         </component>
+         <component name='OKBtn'>
+            <Caption>OK</Caption>
+         </component>
+      </ListViewDlg>
+      <LocalityDlg>
+         <Caption>Utwórz Lokalizacjê</Caption>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Opis:</Caption>
+         </component>
+         <component name='Label18'>
+            <Caption>Ulica:</Caption>
+         </component>
+         <component name='Label19'>
+            <Caption>Stan/Prowincja:</Caption>
+         </component>
+         <component name='NameLabel'>
+            <Caption>Nazwa:</Caption>
+         </component>
+         <component name='OKBtn'>
+            <Caption>OK</Caption>
+         </component>
+      </LocalityDlg>
+      <MailGroupDlg>
+         <Caption>Utwórz listê mailingow¹</Caption>
+         <component name='AddMailBtn'>
+            <Caption>Dodaj</Caption>
+         </component>
+         <component name='AddUserBtn'>
+            <Caption>Dodaj</Caption>
+         </component>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='DelMailBtn'>
+            <Caption>Usuñ</Caption>
+         </component>
+         <component name='EditMailBtn'>
+            <Caption>Edytuj</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Nazwa Grupy:</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Opis:</Caption>
+         </component>
+         <component name='Label3'>
+            <Caption>Przekazuj pocztê email do:</Caption>
+         </component>
+         <component name='OkBtn'>
+            <Caption>OK</Caption>
+         </component>
+         <component name='RemoveUserBtn'>
+            <Caption>Usuñ</Caption>
+         </component>
+         <component name='TabSheet1'>
+            <Caption>Cz³onkowie</Caption>
+         </component>
+         <component name='TabSheet2'>
+            <Caption>Adres E-Mail</Caption>
+         </component>
+         <component name='UserList'>
+            <columns>
+               <column>
+                  <caption>Œcie¿ka</caption>
+               </column>
+               <column>
+                  <caption>Nazwa</caption>
+               </column>
+            </columns>
+         </component>
+      </MailGroupDlg>
+      <MainFrm>
+         <component name='ViewSplitter'/>
+         <component name='ActAbout'>
+            <Caption>O...</Caption>
+         </component>
+         <component name='ActAlias'>
+            <Caption>Utwórz Alias...</Caption>
+         </component>
+         <component name='ActBookmark'>
+            <Caption>Zak³adki...</Caption>
+         </component>
+         <component name='ActConnect'>
+            <Caption>Po³¹cz...</Caption>
+            <Hint>Po³¹cz</Hint>
+         </component>
+         <component name='ActCopy'>
+            <Caption>Kopiuj</Caption>
+         </component>
+         <component name='ActCopyDn'>
+            <Caption>Kopiuj dn: do schowka</Caption>
+         </component>
+         <component name='ActCopyEntry'>
+            <Caption>Kopiuj...</Caption>
+         </component>
+         <component name='ActCopyName'>
+            <Caption>Kopiuj nazwê Atrybutu</Caption>
+         </component>
+         <component name='ActCopyValue'>
+            <Caption>Kopiuj wartoœæ</Caption>
+         </component>
+         <component name='ActCustomizeMenu'>
+            <Caption>Dostosuj menu...</Caption>
+         </component>
+         <component name='ActDeleteEntry'>
+            <Caption>Usuñ</Caption>
+            <Hint>Usuñ wpis</Hint>
+         </component>
+         <component name='ActDisconnect'>
+            <Caption>Roz³¹cz...</Caption>
+            <Hint>Roz³¹cz</Hint>
+         </component>
+         <component name='ActEditEntry'>
+            <Caption>Edytuj wpis...</Caption>
+            <Hint>Edytuj wpis</Hint>
+         </component>
+         <component name='ActEditValue'>
+            <Caption>Edytuj wartoœæ...</Caption>
+         </component>
+         <component name='ActEntries'>
+            <Caption>Poka¿ wpisy</Caption>
+         </component>
+         <component name='ActExit'>
+            <Caption>Wyjœcie</Caption>
+            <Hint>Wyjœcie</Hint>
+         </component>
+         <component name='ActExport'>
+            <Caption>Eksportuj...</Caption>
+         </component>
+         <component name='ActFindInSchema'>
+            <Caption>ZnajdŸ schemat...</Caption>
+         </component>
+         <component name='ActGoTo'>
+            <Caption>IdŸ do...</Caption>
+         </component>
+         <component name='ActIconView'>
+            <Caption>Ikony</Caption>
+         </component>
+         <component name='ActImport'>
+            <Caption>Importuj...</Caption>
+         </component>
+         <component name='ActListView'>
+            <Caption>Lista</Caption>
+         </component>
+         <component name='ActLocateEntry'>
+            <Caption>ZnajdŸ wpis (Szybkie szukanie)...</Caption>
+         </component>
+         <component name='ActModifySet'>
+            <Caption>Ustawienie modyfikacji</Caption>
+            <Hint>Modyfikuj wartoœæ atrybutów wielu obiektom</Hint>
+         </component>
+         <component name='ActMoveEntry'>
+            <Caption>Przenieœ...</Caption>
+         </component>
+         <component name='ActOptions'>
+            <Caption>Opcje...</Caption>
+         </component>
+         <component name='ActPassword'>
+            <Caption>Ustaw Has³o...</Caption>
+         </component>
+         <component name='ActPreferences'>
+            <Caption>Ustawienia sesji..</Caption>
+         </component>
+         <component name='ActProperties'>
+            <Caption>W³aœciwoœci...</Caption>
+            <Hint>Edycja w³aœciwoœci</Hint>
+         </component>
+         <component name='ActRefresh'>
+            <Caption>Odœwie¿</Caption>
+            <Hint>Odœwie¿</Hint>
+         </component>
+         <component name='ActRenameEntry'>
+            <Caption>Zmieñ...</Caption>
+         </component>
+         <component name='ActSchema'>
+            <Caption>Schemat...</Caption>
+            <Hint>Podgl¹d schematów</Hint>
+         </component>
+         <component name='ActSearch'>
+            <Caption>Szukaj...</Caption>
+            <Hint>Szukaj</Hint>
+         </component>
+         <component name='ActSmallView'>
+            <Caption>Ma³e ikony</Caption>
+         </component>
+         <component name='ActValues'>
+            <Caption>Poka¿ wartoœci</Caption>
+         </component>
+         <component name='ActViewBinary'>
+            <Caption>Podgl¹d dwójkowy...</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Szukaj dla:</Caption>
+         </component>
+         <component name='mbEdit'>
+            <Caption>Edycja</Caption>
+         </component>
+         <component name='mbGetTemplates'>
+            <Caption>Zdob¹dŸ szablon...</Caption>
+         </component>
+         <component name='mbInfo'>
+            <Caption>Informacje...</Caption>
+         </component>
+         <component name='mbLanguage'>
+            <Caption>Jêzyk</Caption>
+         </component>
+         <component name='mbNew'>
+            <Caption>Nowy</Caption>
+         </component>
+         <component name='mbStart'>
+            <Caption>Start</Caption>
+         </component>
+         <component name='mbTools'>
+            <Caption>Narzêdzia</Caption>
+         </component>
+         <component name='mbView'>
+            <Caption>Podgl¹d</Caption>
+         </component>
+         <component name='mbViewStyle'>
+            <Caption>Podgl¹d stylu</Caption>
+         </component>
+         <component name='pbNew'>
+            <Caption>Nowy</Caption>
+         </component>
+         <component name='pbViewCert'>
+            <Caption>Podgl¹d certyfikatu...</Caption>
+         </component>
+         <component name='pbViewPicture'>
+            <Caption>Podgl¹d zdjêcia...</Caption>
+         </component>
+         <component name='RedoBtn'>
+            <Hint>Naprzód</Hint>
+         </component>
+         <component name='ToolBar'>
+            <Caption>WiêkszyPasekNarzêdzi</Caption>
+         </component>
+         <component name='ToolButton1'>
+            <Caption>PrzyciskNarzêdzi1</Caption>
+         </component>
+         <component name='ToolButton2'>
+            <Caption>PrzyciskNarzêdzi2</Caption>
+         </component>
+         <component name='ToolButton6'>
+            <Caption>PrzyciskNarzêdzi6</Caption>
+         </component>
+         <component name='UndoBtn'>
+            <Hint>Wstecz</Hint>
+         </component>
+         <component name='ValueListView'>
+            <columns>
+               <column>
+                  <caption>Typ</caption>
+               </column>
+               <column>
+                  <caption>Wielkoœæ</caption>
+               </column>
+               <column>
+                  <caption>Atrybut</caption>
+               </column>
+               <column>
+                  <caption>Wartoœæ</caption>
+               </column>
+            </columns>
+         </component>
+      </MainFrm>
+      <OuDlg>
+         <Caption>Utwórz jednostkê organizacyjn¹</Caption>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Opis:</Caption>
+         </component>
+         <component name='Label18'>
+            <Caption>Ulica:</Caption>
+         </component>
+         <component name='Label19'>
+            <Caption>Stan/Prowincja:</Caption>
+         </component>
+         <component name='Label24'>
+            <Caption>Kod pocztowy:</Caption>
+         </component>
+         <component name='Label31'>
+            <Caption>Miasto:</Caption>
+         </component>
+         <component name='NameLabel'>
+            <Caption>Nazwa:</Caption>
+         </component>
+         <component name='OKBtn'>
+            <Caption>OK</Caption>
+         </component>
+      </OuDlg>
+      <ParseErrDlg>
+         <Caption>Parsuj B³êdy</Caption>
+         <component name='btnClose'>
+            <Caption>Zamknij</Caption>
+         </component>
+      </ParseErrDlg>
+      <PasswordDlg>
+         <Caption>Ustaw Has³o</Caption>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='cbMethod'>
+            <items>Czysty_tekst,Unix_Crypt,MD5_Crypt,MD2,MD4,MD5,SHA1,SMD5,SSHA,SHA-256_Crypt,SHA-512_Crypt,RIPEMD-160</items>
+         </component>
+         <component name='cbPosixPassword'>
+            <Caption>Has³o POSIX</Caption>
+         </component>
+         <component name='cbSambaPassword'>
+            <Caption>Has³o SAMBA</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Nowe has³o:</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>PotwierdŸ has³o:</Caption>
+         </component>
+         <component name='lbMethod'>
+            <Caption>Metoda szyfrowania:</Caption>
+         </component>
+         <component name='OKBtn'>
+            <Caption>OK</Caption>
+         </component>
+      </PasswordDlg>
+      <PickAttributesDlg>
+         <Caption>Wybierz Atrybuty</Caption>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='DstLabel'>
+            <Caption>U¿yj:</Caption>
+         </component>
+         <component name='OKBtn'>
+            <Caption>OK</Caption>
+         </component>
+         <component name='SrcLabel'>
+            <Caption>Dostêpny:</Caption>
+         </component>
+      </PickAttributesDlg>
+      <PickupDlg>
+         <component name='FilterLbl'>
+            <Caption>Filtr:</Caption>
+         </component>
+      </PickupDlg>
+      <PrefDlg>
+         <Caption>Edit preferences</Caption>
+         <component name='BtnWizard'>
+            <Caption>Utwórz domyœlny...</Caption>
+         </component>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='cbExtendGroups'>
+            <items>Grupa_O_Unikatowej_Nazwie,Grupa_O_nazwie</items>
+         </component>
+         <component name='cbHomeDrive'>
+            <items>C:,D:,E:,F:,G:,H:,I:,J:,K:,L:,M:,N:,O:,P:,Q:,R:,S:,T:,U:,V:,W:,X:,Y:,Z:</items>
+         </component>
+         <component name='cbxExtendGroups'>
+            <Caption>Rozszerz grupê Posix o:</Caption>
+         </component>
+         <component name='cbxLMPasswords'>
+            <Caption>Has³o LANMAN</Caption>
+         </component>
+         <component name='gbDefaults'>
+            <Caption>Domyœlnie:</Caption>
+         </component>
+         <component name='gbGroupLimits'>
+            <Caption>Limit ID Grupy:</Caption>
+         </component>
+         <component name='gbGroups'>
+            <Caption>Grupy:</Caption>
+         </component>
+         <component name='gbID'>
+            <Caption>Tworznie ID:</Caption>
+            <items>Nie_twórz_ID_U¿ytkownikowi_i_grupie,Twórz_ID_U¿ytkownikowi_i_grupie_losowo(domyœlnie),Twórz_ID_U¿ytkownikowi_i_grupie_sekwencyjnie</items>
+         </component>
+         <component name='gbMailDefaults'>
+            <Caption>Domyœlne opcje:</Caption>
+         </component>
+         <component name='gbServer'>
+            <Caption>Serwer:</Caption>
+         </component>
+         <component name='gbUserLimits'>
+            <Caption>Limit ID u¿ytkownika:</Caption>
+         </component>
+         <component name='lblDisplayname'>
+            <Caption>Wyœwietl nazwê:</Caption>
+         </component>
+         <component name='lblDomainName'>
+            <Caption>Nazwa Domeny:</Caption>
+         </component>
+         <component name='lblFirstGid'>
+            <Caption>Pierwszy GID:</Caption>
+         </component>
+         <component name='lblFirstUId'>
+            <Caption>Pierwszy UID:</Caption>
+         </component>
+         <component name='lblHomeDir'>
+            <Caption>Domowy Katalog:</Caption>
+         </component>
+         <component name='lblHomeDrive'>
+            <Caption>Domowy Dysk:</Caption>
+         </component>
+         <component name='lblHomeShare'>
+            <Caption>Domowy udzia³:</Caption>
+         </component>
+         <component name='lblLastGid'>
+            <Caption>Ostatni GID:</Caption>
+         </component>
+         <component name='lblLastUid'>
+            <Caption>Ostatni UID:</Caption>
+         </component>
+         <component name='lblLoginShell'>
+            <Caption>Pow³oka logowania:</Caption>
+         </component>
+         <component name='lblMA'>
+            <Caption>Domyœlny adres email:</Caption>
+         </component>
+         <component name='lblMD'>
+            <Caption>Domyœlny katalog poczty:</Caption>
+         </component>
+         <component name='lblNetbios'>
+            <Caption>Nazwa NETBIOS:</Caption>
+         </component>
+         <component name='lblPosixGroup'>
+            <Caption>Groupa Posix:</Caption>
+         </component>
+         <component name='lblProfilePath'>
+            <Caption>Œcie¿ka profilu:</Caption>
+         </component>
+         <component name='lblScript'>
+            <Caption>Skrypt:</Caption>
+         </component>
+         <component name='lblUsername'>
+            <Caption>Nazwa U¿ytkownika:</Caption>
+         </component>
+         <component name='OkBtn'>
+            <Caption>OK</Caption>
+         </component>
+         <component name='rgRid'>
+            <Caption>Metoda RID</Caption>
+            <items>U¿yj_algorytmicznego_przyznawania_RID,U¿yj_sambaNextRid_do_generowania_RID</items>
+         </component>
+         <component name='SetBtn'>
+            <Caption>Ustaw...</Caption>
+         </component>
+         <component name='TabSheet1'>
+            <Caption>Domyœlna œcie¿ka</Caption>
+         </component>
+         <component name='TabSheet2'>
+            <Caption>Opcje</Caption>
+         </component>
+         <component name='tsID'>
+            <Caption>Ustawienia ID</Caption>
+         </component>
+         <component name='tsMAil'>
+            <Caption>Poczta</Caption>
+         </component>
+         <component name='tsPosix'>
+            <Caption>Posix</Caption>
+         </component>
+         <component name='tsSamba'>
+            <Caption>Samba</Caption>
+         </component>
+      </PrefDlg>
+      <PrefWizDlg>
+         <Caption>Kreator profilu</Caption>
+         <component name='Bevel4'/>
+         <component name='btnBack'>
+            <Caption>Wstecz</Caption>
+         </component>
+         <component name='btnCancel'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='btnNext'>
+            <Caption>Dalej</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Kliknij dalej, aby kontynuowaæ...</Caption>
+         </component>
+         <component name='Label11'>
+            <Caption>Wybierz format wyœwietlania nazwy:</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Ten kreator pomoga Ci w utworzeniu domyœlnych ustawieñ profilu dla tego po³¹czenia.</Caption>
+         </component>
+         <component name='Label3'>
+            <Caption>Wybierz format dla nazwy u¿ytkownika:</Caption>
+         </component>
+         <component name='Label4'>
+            <Caption>Wpisz nazwê NETBIOS serwera i nazwê domeny:</Caption>
+         </component>
+         <component name='Label5'>
+            <Caption>Nazwa NETBIOS serwera:</Caption>
+         </component>
+         <component name='Label6'>
+            <Caption>Nazwa domeny Samba:</Caption>
+         </component>
+         <component name='Label7'>
+            <Caption>Wpisz nazwê domeny email oraz katalog poczty (Tylko dla kont Postfix):</Caption>
+         </component>
+         <component name='Label8'>
+            <Caption>Domena poczty:</Caption>
+         </component>
+         <component name='Label9'>
+            <Caption>Katalog poczty serwera:</Caption>
+         </component>
+         <component name='ListView1'>
+            <columns>
+               <column>
+                  <caption>Ustawienia</caption>
+               </column>
+               <column>
+                  <caption>Przyk³ad</caption>
+               </column>
+               <column>
+                  <caption>Typ</caption>
+               </column>
+            </columns>
+            <items>
+               <item>
+                  <caption>Pierwsza litera nazwiska, Imiê</caption>
+                  <subitems>djohn,%L%f</subitems>
+               </item>
+               <item>
+                  <caption>Nazwisko</caption>
+                  <subitems>doe,%l</subitems>
+               </item>
+               <item>
+                  <caption>Imiê</caption>
+                  <subitems>john,%f</subitems>
+               </item>
+               <item>
+                  <caption>Imiê.Nazwisko</caption>
+                  <subitems>john.doe,%f.%l</subitems>
+               </item>
+               <item>
+                  <caption>Nazwisko.Imiê</caption>
+                  <subitems>doe.john,%l.%f</subitems>
+               </item>
+               <item>
+                  <caption>Pierwsza litera imienia, Nazwisko</caption>
+                  <subitems>jdoe,%F%l</subitems>
+               </item>
+            </items>
+         </component>
+         <component name='ListView2'>
+            <columns>
+               <column>
+                  <caption>Ustawienia</caption>
+               </column>
+               <column>
+                  <caption>Przyk³ad</caption>
+               </column>
+               <column>
+                  <caption>Typ</caption>
+               </column>
+            </columns>
+            <items>
+               <item>
+                  <caption>Pierwsza litera imienia.Nazwisko</caption>
+                  <subitems>J.Doe</subitems>
+               </item>
+               <item>
+                  <caption>Imiê, Nazwisko</caption>
+                  <subitems>John, Doe</subitems>
+               </item>
+               <item>
+                  <caption>Nazwisko, Imiê</caption>
+                  <subitems>Doe, John</subitems>
+               </item>
+            </items>
+         </component>
+      </PrefWizDlg>
+      <SambaAdvancedDlg>
+         <Caption>Advanced Samba settings</Caption>
+         <component name='TimePicker'/>
+         <component name='AddBtn'>
+            <Caption>Dodaj...</Caption>
+         </component>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='cbDomTrust'>
+            <Caption>Zaufane Konto Domenowe</Caption>
+         </component>
+         <component name='cbHomeReq'>
+            <Caption>Wymagany Katalog Domowy</Caption>
+         </component>
+         <component name='cbNoExpire'>
+            <Caption>Has³o nie wygasa</Caption>
+         </component>
+         <component name='cbServerTrust'>
+            <Caption>Zaufane Konto serwera</Caption>
+         </component>
+         <component name='FlagsGroup'>
+            <Caption>Dodatkowe flagi Samby:</Caption>
+         </component>
+         <component name='GroupBox1'>
+            <Caption>Konto Samba wygasa:</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Dozwolone stacje robocze:</Caption>
+         </component>
+         <component name='OKBtn'>
+            <Caption>OK</Caption>
+         </component>
+         <component name='rbAt'>
+            <Caption>W:</Caption>
+         </component>
+         <component name='rbNever'>
+            <Caption>Nigdy</Caption>
+         </component>
+         <component name='RemoveBtn'>
+            <Caption>Usuñ</Caption>
+         </component>
+      </SambaAdvancedDlg>
+      <SchemaDlg>
+         <Caption>Podgl¹d schematów</Caption>
+         <component name='btnClose'>
+            <Hint>Zamknij</Hint>
+         </component>
+         <component name='btnSave'>
+            <Hint>Eksportuj schemat</Hint>
+         </component>
+         <component name='Label1'>
+            <Caption>Szukaj:</Caption>
+         </component>
+         <component name='pmCopy'>
+            <Caption>Kopiuj</Caption>
+         </component>
+         <component name='pmOpen'>
+            <Caption>Otwórz</Caption>
+         </component>
+         <component name='pmOpenNewTab'>
+            <Caption>Otwórz w nowej zak³adce</Caption>
+         </component>
+         <component name='pmUndo'>
+            <Caption>Cofnij</Caption>
+         </component>
+         <component name='RedoBtn'>
+            <Hint>Dalej</Hint>
+         </component>
+         <component name='UndoBtn'>
+            <Hint>Wstcz</Hint>
+         </component>
+         <component name='WholeWordsCbx'>
+            <Caption>Tylko ca³e s³owa</Caption>
+         </component>
+      </SchemaDlg>
+      <SearchFrm>
+         <Caption>Szukaj</Caption>
+         <component name='ActClearAll'>
+            <Caption>Czyœæ wszystko</Caption>
+            <Hint>Wyczyœæ wszystkie rezulaty szukania</Hint>
+         </component>
+         <component name='ActClose'>
+            <Caption>Zamknij</Caption>
+            <Hint>Zamknij</Hint>
+         </component>
+         <component name='ActCopy'>
+            <Caption>Kopiuj...</Caption>
+         </component>
+         <component name='ActDelete'>
+            <Caption>Usuñ</Caption>
+         </component>
+         <component name='ActEdit'>
+            <Caption>Edytuj wpis...</Caption>
+            <Hint>Edytuj za pomoc¹ edytora wierszy</Hint>
+         </component>
+         <component name='ActGoto'>
+            <Caption>IdŸ do..</Caption>
+            <Hint>ZnajdŸ wpis w drzewie LDAP</Hint>
+         </component>
+         <component name='ActLoad'>
+            <Caption>£aduj</Caption>
+         </component>
+         <component name='ActMove'>
+            <Caption>Przenieœ...</Caption>
+         </component>
+         <component name='ActProperties'>
+            <Caption>W³aœciwoœci...</Caption>
+            <Hint>Edytuj w³aœciwoœci obiektu</Hint>
+         </component>
+         <component name='ActSave'>
+            <Caption>Zapisz</Caption>
+         </component>
+         <component name='ActSaveSelected'>
+            <Caption>Zapisz zaznaczone...</Caption>
+         </component>
+         <component name='ActStart'>
+            <Caption>Start:</Caption>
+            <Hint>Zacznij szukaæ</Hint>
+         </component>
+         <component name='btnDeleteRegEx'>
+            <Caption>Usuñ</Caption>
+         </component>
+         <component name='btnModify'>
+            <Caption>Zmieñ</Caption>
+            <Hint>Zmieñ</Hint>
+         </component>
+         <component name='btnSaveRegEx'>
+            <Caption>Zapisz</Caption>
+         </component>
+         <component name='btnSearch'>
+            <Caption>Szukaj</Caption>
+            <Hint>Szukaj</Hint>
+         </component>
+         <component name='cbDerefAliases'>
+            <items>Nigdy,Podczas_szukania,Po_znalezieniu,Zawsze</items>
+         </component>
+         <component name='cbSearchLevel'>
+            <items>Tylko_ten_wpis,Nastêpny_poziom,Ca³e_poddrzewo</items>
+         </component>
+         <component name='cbxReCase'>
+            <Caption>WielkoœæLiterZnaczenie </Caption>
+         </component>
+         <component name='cbxReGreedy'>
+            <Caption>Tryb chciwoœci</Caption>
+         </component>
+         <component name='cbxReMultiline'>
+            <Caption>DopasujWieloliniowo</Caption>
+         </component>
+         <component name='DeleteFilterBtn'>
+            <Caption>Usuñ</Caption>
+         </component>
+         <component name='edAttrBtn'>
+            <Caption>Edytuj...</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Filtr:</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Szukaj w:</Caption>
+         </component>
+         <component name='Label3'>
+            <Caption>Dereference aliases:</Caption>
+         </component>
+         <component name='Label4'>
+            <Caption>Atrybuty:</Caption>
+         </component>
+         <component name='Label5'>
+            <Caption>Œciezka:</Caption>
+         </component>
+         <component name='Label6'>
+            <Caption>Nazwa:</Caption>
+         </component>
+         <component name='Label7'>
+            <Caption>E-Mail:</Caption>
+         </component>
+         <component name='Label8'>
+            <Caption>Formu³a:</Caption>
+         </component>
+         <component name='PathBtn'>
+            <Caption>Przejrzyj...</Caption>
+         </component>
+         <component name='SaveFilterBtn'>
+            <Caption>Zapisz</Caption>
+         </component>
+         <component name='StartBtn'>
+            <Caption>Start</Caption>
+         </component>
+         <component name='TabSheet1'>
+            <Caption>Szukaj</Caption>
+         </component>
+         <component name='TabSheet2'>
+            <Caption>Niestandardowe</Caption>
+         </component>
+         <component name='TabSheet3'>
+            <Caption>Opcje</Caption>
+         </component>
+         <component name='TabSheet4'>
+            <Caption>Wyra¿enia regularne</Caption>
+         </component>
+         <component name='ToolBar1'>
+            <Caption>PasekNarzêdzi1</Caption>
+         </component>
+         <component name='ToolButton2'>
+            <Caption>PrzycikNarzêdzi2</Caption>
+         </component>
+         <component name='ToolButton7'>
+            <Caption>PrzycikNarzêdzi7</Caption>
+         </component>
+         <component name='ToolButton8'>
+            <Caption>PrzycikNarzêdzi8</Caption>
+         </component>
+      </SearchFrm>
+      <TransportDlg>
+         <Caption>Tabela Transport</Caption>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Serwer:</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Transport:</Caption>
+         </component>
+         <component name='OKBtn'>
+            <Caption>OK</Caption>
+         </component>
+      </TransportDlg>
+      <UserDlg>
+         <Caption>Utwórz u¿ytkownika</Caption>
+         <component name='AccountSheet'>
+            <Caption>Konto</Caption>
+         </component>
+         <component name='AddGroupBtn'>
+            <Caption>Dodaj</Caption>
+         </component>
+         <component name='AddMailBtn'>
+            <Caption>Dodaj</Caption>
+         </component>
+         <component name='BtnAdvanced'>
+            <Caption>Dodatkowe</Caption>
+         </component>
+         <component name='CancelBtn'>
+            <Caption>Anuluj</Caption>
+         </component>
+         <component name='cbAccntDisabled'>
+            <Caption>Konto jest wy³¹czone</Caption>
+         </component>
+         <component name='cbMail'>
+            <Caption>Konto poczty</Caption>
+         </component>
+         <component name='cbPwdCantChange'>
+            <Caption>U¿ytkownik nie mo¿e zmieniæ has³a</Caption>
+         </component>
+         <component name='cbPwdMustChange'>
+            <Caption>U¿ytkownik musi zmieniæ has³o, przy nastêpnym logowaniu</Caption>
+         </component>
+         <component name='cbSamba'>
+            <Caption>Konto Samba</Caption>
+         </component>
+         <component name='cbShadow'>
+            <Caption>Konto Shadow</Caption>
+         </component>
+         <component name='cbxGroups'>
+            <items>Wszystkie_Grupy,Grupy_Posix,Grupy_Samba,Grupy_Pocztowe</items>
+         </component>
+         <component name='DeleteJpegBtn'>
+            <Caption>Usuñ</Caption>
+         </component>
+         <component name='DelMailBtn'>
+            <Caption>Usuñ</Caption>
+         </component>
+         <component name='EditMailBtn'>
+            <Caption>Edytuj</Caption>
+         </component>
+         <component name='GroupBox1'>
+            <Caption>W³aœciwoœci konta</Caption>
+         </component>
+         <component name='GroupList'>
+            <columns>
+               <column>
+                  <caption>Opis</caption>
+               </column>
+               <column>
+                  <caption>Nazwa</caption>
+               </column>
+            </columns>
+         </component>
+         <component name='GroupSheet'>
+            <Caption>Cz³onkowie</Caption>
+         </component>
+         <component name='ImagePanel'>
+            <Caption>Obraz JPeg</Caption>
+         </component>
+         <component name='Label1'>
+            <Caption>Imiê:</Caption>
+         </component>
+         <component name='Label10'>
+            <Caption>Katalog poczty:</Caption>
+         </component>
+         <component name='Label11'>
+            <Caption>Adres email:</Caption>
+         </component>
+         <component name='Label12'>
+            <Caption>Gecos:</Caption>
+         </component>
+         <component name='Label13'>
+            <Caption>Udzia³ domowy:</Caption>
+         </component>
+         <component name='Label14'>
+            <Caption>Pow³oka logowania:</Caption>
+         </component>
+         <component name='Label15'>
+            <Caption>Pager:</Caption>
+         </component>
+         <component name='Label17'>
+            <Caption>Adres:</Caption>
+         </component>
+         <component name='Label18'>
+            <Caption>Ulica:</Caption>
+         </component>
+         <component name='Label19'>
+            <Caption>Stan/Prowincja:</Caption>
+         </component>
+         <component name='Label2'>
+            <Caption>Nazwisko:</Caption>
+         </component>
+         <component name='Label21'>
+            <Caption>Opis:</Caption>
+         </component>
+         <component name='Label22'>
+            <Caption>Telefon:</Caption>
+         </component>
+         <component name='Label23'>
+            <Caption>Fax:</Caption>
+         </component>
+         <component name='Label24'>
+            <Caption>Kod pocztowy:</Caption>
+         </component>
+         <component name='Label25'>
+            <Caption>Biuro:</Caption>
+         </component>
+         <component name='Label26'>
+            <Caption>Telefon:</Caption>
+         </component>
+         <component name='Label27'>
+            <Caption>Pozycja:</Caption>
+         </component>
+         <component name='Label28'>
+            <Caption>Telefon komórkowy:</Caption>
+         </component>
+         <component name='Label29'>
+            <Caption>Firma:</Caption>
+         </component>
+         <component name='Label3'>
+            <Caption>Wyœwietlana nazwa:</Caption>
+         </component>
+         <component name='Label30'>
+            <Caption>Fax:</Caption>
+         </component>
+         <component name='Label31'>
+            <Caption>Miasto:</Caption>
+         </component>
+         <component name='Label33'>
+            <Caption>Grupa podstawowa:</Caption>
+         </component>
+         <component name='Label34'>
+            <Caption>Cz³onek:</Caption>
+         </component>
+         <component name='Label35'>
+            <Caption>Min wa¿noœæ:</Caption>
+         </component>
+         <component name='Label36'>
+            <Caption>Domena:</Caption>
+         </component>
+         <component name='Label37'>
+            <Caption>Ostrze¿enie:</Caption>
+         </component>
+         <component name='Label38'>
+            <Caption>Ostatnia zmiana:</Caption>
+         </component>
+         <component name='Label39'>
+            <Caption>Max wa¿noœæ:</Caption>
+         </component>
+         <component name='Label4'>
+            <Caption>Nazwa u¿ytkownika:</Caption>
+         </component>
+         <component name='Label40'>
+            <Caption>Niekatywne:</Caption>
+         </component>
+         <component name='Label41'>
+            <Caption>Zdjêcie:</Caption>
+         </component>
+         <component name='Label5'>
+            <Caption>Inicja³y:</Caption>
+         </component>
+         <component name='Label6'>
+            <Caption>Skrypt:</Caption>
+         </component>
+         <component name='Label7'>
+            <Caption>Dysk Domowy:</Caption>
+         </component>
+         <component name='Label8'>
+            <Caption>Œciezka profilu:</Caption>
+         </component>
+         <component name='Label9'>
+            <Caption>Katalog domowy:</Caption>
+         </component>
+         <component name='MailSheet'>
+            <Caption>Poczta</Caption>
+         </component>
+         <component name='OfficeSheet'>
+            <Caption>Bizens</Caption>
+         </component>
+         <component name='OkBtn'>
+            <Caption>OK</Caption>
+         </component>
+         <component name='OpenPictureBtn'>
+            <Caption>Otwórz...</Caption>
+         </component>
+         <component name='PrimaryGroupBtn'>
+            <Caption>Ustaw...</Caption>
+         </component>
+         <component name='PrivateSheet'>
+            <Caption>Osobisty</Caption>
+         </component>
+         <component name='RadioGroup1'>
+            <Caption>Konto wygasa</Caption>
+            <items>Nigdy,W:</items>
+         </component>
+         <component name='RemoveGroupBtn'>
+            <Caption>Usuñ</Caption>
+         </component>
+         <component name='sambaHomeDrive'>
+            <items>C:,D:,E:,F:,G:,H:,I:,J:,K:,L:,M:,N:,O:,P:,Q:,R:,S:,T:,U:,V:,W:,X:,Y:,Z:</items>
+         </component>
+         <component name='SambaSheet'>
+            <Caption>Samba</Caption>
+         </component>
+         <component name='ShadowPropertiesGroup'>
+            <Caption>W³aœciwoœci Shadow</Caption>
+         </component>
+         <component name='ShadowSheet'>
+            <Caption>Shadow</Caption>
+         </component>
+      </UserDlg>
+      <ViewPicFrm>
+         <component name='ActCopy'>
+            <Hint>Kopiuj do schowa</Hint>
+         </component>
+         <component name='ActFitToPicture'>
+            <Hint>Dopasuj okno do wiekoœci obrazu</Hint>
+         </component>
+         <component name='ActLoadFromFile'>
+            <Hint>Za³aduj z pliku</Hint>
+         </component>
+         <component name='ActPaste'>
+            <Hint>Wklej ze schowka</Hint>
+         </component>
+         <component name='ActResize'>
+            <Hint>Zmieñ wiekoœæ okna do wielkoœci obrazu</Hint>
+         </component>
+         <component name='ActSave'>
+            <Hint>Zapisz zmiany i wyjdŸ</Hint>
+         </component>
+         <component name='ActSaveToFile'>
+            <Hint>Zapisz do pliku</Hint>
+         </component>
+         <component name='btnResize'>
+		    <Hint>Zmieñ wielkoœæ obrazu, aby pasowa³ do wiekoœci okna</Hint>
+         </component>
+         <component name='ToolButton2'>
+            <Caption>PrzyciskNarzêdzi2</Caption>
+         </component>
+         <component name='ToolButton3'>
+            <Caption>PrzyciskNarzêdzi3</Caption>
+         </component>
+         <component name='ToolButton5'>
+            <Caption>PrzyciskNarzêdzi5</Caption>
+         </component>
+      </ViewPicFrm>
+   </forms>
+   <strings>
+      <s1>Dodaj:</s1>
+      <s2>Dodaj adres</s2>
+      <s3>Wartosæ</s3>
+      <s4>Podgl¹d</s4>
+      <s5>Podgl¹d Obrazka: </s5>
+      <s6>Ostrze¿enia</s6>
+      <s7>Powtóz</s7>
+      <s8>Domena Samby</s8>
+      <s9>Uzyj poœwiadczeñ bie¿¹cego u¿ytkownika</s9>
+      <s10>Zapisz do LDAP</s10>
+      <s11>Baza szukania</s11>
+      <s12>Wynik szukania:</s12>
+      <s13>Wyberz katalog dla aliasu</s13>
+      <s14>Wybierz wpis</s14>
+      <s15>Serwer: %s</s15>
+      <s16>Ustaw has³o...</s16>
+      <s17>Pomiñ</s17>
+      <s18>Pomiñ wszystko</s18>
+      <s19>Sprytne usuwanie</s19>
+      <s20>Adres SMTP:</s20>
+      <s21>Nazwisko</s21>
+      <s22>Tekst</s22>
+      <s23>Nowe podmenu</s23>
+      <s24>Nowa wartoœæ</s24>
+      <s25>Dalej</s25>
+      <s26>Objectclass</s26>
+      <s27>OK</s27>
+      <s28>Stara wartoœæ</s28>
+      <s29>Operacja:</s29>
+      <s30>Katalog rodzica:</s30>
+      <s31>Has³o:</s31>
+      <s32>Œciezka: %s</s32>
+      <s33>Wybierz konta</s33>
+      <s34>Wybierz grupy</s34>
+      <s35>Przygotowuje...</s35>
+      <s36>Postêp:</s36>
+      <s37>W³aœciwoœci %s</s37>
+      <s38>Prywatny</s38>
+      <s39>Szesnastkowy:</s39>
+      <s40>Katalog Domowy</s40>
+      <s41>Nazwa Hosta:</s41>
+      <s42>Obraz</s42>
+      <s43>Informacja</s43>
+      <s44>Adres IP</s44>
+      <s45>Katalog poczty</s45>
+      <s46>Ok.</s46>
+      <s47>Pomiñ.</s47>
+      <s48>Wiêcej...</s48>
+      <s49>Przenieœ %s do...</s49>
+      <s50>Przenosze...</s50>
+      <s51>Nazwa</s51>
+      <s52>Nowy</s52>
+      <s53>Nowy wpis</s53>
+      <s54>Nowy element</s54>
+      <s55>Dziesiêtny:</s55>
+      <s56>Usuñ</s56>
+      <s57>Usuwam:</s57>
+      <s58>Opis</s58>
+      <s59>Szczegó³y</s59>
+      <s60>Edycja</s60>
+      <s61>Edytuj Adres</s61>
+      <s62>Edytuj Wpis</s62>
+      <s63>Edytuj Host</s63>
+      <s64>Edytuj Wartoœæ</s64>
+      <s65>Angielski</s65>
+      <s66>Wpisz now¹ wartoœæ:</s66>
+      <s67>Wpisz has³o</s67>
+      <s68>Enter rdn:</s68>
+      <s69>B³¹d</s69>
+      <s70>Koniec</s70>
+      <s71>Dodaj atrybut...</s71>
+      <s72>Nowe po³¹czenie</s72>
+      <s73>Dodaj Host</s73>
+      <s74>Dodaj wartoœæ</s74>
+      <s75>Po³¹czenie anonimowe</s75>
+      <s76>LDAP Admin</s76>
+      <s77>Atrybut</s77>
+      <s78>Nazwa atrybutu:</s78>
+      <s79>Dwójkowy</s79>
+      <s80>Przegl¹daj...</s80>
+      <s81>Anuluj</s81>
+      <s82>Certyfikat</s82>
+      <s83>Zamknij</s83>
+      <s84>Potwierdzenie</s84>
+      <s85>Kopiowanie...</s85>
+      <s86>Kopiuj %s do...</s86>
+      <s87>Nowy...</s87>
+      <s88>Wpis...</s88>
+      <s89>U¿ytkownik...</s89>
+      <s90>Komputer...</s90>
+      <s91>Grupa...</s91>
+      <s92>Lista Mailingowa...</s92>
+      <s93>Tabela Transport...</s93>
+      <s94>Jednostka Organizacyjna...</s94>
+      <s95>Host...</s95>
+      <s96>Lokalizacja...</s96>
+      <s97>Grupa o unikatowych nazwach...</s97>
+      <s98>Alias...</s98>
+      <s99>Z³y (Nie zamkniêty) parametr!</s99>
+      <s100>Nie zamkniêty string!</s100>
+      <s101>Nieznany typ wartoœci.\nkey:%s\nvalue:%s\&quot;</s101>
+      <s102>Niewspierana metoda autoryzacji: %s!</s102>
+      <s103>Niewspierany typ skrytu: </s103>
+      <s104>Przerwane przez U¿ytkownika!</s104>
+      <s105>Nie mo¿na zapisaæ tylko do odczytu!</s105>
+      <s106>Plik ldif, Format Windows (CR/LF) (*.ldif)|*.ldif|Ldif plik, Format Unix (LF only) (*.ldif)|*.ldif|CSV (Comma-separated) (*.csv)|*.csv|XML (*.xml)|*.xml</s106>
+      <s107>Plik tekstowy (*.txt)|*.txt</s107>
+      <s108>%s musi mieæ wartoœæ!</s108>
+      <s109>%s jest wymagane!</s109>
+      <s110>To konto zosta³o zablokowane przez serwer Samba! Czy chcesz usun¹æ flagê automatycznej blokady i w³¹czyæ konto?</s110>
+      <s111>Czytam: %d Pobieram objekt. Wciœnij ESC aby anulowaæ...</s111>
+      <s112>Szyfrowanie SASL nie mo¿e byæ u¿yte w po³¹czeniu SSL!</s112>
+      <s113>Nie mogê znaleœæ PodSchematuPodWpisu</s113>
+      <s114>Procedura mo¿e zostaæ zlokalizowana.</s114>
+      <s115>Ta w³asnoœæ nie jest zdarzeniem!</s115>
+      <s116>Nie wpisera tego zdarzenia!</s116>
+	  <s117>Nie wspierany typ paramteru!</s117>
+      <s118>Nie mo¿na ustawiæ konwersji do liczby ca³kowitej!</s118>
+      <s119>Aktywacja tej opcji mo¿e spowodowaæ znacz¹cy ruch w sieci przy du¿ych bazach u¿ytkownika. Chyba ¿e NAPRAWDE potrzebujesz sekwencyjnie, pozostaw domyœln¹ opcjê (losowo) w³¹czon¹!</s119>
+      <s120>%s\n\rPomin¹æ ten rekord?</s120>
+      <s121>Stop Nieudane negocjajca TLS! Po³¹czenie zostanie zamkniête spowodowane nie odtwarzalnym b³êdem.</s121>
+      <s122>format czasu</s122>
+      <s123>Za du¿o argumentów!</s123>
+      <s124>Nie mogê przeniœæ: ¯ród³owe i docelowe œce¿ki pokrywaj¹ siê!</s124>
+	  <s125>Vista lub wy¿ej, LDAPAdmin uruchomiony z podwy¿szonymi uprawnieniami aby ukoñczyæ tê operacjê!</s125>
+      <s126>B³¹d po³¹czenia: Nie mogê zlokalizowaæ aktywnych po³¹czeñ!</s126>
+      <s127>Nie sprawdzaj w przysz³oœci</s127>
+      <s128>Pula wyczerpana! Nie ma wiêcej dostêpnych wolnych ID dla %s!</s128>
+      <s129>Nale¿y wy³¹czyæ tworzenie id tylko jeœli u¿ywasz przyznawania id po stronie serwera! W przeciwnym razie nie bêdziesz w stanie stworzyæ ¿adnych u¿ytkowników lub grup.</s129>
+      <s130>Muisz podaæ unikatowy (rdn) dla tego wpisu!</s130>
+      <s131>Nie moge wczytaæ schamtu ldap</s131>
+      <s132>Nie wystarczaj¹ca liczba argumentów!</s132>
+      <s133>numer</s133>
+      <s134>%d objekt</s134>
+      <s135>Has³o nie pasuj¹!</s135>
+      <s136>Has³o dla : %s</s136>
+      <s137>W³aœciwoœæ jest tylko do odczytu!</s137>
+      <s138>Walidacja Regexp nie powid³a siê!</s138>
+      <s139>Przynajmniej jeden adres email musi zostaæ podany!</s139>
+      <s140>Line %d: Pusta linia nie mo¿e byæ z³o¿ona!</s140>
+      <s141>Wewnêtrzny B³¹d: Z³y model LDIF!</s141>
+      <s142>Linia %d: brakuje \&quot;:\&quot;.</s142>
+	  <s143>Linia %d: dn jest oczekiwana ale %s znaleziono!</s143>
+      <s144>Osi¹gniêto koniec pliku!</s144>
+      <s145>Z³a wartoœæ wersji: %s!</s145>
+      <s146>%d Objekt(s) nie mo¿e zostaæ zaimportowany!</s146>
+      <s147>Z³y URL!</s147>
+      <s148>Line %d: Z³a nazwa atrybutu, oczekujê \&quot;%s\&quot; ale znaleziono \&quot;%s\&quot;!</s148>
+      <s149>Line %d: Z³a zmiana typu \&quot;%s\&quot;!</s149>
+      <s150>Line %d: Z³a operacja \&quot;%s\&quot;!</s150>
+      <s151>Line %d: Oczekujê \&quot;%s\&quot; ale znaleziono \&quot;%s\&quot;!</s151>
+      <s152>%d Objekt(y) pomyœlnie zaimportowano!</s152>
+      <s153>Metoda URL nie jest wspierana!</s153>
+      <s154>Szablon nie mo¿e byæ pusty!</s154>
+      <s155>Szablon \&quot;%s\&quot; który jest przypisany do tek akcji nie mo¿e zostaæ zlokalizowany!</s155>
+      <s156>LDAPAdmin nie jest obecnie Twoj¹ domyœln¹ przegl¹dark¹ LDAP.\nCzy chcesz, aby zosta³ domyœln¹ przegl¹dark¹ LDAP?</s156>
+      <s157>Plik istnieje, nadpisaæ?</s157>
+      <s158>Nie mogê GetProcAddress z %s.</s158>
+	  <s159>Wybrana grupa Podstawowa nie jest grup¹ Samby albo nie mapuje do domeny u¿ytkownika.Czy chcesz nadal kontynuowaæ?</s159>
+      <s160>Musisz podaæ przynajmniej jeden adres email dla tej grupy!</s160>
+      <s161>Muisz podaæ nazwê tej grupy!</s161>
+      <s162>\&quot;%s\&quot; nie jest prawid³owe %s!</s162>
+      <s163>liczba calkowita</s163>
+      <s164>Z³y Index Argumentu: %d</s164>
+      <s165>Z³a wersja LDAP w lini komend: %s</s165>
+      <s166>Z³y lub nie wspierany typ filtru!</s166>
+      <s167>Z³a wartoœæ %s dla &lt;%s&gt;!</s167>
+      <s168>Z³y format czasu!</s168>
+      <s169>Z³y format URL!</s169>
+      <s170>B³¹d LDAP: %s!</s170>
+      <s171>B³ad LDAP! %s: %s.</s171>
+      <s172>Ten certyfikat jest samopodpisanym certyfikatem root.</s172>
+      <s173>Clasa %s nie znaleziona!</s173>
+      <s174>%d objekt(y) otrzymano.</s174>
+      <s175>%d podwpis</s175>
+      <s176>Usuñ wpis \&quot;%s\&quot;?</s176>
+      <s177>Usuñ konto \&quot;%s\&quot;?</s177>
+      <s178>Usuñ %d wpisy?</s178>
+      <s179>format czasu</s179>
+      <s180>\&quot;%s\&quot;\n\rTen wpis nie ejst pusty (zawiera dalsze odnogi). Usuñ wszystko rekurensywnie?</s180>
+      <s181>Usuñ ten element menu?</s181>
+      <s182>Usuñ to podmenu?</s182>
+      <s183>Atrybut %s jest wartoœci¹ imienn¹ tego wpisu! Czy chcesz go skasowaæ?</s183>
+      <s184>Skrót zosta³ ju¿ przydzielony jako element menu!</s184>
+      <s185>Pusty argument!</s185>
+      <s186>B³¹d przy wyci¹ganiu nazwy metody!</s186>
+      <s187>B³¹d ustawiania %s zdarzenia: %s Typ zdarzenie nie jest wspierany!</s187>
+      <s188>Po³¹czenie zosta³o nawi¹zane.</s188>
+      <s189>Czy chcesz przerwaæ skrypt?</s189>
+      <s190>Konto o tej nazwie ju¿ istnieje.\n\rCzy chcesz go nadpisaæ?</s190>
+      <s191>Musisz podaæ nazwê dla tego po³¹czenia!</s191>
+      <s192>Kopij %s do %s?</s192>
+      <s193>Przenieœ %s do %s?</s193>
+      <s194>Ten magazyn nie pozwala na przetrzymywanie hase³</s194>
+      <s195>Ten serwer u¿ywa certyfikatu, którego nie mo¿na zweryfikowaæ!\n\r\n\r%s\n\rCzy kontynuowaæ?</s195>
+      <s196>Nazwa certyfikatu nie pasuje do nazwy serwera!</s196>
+      <s197>Sprawdzanie podpisu nie powid³o siê!</s197>
+      <s198>Certyfikat wygas³, lub nie uzyska³ jeszcze wa¿noœci!</s198>
+      <s199>Wystawca certyfikatu nie zosta³ znaleziony</s199>
+      <s200>Nieznany</s200>
+      <s201>U¿ytkownik: %s</s201>
+      <s202>Nazwa u¿ytkownika</s202>
+      <s203>Dialog z u¿ytkownikiem</s203>
+      <s204>Plik \&quot;%s\&quot; nie jest plikiem konta administratora LDAP</s204>
+      <s205>Nie dobrze sformatowany plik XML.</s205>
+      <s206>Oczekujê \&quot;%s\&quot;, ale otrzymano \&quot;%s\&quot;</s206>
+      <s207>Nieoczekiwany tag zamykaj¹cy \&quot;%s\&quot;</s207>
+	  <s208>Zur Zeit ist kein Standard-Drucker gewählt</s208>
+      <s209>Menü '%s' wird bereits von einem anderen Formular benutzt</s209>
+      <s210>Grafik:</s210>
+      <s211> (%dx%d)</s211>
+      <s212>Vorschau</s212>
+	  <s213>AVI kann nicht geöffnet werden</s213>
+      <s214>Angedocktes Steuerelement muss einen Namen haben.</s214>
+      <s215>Fehler beim Entfernen des Steuerelements aus der Andock-Hierarchie</s215>
+      <s216> - Andockzone nicht gefunden</s216>
+      <s217> - Andockzone besitzt kein Steuerelement</s217>
+      <s218>Mehrfachauswahl muss für diese Funktion aktiviert sein</s218>
+      <s219>Separator</s219>
+      <s220>Fehler beim Setzen von %s.Count</s220>
+      <s221>Stil des Listenfeldes (%s) muss virtuell sein, damit Count gesetzt werden kann</s221>
+      <s222>Es wurde keine OnGetItem-Ereignisbehandlung zugewiesen</s222>
+      <s223>Inhaltsverzeichnis konnte nicht gefunden werden</s223>
+      <s224>Rechts</s224>
+      <s225>Nach unten</s225>
+      <s226>Einfg</s226>
+      <s227>Entf</s227>
+      <s228>Umsch+</s228>
+      <s229>Strg+</s229>
+      <s230>Alt+</s230>
+      <s231>(Ohne)</s231>
+      <s232>Wert muss zwischen %d und %d liegen</s232>
+      <s233>Wszyscy</s233>
+      <s234>Zeile kann nicht eingefügt werden</s234>
+      <s235>Ungültiges Format der Zwischenablage</s235>
+      <s236>Zwischenablage unterstützt keine Symbole</s236>
+      <s237>Zwischenablage kann nicht geöffnet werden</s237>
+      <s238>Vorgabe</s238>
+      <s239>Text überschreitet Memo-Kapazität</s239>
+      <s240>Wiederholen</s240>
+      <s241>Ignorieren</s241>
+      <s242>Wszyscy</s242>
+      <s243>Wszyscy Nie</s243>
+      <s244>Wszyscy Tak</s244>
+      <s245>Rück</s245>
+      <s246>Tab</s246>
+      <s247>Esc</s247>
+      <s248>Enter</s248>
+      <s249>Leerzeichen</s249>
+      <s250>BildAuf</s250>
+      <s251>BildAb</s251>
+      <s252>Ende</s252>
+      <s253>Start</s253>
+      <s254>Links</s254>
+      <s255>Nach oben</s255>
+      <s256>Metadateien</s256>
+      <s257>Erweiterte Metadateien</s257>
+      <s258>Symbole</s258>
+      <s259>Bitmaps</s259>
+      <s260>Ungültiger Eingabewert</s260>
+      <s261>Ungültiger Eingabewert. Mit der Taste ESC machen Sie die Änderungen rückgängig.</s261>
+      <s262>Warnung</s262>
+      <s263>Fehler</s263>
+      <s264>Informationen</s264>
+      <s265>Bestätigung</s265>
+      <s266>Tak</s266>
+      <s267>Nie</s267>
+      <s268>OK</s268>
+      <s269>Przerwij</s269>
+      <s270>Pomoc</s270>
+      <s271>Przerwij</s271>
+      <s272>Ausgewählter Drucker ist ungültig</s272>
+      <s273>%s an %s</s273>
+      <s274>GroupIndex kann nicht kleiner sein als der GroupIndex eines vorhergehenden Menüelementes</s274>
+      <s275>Formular kann nicht erstellt werden. Zur Zeit sind keine MDI-Formulare aktiv</s275>
+      <s276>Steuerelement kann nicht sich selbst als Vorfahr haben</s276>
+      <s277>OK</s277>
+      <s278>Przerwij</s278>
+      <s279>Tak</s279>
+      <s280>Nie</s280>
+      <s281>Pomoc</s281>
+      <s282>Schließen</s282>
+      <s283>Ignorieren</s283>
+      <s284>Wiederholen</s284>
+      <s285>Przerwij</s285>
+      <s285>Przerwij</s285>
+      <s286>Wszyscy</s286>
+      <s287>Formulare können nicht gezogen werden</s287>
+      <s288>Fehler beim Erstellen des Fenster-Gerätekontexts</s288>
+      <s289>Fehler beim Erzeugen einer Fensterklasse</s289>
+      <s290>Ein deaktiviertes oder unsichtbares Fenster kann nicht den Fokus erhalten</s290>
+      <s291>Element &apos;%s&apos; hat kein übergeordnetes Fenster</s291>
+      <s292>Das angegebene übergeordnete Element ist kein übergeordnetes Element von &apos;%s&apos;</s292>
+      <s293>Untergeordnetes MDI-Formular kann nicht verborgen werden</s293>
+      <s294>Eigenschaft Visible kann in OnShow oder OnHide nicht verändert werden</s294>
+      <s295>Aus einem sichtbaren Fenster kann kein modales gemacht werden</s295>
+      <s296>Eigenschaft Scrollbar außerhalb des zulässigen Bereichs</s296>
+      <s297>Eigenschaft %s außerhalb des gültigen Bereichs</s297>
+      <s298>Menüindex außerhalb des zulässigen Bereichs</s298>
+      <s299>Menü zweimal eingefügt</s299>
+      <s300>Untermenü ist nicht im Menü</s300>
+      <s301>Nicht genügend Timer verfügbar</s301>
+      <s302>Der Drucker druckt aktuell nicht</s302>
+      <s303>Druckvorgang läuft</s303>
+      <s304>Metadatei ist ungültig</s304>
+      <s305>Ungültiges Pixel-Format</s305>
+      <s306>Ungültiges Stream-Format</s306>
+      <s307>Bereichsüberschreitung bei Zeilenindex</s307>
+      <s308>Die Größe eines Symbols kann nicht geändert werden</s308>
+      <s309>Ungültige Operation für TOleGraphic</s309>
+      <s310>Unbekannte Bilddateierweiterung (.%s)</s310>
+      <s311>Format der Zwischenablage wird nicht unterstützt</s311>
+      <s312>Systemressourcen erschöpft.</s312>
+      <s313>Leinwand/Bild erlaubt kein Zeichnen</s313>
+      <s314>Ungültige Grafikgröße</s314>
+      <s315>Ungültige ImageList</s315>
+      <s316>Bild kann nicht ersetzt werden</s316>
+      <s317>Ungültiger ImageList-Index</s317>
+      <s318>ImageList-Daten konnten nicht aus dem Stream gelesen werden</s318>
+      <s319>ImageList-Daten konnten nicht in den Stream geschrieben werden</s319>
+      <s320>Eigenschaft kann nur gelesen werden</s320>
+      <s321>Erzeugung von Schlüssel %s misslungen</s321>
+      <s322>Fehler beim Holen der Daten für &apos;%s&apos;</s322>
+      <s323>Fehler beim Setzen der Daten für &apos;%s&apos;</s323>
+      <s324>Ressource %s wurde nicht gefunden</s324>
+      <s325>%s.Seek nicht implementiert</s325>
+      <s326>Operation für sortierte Listen nicht zulässig</s326>
+      <s327>Zu viele Zeilen oder Spalten gelöscht</s327>
+      <s328>%s befindet sich nicht in einer Gruppe für Klassenregistrierungen</s328>
+      <s329>Eigenschaft %s existiert nicht.</s329>
+      <s330>Stream-Schreibfehler</s330>
+      <s331>Registerindex außerhalb des zulässigen Bereichs</s331>
+      <s332>Position des Register ist nicht mit dem aktuellen Register-Stil kompatibel.</s332>
+      <s333>Register-Stil ist mit der aktuellen Position nicht kompatibel.</s333>
+      <s334>Bitmap ist ungültig</s334>
+      <s335>Ungültiges Symbol</s335>
+      <s336>Gitterindex außerhalb des zulässigen Bereichs</s336>
+      <s337>Ungültiges Stream-Format</s337>
+      <s338>&apos;&apos;%s&apos;&apos; ist kein gültiger Komponentenname</s338>
+      <s339>Ungültiger Eigenschaftswert</s339>
+      <s340>Ungültiges Eigenschaftselement: %s</s340>
+      <s341>Ungültiger Pfad für Eigenschaft</s341>
+      <s342>Ungültiger Eigenschaftstyp: %s</s342>
+      <s343>Ungültiger Eigenschaftswert</s343>
+      <s344>Ungültiger Datentyp für &apos;%s&apos;</s344>
+      <s345>Es können keine Zeilen des Tabellengitters gelöscht oder eingefügt werden</s345>
+      <s346>Kapazität der Liste ist erschöpft (%d)</s346>
+      <s347>Zu viele Einträge in der Liste (%d)</s347>
+      <s348>Listenindex überschreitet das Maximum (%d)</s348>
+      <s349>Expandieren des Speicher-Stream wegen Speichermangel nicht möglich</s349>
+      <s350>Fehler beim Lesen von %s%s%s: %s</s350>
+      <s351>Stream-Lesefehler</s351>
+      <s352>Vorfahr für &apos;%s&apos; nicht gefunden</s352>
+      <s353>%s kann nicht zu %s zugewiesen werden</s353>
+      <s354>Bits-Index außerhalb des zulässigen Bereichs</s354>
+      <s355>In einen zum Lesen geöffneten Ressourcen-Stream kann nicht geschrieben werden</s355>
+      <s356>CheckSynchronize wurde vom Thread $%x aufgerufen, der NICHT der Haupt-Thread ist.</s356>
+      <s357>Klasse %s nicht gefunden</s357>
+      <s358>Klasse mit der Bezeichnung %s existiert bereits</s358>
+      <s359>Liste gestattet keine doppelten Einträge ($0%x)</s359>
+      <s360>Komponente mit der Bezeichnung %s existiert bereits</s360>
+      <s361>In der Stringliste sind Duplikate nicht erlaubt</s361>
+      <s362>Datei \&quot;%s\&quot; kann nicht erstellt werden. %s</s362>
+      <s363>Die Anzahl fester Spalten muss kleiner sein als die Spaltenanzahl</s363>
+      <s364>Die Anzahl fester Zeilen muss kleiner sein als die Zeilenanzahl</s364>
+      <s365>Datei %s kann nicht geöffnet werden. %s</s365>
+      <s366>Gitter zu groß für Operation</s366>
+      <s367>Oktober</s367>
+      <s368>November</s368>
+      <s369>Dezember</s369>
+      <s370>So</s370>
+      <s371>Mo</s371>
+      <s372>Di</s372>
+      <s373>Mi</s373>
+      <s374>Do</s374>
+      <s375>Fr</s375>
+      <s376>Sa</s376>
+      <s377>Sonntag</s377>
+      <s378>Montag</s378>
+      <s379>Dienstag</s379>
+      <s380>Mittwoch</s380>
+      <s381>Donnerstag</s381>
+      <s382>Freitag</s382>
+      <s383>Samstag</s383>
+      <s384>Jun</s384>
+      <s385>Jul</s385>
+      <s386>Aug</s386>
+      <s387>Sep</s387>
+      <s388>Okt</s388>
+      <s389>Nov</s389>
+      <s390>Dez</s390>
+      <s391>Januar</s391>
+      <s392>Februar</s392>
+      <s393>März</s393>
+      <s394>April</s394>
+      <s395>Mai</s395>
+      <s396>Juni</s396>
+      <s397>Juli</s397>
+      <s398>August</s398>
+      <s399>September</s399>
+      <s400>Operation nicht unterstützt</s400>
+      <s401>Unerwarteter Variant-Fehler</s401>
+      <s402>Externe Exception %x</s402>
+      <s403>Auswertung von assert fehlgeschlagen</s403>
+      <s404>Schnittstelle nicht unterstützt</s404>
+      <s405>Exception in safecall-Methode</s405>
+      <s406>%s (%s, Zeile %d)</s406>
+      <s407>Abstrakter Fehler</s407>
+      <s408>Zugriffsverletzung bei Adresse %p in Modul &apos;%s&apos;. %s von Adresse %p</s408>
+      <s409>Systemfehler.  Code: %d.\r\n%s</s409>
+      <s410>Ein Aufruf einer Betriebssystemfunktion ist fehlgeschlagen</s410>
+      <s411>Jan</s411>
+      <s412>Feb</s412>
+      <s413>Mär</s413>
+      <s414>Apr</s414>
+      <s415>Mai</s415>
+      <s416>Kein Argument für Format &apos;%s&apos;</s416>
+      <s417>Variant-Methodenaufruf nicht unterstützt</s417>
+      <s418>Lesen</s418>
+      <s419>Schreiben</s419>
+      <s420>Fehler beim Erzeugen von Variante oder sicherem Array</s420>
+      <s421>Variante oder sicherer Array-Index außerhalb des gültigen Bereichs</s421>
+      <s422>Variante oder sicherer Array ist gesperrt</s422>
+      <s423>Ungültige Variant-Typumwandlung</s423>
+      <s424>Ungültige Variant-Operation</s424>
+      <s425>Ungültige NULL-Variant-Operation</s425>
+      <s426>Ungültige Variant-Operation (%s%.8x)\n%s</s426>
+      <s427>Variante des Typs (%s) konnte nicht in Typ (%s) konvertiert werden</s427>
+      <s428>Überlauf bei der Konvertierung einer Variante vom Typ (%s) in Typ (%s)</s428>
+      <s429>Variant-Überlauf</s429>
+      <s430>Ungültiges Argument</s430>
+      <s431>Ungültiger Variant-Typ</s431>
+      <s432>Integerüberlauf</s432>
+      <s433>Ungültige Gleitkommaoperation</s433>
+      <s434>Gleitkommadivision durch Null</s434>
+      <s435>Gleitkommaüberlauf</s435>
+      <s436>Gleitkommaunterlauf</s436>
+      <s437>Ungültige Zeigeroperation</s437>
+      <s438>Ungültige Typumwandlung</s438>
+      <s439>Zugriffsverletzung bei Adresse %p. %s von Adresse %p</s439>
+      <s440>Zugriffsverletzung</s440>
+      <s441>Stack-Überlauf</s441>
+      <s442>Strg+C gedrückt</s442>
+      <s443>Privilegierte Anweisung</s443>
+      <s444>Operation abgebrochen</s444>
+      <s445>Exception %s in Modul %s bei %p.\r\n%s%s\r\n</s445>
+      <s446>Anwendungsfehler</s446>
+      <s447>Format &apos;%s&apos; ungültig oder nicht kompatibel mit Argument</s447>
+      <s448>&apos;%s&apos; ist kein gültiger Integerwert</s448>
+      <s449>&apos;%s&apos; ist kein gültiger Gleitkommawert</s449>
+      <s450>&apos;%s&apos; ist keine gültige Datums- und Uhrzeitangabe</s450>
+      <s451>Ungültiges Argument zum Codieren der Uhrzeit</s451>
+      <s452>Ungültiges Argument zum Codieren des Datums</s452>
+      <s453>Zu wenig Arbeitsspeicher</s453>
+      <s454>E/A-Fehler %d</s454>
+      <s455>Datei nicht gefunden</s455>
+      <s456>Ungültiger Dateiname</s456>
+      <s457>Zu viele geöffnete Dateien</s457>
+      <s458>Dateizugriff verweigert</s458>
+      <s459>Versuch hinter dem Dateiende zu lesen</s459>
+      <s460>Zu wenig Speicherplatz</s460>
+      <s461>Ungültige numerische Eingabe</s461>
+      <s462>Division durch Null</s462>
+      <s463>Fehler bei Bereichsprüfung</s463>
+      <s464>%d ist ein ungültiger Wert für PageIndex. PageIndex muß zwischen 0 und %d liegen</s464>
+      <s465>Dieses Element benötigt COMCTL32.DLL in der Version 4.70 oder höher</s465>
+      <s466>Das Datum überschreitet das Maximum von %s</s466>
+      <s467>Das Datum unterschreitet das Minimum von %s</s467>
+      <s468>Um das Datum zu setzen, müssen Sie im Modus ShowCheckbox sein</s468>
+      <s469>Kalenderzeit oder -datum konnte nicht gesetzt werden</s469>
+      <s470>Der max. Auswahlbereich konnte nicht gesetzt werden</s470>
+      <s471>Der max./min. Bereich des Kalenders konnte nicht gesetzt werden</s471>
+      <s472>Der ausgewählte Bereich des Kalenders kann nicht gesetzt werden</s472>
+      <s473>Register-Element konnte nicht geleert werden</s473>
+      <s474>Registerseite mit Index %d konnte nicht gelöscht werden</s474>
+      <s475>Registerseite mit Index %d konnte nicht gelesen werden</s475>
+      <s476>Objekt mit Index %d konnte nicht gelesen werden</s476>
+      <s477>Registerseite &apos;%s&apos; mit Index %d konnte nicht gesetzt werden</s477>
+      <s478>Objekt mit Index %d konnte nicht gesetzt werden</s478>
+      <s479>Bei TabPosition tpLeft und tpRight muss MultiLine True sein</s479>
+      <s480>Ungültiger Index</s480>
+      <s481>Eintrag kann nicht eingefügt werden</s481>
+      <s482>Ungültiger Besitzer</s482>
+      <s483>Fehler bei Einfügen von RichEdit-Zeile</s483>
+      <s484>Das Laden des Streams ist misslungen</s484>
+      <s485>Das Speichern des Streams ist misslungen</s485>
+      <s486>%s ist bereits mit %s verknüpft</s486>
+      <s487>OLE-Fehler %.8x</s487>
+      <s488>Die Methode &apos;%s&apos; wird vom Automatisierungsobjekt nicht unterstützt</s488>
+      <s489>Variante referenziert kein Automatisierungsobjekt</s489>
+      <s490>Dispatch-Methoden unterstützen maximal 64 Parameter.</s490>
+      <s491>DCOM ist nicht installiert</s491>
+      <s492>JPEG-Grafikdatei</s492>
+      <s493>Die Größe einer JPEG-Grafik kann nicht verändert werden</s493>
+      <s494>JPEG-Fehler #%d</s494>
+      <s495>Aktivierung des OLE-Steuerelements misslungen</s495>
+      <s496>Das Fenster-Handle des OLE-Elements nicht verfügbar</s496>
+      <s497>Lizenz-Information für %s ist ungültig</s497>
+      <s498>Lizenz-Information für %s nicht gefunden. Sie können dieses Steuerelement im Entwurfsmodus nicht verwenden</s498>
+      <s499>Es kann kein Zeiger auf ein ausgeführtes Objekt geholt werden, dass mit OLE für %s/%s registriert ist</s499>
+      <s500>Für %s sind keine Hilfeinformationen vorhanden.</s500>
+      <s501>Keine kontextsensitive Hilfe installiert</s501>
+      <s502>Es ist keine themenbasierte Hilfe installiert.</s502>
+      <s503>Wybierz cz³onków</s503>
+   </strings>
+</lang>
