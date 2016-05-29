@@ -2409,8 +2409,6 @@ object MainFrm: TMainFrm
       Caption = '&Tools'
       object mbLanguage: TMenuItem
         Caption = '&Language'
-        Enabled = False
-        Visible = False
       end
       object N16: TMenuItem
         Caption = '-'

@@ -342,6 +342,7 @@ uses
 {$IFnDEF FPC}
   Shellapi, Lang,
 {$ELSE}
+  Lang,
 {$ENDIF}
   EditEntry, ConnList, Search, LdapOp, Constant, Export, Import, Prefs, Misc,
      LdapCopy, BinView, Input, ConfigDlg, Templates, TemplateCtrl,
@@ -491,8 +492,8 @@ var
       if CurrentLanguage = ACaption then
       begin
         Checked := true;
-        ///LanguageLoader.CurrentLanguage := ATag;
-        ///LanguageLoader.Translator.TranslateForm(Self);
+        LanguageLoader.CurrentLanguage := ATag;
+        LanguageLoader.Translator.TranslateForm(Self);
       end
       else
         Checked := AChecked;
@@ -500,11 +501,11 @@ var
   end;
 
 begin
-  ///if LanguageLoader.Count = 0 then
-  ///begin
+  if LanguageLoader.Count = 0 then
+  begin
     mbLanguage.Visible := false;
     exit;
-  ///end;
+  end;
 
   CurrentLanguage := GlobalConfig.ReadString(rLanguage);
 
@@ -513,9 +514,9 @@ begin
 
   AddMenuItem(cEnglish, -1, true);
 
-  ///with LanguageLoader do
-  ///  for i := 0 to Count - 1 do
-  ///    AddMenuItem(Languages[i], i);
+  with LanguageLoader do
+    for i := 0 to Count - 1 do
+      AddMenuItem(Languages[i], i);
 end;
 
 function TMainFrm.PickEntry(const ACaption: string): string;
@@ -1844,7 +1845,7 @@ var
   AStorage: TConfigStorage;
 begin
   InitTemplateMenu;
-  ///InitLanguageMenu;
+  InitLanguageMenu;
   GlobalConfig.CheckProtocol;
   // ComandLine params /////////////////////////////////////////////////////////
   if ParamCount <> 0 then
@@ -2254,9 +2255,9 @@ end;
 
 procedure TMainFrm.LanguageExecute(Sender: TObject);
 begin
-  exit ;
-  {
-  with (Sender as TMenuItem) do begin
+
+  with (Sender as TMenuItem) do
+  begin
     if Tag = LanguageLoader.CurrentLanguage then exit;
     if Tag = -1 then
       LanguageLoader.Translator.RestoreForm(Self);
@@ -2270,7 +2271,7 @@ begin
       GlobalConfig.WriteString(rLanguage, '');
     Checked := true;
   end;
-  }
+
 end;
 
 procedure TMainFrm.ActGoToExecute(Sender: TObject);
