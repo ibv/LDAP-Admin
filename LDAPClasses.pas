@@ -862,14 +862,12 @@ procedure TLdapSession.Search(const Filter, Base: string; const Scope: Cardinal;
 var
   attrs: PCharArray;
   len: Integer;
-  //i,j: Integer;
 begin
   attrs := nil;
   len := Length(QueryAttrs);
   SetLength(attrs, len + 1);
   if Len > 0 then
   begin
-    //SetLength(attrs, len + 1);
     attrs[len] := nil;
     repeat
       dec(len);
@@ -1143,7 +1141,8 @@ var
   {$ifdef mswindows}
   plmSearch, plmEntry: PLDAPMessage;
   {$else}
-  plmSearch, plmEntry: TLDAPsend;
+  plmSearch: TLDAPsend;
+  plmEntry: TLDAPResult;
   {$endif}
   attrs: PCharArray;
   ppcVals: PPCHAR;
@@ -1206,7 +1205,8 @@ var
   {$ifdef mswindows}
   plmSearch, plmEntry: PLDAPMessage;
   {$else}
-  plmSearch, plmEntry: TLDAPsend;
+  plmSearch: TLDAPsend;
+  plmEntry:  TLDAPResult;
   {$endif}
   attrs: PCharArray;
   ppcVals: PPCHAR;
@@ -1241,7 +1241,8 @@ var
   {$ifdef mswindows}
   plmSearch, plmEntry: PLDAPMessage;
   {$else}
-  plmSearch, plmEntry: TLDAPsend;
+  plmSearch: TLDAPsend;
+  plmEntry: TLDAPResult;
   {$endif}
   attrs: PCharArray;
 begin

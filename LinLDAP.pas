@@ -1294,22 +1294,27 @@ const
 
   procedure ldap_memfree(Block: PChar);
 
+  {
   function ldap_first_attribute(ld: TLDAPsend; entry: TLDAPsend;
            var ptr: PBerElement): PChar;
+  function ldap_next_attribute(ld: TLDAPsend; entry: TLDAPsend;
+           ptr: PBerElement): PChar;
+
   function ldap_get_values_len(ExternalHandle: TLDAPsend; Message: TLDAPsend;
-           attr: PChar): PPLDAPBerVal;
+                    attr: PChar): PPLDAPBerVal;
+  }
+  function ldap_get_values(ld: TLDAPsend; entry: TLDAPResult; attr: PChar): PPChar;
+
+
   function ldap_value_free_len(vals: PPLDAPBerVal): ULONG;
 
   procedure ber_free(var BerElement: PBerElement; fbuf: Integer);
 
-  function ldap_next_attribute(ld: TLDAPsend; entry: TLDAPsend;
-           ptr: PBerElement): PChar;
+  function ldap_first_entry(ld: TLDAPsend; res: TLDAPsend): TLDAPResult;
 
-  function ldap_first_entry(ld: TLDAPsend; res: TLDAPsend): TLDAPsend;
+  function ldap_get_dn(ld: TLDAPsend; entry: TLDAPResult): PChar;
 
-  function ldap_get_dn(ld: TLDAPsend; entry: TLDAPsend): PChar;
-
-  function ldap_next_entry(ld: TLDAPsend; entry: TLDAPsend): TLDAPsend;
+  function ldap_next_entry(ld: TLDAPsend; entry: TLDAPResult): TLDAPResult;
 
   function ldap_msgfree(res: TLDAPsend): ULONG;
 
@@ -1339,8 +1344,6 @@ const
 
   function ldap_delete_s(ld: TLDAPsend; dn: PChar): ULONG;
 
-  function ldap_get_values(ld: TLDAPsend; entry: TLDAPsend;
-           attr: PChar): PPChar;
 
   function ldap_start_tls_s( ExternalHandle: TLDAPsend; ServerReturnValue: PULONG;
                            res: PPLDAPMessage; ServerControls: PPLDAPControl;
@@ -1412,17 +1415,46 @@ begin
 
 end;
 
-
+{
 function ldap_first_attribute(ld: TLDAPsend; entry: TLDAPsend;
   var ptr: PBerElement): PChar;
 begin
   //result:=PChar(ldap.ldap_first_attribute(ld,entry,ptr));
 end;
 
+
+function ldap_next_attribute(ld: TLDAPsend; entry: TLDAPsend;
+  ptr: PBerElement): PChar;
+begin
+  //result:=PChar(ldap.ldap_next_attribute(ld,entry,ptr));
+end;
+
 function ldap_get_values_len(ExternalHandle: TLDAPsend; Message: TLDAPsend;
  attr: PChar): PPLDAPBerVal;
 begin
   //result:=PPLDAPBerVal(ldap.ldap_get_values_len(ExternalHandle,Message, @attr));
+end;
+}
+
+function ldap_get_values(ld: TLDAPsend; entry: TLDAPResult; attr: PChar): PPChar;
+var
+  i: integer;
+  LDAPAttr: TLDAPAttribute;
+  p: string;
+  a: PCharArray;
+begin
+  result:=nil;
+  LDAPAttr:=entry.Attributes.Find(attr);
+  if LDAPAttr<> nil then
+  begin
+    SetLength(a, LDAPAttr.Count+1);
+    for i:=0 to LDAPAttr.Count-1 do
+    begin
+      a[i]:=PChar(LDAPattr[i]);
+    end;
+    a[LDAPAttr.Count]:=nil;
+    result:=@a[0];
+  end;
 end;
 
 
@@ -1438,36 +1470,44 @@ begin
 end;
 
 
-function ldap_next_attribute(ld: TLDAPsend; entry: TLDAPsend;
-  ptr: PBerElement): PChar;
+
+
+function ldap_first_entry(ld: TLDAPsend; res: TLDAPsend): TLDAPResult;
 begin
-  //result:=PChar(ldap.ldap_next_attribute(ld,entry,ptr));
-end;
-
-
-function ldap_first_entry(ld: TLDAPsend; res: TLDAPsend): TLDAPsend;
-begin
-
-  if ld.SearchResult.Count = 1 then
+  result:=nil;
+  if (ld.SearchResult.Count > 0) and (ld.SearchResult[0].Attributes.Count > 0) then
   begin
-    if ld.SearchResult[0].Attributes.Count > 0 then
-    begin
-      ld.SearchResult.Items[0];
-    end;
+    result:=ld.SearchResult.Items[0];
   end;
   //result:=ldap.ldap_first_entry(ld,res);
 end;
 
 
-function ldap_get_dn(ld: TLDAPsend; entry: TLDAPsend): PChar;
+function ldap_next_entry(ld: TLDAPsend; entry: TLDAPResult): TLDAPResult;
+var
+  i: integer;
+begin
+  result:=nil;
+  if ld.SearchResult.Count =0 then exit;
+  i:=0;
+  while i < LD.SearchResult.Count-1 do
+  begin
+    if ld.SearchResult[i].ObjectName = entry.ObjectName then
+    begin
+      result:=ld.SearchResult[i+1];
+      break;
+    end;
+    inc(i);
+  end;
+  //result:=ldap.ldap_next_entry(ld,entry);
+end;
+
+
+function ldap_get_dn(ld: TLDAPsend; entry: TLDAPResult): PChar;
 begin
   //result:=PChar(ldap.ldap_get_dn(ld,entry));
 end;
 
-function ldap_next_entry(ld: TLDAPsend; entry: TLDAPsend): TLDAPsend;
-begin
-  //result:=ldap.ldap_next_entry(ld,entry);
-end;
 
 function ldap_msgfree(res: TLDAPsend): ULONG;
 begin
@@ -1611,12 +1651,6 @@ function ldap_delete_s(ld: TLDAPsend; dn: PChar): ULONG;
 begin
   ld.Delete(dn);
   result := ld.ResultCode;
-end;
-
-function ldap_get_values(ld: TLDAPsend; entry: TLDAPsend;
-  attr: PChar): PPChar;
-begin
-
 end;
 
 
