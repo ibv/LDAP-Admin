@@ -45,7 +45,7 @@ type
     Rdn: string;
   end;
 
-  TExpandNodeProc = procedure (Node: TTreeNode; Session: TLDAPSession) of object;
+  TExpandNodeProc = procedure (Node: TTreeNode; Session: TLDAPSession; TView: TTreeView) of object;
 
   { TCopyDlg }
 
@@ -200,6 +200,7 @@ begin
   cbConnections.Items.Objects[MainConnectionIdx] := Connection;
   fExpandNode := MainFrm.ExpandNode;
   ///fSortProc := @TreeSortProc;
+  ///fSortProc := MainFrm.TreeSortProc;
   TreeView.Images := MainFrm.ImageList;
   cbConnections.ItemIndex := MainConnectionIdx;
 
@@ -249,10 +250,11 @@ begin
   end;
   ddRoot := TreeView.Items.Add(nil, Format('%s [%s]', [Connection.Base, Connection.Server]));
   ddRoot.Data := TObjectInfo.Create(TLdapEntry.Create(Connection, Connection.Base));
-  fExpandNode(ddRoot, Connection);
+  fExpandNode(ddRoot, Connection, TreeView);
   ddRoot.ImageIndex := bmRoot;
   ddRoot.SelectedIndex := bmRoot;
   ///TreeView.CustomSort(@fSortProc, 0);
+  TreeView.CustomSort(MainFrm.TreeSortProc);
   ddRoot.Expand(false);
 end;
 
@@ -276,8 +278,9 @@ begin
     Items.BeginUpdate;
     ///Node.Item[0].Delete;
     Node.Items[0].Delete;
-    fExpandNode(Node, TargetConnection);
+    fExpandNode(Node, TargetConnection,Sender as TTreeView);
     ///CustomSort(@fSortProc, 0);
+    CustomSort(MainFrm.TreeSortProc);
   finally
     Items.EndUpdate;
   end;
@@ -336,5 +339,7 @@ begin
   CancelBtn.Left := Panel3.Width - CancelBtn.Width;
   OkBtn.Left := CancelBtn.Left - OkBtn.Width - 5;
 end;
+
+
 
 end.

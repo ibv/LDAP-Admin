@@ -13,9 +13,9 @@ Stable functions:
  * Browsing of LDAP directories
  * Schema browsing
  * LDIF export and import
+ * Copy/Move LDAP entry
  
 Unstable functions: 
- * Copy/Move LDAP entry
  * Template support
 
 Disabled functions: 

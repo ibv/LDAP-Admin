@@ -316,11 +316,12 @@ type
     procedure NewTemplateClick(Sender: TObject);
     procedure NewClick(Sender: TObject);
     procedure LanguageExecute(Sender: TObject);
+  public
     //--
     function TreeSortProc(Node1, Node2: TTreeNode): Integer;
     //--
-  public
-    procedure ExpandNode(Node: TTreeNode; Session: TLDAPSession);
+
+    procedure ExpandNode(Node: TTreeNode; Session: TLDAPSession; TView: TTreeView);
     procedure DoCopyMove(List: TStringList; TargetSession: TLdapSession; TargetDn, TargetRdn: string; Move: Boolean);
     procedure DoDelete(List: TStringList);
     function  ShowSchema: TSchemaDlg;
@@ -538,6 +539,10 @@ begin
   ddTree.ReadOnly := true;
   ddTree.OnExpanding := LDAPTreeExpanding;
   ddTree.OnDeletion := LDapTreeDeletion;
+  //
+  ddTree.ScrollBars:=ssAutoBoth;
+  ddTree.ExpandSignType:=tvestPlusminus;
+
 
   ddPanel := TPanel.Create(DirDlg);
   ddPanel.Parent := DirDlg;
@@ -568,7 +573,7 @@ begin
     Position := poMainFormCenter;
     ddRoot := ddTree.Items.Add(nil, Connection.Base);
     ddRoot.Data := TObjectInfo.Create(TLdapEntry.Create(Connection, Connection.Base));
-    ExpandNode(ddRoot, Connection);
+    ExpandNode(ddRoot, Connection, ddTree);
     ddRoot.ImageIndex := bmRoot;
     ddRoot.SelectedIndex := bmRootSel;
     ddRoot.Expand(false);
@@ -899,7 +904,7 @@ begin
   Result := not fEnforceContainer or TObjectInfo(ANode.Data).IsContainer;
 end;
 
-procedure TMainFrm.ExpandNode(Node: TTreeNode; Session: TLDAPSession);
+procedure TMainFrm.ExpandNode(Node: TTreeNode; Session: TLDAPSession; TView: TTreeView);
 var
   CNode: TTreeNode;
   i: Integer;
@@ -917,7 +922,8 @@ begin
     begin
       Entry := fSearchList[i];
       ObjectInfo := TObjectInfo.Create(Entry);
-      CNode := LDAPTree.Items.AddChildObject(Node, DecodeDNString(GetRdnFromDn(Entry.dn)), ObjectInfo);
+      ///CNode := LDAPTree.Items.AddChildObject(Node, DecodeDNString(GetRdnFromDn(Entry.dn)), ObjectInfo);
+      CNode := TView.Items.AddChildObject(Node, DecodeDNString(GetRdnFromDn(Entry.dn)), ObjectInfo);
       ClassifyEntry(ObjectInfo, CNode);
     end;
   finally
@@ -939,7 +945,7 @@ begin
     try
       Expanded := Node.Expanded;
       Node.DeleteChildren;
-      ExpandNode(Node, Connection);
+      ExpandNode(Node, Connection,LDAPTree);
       if Expanded or Expand then
         Node.Expand(false);
     finally
@@ -959,7 +965,7 @@ begin
       EntryListView.Items.Clear;
     Root := LDAPTree.Items.Add(nil, Format('%s [%s]', [Connection.Base, Connection.Server]));
     Root.Data := TObjectInfo.Create(TLdapEntry.Create(Connection, Connection.Base));
-    ExpandNode(Root, Connection);
+    ExpandNode(Root, Connection,LDAPTree);
     Root.ImageIndex := bmRoot;
     Root.SelectedIndex := bmRootSel;
     Root.Selected := true;
@@ -1096,7 +1102,7 @@ begin
   try
     Items.BeginUpdate;
     Node.Items[0].Delete;
-    ExpandNode(Node, Connection);
+    ExpandNode(Node, Connection, Sender as TTReeView);
   finally
     Items.EndUpdate;
   end;
@@ -1279,6 +1285,7 @@ var
   cnt: Integer;
   TargetData: TTargetData;
 begin
+
   Node := SelectedNode;
   if Assigned(Node) then
   begin
@@ -1286,7 +1293,11 @@ begin
     if EntryListView.Focused then
       cnt := EntryListView.SelCount;
     if ExecuteCopyDialog(Self, TObjectInfo(Node.Data).dn, cnt, Move, Connection, TargetData) then
+    begin
+      Application.ProcessMessages;
+      LDAPTree.SetFocus;
       CopySelection(TargetData.Connection, TargetData.Dn, TargetData.Rdn, Move);
+    end;
   end;
 end;
 
