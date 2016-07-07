@@ -27,7 +27,7 @@ unit Dsml;
 
 interface
 
-uses Xml, LDAPClasses, Classes;
+uses Xml, LdapClasses, Classes, TextFile;
 
 type
   TDsmlTree = class(TXmlTree)
@@ -35,8 +35,8 @@ type
     fEntries: TLdapEntryList;
   public
     constructor Create(Entries: TLdapEntryList); reintroduce;
-    procedure   LoadFromStream(const Stream: TStream); override;
-    procedure   SaveToStream(const Stream: TStream; StreamCallback: TStreamCallback = nil); override;
+    procedure   LoadFromStream(const Stream: TTextFile); override;
+    procedure   SaveToStream(const Stream: TTextFile; StreamCallback: TStreamCallback = nil); override;
   end;
 
 implementation
@@ -46,16 +46,16 @@ uses Sysutils, WinBase64;
 constructor TDsmlTree.Create;
 begin
   inherited Create;
-  Utf8 := true;
+  Encoding := feUTF8;
   fEntries := Entries;
 end;
 
-procedure TDsmlTree.LoadFromStream(const Stream: TStream);
+procedure TDsmlTree.LoadFromStream(const Stream: TTextFile);
 begin
   raise Exception.Create('Not implemented!');
 end;
 
-procedure TDsmlTree.SaveToStream(const Stream: TStream; StreamCallback: TStreamCallback = nil);
+procedure TDsmlTree.SaveToStream(const Stream: TTextFile; StreamCallback: TStreamCallback = nil);
 var
   i, j, k: Integer;
   OC: TLdapAttribute;
@@ -65,32 +65,31 @@ var
   var
     v: string;
   begin
-    if Value.DataType = dtBinary then
+    if Value.DataType <> dtText then
     begin
-      SetLength(v, Base64encSize(Value.DataSize));
-      Base64Encode(Pointer(Value.Data)^, Value.DataSize, v[1]);
+      v := Base64Encode(Pointer(Value.Data)^, Value.DataSize);
       Node.Attributes.Add('encoding=base64');
     end
     else
       v := Value.AsString;
-    Node.Add('value', v);
+    Node.Add('dsml:value', v);
   end;
-
 
 begin
     Markups := true;
     Root.Name := 'dsml:dsml';
     Root.Attributes.Add('xmlns:dsml=http://www.dsml.org/DSML');
+    with Root.Add('dsml:directory-entries') do
     for i := 0 to fEntries.Count - 1 do
     begin
-      with Root.Add('directory-entry') do
+      with Add('dsml:entry') do
       begin
         Attributes.Add('dn=' + fEntries[i].dn);
         { write objectclasses }
         OC := fEntries[i].AttributesByName['objectclass'];
-        if Assigned(OC) then with Add('objectclass') do
+        if Assigned(OC) then with Add('dsml:objectclass') do
           for j := 0 to OC.ValueCount - 1 do
-            Add('oc-value', OC[j].AsString);
+            Add('dsml:oc-value', OC[j].AsString);
         { write attributes }
         for j := 0 to fEntries[i].Attributes.Count - 1 do with fEntries[i].Attributes[j] do
         begin
@@ -98,7 +97,7 @@ begin
           begin
             if lowercase(Name) = 'objectclass' then
               Continue;
-            Node := Add('attr');
+            Node := Add('dsml:attr');
             Node.Attributes.Add('name=' + Name);
             for k := 0 to ValueCount - 1 do
               XmlAddValue(Node, Values[k]);

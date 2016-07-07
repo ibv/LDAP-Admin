@@ -75,11 +75,7 @@ implementation
 
 uses Math;
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 function TPickAttributesDlg.GetAttrs: string;
 var

@@ -65,11 +65,7 @@ implementation
 
 uses Misc, {$ifdef mswindows}WinLDAP{$else} LinLDAP{$endif};
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 procedure TLocalityDlg.Save;
 begin

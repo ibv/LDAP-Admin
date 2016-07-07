@@ -58,7 +58,7 @@ type
     FColumnNames:     TStringList;
     procedure         DoShow; override;
   public
-    constructor       CreateNew(AOwner: TComponent; Dummy: Integer = 0); override;
+    constructor       Create(AOwner: TComponent); override;
     destructor        Destroy; override;
 
     property          Images: TCustomImageList read GetImages write SetImages;
@@ -69,15 +69,11 @@ type
 
 implementation
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Constant, Main, Connection, SizeGrip;
 
-constructor TListViewDlg.CreateNew(AOwner: TComponent; Dummy: Integer);
+constructor TListViewDlg.Create(AOwner: TComponent);
 begin
   inherited;
   FColumnNames := TStringList.Create;

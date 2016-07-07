@@ -117,10 +117,11 @@ begin
     Dir := ExtractFileDir(Path) + '/';
     {$endif}
     with fFiles do
-    begin
+    try
       AddFile(Dir + sr.Name);
       while FindNextUTF8(sr) { *Converted from FindNext* } = 0 do
         AddFile(Dir + sr.Name);
+    finally
       FindCloseUTF8(sr); { *Converted from FindClose* }
     end;
   end;

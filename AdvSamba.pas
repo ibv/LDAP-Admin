@@ -83,11 +83,7 @@ implementation
 
 uses Pickup, Main, Misc, Constant;
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 constructor TSambaAdvancedDlg.Create(const AOwner: TComponent; const Session: TLdapSession; const SambaAccount: TSamba3Account);
 var

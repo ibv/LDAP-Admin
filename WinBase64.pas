@@ -102,6 +102,7 @@ function  Base64Encode(const InStr: AnsiString): AnsiString; overload;
 function  Base64Encode(const InBuf; const Length: Cardinal): AnsiString; overload;
 function  Base64DecSize(InBuf: AnsiString): Cardinal; overload;
 function  Base64Decode(const InBuf: AnsiString; var OutBuf): integer; overload;
+function  Base64Decode(const InBuf: AnsiString): AnsiString; overload;
 
 implementation
 
@@ -140,8 +141,8 @@ begin
         b24 := b24 shr 6;
         pOut^[1] := Byte(Base64Set[b24 and $3F]);
         pOut^[0] := Byte(Base64Set[b24 shr 6]);
-        inc(PCardinal(pIn), 3);
-        inc(PCardinal(pOut), 4);
+        inc(pByte(pIn), 3);
+        inc(pByte(pOut), 4);
     end;
 
     case pad of
@@ -188,7 +189,7 @@ begin
         pOut^[0] := b24.Bytes[2];
         pOut^[1] := b24.Bytes[1];
         pOut^[2] := b24.Bytes[0];
-        inc(PCardinal(pOut), 3);
+        inc(PByte(pOut), 3);
         b24.Dword := 0;
         Chars := 0;
       end;
@@ -233,7 +234,6 @@ begin
   Base64Encode(InStr[1], Len, Result[1]);
 end;
 
-
 function Base64decSize(InBuf: AnsiString): Cardinal; overload;
 var
   i: integer;
@@ -251,6 +251,15 @@ end;
 function Base64Decode(const InBuf: AnsiString; var OutBuf): Integer;
 begin
   Result := Base64Decode(InBuf[1], Length(InBuf), Outbuf);
+end;
+
+function  Base64Decode(const InBuf: AnsiString): AnsiString;
+var
+  vLen: Integer;
+begin
+  SetLength(Result, Base64decSize(Length(InBuf)));
+  vLen := Base64Decode(InBuf[1], Length(InBuf), Result[1]);
+  SetLength(Result, vLen);
 end;
 
 end.

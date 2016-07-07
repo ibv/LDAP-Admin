@@ -31,7 +31,7 @@ uses
 {$IFnDEF FPC}
   Windows,
 {$ELSE}
-  LCLIntf, LCLType, LMessages,
+  LCLIntf, LCLType,
 {$ENDIF}
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
      Buttons, ExtCtrls, Config, ComCtrls, LDAPClasses;
@@ -175,13 +175,9 @@ var
 
 implementation
 
-uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Constant, Math, Dialogs;
+uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Constant, Dialogs;
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 constructor TConnPropDlg.Create(AOwner: TComponent);
 begin
@@ -414,12 +410,16 @@ procedure TConnPropDlg.MethodChange(Sender: TObject);
 begin
   if AuthMethod = AUTH_SIMPLE then
   begin
+    cbSSL.Enabled := true;
+    cbTLS.Enabled := true;
     cbSASL.Checked := false;
     cbSASL.Enabled := false;
     cbAnonymous.Caption := cAnonymousConn;
   end
   else begin
     cbSASL.Enabled := true;
+    cbSSL.Enabled := false;
+    cbTLS.Enabled := false;
     cbAnonymous.Caption := cSASLCurrUser;
   end;
 end;
@@ -442,51 +442,6 @@ begin
     PasswordEd.Text:=FPass;
   end;
 end;
-
-(*
-procedure TConnPropDlg.FetchDnBtnClick(Sender: TObject);
-var
-  AList: TStringList;
-  ASession: TLDAPSession;
-  i,j: integer;
-
-begin
-  ASession:=TLDAPSession.Create;
-  AList:=TStringList.Create;
-  BaseEd.Items.Clear;
-  Asession.Server:=ServerEd.Text;
-  Asession.SSL:=SSL;
-  ASession.AuthMethod:=AuthMethod;
-  ASession.Port:= Port;
-  ASession.Version:=LDAP_VERSION3;
-  ASession.User := UserEd.Text;
-  ASession.Password := PasswordEd.Text;
-
-
-  try
-    ASession.Connect;
-    ASession.Search('objectClass=*','',LDAP_SCOPE_BASE,['namingContexts'],false,AList);
-    for i:=0 to AList.Count-1 do
-        begin
-            BaseEd.Items.Add(AList[i]);
-        end;
-    {
-    if BaseEd.Items.Count>0 then begin
-      BaseEd.Style:=csDropDown;
-      BaseEd.DroppedDown:=true;
-      //if BaseEd.Text='' then BaseEd.ItemIndex:=0;
-    end
-    else BaseEd.Style:=csSimple;
-    }
-    BaseEd.ItemIndex:=0;
-    ASession.Disconnect;
-  finally
-    Asession.Free;
-    AList.Free;
-  end;
-end;
-*)
-
 
 procedure TConnPropDlg.FetchDnBtnClick(Sender: TObject);
 var
@@ -512,23 +467,21 @@ begin
     for i:=0 to AList.Count-1 do
       for j:=0 to AList[i].AttributesByName['namingContexts'].ValueCount-1 do
         BaseEd.Items.Add(AList[i].AttributesByName['namingContexts'].Values[j].AsString);
-    {
+
     if BaseEd.Items.Count>0 then begin
       BaseEd.Style:=csDropDown;
       BaseEd.DroppedDown:=true;
       if BaseEd.Text='' then BaseEd.ItemIndex:=0;
     end
     else BaseEd.Style:=csSimple;
-    }
-    BaseEd.ItemIndex:=0;
+
+    ///BaseEd.ItemIndex:=0;
     ASession.Disconnect;
   finally
     Asession.Free;
     AList.Free;
   end;
 end;
-
-
 
 procedure TConnPropDlg.VersionComboChange(Sender: TObject);
 begin
@@ -549,6 +502,7 @@ begin
     ASession.Password   := self.Password;
     ASession.AuthMethod := self.AuthMethod;
     ASession.SSL        := Self.SSL;
+    ASession.TLS        := Self.TLS;
 
     Screen.Cursor:=crHourGlass;
     Asession.Connect;
@@ -644,11 +598,12 @@ end;
 procedure TConnPropDlg.cbSSLClick(Sender: TObject);
 begin
   if SSL then
-    PortEd.Text := IntToStr(LDAP_SSL_PORT)
+  begin
+    PortEd.Text := IntToStr(LDAP_SSL_PORT);
+    cbTLS.Checked := false;
+  end
   else
     PortEd.Text := IntToStr(LDAP_PORT);
-  cbTLS.Enabled := not SSL;
-  cbSasl.Enabled := not SSL;
 end;
 
 procedure TConnPropDlg.cbSASLClick(Sender: TObject);
@@ -658,14 +613,12 @@ begin
     cbSSL.Checked := false;
     cbTLS.Checked := false;
   end;
-  cbSSL.Enabled := not cbSASL.Checked;
-  cbTLS.Enabled := cbSSL.Enabled;
 end;
 
 procedure TConnPropDlg.cbTLSClick(Sender: TObject);
 begin
-  cbSSL.Enabled := not TLS;
-  cbSASL.Enabled := not TLS;
+  if TLS then
+    cbSSL.Checked := false;
 end;
 
 end.

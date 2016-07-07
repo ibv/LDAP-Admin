@@ -92,11 +92,7 @@ implementation
 
 uses Constant;
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 procedure THexView.ShowMemoryWindow;
 var

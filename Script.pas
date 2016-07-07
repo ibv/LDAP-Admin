@@ -36,9 +36,9 @@ uses
 {$IFnDEF FPC}
   ComObj, ActiveX, Windows,
 {$ELSE}
-  LCLIntf, LCLType, LMessages, Types,
+  LCLIntf, LCLType, Types,
 {$ENDIF}
-  Messages, SysUtils, Classes, TypInfo,
+   SysUtils, Classes, TypInfo,
   ScriptIntf, Contnrs, Controls;
 
 {$IFDEF VER130}
@@ -298,8 +298,8 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses {$IFDEF VARIANTS} variants, {$ENDIF} LDAPClasses, Misc, Dialogs, Constant,
-     Connection, StdCtrls;
+uses {$IFDEF VARIANTS} variants, {$ENDIF} LdapClasses, Misc, Dialogs, Constant,
+     Connection, StdCtrls {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 var
   lastScriptExceptionMessage: string;
@@ -479,12 +479,12 @@ var
         begin
           CallDesc.ArgTypes[TypeIdx] := varStrArg;
           Pointer(ParamPtr^) := TVarData(Param).vString;
-          Inc(Cardinal(ParamPtr^), SizeOf(Pointer));
+          Inc(PByte(ParamPtr), SizeOf(Pointer));
         end;
       varDispatch:
         begin
           Pointer(ParamPtr^) := TVarData(Param).vPointer;
-          Inc(Cardinal(ParamPtr^), SizeOf(Pointer));
+          Inc(PByte(ParamPtr), SizeOf(Pointer));
         end;
       else
         raise Exception.Create(stScriptParamType);
@@ -657,7 +657,7 @@ begin
       Item := FScript.FindScriptlet(S);
       if Item <> nil then
       begin
-        unkItem := Item;
+        unkItem := Pointer(Item);
         Result := S_OK;
       end;
     end;

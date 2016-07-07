@@ -1,5 +1,5 @@
   {      LDAPAdmin - Copy.pas
-  *      Copyright (C) 2005-2014 Tihomir Karlovic
+  *      Copyright (C) 2005-2016 Tihomir Karlovic
   *
   *      Author: Tihomir Karlovic
   *
@@ -45,7 +45,7 @@ type
     Rdn: string;
   end;
 
-  TExpandNodeProc = procedure (Node: TTreeNode; Session: TLDAPSession) of object;
+  TExpandNodeProc = procedure (Node: TTreeNode; Session: TLDAPSession; TView: TTreeView) of object;
 
   { TCopyDlg }
 
@@ -97,13 +97,9 @@ function ExecuteCopyDialog(Owner: TComponent; dn: string; Count: Integer; Move: 
 
 implementation
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
-uses Config, SizeGrip, Constant, ObjectInfo, Main;
+uses Registry, Config, SizeGrip, Constant, ObjectInfo, Misc, Main;
 
 function ExecuteCopyDialog(Owner: TComponent; dn: string; Count: Integer; Move: Boolean; Connection: TConnection; out TargetData: TTargetData): Boolean;
 begin
@@ -192,14 +188,23 @@ begin
       cbConnections.Items.AddObject(GlobalConfig.Storages[i].Accounts[j].Name, GlobalConfig.Storages[i].Accounts[j]);
   end;
 
+  for i := 0 to MainFrm.ConnectionCount - 1 do
+    if MainFrm.Connections[i] is TDBConnection then with TDBConnection(MainFrm.Connections[i]) do
+      cbConnections.Items.InsertObject(0, Account.Name, MainFrm.Connections[i]);
+
   SplitRdn(GetRdnFromDn(dn), RdnAttribute, v);
   edName.Text := v;
   MainConnectionIdx := cbConnections.Items.IndexOf(Connection.Account.Name);
   if MainConnectionIdx = -1 then
-    raise Exception.Create(stNoActiveConn);
+  begin
+    //raise Exception.Create(stNoActiveConn);
+    MainConnectionIdx := 0;
+    cbConnections.Items.Insert(0, cCurrentConn);
+  end;
   cbConnections.Items.Objects[MainConnectionIdx] := Connection;
   fExpandNode := MainFrm.ExpandNode;
   ///fSortProc := @TreeSortProc;
+  ///fSortProc := MainFrm.TreeSortProc;
   TreeView.Images := MainFrm.ImageList;
   cbConnections.ItemIndex := MainConnectionIdx;
 
@@ -249,10 +254,11 @@ begin
   end;
   ddRoot := TreeView.Items.Add(nil, Format('%s [%s]', [Connection.Base, Connection.Server]));
   ddRoot.Data := TObjectInfo.Create(TLdapEntry.Create(Connection, Connection.Base));
-  fExpandNode(ddRoot, Connection);
+  fExpandNode(ddRoot, Connection, TreeView);
   ddRoot.ImageIndex := bmRoot;
   ddRoot.SelectedIndex := bmRoot;
   ///TreeView.CustomSort(@fSortProc, 0);
+  TreeView.CustomSort(MainFrm.TreeSortProc);
   ddRoot.Expand(false);
 end;
 
@@ -262,7 +268,8 @@ var
 begin
   with cbConnections.Items do
   for i := 0 to Count - 1 do
-    if (i <> MainConnectionIdx) and (Objects[i] is TConnection)then
+    if (i <> MainConnectionIdx) and (Objects[i] is TConnection) and
+       (Objects[i] <> TargetConnection) then
       Objects[i].Free;
 end;
 
@@ -276,8 +283,9 @@ begin
     Items.BeginUpdate;
     ///Node.Item[0].Delete;
     Node.Items[0].Delete;
-    fExpandNode(Node, TargetConnection);
+    fExpandNode(Node, TargetConnection,Sender as TTreeView);
     ///CustomSort(@fSortProc, 0);
+    CustomSort(MainFrm.TreeSortProc);
   finally
     Items.EndUpdate;
   end;

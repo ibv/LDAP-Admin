@@ -1,5 +1,5 @@
   {      LDAPAdmin - Ldif.pas
-  *      Copyright (C) 2004-2007 Tihomir Karlovic
+  *      Copyright (C) 2004-2016 Tihomir Karlovic
   *
   *      Author: Tihomir Karlovic
   *
@@ -36,8 +36,9 @@ uses
   LDAPClasses, TextFile, Classes, SysUtils;
 
 const
-  SafeChar:     set of Char = [#$01..#09, #$0B..#$0C, #$0E..#$7F];
-  SafeInitChar: set of Char = [#$01..#09, #$0B..#$0C, #$0E..#$1F, #$21..#$39, #$3B, #$3D..#$7F];
+  SafeChar:     set of AnsiChar = [#$01..#09, #$0B..#$0C, #$0E..#$7F];
+  SafeInitChar: set of AnsiChar = [#$01..#09, #$0B..#$0C, #$0E..#$1F, #$21..#$39, #$3B, #$3D..#$7F];
+  MaxLineLength = 80;
 
 type
   TLdifMode =        (fmRead, fmWrite, fmAppend);
@@ -85,6 +86,8 @@ type
     function  GetNumRead: Integer;
     function  GetUnixWrite: Boolean;
     procedure SetUnixWrite(AValue: Boolean);
+    function  GetFileEncoding: TFileEncode;
+    procedure SetFileEncoding(AEncoding: TFileEncode);
   protected
     function  ReadLine: string; override;
     procedure WriteLine(const Line: string); override;
@@ -93,6 +96,7 @@ type
     destructor Destroy; override;
     property NumRead: Integer read GetNumRead;
     property UnixWrite: Boolean read GetUnixWrite write SetUnixWrite;
+    property Encoding: TFileEncode read GetFileEncoding write SetFileEncoding;
   end;
 
   TLDIFStringList = class(TLDIF)
@@ -109,14 +113,14 @@ type
 
 implementation
 
-uses Constant, WinBase64;
+uses Constant,Misc, WinBase64;
 
 { TLDIF }
 
 constructor TLDIF.Create;
 begin
   fRecord := TStringList.Create;
-  fWrap := 80;
+  fWrap := MaxLineLength;
 end;
 
 destructor TLDIF.Destroy;
@@ -157,6 +161,9 @@ var
   atName, atValue: string;
   ChangeType: TAttributeOpMode;
   OpType: TValueOpMode;
+  {$IFDEF UNICODE}
+  aOut: AnsiString;
+  {$ENDIF}
 
 function GetNextLine: Boolean;
 begin
@@ -223,7 +230,7 @@ begin
   if url <> '' then
     ReadFromUrl(url, Attr.AddValue)
   else
-    Attr.AddValue(Pointer(@atValue[1]), Length(atValue));
+    Attr.AddValue(Pointer(@AnsiString(atValue)[1]), Length(atValue));
 end;
 
 begin
@@ -236,7 +243,7 @@ begin
     begin
       // it has to be dn or version atribute
       if atName = 'dn' then
-        Entry.dn := atValue
+        Entry.Utf8dn := atValue
       else
       if atName = 'version' then
       try
@@ -348,17 +355,17 @@ end;
 { Tests whether data contains only safe chars }
 function TLDIF.IsSafe(const Buffer: PBytes; DataSize: Cardinal): Boolean;
 var
-  p: PChar;
-  EndBuf: PChar;
+  p: PAnsiChar;
+  EndBuf: PAnsiChar;
 begin
   Result := true;
-  p := PChar(Buffer);
+  p := PAnsiChar(Buffer);
   if not (p^ in SafeInitChar) then
   begin
     Result := false;
     exit;
   end;
-  ///EndBuf := PChar(cardinal(Buffer) + DataSize);
+  ///EndBuf := PAnsiChar(cardinal(Buffer) + DataSize);
   EndBuf := p + DataSize;
   while (p <> EndBuf) do
   begin
@@ -386,7 +393,7 @@ begin
     // Check if we need to encode to base64
     if IsSafe(Buffer, DataSize) then
     begin
-      SetString(s, PChar(Buffer), DataSize);
+      SetString(s, PAnsiChar(Buffer), DataSize);
       line := line + ' ' + s
     end
     else
@@ -433,7 +440,7 @@ procedure TLDIF.WriteRecord(Entry: TLdapEntry);
 var
   i, j: Integer;
 begin
-  PutLine('dn', @Entry.dn[1], Length(Entry.dn));
+  PutLine('dn', @Entry.utf8dn[1], Length(Entry.utf8dn));
   for i := 0 to Entry.Attributes.Count - 1 do with Entry.Attributes[i] do
     for j := 0 to ValueCount - 1 do with Values[j] do
       PutLine(Name, Data, DataSize);
@@ -455,6 +462,16 @@ end;
 procedure TLDIFFile.SetUnixWrite(AValue: Boolean);
 begin
   F.UnixWrite := AValue;
+end;
+
+function TLDIFFile.GetFileEncoding: TFileEncode;
+begin
+  Result := F.Encoding;
+end;
+
+procedure TLDIFFile.SetFileEncoding(AEncoding: TFileEncode);
+begin
+  F.Encoding := AEncoding;
 end;
 
 function TLDIFFile.ReadLine: string;
@@ -484,7 +501,7 @@ begin
       raise Exception.Create(stLdifEInvMode);
     end;
   except
-    ///RaiseLastWin32Error;
+    RaiseLastOSError;
   end;
 end;
 
@@ -517,3 +534,4 @@ begin
 end;
 
 end.
+

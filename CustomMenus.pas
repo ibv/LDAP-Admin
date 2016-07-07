@@ -152,7 +152,9 @@ function GetActionImage(ActionId: Integer): Integer;
 
 implementation
 
-uses Connection, Sysutils;
+{$I LdapAdmin.inc}
+
+uses Connection, Sysutils {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 const
   CONF_MENU    =    '\Menu\';

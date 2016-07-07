@@ -60,11 +60,7 @@ var
 
 implementation
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 uses {$ifdef mswindows}WinLDAP{$else} LinLDAP{$endif};
 

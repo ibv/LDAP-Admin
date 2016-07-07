@@ -64,11 +64,7 @@ implementation
 
 uses Math, Constant;
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 { TAccountCopyDlg }
 

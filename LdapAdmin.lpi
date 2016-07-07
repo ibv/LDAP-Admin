@@ -18,6 +18,12 @@
       <EnableI18N LFM="False"/>
     </i18n>
     <VersionInfo>
+      <UseVersionInfo Value="True"/>
+      <AutoIncrementBuild Value="True"/>
+      <MajorVersionNr Value="1"/>
+      <MinorVersionNr Value="7"/>
+      <BuildNr Value="3"/>
+      <Attributes pvaPreRelease="True"/>
       <StringTable ProductVersion=""/>
     </VersionInfo>
     <BuildModes Count="1">
@@ -93,7 +99,9 @@
       <Unit9>
         <Filename Value="PassDlg.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="PasswordDlg"/>
         <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
       </Unit9>
       <Unit10>
         <Filename Value="base64.pas"/>
@@ -113,12 +121,16 @@
       <Unit13>
         <Filename Value="Group.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="GroupDlg"/>
         <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
       </Unit13>
       <Unit14>
         <Filename Value="Computer.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="ComputerDlg"/>
         <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
       </Unit14>
       <Unit15>
         <Filename Value="Transport.pas"/>
@@ -147,7 +159,9 @@
       <Unit19>
         <Filename Value="Prefs.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="PrefDlg"/>
         <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
       </Unit19>
       <Unit20>
         <Filename Value="Samba.pas"/>
@@ -200,17 +214,23 @@
       <Unit29>
         <Filename Value="MailGroup.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="MailGroupDlg"/>
         <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
       </Unit29>
       <Unit30>
         <Filename Value="Host.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="HostDlg"/>
         <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
       </Unit30>
       <Unit31>
         <Filename Value="Locality.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="LocalityDlg"/>
         <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
       </Unit31>
       <Unit32>
         <Filename Value="LdapCopy.pas"/>
@@ -250,7 +270,9 @@
       <Unit39>
         <Filename Value="BinView.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="HexView"/>
         <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
       </Unit39>
       <Unit40>
         <Filename Value="AdvSamba.pas"/>
@@ -382,7 +404,9 @@
       <Unit69>
         <Filename Value="Alias.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="AliasDlg"/>
         <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
       </Unit69>
       <Unit70>
         <Filename Value="SizeGrip.pas"/>
@@ -438,7 +462,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="synapse"/>
+      <OtherUnitFiles Value="synapse;CRCHash"/>
       <UnitOutputDirectory Value="ppu"/>
       <ObjectPath Value="declib"/>
     </SearchPaths>
@@ -454,7 +478,6 @@
     <Linking>
       <Debugging>
         <UseHeaptrc Value="True"/>
-        <TrashVariables Value="True"/>
         <UseValgrind Value="True"/>
         <UseExternalDbgSyms Value="True"/>
       </Debugging>

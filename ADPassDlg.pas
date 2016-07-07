@@ -58,11 +58,7 @@ var
 
 implementation
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 uses {$IFnDEF FPC}ActiveDs_TLB,{$endif} adsie, Constant;
 

@@ -42,6 +42,10 @@ type
 
   TPrefWizDlg = class(TForm)
     Notebook: TNotebook;
+    Page1: TPage;
+    Page2: TPage;
+    Page3: TPage;
+    Page4: TPage;
     btnNext: TButton;
     btnBack: TButton;
     btnCancel: TButton;
@@ -73,11 +77,6 @@ type
     Panel6: TPanel;
     Bevel2: TBevel;
     Label7: TLabel;
-    Page1: TPage;
-    Page2: TPage;
-    Page3: TPage;
-    Page4: TPage;
-    Page5: TPage;
     procedure btnBackClick(Sender: TObject);
     procedure btnNextClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
@@ -98,11 +97,7 @@ implementation
 
 uses Constant;
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.dfm}
-{$ENDIF}
+{$R *.dfm}
 
 procedure TPrefWizDlg.btnBackClick(Sender: TObject);
 begin

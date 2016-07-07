@@ -126,17 +126,19 @@ type
   end;
 
 procedure DrawComboBtn(Canvas: TCanvas; Rect: TRect; BtnState: TBtnState);
-  
-implementation
 
-{$DEFINE XPSTYLE}
+implementation
+{$I LdapAdmin.inc}
+(*{$DEFINE XPSTYLE}
 
 {$IFDEF VER100} {$UNDEF XPSTYLE} {$ENDIF} //Delphi 3
 {$IFDEF VER120} {$UNDEF XPSTYLE} {$ENDIF} //Delphi 4
 {$IFDEF VER130} {$UNDEF XPSTYLE} {$ENDIF} //Delphi 5
-{$IFDEF VER140} {$UNDEF XPSTYLE} {$ENDIF} //Delphi 6
+{$IFDEF VER140} {$UNDEF XPSTYLE} {$ENDIF} //Delphi 6*)
+
 
 uses Forms, SysUtils,
+{$IFDEF VER_XEH}System.Types, {$ENDIF}
 {$IFDEF XPSTYLE}
  Themes,
 {$ENDIF}
@@ -554,7 +556,7 @@ begin
   FStyle := Value;
   if ItemIndex<0 then Text:=''
   else Text:=Items[ItemIndex];
-  RecreateWnd(Self); { *Converted from RecreateWnd* }
+  RecreateWnd(Self);{ *Převedeno z RecreateWnd* }
 
 end;
 

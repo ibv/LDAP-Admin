@@ -71,7 +71,7 @@ type
     fSortColumn:    Integer;
     fMarkRow:       Integer;
     fSortAsc:       boolean;
-    //--fOnDrawCell:    TDrawCellEvent;
+    ///fOnDrawCell:    TDrawCellEvent;
     fOnMouseDown:   TMouseEvent;
     fOnMouseUp:     TMouseEvent;
     fOnMouseMove:   TMouseMoveEvent;
@@ -101,12 +101,14 @@ type
 
 implementation
 
+{$I LdapAdmin.inc}
+
 uses
 {$IFnDEF FPC}
   CommCtrl,
 {$ELSE}
 {$ENDIF}
-  SysUtils;
+  SysUtils {$IFDEF VER_XEH}, System.Types, System.UiTypes{$ENDIF};
 
 { TListViewSorter }
 
@@ -397,7 +399,7 @@ begin
     fStringGrid.OnMouseDown := fOnMouseDown;
     fStringGrid.OnMouseUp := fOnMouseUp;
     fStringGrid.OnMouseMove := fOnMouseMove;
-    //--fStringGrid.OnDrawCell := fOnDrawCell;
+    ///fStringGrid.OnDrawCell := fOnDrawCell;
   end;
 
   fStringGrid := Value;
@@ -407,7 +409,7 @@ begin
   fOnMouseDown := fStringGrid.OnMouseDown;
   fOnMouseUp := fStringGrid.OnMouseUp;
   fOnMouseMove := fStringGrid.OnMouseMove;
-  //--fOnDrawCell := fStringGrid.OnDrawCell;
+  ///fOnDrawCell := fStringGrid.OnDrawCell;
   fStringGrid.OnMouseDown := MouseDown;
   fStringGrid.OnMouseUp := MouseUp;
   fStringGrid.OnMouseMove := MouseMove;

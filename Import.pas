@@ -89,13 +89,11 @@ var
 
 implementation
 
-uses Ldif, TextFile, Constant;
+{$I LdapAdmin.inc}
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+uses LDIF, TextFile, Constant{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+
+{$R *.dfm}
 
 constructor TImportDlg.Create(AOwner: TComponent; const ASession: TLDAPSession);
 begin
@@ -180,7 +178,7 @@ begin
             R.WriteLn('');
           except
             on E: EInOutError do
-              ///RaiseLastWin32Error
+              RaiseLastOSError
             else
               raise;
           end;

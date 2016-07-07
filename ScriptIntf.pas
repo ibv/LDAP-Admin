@@ -24,7 +24,7 @@ uses
 
 
 const
-  CATID_ActiveScript: TGUID = (
+  (*CATID_ActiveScript: TGUID = (
     D1:$F0B7A1A1; D2:$9847; D3:$11CF; D4:($8F,$20,$00,$80,$5F,$2C,$D0,$64));
   CATID_ActiveScriptParse: TGUID = (
     D1:$F0B7A1A2; D2:$9847; D3:$11CF; D4:($8F,$20,$00,$80,$5F,$2C,$D0,$64));
@@ -59,7 +59,7 @@ const
   IID_IActiveScriptProperty: TGUID = (
     D1:$4954E0D0; D2:$FBC7; D3:$11D1; D4:($84,$10,$00,$60,$08,$C3,$FB,$FC));
   IID_ITridentEventSink: TGUID = (
-    D1:$1DC9CA50; D2:$06EF; D3:$11D2; D4:($84,$15,$00,$60,$08,$C3,$FB,$FC));
+    D1:$1DC9CA50; D2:$06EF; D3:$11D2; D4:($84,$15,$00,$60,$08,$C3,$FB,$FC));*)
 
 // CoClasses that support the IActiveScript interface
 
@@ -193,7 +193,7 @@ const
   SCRIPTTHREADID_ALL     = TScriptThreadId(-3);
 
 const
-  SID_IActiveScriptError = '{EAE1BA61-A4ED-11CF-8F20-00805F2CD064}';
+  (*SID_IActiveScriptError = '{EAE1BA61-A4ED-11CF-8F20-00805F2CD064}';
   SID_IActiveScriptSite   = '{DB01A1E3-A42B-11CF-8F20-00805F2CD064}';
   SID_IActiveScriptSiteWindow = '{D10F6761-83E9-11CF-8F20-00805F2CD064}';
   SID_IActiveScriptSiteInterruptPoll = '{539698A0-CDCA-11CF-A5EB-00AA0047A063}';
@@ -207,7 +207,28 @@ const
   SID_IBindEventHandler = '{63CDBCB0-C1B1-11D0-9336-00A0C90DCAA9}';
   SID_IActiveScriptStats = '{B8DA6310-E19B-11D0-933C-00A0C90DCAA9}';
   SID_IActiveScriptProperty = '{4954E0D0-FBC7-11D1-8410-006008C3FBFC}';
-  SID_ITridentEventSink = '{1DC9CA50-06EF-11D2-8415-006008C3FBFC}';
+  SID_ITridentEventSink = '{1DC9CA50-06EF-11D2-8415-006008C3FBFC}';*)
+  SCATID_ActiveScript = '{F0B7A1A1-9847-11cf-8F20-00805F2CD064}';
+  SCATID_ActiveScriptParse = '{F0B7A1A2-9847-11cf-8F20-00805F2CD064}';
+  SID_IActiveScript =        '{BB1A2AE1-A4F9-11cf-8F20-00805F2CD064}';
+  {$IFDEF WIN64}
+    SID_IActiveScriptParse =  '{C7EF7658-E1EE-480E-97EA-D52CB4D76D17}';
+    SID_IActiveScriptParseProcedureOld ='{21F57128-08C9-4638-BA12-22D15D88DC5C}';
+    SID_IActiveScriptParseProcedure = '{C64713B6-E029-4CC5-9200-438B72890B6A}';
+    SID_IActiveScriptParseProcedure2 = '{FE7C4271-210c-448d-9f54-76dab7047b28}';
+    SID_IActiveScriptError =  '{B21FB2A1-5B8F-4963-8C21-21450F84ED7F}';
+  {$ELSE}
+    SID_IActiveScriptParse =  '{BB1A2AE2-A4F9-11cf-8F20-00805F2CD064}';
+    SID_IActiveScriptParseProcedureOld ='{1CFF0050-6FDD-11d0-9328-00A0C90DCAA9}';
+    SID_IActiveScriptParseProcedure =   '{AA5B6A80-B834-11d0-932F-00A0C90DCAA9}';
+    SID_IActiveScriptParseProcedure2 = '{71EE5B20-FB04-11D1-B3A8-00A0C911E8B2}';
+    SID_IActiveScriptError =     '{EAE1BA61-A4ED-11cf-8F20-00805F2CD064}';
+  {$ENDIF}
+  SID_IActiveScriptSite =        '{DB01A1E3-A42B-11cf-8F20-00805F2CD064}';
+  SID_IActiveScriptSiteWindow =  '{D10F6761-83E9-11cf-8F20-00805F2CD064}';
+  SID_IActiveScriptSiteInterruptPoll ='{539698A0-CDCA-11CF-A5EB-00AA0047A063}';
+  SID_IBindEventHandler =  '{63CDBCB0-C1B1-11d0-9336-00A0C90DCAA9}';
+  SID_IActiveScriptStats = '{B8DA6310-E19B-11d0-933C-00A0C90DCAA9}';
 
 { IActiveScriptError interface }
 

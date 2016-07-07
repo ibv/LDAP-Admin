@@ -22,30 +22,30 @@ unit md5crypt;
  * Adapted from shadow-19990607 by Tudor Bosman, tudorb@jm.nu
  */
 
- Ported to Pascal by Tihomir Karlovic 
+ Ported to Pascal by Tihomir Karlovic, as is, with all it's weirdness :-)
 
 }
 
 interface
 
-function md5_crypt(pw, salt: PChar): string;
+function md5_crypt_s(pw, salt: AnsiString): String;
 
 implementation
 
-uses {DECHash,} Sysutils;
+uses md5, Hash, Sysutils;
 
 const
- itoa64: array[0..63] of Char =		{ 0 ... 63 => ascii - 64 }
+ itoa64: array[0..63] of AnsiChar =		{ 0 ... 63 => ascii - 64 }
 	'./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
- magic = '$1$';	                 {
+ magic: AnsiString = '$1$';	                 {
 				 * This string is magic for
 				 * this algorithm.  Having
 				 * it this way, we can get
 				 * get better later on
 				 }
 
-procedure to64(s: PChar; v: Cardinal; n: Integer);
+procedure to64(s: PAnsiChar; v: Cardinal; n: Integer);
 begin
      while (n > 0) do
      begin
@@ -56,13 +56,12 @@ begin
      end;
 end;
 
-function is_md5_salt(const salt: PChar): Integer;
+function is_md5_salt(const salt: PAnsiChar): Integer;
 begin
-	//Result :=  not strlcomp(salt, magic, strlen(magic));
-	Result :=  not strlcomp(salt, magic, length(magic));
+	Result :=  not strlcomp(salt, PAnsiChar(magic), strlen(PAnsiChar(magic)));
 end;
 
-procedure Concat(var s: string; p: Pointer; Count: Integer);
+procedure Concat(var s: AnsiString; p: Pointer; Count: Integer);
 var
   l: Integer;
 begin
@@ -77,27 +76,20 @@ end;
  * Use MD5 for what it is best at...
  *}
 
-function md5_crypt(pw, salt: PChar): string;
+function md5_crypt(pw, salt: PAnsiChar): AnsiString;
 var
-	passwd: array[0..119] of Char;
-        p: PChar;
-	final: array[0..15] of Byte;
+	passwd: array[0..119] of AnsiChar;
+  p: PAnsiChar;
+  final: TMD5Digest;
 	pl,i: Integer;
 	l: Cardinal;
-        ///md1, md2: THash_MD5;
-        s1, s2: string;
+  s1, s2: AnsiString;
 begin
-
-	///md1 := THash_MD5.Create;
-        ///md2 := THash_MD5.Create;
 
         s1 := pw + magic + salt;
         s2 := '' + pw + salt + pw;
-        ///md2.Init;
-        ///md2.Calc(s2[1], Length(s2));
-        ///md2.Done;
+        MD5Full(final, @s2[1], Length(s2));
 
-        ///Move(md2.Digest^, final, md2.DigestSize);
         pl := strlen(pw);
         while pl > 0 do
         begin
@@ -109,24 +101,20 @@ begin
         end;
 
 	//* Don't leave anything around in vm they could use. */
-	FillChar(final,0,sizeof(final));
+	FillChar(final,sizeof(final),0);
 
 	//* Then something really weird... */
         i := strlen(pw);
         while i > 0 do
         begin
-		if (i and 1 <> 0) then
-                    s1 := s1 + #0
-		else
-                    s1 := s1 + pw[0];
-                i := i shr 1;
+		      if (i and 1 <> 0) then
+              s1 := s1 + #0
+		      else
+              s1 := s1 + pw[0];
+          i := i shr 1;
         end;
 
-        ///md1.Init;
-        ///md1.Calc(s1[1], Length(s1));
-        ///md1.Done;
-
-        ///Move(md1.Digest^, final, md1.DigestSize);
+        MD5Full(final, @s1[1], Length(s1));
 
        	{/*
 	 * and now, just to make sure things don't run too fast
@@ -136,7 +124,6 @@ begin
 	for i:=0 to 999 do
         begin
                 s2 := '';
-                ///md2.Init;
 		if i and 1 <> 0 then
                         s2 := s2 + pw
 		else
@@ -152,9 +139,7 @@ begin
                         Concat(s2, @final, 16)
 		else
                         s2 := s2 + pw;
-                ///md2.Calc(s2[1], Length(s2));
-                ///md2.Done;
-                ///Move(md2.Digest^, final, md2.DigestSize);
+                MD5Full(final, @s2[1], Length(s2));
 	end;
 
         p := passwd;
@@ -168,12 +153,14 @@ begin
 	p^ := #0;
 
 	//* Don't leave anything around in vm they could use. */
-	fillchar(final,0,sizeof(final));
-
-        ///md1.Free;
-        ///md2.Free;
+	fillchar(final,sizeof(final),0);
 
 	Result := magic + salt + '$' + passwd;
+end;
+
+function md5_crypt_s(pw, salt: AnsiString): String;
+begin
+  Result := string(md5_crypt(PAnsiChar(pw), PAnsiChar(salt)));
 end;
 
 end.

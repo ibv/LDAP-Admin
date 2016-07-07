@@ -139,13 +139,11 @@ function CustomizeMenu(AOwner: TComponent; AImageList: TImageList; Connection: T
 
 implementation
 
-uses Templates, Misc, SizeGrip, Constant;
+{$I LdapAdmin.inc}
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+uses Templates, Misc, SizeGrip, Constant{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+
+{$R *.dfm}
 
 function CustomizeMenu(AOwner: TComponent; AImageList: TImageList; Connection: TConnection): Boolean;
 var

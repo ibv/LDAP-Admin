@@ -31,9 +31,9 @@ uses
 {$IFnDEF FPC}
   Windows,
 {$ELSE}
-  LCLIntf, LCLType, LMessages,
+  LCLIntf, LCLType,
 {$ENDIF}
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls, ExtCtrls, Samba, Posix, LDAPClasses, Core, TemplateCtrl,
   Constant, Connection;
 
@@ -106,13 +106,9 @@ var
 
 implementation
 
-uses Pickup, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Input, Main, Templates, Misc, Config;
+uses Pickup, Templates, Config;
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 procedure TGroupDlg.EnableControls(const Controls: array of TControl; Color: TColor; Enable: Boolean);
 var

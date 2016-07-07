@@ -67,11 +67,7 @@ implementation
 
 uses Misc;
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 constructor TComputerDlg.Create(AOwner: TComponent; adn: string; AConnection: TConnection; AMode: TEditMode);
 var

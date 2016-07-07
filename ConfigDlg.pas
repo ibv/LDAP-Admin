@@ -1,5 +1,5 @@
   {      LDAPAdmin - ConfigDlg.pas
-  *      Copyright (C) 2006 Tihomir Karlovic
+  *      Copyright (C) 2006-2015 Tihomir Karlovic
   *
   *      Author: Tihomir Karlovic
   *
@@ -78,6 +78,7 @@ type
     GroupBox7: TGroupBox;
     TranscodingTable: TStringGrid;
     Label3: TLabel;
+    btnEditLang: TButton;
     procedure btnAddClick(Sender: TObject);
     procedure btnDelClick(Sender: TObject);
     procedure cbConnectClick(Sender: TObject);
@@ -90,6 +91,7 @@ type
     procedure btnAddLangClick(Sender: TObject);
     procedure btnDelLangClick(Sender: TObject);
     procedure ListMouseMove(Sender: TObject; Shift: TShiftState; X,Y: Integer);
+    procedure btnEditLangClick(Sender: TObject);
   private
     cbStartupConnection: TLAComboBox;
     procedure cbStartupConnectionDrawItem(Control: TWinControl;
@@ -101,13 +103,12 @@ type
 
 implementation
 
-uses FileCtrl, Config, Templates, Constant, Misc, Main;
+{$I LdapAdmin.inc}
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+uses FileCtrl, Config, Templates, Constant, Misc, Main
+{$IFDEF VER_XEH}, System.Types, System.UITypes{$ENDIF};
+
+{$R *.dfm}
 
 constructor TConfigDlg.Create(AOwner: TComponent; ASession: TLdapSession);
 var
@@ -353,6 +354,21 @@ begin
       Hint := Items[i]
     else
       Hint := '';
+  end;
+end;
+
+procedure TConfigDlg.btnEditLangClick(Sender: TObject);
+var
+  Dir: string;
+begin
+  with LanguageList do
+  begin
+    if (ItemIndex <> -1) then
+    begin
+      Dir := Items[ItemIndex];
+      if InputQuery(cEditValue, cEnterNewValue, Dir) then
+        Items[ItemIndex] := Dir;
+    end;
   end;
 end;
 

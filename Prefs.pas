@@ -31,15 +31,16 @@ uses
 {$IFnDEF FPC}
   Windows,
 {$ELSE}
-  LCLIntf, LCLType, LMessages,
+  LCLIntf, LCLType,
 {$ENDIF}
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls, ExtCtrls, Constant, Samba, LDAPClasses, Connection;
 
 type
   TPrefDlg = class(TForm)
     PageControl: TPageControl;
     tsPosix: TTabSheet;
+    tsID: TTabSheet;
     tsSamba: TTabSheet;
     tsMAil: TTabSheet;
     Panel1: TPanel;
@@ -65,7 +66,6 @@ type
     lblUsername: TLabel;
     lblDisplayname: TLabel;
     BtnWizard: TButton;
-    tsID: TTabSheet;
     gbUserLimits: TGroupBox;
     lblFirstUId: TLabel;
     lblLastUid: TLabel;
@@ -83,9 +83,9 @@ type
     cbxExtendGroups: TCheckBox;
     cbExtendGroups: TComboBox;
     gbID: TRadioGroup;
-    PageControl1: TPageControl;
-    TabSheet1: TTabSheet;
-    TabSheet2: TTabSheet;
+    //PageControl1: TPageControl;
+    //TabSheet1: TTabSheet;
+    //TabSheet2: TTabSheet;
     cbxLMPasswords: TCheckBox;
     lblScript: TLabel;
     lblHomeShare: TLabel;
@@ -115,13 +115,12 @@ var
 
 implementation
 
-uses Pickup, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}PrefWiz, Main, Config;
+{$I LdapAdmin.inc}
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+uses Pickup, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}PrefWiz, Main, Config
+     {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+
+{$R *.dfm}
 
 constructor TPrefDlg.Create(AOwner: TComponent; AConnection: TConnection);
 var

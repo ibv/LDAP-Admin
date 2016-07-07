@@ -1,5 +1,5 @@
   {      LDAPAdmin - Search.pas
-  *      Copyright (C) 2003-2014 Tihomir Karlovic
+  *      Copyright (C) 2003-2016 Tihomir Karlovic
   *
   *      Author: Tihomir Karlovic & Alexander Sokoloff
   *
@@ -25,7 +25,6 @@ unit Search;
   {$MODE Delphi}
 {$ENDIF}
 
-{$I ver.inc}
 {$I LdapAdmin.inc}
 
 interface
@@ -35,12 +34,13 @@ uses
 {$IFnDEF FPC}
   Windows, WinLDAP,
 {$ELSE}
-  LCLIntf, LCLType, LMessages, LinLDAP,
+  LCLIntf, LCLType,
 {$ENDIF}
   Themes,{$ENDIF}
     Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-    ComCtrls, StdCtrls, LDAPClasses, Menus, ExtCtrls, Sorter, ToolWin,
-    ImgList, ActnList, Buttons, ShellCtrls, Schema, Contnrs, Connection, Xml
+    ComCtrls, StdCtrls, LDAPClasses, Menus, ExtCtrls, Sorter,
+    ImgList, ActnList, Buttons, Schema, Contnrs, Connection, Xml,
+    DlgWrap, TextFile
     {$IFDEF REGEXPR}
     { Note: If you want to compile templates with regex support you'll need }
     { Regexpr.pas unit from TRegeExpr library (http://www.regexpstudio.com) }
@@ -130,9 +130,9 @@ type
     destructor    Destroy; override;
     procedure     New;
     procedure     Run;
-    procedure     Save(const Filename: string);
+    procedure     Save(const Filename: string; Encoding: TFileEncode);
     procedure     Load(const Filename: string);
-    procedure     SaveResults(const Filename: string);
+    procedure     SaveResults(const Filename: string; Encoding: TFileEncode);
     property      SearchList: TSearchList read fSearchList write fSearchList;
     property      State: TModBoxState read fState;
   end;
@@ -150,7 +150,7 @@ type
   public
     constructor   Create(AOwner: TComponent); override;
     destructor    Destroy; override;
-    procedure     CopySelection(TargetSession: TLdapSession; TargetDn, TargetRdn: string; Move: Boolean);
+    procedure     CopySelection(TargetSession: TLdapSession; TargetDn, TargetRdn: string; Move: Boolean); reintroduce;
     procedure     DeleteSelection;
     property      SearchList: TSearchList read fSearchList write SetSearchList;
   end;
@@ -238,7 +238,6 @@ type
     ActClose: TAction;
     Editentry1: TMenuItem;
     N1: TMenuItem;
-    SaveDialog: TSaveDialog;
     ResultPanel: TPanel;
     Panel2: TPanel;
     Panel40: TPanel;
@@ -352,6 +351,7 @@ type
     {$IFDEF REGEXPR}
     fSimpleParser: TSimpleParser;
     {$ENDIF}
+    SaveDialog: TSaveDialogWrapper;
     procedure Search(const Filter, Attributes: string);
     procedure Modify(const Filter, Attributes: string);
     {$IFDEF REGEXPR}
@@ -375,16 +375,25 @@ var
 
 implementation
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 uses
   EditEntry, Constant, Main, Ldif, PickAttr, Config, Dsml, Params, ObjectInfo,
-  ParseErr, Misc, LdapCopy, LdapOp, ListViewDlg;
+  ParseErr, Misc, LdapCopy, LdapOp, ListViewDlg
+  {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
+{$IFDEF VER_XEH}
+function FileEncodingToEncodingClass(Encoding: TFileEncode): TEncoding;
+begin
+  case Encoding of
+    feAnsi: Result := TEncoding.Ansi;
+    feUnicode_BE: Result := TEncoding.BigEndianUnicode;
+    feUnicode_LE: Result := TEncoding.Unicode;
+  else
+    Result := TEncoding.UTF8;
+  end;
+end;
+{$ENDIF}
 
 { TSearch }
 
@@ -603,7 +612,7 @@ begin
   begin
     Parent := Panel;
     Style := csDropDownList;
-    Items.CommaText := 'Add,Delete,Replace';
+    Items.CommaText := cAddDelReplace;
     Width := MODPANEL_OP_COMBO_WIDTH;
     Top := MODPANEL_CTRL_TOP;
     Left := MODPANEL_LEFT_IND;
@@ -646,41 +655,6 @@ var
   i: Integer;
   op: TModifyOp;
   StopOnError: Boolean;
-
-  { Left string may contain '*' wildcard }
-  function Matches(s1, s2: string): Boolean;
-  var
-    l1, l2: Integer;
-  begin
-    if s1 = '*' then
-    begin
-      Result := true;
-      Exit;
-    end;
-    l1 := Pos('*', s1);
-    if l1 = 0 then
-    begin
-      Result := CompareText(s1, s2) = 0;
-      Exit;
-    end;
-    if StrlIComp(PChar(s1), PChar(s2), l1 - 1) <> 0 then
-    begin
-      Result := false;
-      Exit;
-    end;
-    l2 := Length(s1) - l1;
-    if l2 = 0 then
-    begin
-      Result := true;
-      Exit;
-    end;
-    if l2 > Length(s2) then
-    begin
-      Result := false;
-      Exit;
-    end;
-    Result := CompareText(Copy(s1, l1 + 1, MaxInt), Copy(s2, Length(s2) - l2 + 1, MaxInt)) = 0;
-  end;
 
   procedure Add(Entry: TLdapEntry; AName, AValue: string);
   begin
@@ -780,7 +754,7 @@ begin
   fCloseButton.Caption := cOk;
 end;
 
-procedure TModifyBox.Save(const Filename: string);
+procedure TModifyBox.Save(const Filename: string; Encoding: TFileEncode);
 var
   xmlTree: TXmlTree;
   i: Integer;
@@ -788,6 +762,7 @@ begin
   xmlTree := TXmlTree.Create;
   XmlTree.Root.Name := CMOD_XML_ROOT_NAME;
   try
+    xmlTree.Encoding := Encoding;
     for i := 0 to ControlCount - 1 do
       (Controls[i] as TModifyPanel).Save(XmlTree.Root);
     xmlTree.SaveToFile(Filename);
@@ -814,9 +789,13 @@ begin
   end;
 end;
 
-procedure TModifyBox.SaveResults(const Filename: string);
+procedure TModifyBox.SaveResults(const Filename: string; Encoding: TFileEncode);
 begin
+  {$IFDEF VER_XEH}
+  fMemo.Lines.SaveToFile(FileName, FileEncodingToEncodingClass(Encoding));
+  {$ELSE}
   fMemo.Lines.SaveToFile(FileName);
+  {$ENDIF}
 end;
 
 constructor TModifyBox.Create(AOwner: TComponent; AConnection: TConnection);
@@ -1382,11 +1361,11 @@ begin
   if p^ = ')' then
   begin
     if not Compound then
-      raise Exception.CreateFmt(stRegexError, [Expression + p^, stNoOpeningParenthesys]);
+      raise Exception.CreateFmt(stRegexError, [Expression + p^, stNoOpeningParenthesis]);
     p := CharNext(p);
   end
   else if Compound then
-    raise Exception.CreateFmt(stRegexError, ['(' + Expression, stNoClosingParenthesys]);
+    raise Exception.CreateFmt(stRegexError, ['(' + Expression, stNoClosingParenthesis]);
 
   Result := p - Content;
 end;
@@ -1744,6 +1723,11 @@ begin
   StatusBar.Panels[0].Text := Format(cServer, [AConnection.Server]);
   StatusBar.Panels[0].Width := StatusBar.Canvas.TextWidth(StatusBar.Panels[0].Text) + 16;
   ToolBar1.DisabledImages := MainFrm.DisabledImages;
+  SaveDialog := TSaveDialogWrapper.Create(Self);
+  with SaveDialog do begin
+    FilterIndex := 1;
+    OverwritePrompt := true;
+  end;
 end;
 
 procedure TSearchFrm.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -1954,6 +1938,7 @@ var
     i: Integer;
   begin
     ldif := TLDIFFile.Create(SaveDialog.FileName, fmWrite);
+    ldif.Encoding := SaveDialog.Encoding;
     ldif.UnixWrite := SaveDialog.FilterIndex = 2;
     with ResultPages.ActiveList, SearchList do
     try
@@ -1982,7 +1967,11 @@ var
           s := s + ',' + SubItems.CommaText;
         csvList.Add(s);
       end;
+      {$IFDEF VER_XEH}
+      csvList.SaveToFile(SaveDialog.FileName, FileEncodingToEncodingClass(SaveDialog.Encoding));
+      {$ELSE}
       csvList.SaveToFile(SaveDialog.FileName);
+      {$ENDIF}
     finally
       csvList.Free;
     end;
@@ -2007,6 +1996,7 @@ var
     try
       DsmlTree := TDsmlTree.Create(EntryList);
       try
+        DsmlTree.Encoding := SaveDialog.Encoding;
         DsmlTree.SaveToFile(SaveDialog.FileName);
       finally
         DsmlTree.Free;
@@ -2047,13 +2037,13 @@ begin
       SaveDialog.Filter := SAVE_MODIFY_LOG_FILTER;
       SaveDialog.DefaultExt := SAVE_MODIFY_LOG_EXT;
       if SaveDialog.Execute then
-        ModifyBox.SaveResults(SaveDialog.FileName);
+        ModifyBox.SaveResults(SaveDialog.FileName, SaveDialog.Encoding);
     end
     else begin
       SaveDialog.Filter := SAVE_MODIFY_FILTER;
       SaveDialog.DefaultExt := SAVE_MODIFY_EXT;
       if SaveDialog.Execute then
-        ModifyBox.Save(SaveDialog.FileName);
+        ModifyBox.Save(SaveDialog.FileName, SaveDialog.Encoding);
     end;
   end;
 end;
@@ -2275,14 +2265,18 @@ begin
     if Pos('%s', Filter) = 0 then
     begin
       edInput.Visible := false;
+      {$IFNDEF VER_XEH}
       edContent.Left := edInput.Left;
       edContent.Width := TabSheet1.Width - 61;
+      {$ENDIF}
     end
     else begin
       edInput.Visible := true;
+      {$IFDEF VER_XEH}
       edInput.Width := 129;
       edContent.Left := edName.Left + 129 + 4;
       edContent.Width := TabSheet1.Width - 61 - edInput.Width - 4;
+      {$ENDIF}
     end;
     exit;
   end;
@@ -2290,7 +2284,9 @@ begin
   lbl.Caption := RestoreCaption + ':';
   btn.Down := false;
   edInput.Visible := true;
+  {$IFNDEF VER_XEH}
   edInput.Width := TabSheet1.Width - 61;
+  {$ENDIF}
 end;
 
 procedure TSearchFrm.sbCustom1Click(Sender: TObject);
@@ -2300,7 +2296,7 @@ end;
 
 procedure TSearchFrm.sbCustom2Click(Sender: TObject);
 begin
-  HandleCustomChange(sbCustom2, Label7, edEMail, edCustom2, '&E-Mail');
+  HandleCustomChange(sbCustom2, Label7, edEMail, edCustom2, cEMail);
 end;
 
 end.

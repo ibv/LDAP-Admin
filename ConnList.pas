@@ -1,5 +1,5 @@
   {      LDAPAdmin - Connlist.pas
-  *      Copyright (C) 2003 Tihomir Karlovic
+  *      Copyright (C) 2003-2016 Tihomir Karlovic
   *
   *      Author: Tihomir Karlovic & Alexander Sokoloff
   *
@@ -29,13 +29,13 @@ interface
 
 uses
 {$IFnDEF FPC}
-  Windows,
+  Windows,System.Actions,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
   Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ComCtrls, StdCtrls, Menus, ImgList, ExtCtrls, Buttons, Config, ToolWin,
-  ActnList, LDAPClasses;
+  ActnList, LDAPClasses, DlgWrap;
 
 type
   TConnListFrm = class(TForm)
@@ -78,7 +78,6 @@ type
     ActOpenStorage: TAction;
     ActCopyAccount: TAction;
     ActPropertiesAccount: TAction;
-    SaveDialog: TSaveDialog;
     ToolButton8: TToolButton;
     ActDeleteStrorage: TAction;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -109,6 +108,7 @@ type
     procedure FormResize(Sender: TObject);
   private
     FStorage: TConfigStorage;
+    SaveDialog: TSaveDialogWrapper;
     procedure SetViewStyle(Style: integer);
     procedure RefreshAccountsView;
     procedure RefreshStoragesList(ItemIndex: integer=-1);
@@ -120,22 +120,28 @@ type
 
 implementation
 
-uses ConnProp, Constant, Math, uAccountCopyDlg, SizeGrip;
+{$R *.dfm}
+{$I LdapAdmin.inc}
+
+uses ConnProp, Constant, Math, uAccountCopyDlg, SizeGrip
+     {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 const
   CONF_ACCLV_STYLE='ConList\AccountsView\Style';
   CONF_STORLIST_WIDTH='ConList\StorragesList\Width';
   CONF_STORLIST_INDEX='ConList\StorragesList\Index';
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
 
 constructor TConnListFrm.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  SaveDialog := TSaveDialogWrapper.Create(Self);
+  with SaveDialog do begin
+    Filter := CONNLIST_SAVE_FILTER;
+    FilterIndex := 1;
+    OverwritePrompt := true;
+    DefaultExt := 'ltf';
+  end;
   TSizeGrip.Create(Panel1);
   StoragesList.Width:=GlobalConfig.ReadInteger(CONF_STORLIST_WIDTH, StoragesList.Width);
   RefreshStoragesList(GlobalConfig.ReadInteger(CONF_STORLIST_INDEX, 0));

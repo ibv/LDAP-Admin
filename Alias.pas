@@ -76,11 +76,7 @@ implementation
 
 uses Main;
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 constructor TAliasDlg.Create(AOwner: TComponent; dn: string; Connection: TConnection; Mode: TEditMode; ObjectPath: Boolean = false);
 var
@@ -101,10 +97,10 @@ begin
   begin
     fEntry.Read;
     edObjectDN.Text := fEntry.AttributesByName['aliasedObjectName'].AsString;
-    cbAliasNameAttr.Text := DecodeDNString(GetAttributeFromDn(dn));
-    edAliasNameValue.Text := DecodeDNString(GetNameFromDn(dn));
+    cbAliasNameAttr.Text := DecodeLdapString(GetAttributeFromDn(dn));
+    edAliasNameValue.Text := DecodeLdapString(GetNameFromDn(dn));
     edAliasDN.Text := dn;
-    edAliasDir.Text := DecodeDNString(GetDirFromDN(dn));
+    edAliasDir.Text := DecodeLdapString(GetDirFromDN(dn));
     Caption := Format(cPropertiesOf, [edAliasNameValue.Text]);
     Label1.Caption := cParentDir;
   end

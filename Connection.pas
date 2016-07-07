@@ -1,5 +1,5 @@
   {      LDAPAdmin - Connection.pas
-  *      Copyright (C) 2012-2013 Tihomir Karlovic
+  *      Copyright (C) 2012-2016 Tihomir Karlovic
   *
   *      Author: Tihomir Karlovic
   *
@@ -27,8 +27,9 @@ unit Connection;
 
 interface
 
-uses Config, Sorter, Schema, LDAPClasses, CustomMenus, Controls, Templates,
-     Constant;
+uses Config, Sorter, Schema, LdapClasses, CustomMenus, Controls, Templates,
+     {$ifdef mswindows}WinLDAP, {$else} LinLDAP, {$endif}
+     Constant, TextFile, Bookmarks;
 
 const
   { Posix objects }
@@ -110,6 +111,7 @@ type
     FSelected:  string;
     FDirectoryIdentity: IDirectoryIdentity;
     FActionMenu: TCustomActionMenu;
+    FBookmarks: TBookmarks;
     function    GetDirectoryType: TDirectoryType;
     function    GetDirectoryIdentity: IDirectoryIdentity;
     function    GetActionMenu: TCustomActionMenu;
@@ -132,6 +134,50 @@ type
     property    DirectoryType: TDirectoryType read GetDirectoryType;
     property    DI: IDirectoryIdentity read GetDirectoryIdentity;
     property    ActionMenu: TCustomActionMenu read GetActionMenu;
+    property    Bookmarks: TBookmarks read FBookmarks;
+  end;
+
+  { Local LDAP DB }
+
+  TDBAccount=class(TFakeAccount)
+  private
+    FFileName:  string;
+  public
+    property    FileName: string read FFileName write FFileName;
+  end;
+
+  TEntryNode = class(TLdapEntry)
+  private
+    fChildren: TLdapEntryList;
+  public
+    constructor Create(const ASession: TLDAPSession; const adn: string); override;
+    destructor  Destroy; override;
+    property    Children: TLdapEntryList read fChildren;
+  end;
+
+  TLoadCallback = procedure(BytesRead: Integer; var Abort: Boolean) of object;
+
+  TDBConnection = class(TConnection)
+  private
+    Root:       TEntryNode;
+    fModified:  Boolean;
+    fDestroying: Boolean;
+    fEncoding:  TFileEncode;
+    function    FindNode(const adn: string): TEntryNode;
+  protected
+    function    ISConnected: Boolean; override;
+  public
+    constructor Create(Account: TDBAccount; CallbackProc: TLoadCallback = nil);
+    destructor  Destroy; override;
+    procedure   Search(const Filter, Base: string; const Scope: Cardinal; attrs: PCharArray; const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback = nil); overload; override;
+    function    Lookup(sBase, sFilter, sResult: string; Scope: Cardinal): string; override;
+    function    GetDn(sFilter: string): string; override;
+    procedure   WriteEntry(Entry: TLdapEntry); override;
+    procedure   ReadEntry(Entry: TLdapEntry); override;
+    procedure   DeleteEntry(const adn: string); override;
+    procedure   SaveToFile(FileName: string);
+    procedure   Connect; override;
+    procedure   Disconnect; override;
   end;
 
 var
@@ -139,8 +185,8 @@ var
 
 implementation
 
-uses SysUtils, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}User, Host, Locality, Computer, Group, {TemplateCtrl,}
-     MailGroup, Transport, Ou, Classes, PassDlg, ADPassDlg, Alias;
+uses SysUtils, User, Host, Locality, Computer, Group, LDIF, Dialogs,
+     MailGroup, Transport, Ou, Classes, PassDlg, ADPassDlg, Alias, Ast ;
 
 { IDirectoryIdentity }
 
@@ -217,14 +263,26 @@ constructor TConnection.Create(Account: TAccount);
 begin
   inherited Create;
   FAccount := Account;
-  FLVSorter := TListViewSorter.Create;
+  try
+    FLVSorter := TListViewSorter.Create;
+    FBookmarks := TBookmarks.Create(Self);
+  except
+    on E: Exception do
+      MessageDlg(E.Message, mtError, [mbOk], 0);
+  end;
 end;
 
 destructor TConnection.Destroy;
 begin
-  FActionMenu.Free;
-  FSchema.Free;
-  FLVSorter.Free;
+  try
+    FActionMenu.Free;
+    FSchema.Free;
+    FLVSorter.Free;
+    FBookmarks.Free;
+  except
+    on E: Exception do
+      MessageDlg(E.Message, mtError, [mbOk], 0);
+  end;
   inherited;
 end;
 
@@ -573,6 +631,242 @@ end;
 function TADDirectoryIdentity.CreateMenu: TCustomActionMenu;
 begin
   Result := TADActionMenu.Create(Connection.Account);
+end;
+
+{ Local LDAP DB }
+
+constructor TEntryNode.Create(const ASession: TLDAPSession; const adn: string);
+begin
+  inherited;
+  fChildren := TLdapEntryList.Create;
+end;
+
+destructor TEntryNode.Destroy;
+begin
+  fChildren.Free;
+  inherited;
+end;
+
+{ Finds a matching node for a whole or a part of a dn }
+function TDBConnection.FindNode(const adn: string): TEntryNode;
+var
+  i: Integer;
+  Parent: TEntryNode;
+begin
+  Parent := Root;
+  Result := nil;
+  while Parent <> Result do
+  begin
+      Result := Parent;
+      for i := 0 to Parent.Children.Count - 1 do with Parent.Children[i] do
+      begin
+        if AnsiSameText(dn, Copy(adn, Length(adn) - Length(dn) + 1, MaxInt)) then
+        begin
+          Parent := Parent.Children[i] as TEntryNode;
+          break; // for i
+        end;
+      end;
+  end;
+end;
+
+constructor TDBConnection.Create(Account: TDBAccount; CallbackProc: TLoadCallback = nil);
+var
+  Entry, Parent: TEntryNode;
+  ldFile: TLdifFile;
+  Stop: Boolean;
+begin
+  inherited Create(Account);
+  Root := TEntryNode.Create(Self, '');
+  Account.LdapVersion := LDAP_VERSION3;
+  ldFile := TLDIFFile.Create(Account.FileName, fmRead);
+  with ldFile do
+  try
+    fEncoding := Encoding;
+    while not (eof or Stop) do begin
+      Entry := TEntryNode.Create(Self, '');
+      ReadRecord(Entry);
+      if Entry.dn = '' then
+      begin
+        FreeAndNil(Entry);
+        break;
+      end;
+      if not (esDeleted in Entry.State) then
+      begin
+        Parent := FindNode(GetDirFromDn(Entry.dn));
+        if Assigned(Parent) then
+          Parent.Children.Add(Entry);
+      end;
+      if Assigned(CallbackProc) then
+        CallbackProc(NumRead, Stop);
+    end;
+  finally
+    FreeAndNil(ldFile);
+  end;
+  Account.Base := Base;
+end;
+
+destructor TDBConnection.Destroy;
+begin
+  fDestroying := true;
+  inherited; // inherited calls disconnect
+  Root.Free;
+end;
+
+{ Note: NoValue and attrs are ignored, for the time being all attributes and values are returned }
+{ Also: Implement FirstOnly to stop traversing of the tree tree when only one result is expected (usefull for Lookup and GetDn functions }
+procedure TDBConnection.Search(const Filter, Base: string; const Scope: Cardinal; attrs: PCharArray; const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback = nil);
+var
+  BaseNode: TEntryNode;
+  FilterNode :TAstNode;
+begin
+  if Base ='' then
+    BaseNode := Root
+  else
+    BaseNode := FindNode(Base);
+  if Assigned(BaseNode) then
+  begin
+    FilterNode := Parse(Filter);
+    FilterNode.ExecuteFilter(Self, BaseNode, Scope, Result);
+  end;
+end;
+
+procedure TDBConnection.WriteEntry(Entry: TLdapEntry);
+var
+  Node, NewNode: TentryNode;
+begin
+  if esNew in Entry.State then
+  begin
+    Node := FindNode(GetDirFromDN(Entry.dn)); // find parent
+    if not Assigned(Node) then
+      raise Exception.CreateFmt(stDirNotExists, [GetDirFromDN(Entry.dn)]);
+    NewNode := TEntryNode.Create(Self, Entry.dn);
+    Entry.Clone(NewNode);
+    Node.Children.Add(NewNode);
+  end
+  else begin
+    { else update existing node }
+    Node := FindNode(Entry.dn);
+    if Assigned(Node) then
+    begin
+      Node.Attributes.Clear;
+      Node.OperationalAttributes.Clear;
+      Entry.Clone(Node);
+    end;
+  end;
+  fModified := true;
+end;
+
+procedure TDBConnection.ReadEntry(Entry: TLdapEntry);
+var
+  Node: TentryNode;
+begin
+  Node := FindNode(Entry.dn);
+  if Assigned(Node) then
+    Node.Clone(Entry);
+end;
+
+procedure TDBConnection.DeleteEntry(const adn: string);
+var
+  ParentNode: TentryNode;
+  i: Integer;
+begin
+  ParentNode := FindNode(GetDirFromDn(adn));
+  if not Assigned(ParentNode) then
+    raise Exception.CreateFmt(stPathNotFound, [GetDirFromDn(adn)]);
+  i := ParentNode.Children.IndexOf(adn);
+  if i = -1 then
+    raise Exception.CreateFmt(stObjectNotFound, [adn]);
+  if TEntryNode(ParentNode.Children[i]).Children.Count > 0 then
+    raise Exception.Create(stNodeHasChildren);
+  ParentNode.Children.Delete(i);
+end;
+
+procedure TDBConnection.SaveToFile(FileName: string);
+var
+  ldif: TLDIFFile;
+
+  procedure WriteNode(ANode: TEntryNode);
+  var
+    i: Integer;
+  begin
+    ldif.WriteRecord(ANode);
+    for i := 0 to ANode.Children.Count - 1 do
+      WriteNode(ANode.Children[i] as TEntryNode);
+  end;
+
+begin
+  ldif := TLDIFFile.Create(FileName, fmWrite);
+  try
+    ldif.Encoding := fEncoding;
+    { Skip the artificial root }
+    WriteNode(Root.fChildren[0] as TEntryNode);
+  finally
+    ldif.Free;
+  end;
+end;
+
+procedure TDBConnection.Connect;
+begin
+end;
+
+procedure TDBConnection.Disconnect;
+var
+  Buttons: TMsgDlgButtons;
+begin
+  if not Connected then exit;
+
+  if fModified then
+  begin
+    Buttons := [mbYes, mbNo];
+    if not fDestroying then
+      Buttons := Buttons + [mbCancel];
+    case MessageDlg(Format(stFileModified, [(Account as TDBAccount).FileName]),
+                  mtConfirmation, Buttons, 0) of
+      mrYes: SaveToFile((Account as TDBAccount).FileName);
+      mrCancel: Abort;
+    end;
+    fModified := false;
+  end;
+  OnDisconnect.Execute(self);
+end;
+
+function TDBConnection.ISConnected: Boolean;
+begin
+  Result := Assigned(Root);
+end;
+
+function TDBConnection.Lookup(sBase, sFilter, sResult: string; Scope: Cardinal): string;
+var
+  l: TLdapEntryList;
+
+begin
+  l := TLdapEntryList.Create;
+  try
+    Search(sFilter, sBase, Scope, nil, true, l);
+    if l.Count > 0 then
+      Result := l[0].AttributesByName[sResult].AsString
+    else
+      Result := '';
+  finally
+    l.Free;
+  end;
+end;
+
+function TDBConnection.GetDn(sFilter: string): string;
+var
+  l: TLdapEntryList;
+
+begin
+  l := TLdapEntryList.Create;
+  try
+    Search(sFilter, Base, LDAP_SCOPE_SUBTREE, nil, true, l);
+    if l.Count > 0 then
+      Result := l[0].dn
+    else
+      Result := '';
+  finally
+    l.Free;
+  end;
 end;
 
 end.

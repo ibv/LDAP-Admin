@@ -342,13 +342,15 @@ procedure RegProtocol(Ext: string);
 
 implementation
 
+{$I LdapAdmin.inc}
+
 uses
 {$IFnDEF FPC}
   ComObj,
 {$ELSE}
 {$ENDIF}
   Constant, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}Dialogs, Forms, StdCtrls, Controls, WinBase64,
-     Math;
+     Math {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 function CheckProto(Ext: string): boolean;
 var
@@ -571,13 +573,10 @@ begin
       if Form.Components[i] is TLabel then
       begin
         TLabel(Form.Components[i]).Top:=16;
-        NoCheckCbx.Top:=TLabel(Form.Components[i]).Top+TLabel(Form.Components[i]).Height-16;
+        NoCheckCbx.Top:=TLabel(Form.Components[i]).Top+TLabel(Form.Components[i]).Height+16;
         NoCheckCbx.Left:=TLabel(Form.Components[i]).Left;
       end;
     end;
-    {$else}
-    NoCheckCbx.Top:=38;
-    NoCheckCbx.Left:=50;
     {$endif}
 
     for i:=0 to Form.ComponentCount-1 do
@@ -587,7 +586,6 @@ begin
         TButton(Form.Components[i]).Top:=NoCheckCbx.Top+NoCheckCbx.Height+24;
         Form.ClientHeight:=TButton(Form.Components[i]).Top+TButton(Form.Components[i]).Height+16;
       end;
-
     end;
 
     if Form.ShowModal=mrYes then
@@ -1576,7 +1574,6 @@ end;
 initialization
 
   GlobalConfig:=TGlobalConfig.Create(TRegistryConfigStorage.Create(HKEY_CURRENT_USER, REG_KEY));
-  //GlobalConfig:=TGlobalConfig.Create(TXmlConfigStorage.Create('config.xml'));
 
 finalization
 

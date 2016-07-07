@@ -135,7 +135,7 @@ var
   Value: TLdapAttributeData;
 begin
   Value := Attributes[eJpegPhoto].Values[0];
-  if Assigned(Value) then
+  if Assigned(Value) and (Value.DataSize > 0) then
   begin
     if not Assigned(fJpegImage) then
       fJpegImage := TJPEGImage.Create;

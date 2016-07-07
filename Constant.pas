@@ -1,5 +1,5 @@
   {      LDAPAdmin - Constant.pas
-  *      Copyright (C) 2003-2014 Tihomir Karlovic
+  *      Copyright (C) 2003-2016 Tihomir Karlovic
   *
   *      Author: Tihomir Karlovic
   *
@@ -212,12 +212,12 @@ const
   sMY_DN_GROUPS     = '(|(&(|(objectclass=groupOfNames)(objectclass=mailGroup))(member=%0:s))' +
                       '(&(objectclass=groupOfUniqueNames)(uniqueMember=%0:s)))';
   sNMY_AUTHGROUPS   = '(&(objectclass=posixGroup)(!(|(memberUid=%s)(member=%1:s)(uniqueMember=%1:s))))';
-  sNMY_POSIX_GROUPS = '(&(objectclass=posixGroup)(!memberUid=%s))';
+  sNMY_POSIX_GROUPS = '(&(objectclass=posixGroup)(!(memberUid=%s)))';
   sNMY_SAMBAGROUPS  = '(&(objectclass=sambaGroupMapping)(!(|(memberUid=%s)(member=%1:s)(uniqueMember=%1:s))))';
-  sNMY_MAILGROUPS   = '(&(objectclass=mailGroup)(!member=%s))';
-  sNMY_GROUPS       = '(|(&(objectclass=posixGroup)(!memberUid=%s))'  +
-                      '(&(|(objectclass=groupOfNames)(objectclass=mailGroup))(!member=%1:s))' +
-                      '(&(objectclass=groupOfUniqueNames)(!uniqueMember=%1:s)))';
+  sNMY_MAILGROUPS   = '(&(objectclass=mailGroup)(!(member=%s)))';
+  sNMY_GROUPS       = '(|(&(objectclass=posixGroup)(!(memberUid=%s)))'  +
+                      '(&(|(objectclass=groupOfNames)(objectclass=mailGroup))(!(member=%1:s)))' +
+                      '(&(objectclass=groupOfUniqueNames)(!(uniqueMember=%1:s))))';
   sGROUPBYGID       = '(&(objectclass=posixGroup)(gidNumber=%d))';
   sACCNTBYUID       = '(&(objectclass=posixAccount)(uid=%s))';
   sDEFQUICKSRCH     = '(|(cn=*%s*)(uid=*%s*)(displayName=*%s*))';
@@ -235,6 +235,8 @@ resourcestring
   SAVE_MODIFY_FILTER       = 'LDAP Admin batch file (*.lbf)|*.lbf';
   SAVE_MODIFY_LOG_FILTER   = 'Text file (*.txt)|*.txt';
 
+  CONNLIST_SAVE_FILTER     = 'Account Files (*.lcf)|*.lcf|All Files (*.*)|*.*';
+
 
 // Captions
 
@@ -242,6 +244,7 @@ resourcestring
   cAddAddress       = 'Add Address';
   cAddAttribute     = 'Add attribute...';
   cAddConn          = 'New connection';
+  cAddDelReplace    = 'Add,Delete,Replace';
   cAddHost          = 'Add Host';
   cAddValue         = 'Add value';
   cAnonymousConn    = 'Anonymous connection';
@@ -257,6 +260,7 @@ resourcestring
   cConfirm          = 'Confirmation';
   cCopying          = 'Copying...';
   cCopyTo           = 'Copy %s to...';
+  cCurrentConn      = 'Current connection';
   cDecimal          = 'Decimal:';
   cDelete           = '&Delete';
   cDeleting         = 'Deleting:';
@@ -268,6 +272,7 @@ resourcestring
   cEditHost         = 'Edit Host';
   cEditResource     = 'Edit Resource';
   cEditValue        = 'Edit value';
+  cEMail            = '&E-Mail';
   cEnglish          = 'English';
   cEnterNewValue    = 'Enter new value:';
   cEnterPasswd      = 'Enter password';
@@ -362,8 +367,12 @@ resourcestring
   stAbortScript     = 'Do you want to abort the script?';
   stAccntExist      = 'Account with this name already exists.' + #10#13 + 'Do you want to overwrite it?';
   stAccntNameReq    = 'You have to enter a name for this connection!';
+  stAllFilesFilter  = 'All files (*.*)|*.*';
+  stArgDecNum       = 'Argument must be a decimal number: %s!';
+  stAssertDecNum    = 'Assertion value %s must be decimal number!';
   stAskTreeCopy     = 'Copy %s to %s?';
   stAskTreeMove     = 'Move %s to %s?';
+  stBinaryMatchDn   = 'Binary match on dn is not allowed!';
   stCantStorPass    = 'This storage does not allow to keep the password';
   stCertConfirmConn = 'The server you are trying to connect to is using a certificate which could not be verified!'#10#13#10#13'%s'#10#13'Do you want to proceed?';
   stCertInvalidName = 'The name of the security certificate is invalid or does not match the server name!';
@@ -384,6 +393,7 @@ resourcestring
   stDeleteMenuItem  = 'Delete this menu item?';
   stDeleteSubmenu   = 'Delete this submenu?';
   stDelNamingAttr   = 'Attribute %s is the naming value of this entry! Do you want to delete it?';
+  stDirNotExists    = 'Directory does not exist: %s!';
   stDisplaying      = 'Displaying first %d results.';
   stDoNotCheckAgain = 'Do not perform this check in the future.';
   stDoNotShowAgain  = 'Do not show this message in the future.';
@@ -392,10 +402,14 @@ resourcestring
   stEmptyArg        = 'Empty argument!';
   stEmptyFile       = 'File %s is empty!';
   stErrExtMethName  = 'Error extracting method name!';
+  stErrUnaryOp      = 'Unary operator "%s" can not be applied to multiple operands: %s!';
   stEvTypeEvTypeErr = 'Error setting %s event: %s event type is not supported!';
   stExtConfirmAssoc = 'LDAPAdmin is currently not your default LDAP browser.'+#10+'Would you like to make it your default LDAP browser?';
+  stExpectedAt      = 'Expected %s at %s!';
+  stExpectedEndOfStr= 'Expected end of string but found "%s" at %s!';
   stExpectedButReceived  = 'Expected "=" but recieved "';
   stExportSuccess   = 'Success: %d Object(s) succesfully exported!';
+  stFileModified    = 'File %s was modifed. Save changes?';
   stFileOverwrite   = 'File ''%s'' exists, overwrite?';
   stFileReadOnly    = 'File opened in read only mode!';
   stGetProcAddrErr  = 'Cannot GetProcAddress of %s.';
@@ -406,8 +420,9 @@ resourcestring
   stInserting       = 'Inserting, %d of %d. Press ESC to abort...';
   stInteger         = 'integer number';
   stInvalidArgIndex = 'Invalid Argument Index: %d';
+  stInvalidChr      = 'Invalid  character code: %s!';
   stInvalidCmdVer   = 'Invalid LDAP version in command line: %s';
-  stInvalidFilter   = 'Invalid or unsupported filter type!';
+  stInvalidFilter   = 'Invalid or unsupported filter type: %s!';
   stInvalidLdapOp   = 'Invalid Ldap operation!';
   stInvalidOperator = 'Invalid operator "%s"!';
   stInvalidTagValue = 'Invalid value %s for <%s>!';
@@ -431,12 +446,14 @@ resourcestring
   stLdifUrlNotSupp  = 'URL method not supported!';
   stMenuAssignTempl = 'A template name must not be empty!';
   stMenuLocateTempl = 'The template "%s" which is assigned to this action could not be located!';
+  stMissingIn       = 'Missing %s in %s!';
   stMissingOperator = 'Missing operator!';
   stMoveOverlap     = 'Source and destination paths overlap!';
   stNeedElevated    = 'On Vista or higher, LDAPAdmin must be executed with elevated privileges for this operation to succesfully complete!';
   stNoActiveConn    = 'Connection error: could not locate active connection!';
-  stNoClosingParenthesys = 'Missing closing parenthesys!';
-  stNoOpeningParenthesys = 'Missing opening parenthesys!';
+  stNoClosingParenthesis = 'Missing closing parenthesis!';
+  stNodeHasChildren = 'Node has children!';
+  stNoOpeningParenthesis = 'Missing opening parenthesis!';
   stNoMoreChecks    = 'Do not perform this check in the future.';
   stNoMoreNums      = 'Pool depleted! No more available free id''s for %s!';
   stNoPosixID       = 'You should disable id creation only if you use a server side id assignment! Otherwise, you will not be able to create any users or groups.';
@@ -446,8 +463,10 @@ resourcestring
   stNotLABatchFile  = '%s is not LDAPAdmin batch file!';
   stNumber          = 'number';
   stNumObjects      = '%d objects';
+  stObjectNotFound  = 'Object not found: %s!';
   stObjnRetrvd      = 'Object not yet retrieved!';
   stOverwrite       = 'Do you want to overwrite?';
+  stPathNotFound    = 'Path not found:%s!';
   stPassDiff        = 'Passwords do not match!';
   stPassFor         = 'Password for : %s';
   stPropReadOnly    = 'Property is read only!';
@@ -479,8 +498,10 @@ resourcestring
   stTooManyArgs     = 'Too many arguments!';
   stUnclosedParam   = 'Invalid (Unclosed) parameter!';
   stUnclosedStr     = 'Unclosed string!';
+  stUnexpectedEofStr= 'Unexpected end of string: %s!';
   stUnknownValueType= 'Unknown value type.'#10'key:%s'#10'value:%s"';
   stUnsupportedAuth = 'Unsupported authentication method: %s!';
+  stUnsupportedRule = 'Unsupported matching rule %s!';
   stUnsuppOperation = 'Unsupported operation: %s!';
   stUnsuppScript    = 'Unsupported script type: ';
   stUserBreak       = 'User break!';

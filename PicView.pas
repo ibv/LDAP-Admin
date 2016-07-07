@@ -92,18 +92,17 @@ var
 
 implementation
 
+{$I LdapAdmin.inc}
+
+
 uses
 {$IFnDEF FPC}
   jpeg,
 {$ELSE}
 {$ENDIF}
-  clipbrd, Constant, Misc;
+  clipbrd, Constant, Misc{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 constructor TViewPicFrm.Create(AOwner: TComponent; AValue: TLdapAttributeData; SaveMode: TViewPicFrmSaveMode);
 var
@@ -239,7 +238,7 @@ begin
   with SaveDialog do
   begin
     if not Execute or (FileExistsUTF8(FileName) { *Converted from FileExists* } and
-       (MessageDlg(Format(stFileOverwrite, [FileName]), mtConfirmation, [mbYes, mbCancel], 0) <> mrYes)) then Exit;
+       (MessageDlg(Format(stFileOverwrite, [FileName]), mtConfirmation, [mbYes, mbNo], 0) <> mrYes)) then Exit;
     Image1.Picture.SaveToFile(FileName);
   end;
 end;

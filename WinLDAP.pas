@@ -45,22 +45,11 @@
 {******************************************************************}
 unit WinLDAP;
 
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {$WEAKPACKAGEUNIT}
 
 interface
 
-{$IFnDEF FPC}
-uses
-  Windows;
-{$ELSE}
-uses
-  LCLIntf, LCLType, LMessages;
-{$ENDIF}
-
+uses Windows;
 
 {$HPPEMIT '#ifndef LDAP_CLIENT_DEFINED'}
 {$HPPEMIT '#pragma option push -b -a8 -pc -A- /*P_O_Push_S*/'}
@@ -122,19 +111,6 @@ type
   PPPCharW = ^PPCharW;
   {$NODEFINE PPPCharW}
   PPPChar = PPPCharA;
-
-
-  ULONG = Cardinal ;
-  PULONG = ^ULONG;
-
-  LPSTR = PAnsiChar;
-  LPCSTR = PAnsiChar;
-  LPTSTR = PAnsiChar;
-  LPCTSTR = PChar;
-  LPWSTR = PWideChar;
-  LPCWSTR = PWideChar;
-
-  UCHAR = Char;
 
 //
 //  The #define LDAP_UNICODE controls if we map the undecorated calls to
@@ -258,7 +234,6 @@ const
 type
   {$EXTERNALSYM LDAP_RETCODE}
   LDAP_RETCODE = ULONG;
-  //LDAP_RETCODE = Cardinal;
 
 const
   {$EXTERNALSYM LDAP_SUCCESS}
@@ -2655,8 +2630,7 @@ const
 implementation
 
 const
-  ///LDAPLib = 'wldap32.dll';
-  LDAPLib = '';
+  LDAPLib = 'wldap32.dll';
 
 procedure ber_free; external LDAPLib name 'ber_free';
 function ldap_openA; external LDAPLib name 'ldap_openA';

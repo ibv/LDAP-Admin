@@ -32,11 +32,7 @@ function InputDlg(ACaption, APrompt: string; var AValue: string; PasswordChar: C
 
 implementation
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 function InputDlg(ACaption, APrompt: string; var AValue: string; PasswordChar: Char=#0; AcceptEmpty:Boolean=False): Boolean;
 begin

@@ -32,9 +32,9 @@ uses
 {$IFnDEF FPC}
   Windows,
 {$ELSE}
-  LCLIntf, LCLType, LMessages,
+  LCLIntf, LCLType,
 {$ENDIF}
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls, ExtCtrls, Samba, Posix, LDAPClasses, Config, Postfix,
   Constant;
 
@@ -96,11 +96,7 @@ implementation
 
 uses Pickup, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}Input, Main;
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 { Note: Item.Caption = uid, Item.Data = dn }
 procedure TMailGroupDlg.Load;

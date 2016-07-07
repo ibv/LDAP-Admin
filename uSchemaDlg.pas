@@ -132,7 +132,9 @@ type
 
 implementation
 
-uses Math, Export, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Constant, Misc;
+{$I LdapAdmin.inc}
+
+uses Math, Export,{$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Constant, Misc{$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 const
   FOLDER_IMG          = 0;
@@ -143,11 +145,7 @@ const
   MATCHINGRULEUSE_IMG = 5;
 
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 { TSchemaDlg }
 

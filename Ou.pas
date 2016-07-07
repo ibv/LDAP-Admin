@@ -70,11 +70,7 @@ implementation
 
 uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Misc;
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 procedure TOuDlg.Save;
 var

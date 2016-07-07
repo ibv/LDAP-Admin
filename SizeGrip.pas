@@ -47,6 +47,7 @@ unit SizeGrip;
   {$MODE Delphi}
 {$ENDIF}
 
+//{$I VER.INC}
 {$I ver.inc}
 
 interface
@@ -92,13 +93,15 @@ type
 
 implementation
 
+{$I LdapAdmin.inc}
+
 {$IFDEF VER_D7H}
 uses
 {$IFnDEF FPC}
   UxTheme,
 {$ELSE}
 {$ENDIF}
-  Themes;
+  Themes{$IFDEF VER_XEH}, System.Types{$ENDIF};
 {$ENDIF}
 
 type

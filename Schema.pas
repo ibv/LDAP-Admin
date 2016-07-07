@@ -607,7 +607,8 @@ begin
   SearchResult:=TLdapEntryList.Create;
   try
     // Search path to schema ///////////////////////////////////////////////////
-    FSession.Search('objectclass=*','',LDAP_SCOPE_BASE,['subschemaSubentry'],false,SearchResult);
+    FSession.Search('(objectclass=*)','',LDAP_SCOPE_BASE,['subschemaSubentry'],false,SearchResult);
+    if SearchResult.Count = 0 then Abort;   // Added, 23.06.2016, T.Karlovic
     FDn:=SearchResult[0].AttributesByName['subschemaSubentry'].AsString;
     if FDn='' then raise Exception.Create(stSchemaNoSubentry);
 

@@ -12,13 +12,13 @@ Interface
 uses
   SysUtils;
 
-procedure UnixCrypt(salt : PChar;key : PChar);
+function UnixCrypt(salt, key: AnsiString): string;
 
 implementation
 type unsigned = shortint;
 type int      = smallint;
 type Punsigned = ^unsigned;
-var Passwd : array[0..15] of char;
+var Passwd : array[0..15] of AnsiChar;
 
 type block = record
               b_data : array[0..63] of unsigned;
@@ -133,8 +133,8 @@ begin
 end;
 
 procedure rotate(var key : block);
-var p : PChar;
-var ep : PChar;
+var p : PAnsiChar;
+var ep : PAnsiChar;
 var data0 : int;
 var data28 : int;
 begin
@@ -156,7 +156,7 @@ const  EP : Pordering = @etr;
 procedure f(i : int;var key : block;var a : block;var x : block);
 var e, ikey, y : block;
 var k : int;
-var p, q, r : PChar;
+var p, q, r : PAnsiChar;
 var xb,ri   : int;
 begin
   e := a;
@@ -172,7 +172,7 @@ begin
     dec(p);
     dec(q);
     dec(r);
-    p^ := char(int(q^) XOR int(r^)); //^
+    p^ := AnsiChar(int(q^) XOR int(r^)); //^
   end;
   q := @x.b_data;
   for k := 0 to 7 do
@@ -191,25 +191,25 @@ begin
     inc(p);
     xb := s_boxes[k][ri];
 
-    q^ := char((xb SHR 3) AND 1);
+    q^ := AnsiChar((xb SHR 3) AND 1);
     inc(q);
-    q^ := char((xb SHR 2) AND 1);
+    q^ := AnsiChar((xb SHR 2) AND 1);
     inc(q);
-    q^ := char((xb SHR 1) AND 1);
+    q^ := AnsiChar((xb SHR 1) AND 1);
     inc(q);
-    q^ := char(xb  AND 1);
+    q^ := AnsiChar(xb  AND 1);
     inc(q);
   end;
   transpose(x,ptr,32);
 end;
 
-procedure setkey(k : PChar);
+procedure setkey(k : PAnsiChar);
 begin
   key := pblock(k)^;
   transpose(key,KeyTr1,56);
 end;
 
-procedure myencrypt(blck : PChar;edflag : int);
+procedure myencrypt(blck : PAnsiChar;edflag : int);
 var p : PBlock;
 var i : int;
 var j : int;
@@ -237,15 +237,15 @@ begin
   transpose(p^,FinalTr,64);
 end;
 
-procedure mycrypt(pw : PChar;salt : PChar;Result : PChar);
+procedure mycrypt(pw : PAnsiChar;salt : PAnsiChar;Result : PAnsiChar);
 
-var pwb : array [0..65] of char;
+var pwb : array [0..65] of AnsiChar;
 
-var  p : PChar;
+var  p : PAnsiChar;
 var  new_etr : ordering;
 var  i : int ;
 var  j : int ;
-var  c : char;
+var  c : AnsiChar;
 var  t : int;
 var temp : int;
 var  ci : int;
@@ -256,7 +256,7 @@ begin
      j := 6;
      while (j >= 0) do
      begin
-       p^ := char((int(pw^) SHR j) AND 01);
+       p^ := AnsiChar((int(pw^) SHR j) AND 01);
        inc(p);
        dec(j);
      end;
@@ -283,9 +283,9 @@ begin
     c := salt^;
     inc(salt);
     result[i] := c;
-    if (c >'Z') then c := char(int(c) - (6+7+ int('.'))) else
-       if (c > '9') then  c := char(int(c) - (7+ int('.')))
-        else c := char(int(c) - int('.'));
+    if (c >'Z') then c := AnsiChar(int(c) - (6+7+ int('.'))) else
+       if (c > '9') then  c := AnsiChar(int(c) - (7+ int('.')))
+        else c := AnsiChar(int(c) - int('.'));
     for j :=0 to 5 do
     begin
       if((int(c) SHR j) AND 01) <> 0 then
@@ -318,17 +318,17 @@ begin
     ci := ci + int('.');
     if (ci > int('9')) then  ci := ci + 7;
     if (ci > int('Z')) then ci := ci + 6;
-    pw^:= char(ci);
+    pw^:= AnsiChar(ci);
     inc(pw)
   end;
   //*pw=0;
 end;
 
 
-procedure UnixCrypt(salt : PChar;key : PChar);
+function UnixCrypt(Salt, Key: AnsiString): string;
 begin
-  mycrypt(key, salt,Passwd);
-  StrCopy(key, Passwd);
+  mycrypt(PAnsiChar(key), PAnsiChar(salt), Passwd);
+  Result := Passwd;
 end;
 
 end.

@@ -43,7 +43,7 @@ object PrefWizDlg: TPrefWizDlg
     Align = alClient
     TabOrder = 0
     TabStop = True
-    object Page1: TPage
+    object page1: TPage
       object Label1: TLabel
         Left = 16
         Height = 13
@@ -83,7 +83,7 @@ object PrefWizDlg: TPrefWizDlg
         end
       end
     end
-    object Page2: TPage
+    object page2: TPage
       object ListView1: TListView
         Left = 16
         Height = 161
@@ -100,7 +100,7 @@ object PrefWizDlg: TPrefWizDlg
           end        
           item
             Caption = 'Setting'
-            Width = 142
+            Width = 159
           end>
         Items.LazData = {
           A00100000600000000000000FFFFFFFFFFFFFFFF020000001500000046697273
@@ -151,7 +151,7 @@ object PrefWizDlg: TPrefWizDlg
         end
       end
     end
-    object Page3: TPage
+    object page3: TPage
       object ListView2: TListView
         Left = 16
         Height = 161
@@ -168,7 +168,7 @@ object PrefWizDlg: TPrefWizDlg
           end        
           item
             Caption = 'Setting'
-            Width = 142
+            Width = 159
           end>
         Items.LazData = {
           EF0000000300000000000000FFFFFFFFFFFFFFFF02000000150000004C617374
@@ -214,9 +214,9 @@ object PrefWizDlg: TPrefWizDlg
         end
       end
     end
-    object Page4: TPage
+    object page4: TPage
       object Label5: TLabel
-        Left = 55
+        Left = 60
         Height = 13
         Top = 124
         Width = 132
@@ -242,7 +242,7 @@ object PrefWizDlg: TPrefWizDlg
       end
       object wcbDomain: TComboBox
         Left = 192
-        Height = 25
+        Height = 27
         Top = 160
         Width = 193
         ItemHeight = 0
@@ -279,9 +279,9 @@ object PrefWizDlg: TPrefWizDlg
         end
       end
     end
-    object Page5: TPage
+    object page5: TPage
       object Label8: TLabel
-        Left = 114
+        Left = 120
         Height = 13
         Top = 124
         Width = 72
@@ -290,7 +290,7 @@ object PrefWizDlg: TPrefWizDlg
         ParentColor = False
       end
       object Label9: TLabel
-        Left = 98
+        Left = 99
         Height = 13
         Top = 164
         Width = 93

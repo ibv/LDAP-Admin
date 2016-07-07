@@ -31,7 +31,7 @@ uses
 {$IFnDEF FPC}
   Windows,
 {$ELSE}
-  LCLIntf, LCLType, LMessages,
+  LCLIntf, LCLType, LMessages, LCLMessageGlue,
 {$ENDIF}
   Controls, Messages, Classes, LDAPClasses, Grids, StdCtrls;
 
@@ -156,6 +156,7 @@ begin
       begin
         fTabExit := true;
         ///GetKeyboardState(KeyState);
+        //MsgKeyDataToShiftState(KeyData: PtrInt);
         fBackPaddle := KeyState[VK_SHIFT] and $80 <> 0;
       end;
     CM_MOUSEWHEEL: Scroll(WParam > 0);
@@ -255,6 +256,7 @@ begin
   { In case it's triggerd by mouse down event we simulate mouse up
     because string grid is about to lose the focus to inplace control }
   ///mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+  LCLSendMouseDownMsg((Parent as TControl),0,0, mbLeft);
 
   Rect := StringGrid.CellRect(ACol, ARow);
   lw := StringGrid.GridLineWidth;

@@ -164,7 +164,10 @@ type
 
 implementation
 
-uses SysUtils, Misc, Config, Grids, ParseErr, Dialogs;
+{$I LdapAdmin.inc}
+
+uses SysUtils, Misc, Config, Grids, ParseErr, Dialogs
+     {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 { TEventHandler }
 
@@ -224,6 +227,7 @@ begin
 end;
 
 procedure TEventHandler.HandleEvent(Attribute: TLdapAttribute; Event: TEMPLATES.TEventType);
+///procedure TEventHandler.HandleEvent(Attribute: TLdapAttribute; Event: TEventType);
 var
   idx, i: Integer;
 begin
@@ -288,7 +292,6 @@ begin
     fBreakRequested := true;
     Allow := false;
   end;
-
 end;
 
 procedure TTemplatePanel.InstallHandlers;
@@ -423,7 +426,16 @@ begin
     Parent := Application.MainForm;
   end;
   try
-    fTemplate.Parse(fPanel, fScript);
+    //TODO - ParseError
+    try
+      fTemplate.Parse(fPanel, fScript);
+      except on E: Exception do
+      begin
+        E.Message := fTemplate.Name + ': ' + E.Message;
+        raise;
+      end;
+    end;
+
     Self.Height := fPanel.Control.Height;
     Self.Width := fPanel.Control.Width;
 

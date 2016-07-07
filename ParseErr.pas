@@ -64,11 +64,7 @@ uses
 {$ENDIF}
   Misc, Constant;
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 function CountVisibleLines(const Memo: TMemo): Integer;
 Var
@@ -98,7 +94,6 @@ end;
 procedure TParseErrDlg.HighlightText;
 var
   i: Integer;
-  line: integer;
 
   function SelectIdentifier: Boolean;
   begin
@@ -109,7 +104,7 @@ var
       if i > 0 then
       begin
         {$ifdef windows}
-          SelStart := Perform(EM_LINEINDEX, fLine, 0) + i - 1;
+        SelStart := Perform(EM_LINEINDEX, fLine, 0) + i - 1;
         {$else}
           SelStart := CaretPos.Y + i - 1;
         {$endif}

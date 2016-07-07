@@ -30,24 +30,20 @@ interface
 
 uses
 {$IFnDEF FPC}
-  Windows, WinLDAP,
+  Windows, WinLDAP, FileUtil,System.Actions,
 {$ELSE}
-  LCLIntf, LCLType, LMessages, {MouseAndKeyInput,} LinLDAP,
+  LCLIntf, LCLType, {MouseAndKeyInput,} LazFileUtils, LCLMessageGlue,
 {$ENDIF}
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, ComCtrls, Grids, ToolWin, LDAPClasses, Constant,
-  Menus, ImgList, ActnList, FileUtil, IControls, Schema, Templates,
-  TemplateCtrl, Sorter, Connection;
+  SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, ExtCtrls, ComCtrls, Grids, LDAPClasses, Constant,
+  Menus, ActnList,  IControls, Schema, Templates,
+  TemplateCtrl, Sorter, Connection, DlgWrap;
 
 const
   NAMING_VALUE_TAG = -1;
 
 type
-
-  { TEditEntryFrm }
-
   TEditEntryFrm = class(TForm)
-    MenuItem1: TMenuItem;
     Panel2: TPanel;
     edDn: TEdit;
     Label1: TLabel;
@@ -92,7 +88,6 @@ type
     mbViewBinary: TMenuItem;
     N5: TMenuItem;
     OpenFileDialog: TOpenDialog;
-    SaveFileDialog: TSaveDialog;
     N8: TMenuItem;
     mbLoadFromFile1: TMenuItem;
     mbSaveToFile1: TMenuItem;
@@ -191,6 +186,7 @@ type
     fValueSorter: TStringGridSorter;
     fOcSorter: TStringGridSorter;
     fOnWrite: TNotifyEvent;
+    SaveDialog: TSaveDialogWrapper;
     procedure DataChange(Sender: TLdapAttributeData);
     procedure PushShortCut(Command: TAction);
     procedure HandleTabExit(InplaceAttribute: TInplaceAttribute);
@@ -222,13 +218,12 @@ var
 
 implementation
 
-uses BinView, PicView, Cert, Misc, Main, Config, ClipBrd;
+{$I LdapAdmin.inc}
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+uses BinView, PicView, Cert, Misc, Main, Config, ClipBrd, TextFile
+     {$IFDEF VER_XEH}, System.Types, System.UITypes{$ENDIF};
+
+{$R *.dfm}
 
 { TEditEntryFrm }
 
@@ -253,7 +248,7 @@ var
   ShiftState: TShiftState;
 begin
   ShortCutToKey(Command.ShortCut, vKey, ShiftState);
-  ///c := lobyte(vKey);
+  c := lo(byte(vKey));
   if ssCtrl in ShiftState then
     shift := VK_CONTROL
   else
@@ -316,6 +311,7 @@ procedure TEditEntryFrm.InplaceControlExit(Sender: TObject);
 begin
   with Sender as TInplaceAttribute do
     if TabExit then HandleTabExit(Sender as TInplaceAttribute);
+       //HandleTabExit(Sender as TInplaceAttribute);
 end;
 
 procedure TEditEntryFrm.KeyComboEnter(Sender: TObject);
@@ -371,7 +367,7 @@ begin
       end;
       AddRow(StringGrid);
     end;
-    if InplaceCombo.TabExit then
+    ///if InplaceCombo.TabExit then
       HandleTabExit(InplaceCombo);
   end;
 end;
@@ -413,7 +409,8 @@ end;
 
 procedure TEditEntryFrm.AddRow(Grid: TStringGrid);
 begin
-  with Grid do begin
+  with Grid do
+  begin
     RowCount := RowCount + 1;
     Objects[0, RowCount - 1] := Objects[0, RowCount - 2];
     Objects[0, RowCount - 2] := nil;
@@ -426,8 +423,9 @@ var
 begin
   with Grid do
   begin
-    try
-    if Assigned(Objects[1, Index]) then with TInplaceAttribute(Objects[1, Index]) do
+    i:=0;
+    if (grid = attrStringGrid) then  inc(i);
+    if Assigned(Objects[i, Index]) then with TInplaceAttribute(Objects[i, Index]) do
     begin
       {if Tag = NAMING_VALUE_TAG then
         raise Exception.Create(stDelNamingAttr);}
@@ -447,16 +445,14 @@ begin
       RowCount := RowCount - 1;
       Col := 0;
     end;
-
-    finally
-    end;
   end;
 end;
 
 function TEditEntryFrm.NewInplaceControl(InplaceClass: TInplaceClass; StringGrid: TStringGrid; AValue: TLdapAttributeData; IsRequired: Boolean): TInplaceAttribute;
 begin
   Result := InplaceClass.Create(StringGrid, AValue);
-  with Result do begin
+  with Result do
+  begin
     Required := IsRequired;
     PopupMenu := PopupMenu1;
     OnExit := InplaceControlExit;
@@ -469,6 +465,14 @@ var
   i, j: integer;
 begin
   inherited Create(AOwner);
+
+  SaveDialog := TSaveDialogWrapper.Create(Self);
+  with SaveDialog do begin
+    Filter := stAllFilesFilter;
+    FilterIndex := 1;
+    OverwritePrompt := true;
+  end;
+
   attrStringGrid.Doublebuffered := true;
   fConnection := AConnection;
   SchemaCheckBtn.Down := AConnection.Account.ReadBool(rEditorSchemaHelp, true);
@@ -510,7 +514,7 @@ begin
     edDn.Enabled := false;
     cbRdn.Enabled := false;
     edDn.Text := GetDirFromDn(adn);
-    cbRdn.Text := DecodeDNString(GetRdnFromDn(adn));
+    cbRdn.Text := DecodeLdapString(GetRdnFromDn(adn));
     Load;
   end
   else
@@ -518,6 +522,22 @@ begin
     Caption := cNewEntry;
     edDn.Text := adn;
     Entry.OnChange := DataChange;
+    {$ifndef mswindows}
+    with objStringGrid do
+    begin
+      RowCount := 2;
+      Rows[1].Clear;
+      RowCount := RowCount + 1;
+      Objects[0, RowCount - 1] := ObjectCombo;
+    end;
+    with attrStringGrid do
+    begin
+      RowCount := 2;
+      Rows[1].Clear;
+      RowCount := RowCount + 1;
+      Objects[0, RowCount - 1] := AttributeCombo;
+    end;
+    {$endif}
   end;
   with objStringGrid do
   begin
@@ -542,6 +562,10 @@ begin
   fOcSorter := TStringGridSorter.Create;
   fOcSorter.StringGrid := objStringGrid;
   fOcSorter.FixedBottomRows := 1;
+
+  attrStringGrid.OnDrawCell:=StringGridDrawCell;
+  objStringGrid.OnDrawCell :=StringGridDrawCell;
+  Visible:=true;
 end;
 
 procedure TEditEntryFrm.SessionDisconnect(Sender: TObject);
@@ -817,7 +841,7 @@ var
     if Assigned(Value) then
     begin
       SplitRdn(Entry.dn, attr, val);
-      if (CompareText(Value.Attribute.Name, attr) = 0) and (CompareText(Value.AsString, DecodeDNString(val)) = 0) then
+      if (CompareText(Value.Attribute.Name, attr) = 0) and (CompareText(Value.AsString, DecodeLdapString(val)) = 0) then
       with Result do begin
         Enabled := false;
         Tag := NAMING_VALUE_TAG;
@@ -871,6 +895,7 @@ begin
   RefreshAttributeList(false);
 end;
 
+
 function TEditEntryFrm.NewValue(Attr: TLdapAttribute): TLdapAttributeData;
 begin
   if (Attr.ValueCount = 1) and ((Attr.Values[0].DataSize=0) or (Attr.Values[0].ModOp = LdapOpDelete)) then
@@ -886,7 +911,7 @@ procedure TEditEntryFrm.mbSaveClick(Sender: TObject);
     i: Integer;
   begin
     i := AnsiPos('=', rdn);
-    Result := Copy(rdn, 1, i) + EncodeDNString(Copy(rdn, i + 1, Length(rdn) - i));
+    Result := Copy(rdn, 1, i) + EncodeLdapString(Copy(rdn, i + 1, Length(rdn) - i));
   end;
 
 begin
@@ -992,22 +1017,27 @@ end;
 
 procedure TEditEntryFrm.mbSaveToFileClick(Sender: TObject);
 var
-  FileStream: TFileStream;
+  FileStream: TTextFile;
 begin
-  with SaveFileDialog do
-  begin
-    if not Execute or (FileExistsUTF8(FileName) { *Converted from FileExists* } and
-       (MessageDlg(Format(stFileOverwrite, [FileName]), mtConfirmation, [mbYes, mbCancel], 0) <> mrYes)) then Exit;
-    with attrStringGrid do
+  with attrStringGrid do
     if Assigned(Objects[1, Row]) then
     begin
-      FileStream := TFileStream.Create(FileName, fmCreate);
-      with TInplaceAttribute(Objects[1, Row]).Value do
-      try
-        SaveToStream(FileStream);
-      finally
-        FileStream.Free;
-      end;
+      with TInplaceAttribute(Objects[1, Row]) do
+      begin
+        SaveDialog.EncodingCombo := Value.DataType = dtText;
+        if SaveDialog.Execute then
+        begin
+          FileStream := TTextFile.Create(SaveDialog.FileName, fmCreate);
+          if Value.DataType <> dtText then
+            FileStream.Encoding := feAnsi; // raw bytes for binary data
+          try
+            Value.SaveToStream(FileStream);
+            if Value.DataType = dtText then
+              FileStream.Encoding := SaveDialog.Encoding;
+          finally
+            FileStream.Free;
+          end;
+        end;
     end;
   end;
 end;
@@ -1090,23 +1120,10 @@ begin
                           (ActiveControl.Owner <> AttributeCombo);
 
   if ActiveControl is TCustomEdit then with TCustomEdit(ActiveControl) do
-  begin
-    DoEditItems(true, CanUndo, SelLength > 0, Text <> '');
-    {ActUndo.Enabled := CanUndo;
-    ActCut.Enabled := SelLength > 0;
-    ActCopy.Enabled := ActCut.Enabled;
-    ActPaste.Enabled := true;
-    ActDelete.Enabled := Text <> '';}
-  end else
+    DoEditItems(true, CanUndo, SelLength > 0, Text <> '')
+  else
   if ActiveControl is TCustomComboBox then with TCustomComboBox(ActiveControl) do
-  begin
-    DoEditItems(true, true, SelLength > 0, Text <> '');
-    {ActUndo.Enabled := true;
-    ActCut.Enabled := SelLength > 0;
-    ActCopy.Enabled := ActCut.Enabled;
-    ActPaste.Enabled := true;
-    ActDelete.Enabled := Text <> '';}
-  end
+    DoEditItems(true, true, SelLength > 0, Text <> '')
   else
     DoEditItems(false);
 end;
@@ -1132,20 +1149,25 @@ begin
       Dec(R.Bottom, GridLineWidth);
       Canvas.TextRect(R, R.Left + 1, R.Top + 1, Cells[ACol, ARow]);
     end
-    else begin
+    else
+    begin
       Canvas.Brush.Color := Color;
       SelectObject(Canvas.Handle, Font.Handle);
       if ACol = 0 then
       begin
         if (Sender = objStringGrid) then
           Canvas.Font.Color := clWindow
-        else begin
+        else
+        begin
           Canvas.Brush.Color := clBtnFace;
           IA := Objects[1, ARow] as TInplaceAttribute;
           if Assigned(IA) and IA.Required then
             SelectObject(Canvas.Handle, fBold.Handle)
         end;
       end;
+
+      Canvas.FillRect(Rect);
+
       IA := Objects[ACol, ARow] as TInplaceAttribute;
       if Assigned(IA) then
       begin
@@ -1153,7 +1175,8 @@ begin
           SelectObject(Canvas.Handle, fBold.Handle);
         IA.Draw(Sender as TStringGrid, ACol, ARow, Rect, State)
       end
-      else begin
+      else
+      begin
         Canvas.TextRect(Rect, Rect.Left + 2, Rect.Top + 2, Cells[ACol, ARow]);
         if gdFocused in State then
           Canvas.DrawFocusRect(Rect);
@@ -1233,6 +1256,7 @@ begin
       mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
       {$else}
       //--MouseInput.Click(mbLeft,[],0,0);
+      LCLSendMouseDownMsg((sender as TControl),0,0, mbLeft);
       {$endif}
     end;
   end;
@@ -1298,13 +1322,15 @@ begin
     Canvas.Brush.Color:=Color;
     Canvas.FillRect(Rect);
     InflateRect(Rect, -2, -2);
-    if odSelected in State then begin
+    if odSelected in State then
+    begin
       Canvas.Brush.Color:=clBtnFace;
       Canvas.Font.Color:=clBtnText;
       ///Frame3D(Canvas, Rect, clBtnShadow, clBtnHighLight, BevelWidth);
       Frame3D(Canvas, Rect, clBtnShadow, clBtnHighLight, 1);
     end
-    else begin
+    else
+    begin
       Canvas.Brush.Color:=Color;
       Canvas.Font.Color:=Font.Color;
     end;
@@ -1395,6 +1421,7 @@ procedure TEditEntryFrm.StringGridMouseMove(Sender: TObject; Shift: TShiftState;
 var
   ACol, ARow: Integer;
   Item: TLdapSchemaItem;
+
 begin
   if not fSchema.Loaded then Exit;
   with (Sender as TStringGrid) do
@@ -1409,7 +1436,11 @@ begin
       if Assigned(Item) and (Hint <> Item.Description) then
       begin
         Hint := Item.Description;
-        ///mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);  // provoke hint to show again
+        {$ifdef mswindows}
+        mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);  // provoke hint to show again
+        {$else}
+        LCLSendMouseUpMsg((Sender as TControl),0,0, mbLeft);
+        {$endif}
       end;
     end
     else

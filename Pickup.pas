@@ -69,7 +69,7 @@ type
   protected
     procedure         DoShow; override;
   public
-    constructor       CreateNew(AOwner: TComponent; Dummy: Integer = 0); override;
+    constructor       Create(AOwner: TComponent); override;
     destructor        Destroy; override;
     procedure         Populate(const Session: TLDAPSession; const Filter: string; const Attributes: array of string; const Base: string = '');
 
@@ -82,15 +82,11 @@ type
 
 implementation
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Constant, Main, Connection, SizeGrip;
 
-constructor TPickupDlg.CreateNew(AOwner: TComponent; Dummy: Integer);
+constructor TPickupDlg.Create(AOwner: TComponent);
 begin
   inherited;
   FImageIndex:=-1;

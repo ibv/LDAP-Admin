@@ -74,11 +74,7 @@ implementation
 
 uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Input;
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 procedure THostDlg.Save;
 begin

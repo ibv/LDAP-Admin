@@ -7,6 +7,7 @@ unit About;
 interface
 
 uses
+
 {$IFnDEF FPC}
   Windows,
 {$ELSE}
@@ -15,6 +16,8 @@ uses
   Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls;
 
+
+	
 type
   TAboutDlg = class(TForm)
     Label1: TLabel;
@@ -48,49 +51,45 @@ uses
 {$ELSE}
 {$ENDIF}
 
-
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
+{$R *.dfm}
 
 function GetVersionInfo: string;
-var VISize:   cardinal;
-    VIBuff:   pointer;
-    trans:    pointer;
-    buffsize: cardinal;
-    temp: integer;
-    str: pchar;
-    LangCharSet: string;
-    LanguageInfo: string;
-
+type
+  PLandCodepage = ^TLandCodepage;
+  TLandCodepage = record
+    wLanguage,
+    wCodePage: word;
+  end;
+var
+  dummy,
+  len: cardinal;
+  buf, pntr: pointer;
+  lang: string;
 begin
   result:='n/a';
   {$ifdef mswindows}
-  VISize := GetFileVersionInfoSize(pchar(Application.exename),buffsize);
-  if VISize < 1 then exit;
+  len := GetFileVersionInfoSize(PChar(Application.ExeName), dummy);
+  if len = 0 then
+    RaiseLastOSError;
+  GetMem(buf, len);
+  try
+    if not GetFileVersionInfo(PChar(Application.ExeName), 0, len, buf) then
+      RaiseLastOSError;
 
-  VIBuff := AllocMem(VISize);
-  GetFileVersionInfo(pchar(Application.exename),cardinal(0),VISize,VIBuff);
+    if not VerQueryValue(buf, '\VarFileInfo\Translation\', pntr, len) then
+      RaiseLastOSError;
 
-  VerQueryValue(VIBuff,'\VarFileInfo\Translation',Trans,buffsize);
-  if buffsize >= 4 then
-  begin
-    temp:=0;
-    StrLCopy(@temp, pchar(Trans), 2);
-    LangCharSet:=IntToHex(temp, 4);
-    StrLCopy(@temp, pchar(Trans)+2, 2);
-    LanguageInfo := LangCharSet+IntToHex(temp, 4);
+    lang := Format('%.4x%.4x', [PLandCodepage(pntr)^.wLanguage, PLandCodepage(pntr)^.wCodePage]);
 
-    VerQueryValue(VIBuff,pchar('\StringFileInfo\'+LanguageInfo+'\FileVersion'), pointer(str), buffsize);
-    if buffsize > 0 then Result:=str;
+    if VerQueryValue(buf, PChar('\StringFileInfo\' + lang + '\FileVersion'), pntr, len){ and (@len <> nil)} then
+      result := PChar(pntr);
+  finally
+    FreeMem(buf);
   end;
-
-  FreeMem(VIBuff,VISize);
   {$else}
   GetProgramVersion (Result);
   {$endif}
+
 end;
 
 procedure TAboutDlg.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -100,7 +99,7 @@ end;
 
 procedure TAboutDlg.Label7Click(Sender: TObject);
 begin
-   OpenDocument(PChar(label7.Caption)); { *Converted from ShellExecute* }
+   OpenDocument(PChar(label7.Caption));{ *Převedeno z ShellExecute* }
 end;
 
 procedure TAboutDlg.FormCreate(Sender: TObject);

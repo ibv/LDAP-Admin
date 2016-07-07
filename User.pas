@@ -246,6 +246,8 @@ var
 
 implementation
 
+{$I LdapAdmin.inc}
+
 uses
 {$IFnDEF FPC}
   Jpeg,
@@ -253,12 +255,8 @@ uses
 {$ENDIF}
   AdvSamba, Pickup, Input, Misc, Main, Templates, Config;
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
 
+{$R *.dfm}
 
 { TUsrDlg }
 
@@ -672,7 +670,7 @@ begin
   ParentDn := adn;
 
   TranscodeList := TStringList.Create;
-  Split(GlobalConfig.ReadString(rLocalTransTable, 'ä'#$1F'ae'#$1E'ö'#$1F'oe'#$1E'ü'#$1F'ue'#$1E), TranscodeList, #$1E);
+  Split(GlobalConfig.ReadString(rLocalTransTable, '�'#$1F'ae'#$1E'�'#$1F'oe'#$1E'�'#$1F'ue'#$1E), TranscodeList, #$1E);
 
   Entry := TLdapEntry.Create(AConnection, adn);
 
@@ -1255,6 +1253,7 @@ begin
       s := FormatMemoInput(s);
     Entry.AttributesByName[TControl(Sender).Name].AsString := s;
   end;
+  AddGroupBtn.Enabled := uid.Text  <> '';
 end;
 
 procedure TUserDlg.cbShadowClick(Sender: TObject);
@@ -1339,8 +1338,8 @@ var
   Flags: Longint;
 begin
   with CheckListBox do begin
-    Canvas.Brush.Color := clBtnFace;
-    Canvas.Font.Color := clBlack;
+    Canvas.Brush.Color := Color;
+    Canvas.Font.Color := Font.Color;
     Canvas.FillRect(Rect);
     ///Flags := DrawTextBiDiModeFlags(DT_SINGLELINE or DT_VCENTER or DT_NOPREFIX);
     Inc(Rect.Left, 2);

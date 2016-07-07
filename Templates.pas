@@ -1,5 +1,5 @@
   {      LDAPAdmin - Templates.pas
-  *      Copyright (C) 2006-2014 Tihomir Karlovic
+  *      Copyright (C) 2006-2016 Tihomir Karlovic
   *
   *      Author: Tihomir Karlovic & Alexander Sokoloff
   *
@@ -341,6 +341,7 @@ type
     with ShowCheckbox activated. Also adds custom format property for Delphi5  }
 
   TDateTimePickerFixed = class(TDateTimePicker)
+  {$IFDEF TDATETIME_FIX}
   private
     fChanging:    Boolean;
     {$IFDEF VER130}
@@ -355,7 +356,7 @@ type
     {$IFDEF VER130}
     property       Format: string read fFormat write SetFormat;
     {$ENDIF}
-  end;
+  end{$ENDIF};
 
   TTemplateCtrlDate = class(TTemplateSVControl)
   private
@@ -668,7 +669,7 @@ uses
 {$ELSE}
 {$ENDIF}
   WinBase64, {SysUtils,} Misc, Params, Config, PassDlg, Constant, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}
-  Pickup, ParseErr;
+  Pickup, ParseErr {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
 const
   CONTROLS_CLASSES: array[0..21] of TTControl = ( TTemplateCtrlEdit,
@@ -2159,9 +2160,10 @@ begin
     if Name = 'tab' then
     begin
       TabSheet := TTemplateCtrlTabSheet.Create(nil);
+      TabSheet.ParentControl := Self;
       TabSheet.Load(XmlNode[i]);
       TTabSheet(TabSheet.Control).PageControl := TPageControl(fControl);
-      TabSheet.ParentControl := Self;
+      //TabSheet.ParentControl := Self;
       fElements.Add(TabSheet);
     end;
   end;
@@ -2211,6 +2213,7 @@ end;
 
 { TDateTimePickerFixed }
 
+{$IFDEF TDATETIME_FIX}
 {$IFDEF VER130}
 procedure TDateTimePickerFixed.SetFormat(Value: string);
 begin
@@ -2232,7 +2235,6 @@ begin
 }
 end;
 
-
 function TDateTimePickerFixed.MsgSetDateTime(Value: TSystemTime): Boolean;
 begin
   Result := true;
@@ -2245,7 +2247,7 @@ begin
     {$ENDIF}
   end;
 end;
-
+{$ENDIF}
 
 { TTemplateCtrlDate }
 
@@ -2286,12 +2288,13 @@ end;
 
 function TTemplateCtrlDate.GetDisplayFormat: string;
 begin
-  Result := TDateTimePickerFixed(fControl).Format;
+  ///Result := TDateTimePickerFixed(fControl).Format;
+  result:='';
 end;
 
 procedure TTemplateCtrlDate.SetDisplayFormat(Value: string);
 begin
-  TDateTimePickerFixed(fControl).Format := Value;
+  ///TDateTimePickerFixed(fControl).Format := Value;
 end;
 
 function TTemplateCtrlDate.GetTimeString: string;
@@ -2711,7 +2714,7 @@ begin
       if t = 'users' then
         fFilter := sUsers
       else
-        raise Exception.Create('pickupdlg: ' + stInvalidFilter);
+          raise Exception.CreateFmt('pickupdlg: ' + stInvalidFilter, [t]);
     end
     else
     if Name = 'column' then
@@ -3178,11 +3181,18 @@ begin
       LoadButtons(XmlNode[i]);
   fList.LoadProc(XmlNode);
   fList.Control.Top := fMargin;
-  { Instead of the panel, make the list accessible by the assigned name }
+  (*{ Instead of the panel, make the list accessible by the assigned name }
   fList.fName := fName;
   fControl.Name := fName + 'Panel';
   fList.Control.Name := fName;
-  fName := fName + 'Panel';
+  fName := fName + 'Panel';*)
+
+  { Make the list accessible to scripts through a compound name }
+  fName := fName;
+  fControl.Name := fName;
+  fList.fName := fName + '_list';
+  fList.Control.Name := fName+ '_list';
+
   ArrangeBox;
   ArrangeButtons;
   MyOnButtonProc(nil);
@@ -3690,13 +3700,23 @@ end;
 function TTemplateAttributeValue.GetString: string;
 var
   vLen: Integer;
+  {$IFDEF UNICODE}
+  aOut: AnsiString;
+  {$ENDIF}
 begin
   if Base64 then
   begin
     vLen := Length(Value);
+    {$IFDEF UNICODE}
+    SetLength(aOut, Base64decSize(vLen));
+    vLen := Base64Decode(AnsiString(Value)[1], vLen, aOut[1]);
+    SetLength(aOut, vLen);
+    Result := string(aOut);
+    {$ELSE}
     SetLength(Result, Base64decSize(vLen));
     vLen := Base64Decode(Value[1], vLen, Result[1]);
     SetLength(Result, vLen);
+    {$ENDIF}
   end
   else
     Result := Value;
