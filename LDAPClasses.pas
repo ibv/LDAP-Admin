@@ -35,7 +35,7 @@ uses
 {$IFnDEF FPC}
   Windows,  WinLDAP,
 {$ELSE}
-  LCLIntf, LCLType, LMessages, LazUtils, StrUtils, LinLDAP, lDapSend, lazutf8,
+  LCLIntf, LCLType, LazUtils, LinLDAP, lDapSend, lazutf8,
 {$ENDIF}
   Sysutils,  Classes, Events, Constant;
 
@@ -1021,10 +1021,10 @@ end;
 {$else}
 procedure TLDAPSession.WriteEntry(Entry: TLdapEntry);
 var
-  i,j         : integer;
+  i,j          : integer;
   AttributeList: TLdapAttributeList;
-  Attributes  : LDAPSend.TLDAPAttributeList;
-  data: LDAPSend.TLDAPAttribute;
+  Attributes   : LDAPSend.TLDAPAttributeList;
+  data         : LDAPSend.TLDAPAttribute;
 
 
 procedure MakeAttrib(AValue: TLdapAttributeData);
@@ -1038,16 +1038,16 @@ begin
   begin
     data:=Attributes.Add;
     data.AttributeName:=AValue.fAttribute.Name;
-    data.add(AValue.AsString);
+    if not(asDeleted in AttributeList[i].State) then
+       data.add(AValue.AsString);
   end;
 end;
 
 procedure ValueModOp(AValue: TLdapAttributeData; ModOP: TLDAPModifyOp);
 begin
   MakeAttrib(AttributeList[i][j]);
-  LdapCheck(ldap_modify_s(pld, PChar(Entry.dn), ModOP, Attributes[0]));
+  if not(esNew in Entry.State) then LdapCheck(ldap_modify_s(pld, PChar(Entry.dn), ModOP, Attributes[0]));
 end;
-
 
 
 begin
@@ -1056,23 +1056,28 @@ begin
   try
     for i := 0 to AttributeList.Count - 1 do
     begin
+      {
       if asDeleted in AttributeList[i].State then
-        ValueModOp(AttributeList[i][j],MO_Delete)
+      begin
+        data:=Attributes.Add;
+        data.AttributeName:=AttributeList[i].Name;
+        LdapCheck(ldap_modify_s(pld, PChar(Entry.dn), MO_Delete, Attributes[0]))
+      end
       else
-      if asModified in AttributeList[i].State then
+      }
+      if (asModified in AttributeList[i].State) or (asNew in AttributeList[i].State) or
+         (asDeleted in AttributeList[i].State) then
       begin
         for j := 0 to AttributeList[i].ValueCount - 1 do
           case AttributeList[i][j].ModOp of
-            LDAP_MOD_ADD:     MakeAttrib(AttributeList[i][j]);
+            LDAP_MOD_ADD:     ValueModOp(AttributeList[i][j],MO_Add);
             LDAP_MOD_DELETE:  ValueModOp(AttributeList[i][j],MO_Delete);
             LDAP_MOD_REPLACE: ValueModOp(AttributeList[i][j],MO_Replace);
           end;
       end;
     end;
     if esNew in Entry.State then
-        LdapCheck(ldap_add_s(pld, PChar(Entry.dn), Attributes))
-      ///else
-        ///LdapCheck(ldap_modify_s(pld, PChar(Entry.dn), PLDAPMod(attrs)));
+        LdapCheck(ldap_add_s(pld, PChar(Entry.dn), Attributes));
   finally
   Attributes.Free;
   end;

@@ -34,12 +34,13 @@ interface
 
 uses
 {$IFnDEF FPC}
-  Windows,
+  Windows, FileUtil
 {$ELSE}
-  LCLIntf, LCLType, LMessages,
+  LCLIntf, LCLType, LazFileUtils,
 {$ENDIF}
-  Registry, IniFiles, Classes, Contnrs, SysUtils, LDAPClasses, Xml,
-  FileUtil;
+  Registry, Classes, Contnrs, SysUtils, LDAPClasses, Xml
+  ;
+
 
 type
   TConfigStorage=class;
@@ -350,7 +351,7 @@ uses
 {$ELSE}
 {$ENDIF}
   Constant, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}Dialogs, Forms, StdCtrls, Controls, WinBase64,
-     Math {$IFDEF VER_XEH}, System.Types{$ENDIF};
+  Math {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 function CheckProto(Ext: string): boolean;
 var

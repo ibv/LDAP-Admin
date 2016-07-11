@@ -46,7 +46,7 @@ uses
 {$IFnDEF FPC}
   windows,
 {$ELSE}
-  LCLIntf, LCLType, LMessages,
+  LCLIntf, LCLType,
 {$ENDIF}
   sysutils, Classes, TextFile, Contnrs;
 

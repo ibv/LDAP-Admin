@@ -119,11 +119,11 @@ uses
      WinHelpViewer, {$ENDIF}
   Consts, OleConst, ComStrs, jconsts, Windows,
 {$ELSE}
-  LCLIntf, LCLType, LMessages, RtlConsts,
+  LCLIntf, LCLType, RtlConsts,
 {$ENDIF}
   TypInfo, Config, SysUtils,
-     Dialogs, Constant, Graphics,
-     ComCtrls, ExtCtrls, SysConst, StdCtrls, Math, Misc{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+     Dialogs, Graphics,
+     ComCtrls, ExtCtrls, StdCtrls, Math, Misc{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
 function HookLoadResString(ResStringRec: PResStringRec):string;
 var

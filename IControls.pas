@@ -188,9 +188,15 @@ begin
 end;
 
 procedure TInplaceAttribute.DoExit;
+var
+  s: string;
 begin
   with Owner as TStringGrid do
-    Cells[Col, Row] := GetControlData;
+  begin
+    s:=GetControlData;
+    if (s<>'') or (col>0) then
+      Cells[Col, Row] := s;
+  end;
   ControlVisible := false;
   inherited;
 end;

@@ -1485,6 +1485,7 @@ begin
   OnScrollTimer(ScrollTimer, LdapTree, ScrollAccMargin);
 end;
 
+
 procedure TMainFrm.ValueListViewCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
 var
   i: Integer;

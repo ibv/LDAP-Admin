@@ -31,11 +31,11 @@ uses
 {$IFnDEF FPC}
   Windows,System.Actions,
 {$ELSE}
-  LCLIntf, LCLType, LMessages,
+  LCLIntf, LCLType,
 {$ENDIF}
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  ComCtrls, StdCtrls, Menus, ImgList, ExtCtrls, Buttons, Config, ToolWin,
-  ActnList, LDAPClasses, DlgWrap;
+  SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ComCtrls, StdCtrls, Menus, ImgList, ExtCtrls, Buttons, Config,
+  ActnList, DlgWrap;
 
 type
   TConnListFrm = class(TForm)

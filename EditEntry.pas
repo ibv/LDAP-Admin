@@ -43,6 +43,9 @@ const
   NAMING_VALUE_TAG = -1;
 
 type
+
+  { TEditEntryFrm }
+
   TEditEntryFrm = class(TForm)
     Panel2: TPanel;
     edDn: TEdit;
@@ -311,7 +314,6 @@ procedure TEditEntryFrm.InplaceControlExit(Sender: TObject);
 begin
   with Sender as TInplaceAttribute do
     if TabExit then HandleTabExit(Sender as TInplaceAttribute);
-       //HandleTabExit(Sender as TInplaceAttribute);
 end;
 
 procedure TEditEntryFrm.KeyComboEnter(Sender: TObject);
@@ -453,9 +455,9 @@ begin
   Result := InplaceClass.Create(StringGrid, AValue);
   with Result do
   begin
-    Required := IsRequired;
+    Required  := IsRequired;
     PopupMenu := PopupMenu1;
-    OnExit := InplaceControlExit;
+    OnExit    := InplaceControlExit;
   end;
 end;
 
@@ -1392,7 +1394,8 @@ procedure HandleWheelPage(StringGrid: TStringGrid; Up: Boolean);
 var
   r, d: Integer;
 begin
-  with StringGrid do begin
+  with StringGrid do
+  begin
     d := Height div DefaultRowHeight - 4;
     if d < 0 then d := 0;
     if Up then d := -d;
