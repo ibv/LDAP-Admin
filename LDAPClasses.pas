@@ -1617,7 +1617,8 @@ end;
 procedure TLDapAttributeData.SaveToStream(Stream: TStream);
 begin
   if Assigned(Self) and (ModOp <> LdapOpNoop) and (ModOp <> LdapOpDelete) then
-    Stream.WriteBuffer(Berval.bv_val, fBerval.Bv_Len);
+    ///Stream.WriteBuffer(Berval.bv_val^, fBerval.Bv_Len);
+    Stream.WriteBuffer(Pointer(fBerval.Bv_Val)^, fBerval.Bv_Len);
 end;
 
 function TLDapAttributeData.BervalAddr: PLdapBerval;

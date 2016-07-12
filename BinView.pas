@@ -94,6 +94,7 @@ uses Constant;
 
 {$R *.dfm}
 
+
 procedure THexView.ShowMemoryWindow;
 var
   i, j, MemBase, CurOffset: Integer;
@@ -117,7 +118,8 @@ begin
           HexGrid.Cells[i + 1, j] := IntToHex(Value^, 2);
         CharGrid.Cells[i, j] := Char(Value^);
       end
-      else begin
+      else
+      begin
         HexGrid.Cells[i + 1, j] := '';
         CharGrid.Cells[i, j] := '';
       end;

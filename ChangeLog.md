@@ -1,3 +1,8 @@
+* Tue Jul 12 2016 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Fixed BinView
+
+
 * Mon Jul 11 2016 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Fixed Add/Del/Modify attibute in EditEntry Form
