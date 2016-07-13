@@ -1,3 +1,8 @@
+* Wed Jul 13 2016 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Fixed drawing Items in ValueListView
+
+
 * Tue Jul 12 2016 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Fixed BinView

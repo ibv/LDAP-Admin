@@ -226,6 +226,12 @@ type
       var DragObject: TDragObject);
     procedure LDAPTreeEndDrag(Sender, Target: TObject; X, Y: Integer);
     procedure ScrollTimerTimer(Sender: TObject);
+    procedure ValueListViewAdvancedCustomDrawItem(Sender: TCustomListView;
+      Item: TListItem; State: TCustomDrawState; Stage: TCustomDrawStage;
+      var DefaultDraw: Boolean);
+    procedure ValueListViewAdvancedCustomDrawSubItem(Sender: TCustomListView;
+      Item: TListItem; SubItem: Integer; State: TCustomDrawState;
+      Stage: TCustomDrawStage; var DefaultDraw: Boolean);
     procedure ValueListViewCustomDrawItem(Sender: TCustomListView;
       Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
     procedure ActConnectExecute(Sender: TObject);
@@ -273,8 +279,7 @@ type
     procedure ListPopupPopup(Sender: TObject);
     procedure pbViewCertClick(Sender: TObject);
     procedure pbViewPictureClick(Sender: TObject);
-    procedure ValueListViewInfoTip(Sender: TObject; Item: TListItem;
-      var InfoTip: String);
+    procedure ValueListViewInfoTip(Sender: TObject; Item: TListItem;var InfoTip: String);
     procedure ActEditValueExecute(Sender: TObject);
     procedure ActAliasExecute(Sender: TObject);
     procedure ActCustomizeMenuExecute(Sender: TObject);
@@ -1486,11 +1491,99 @@ begin
 end;
 
 
+
+procedure TMainFrm.ValueListViewAdvancedCustomDrawItem(Sender: TCustomListView;
+  Item: TListItem; State: TCustomDrawState; Stage: TCustomDrawStage;
+  var DefaultDraw: Boolean);
+var
+  i: Integer;
+  mRect: TRect;
+begin
+  Sender.Canvas.Font.Style := [];
+  Sender.Canvas.Font.Color := clWindowText;
+
+  with TLdapAttributeData(Item.Data), Font do
+  begin
+    if lowercase(Attribute.Name) = 'objectclass' then
+    begin
+      Sender.Canvas.Font.Style := [fsBold];
+      Sender.Canvas.Font.Color := clNavy;
+    end
+    else
+    if Attribute.Entry.OperationalAttributes.AttributeOf(Item.Caption) = Attribute then
+      Sender.Canvas.Font.Color := clDkGray
+    else
+    ///if TabControl1.TabIndex <> -1 then
+    ///with TConnection(fConnections[TabControl1.TabIndex]) do
+    if TabCOntrol1.TabIndex > 0 then
+    with TConnection(fConnections[TabControl1.TabIndex-1]) do
+      if Schema.Loaded then
+      begin
+       for i := 0 to Schema.ObjectClasses.Count - 1 do
+         if Schema.ObjectClasses[i].Must.ByName[Attribute.Name] <> nil then
+         begin
+           //Color := clOlive;
+           Sender.Canvas.Font.Style := [fsBold];
+           Break;
+         end;
+      end;
+  end;
+  mRect := Item.DisplayRect(drBounds);
+  Sender.Canvas.TextRect(mRect,mRect.Left + 3,mRect.Top,Item.Caption);
+  DefaultDraw := false;
+end;
+
+procedure TMainFrm.ValueListViewAdvancedCustomDrawSubItem(
+  Sender: TCustomListView; Item: TListItem; SubItem: Integer;
+  State: TCustomDrawState; Stage: TCustomDrawStage; var DefaultDraw: Boolean);
+var mRect: TRect;
+      i: Integer;
+      S: String;
+begin
+    with Sender.Canvas do
+    begin
+      with TLdapAttributeData(Item.Data), Font do
+      begin
+        Style := [];
+        Font.Color := clWindowText;
+        if (lowercase(Attribute.Name) = 'objectclass') then
+        begin
+          Style := [fsBold];
+          Color := clNavy;
+        end
+        else
+        if Attribute.Entry.OperationalAttributes.AttributeOf(Item.Caption) = Attribute then
+          Color := clDkGray
+        else
+        if TabCOntrol1.TabIndex > 0 then
+        with TConnection(fConnections[TabControl1.TabIndex-1]) do
+          if Schema.Loaded then
+          begin
+           for i := 0 to Schema.ObjectClasses.Count - 1 do
+             if Schema.ObjectClasses[i].Must.ByName[Attribute.Name] <> nil then
+             begin
+               Style := [fsBold];
+               Break;
+             end;
+          end;
+      end;
+      mRect := Item.DisplayRect(drlabel);
+      s:=Item.SubItems[SubItem-1];
+      for i :=1 to SubItem-1 do mRect.Left := mRect.Left + Sender.Column[i].Width;
+      if SubItem <> 3 then
+        TextRect(mRect,mRect.Left + 3 , mRect.Top , s)
+      else
+        TextRect(mRect,mRect.left + Sender.Column[i+1].Width - Canvas.TextWidth(s) - 12, mRect.Top, s);
+    end;
+    DefaultDraw := false;
+end;
+
+
 procedure TMainFrm.ValueListViewCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
 var
   i: Integer;
 begin
-  with ValueListView.Canvas do
+  with Sender.Canvas do
   begin
     if odd(Item.Index) then Brush.Color:=$00f0f0f0;
     with TLdapAttributeData(Item.Data), Font do
@@ -2245,6 +2338,7 @@ begin
       Show;
     end;
 end;
+
 
 procedure TMainFrm.ValueListViewInfoTip(Sender: TObject; Item: TListItem; var InfoTip: String);
 const

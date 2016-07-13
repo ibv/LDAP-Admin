@@ -181,6 +181,10 @@ object MainFrm: TMainFrm
           Caption = 'Size'
           Width = 161
         end>
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'DejaVu Sans'
+      ParentFont = False
       ParentShowHint = False
       PopupMenu = ListPopup
       ReadOnly = True
@@ -190,7 +194,8 @@ object MainFrm: TMainFrm
       SortType = stText
       TabOrder = 0
       ViewStyle = vsReport
-      OnCustomDrawItem = ValueListViewCustomDrawItem
+      OnAdvancedCustomDrawItem = ValueListViewAdvancedCustomDrawItem
+      OnAdvancedCustomDrawSubItem = ValueListViewAdvancedCustomDrawSubItem
     end
     object EntryListView: TListView
       Left = 0
