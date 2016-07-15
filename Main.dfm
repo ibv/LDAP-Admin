@@ -235,7 +235,6 @@ object MainFrm: TMainFrm
       Width = 257
       Align = alClient
       DefaultItemHeight = 16
-      DragCursor = crDefault
       DragMode = dmAutomatic
       ExpandSignType = tvestPlusMinus
       HideSelection = False

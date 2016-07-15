@@ -10,17 +10,23 @@ Status
 ------
 
 Stable functions: 
- * Browsing of LDAP directories
+ * Browsing and editing of LDAP directories
+ * Recursive operations on directory trees (copy, move and delete)
  * Schema browsing
  * LDIF export and import
- * Copy/Move LDAP entry
+ * Password management (supports crypt, md5, sha, sha-crypt, samba)
  
-Unstable functions: 
+Unstable/Untried functions: 
  * Template support
+ * Binary attribute support
+ * Management of Posix Groups and Accounts
+ * Management of Samba Accounts
+ * Postfix MTA Support
+ * LDAP SSL support 
+ * 
 
 Disabled functions: 
  * Scripting
- * Password management (supports crypt, md5, sha, sha-crypt, samba)
 
 
 Requirements

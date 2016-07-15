@@ -1,3 +1,11 @@
+* Fri Jul 15 2016 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Fixed Drag&Drop in LdapTree
++ Fixed TreeDropTarget in Lazarus source
+  http://forum.lazarus.freepascal.org/index.php?topic=30263.0 
+  see DragDrop.info
+
+
 * Wed Jul 13 2016 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Fixed drawing Items in ValueListView

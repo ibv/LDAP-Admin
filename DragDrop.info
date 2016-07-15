@@ -1,0 +1,46 @@
+  http://forum.lazarus.freepascal.org/index.php?topic=30263.0
+  
+  File "/usr/lib64/lazarus/lcl/include/treeview.inc"
+  
+  procedure TTreeNode.SetDropTarget(AValue: Boolean);
+begin
+ // if AValue=GetDropTarget then exit;
+  if AValue then begin
+    Include(FStates,nsDropHilited);
+    if TreeView<>nil then
+      TreeView.FLastDropTarget:=Self;
+  end else begin
+    Exclude(FStates,nsDropHilited);
+    if TreeView<>nil then
+      TreeView.FLastDropTarget:=nil;
+  end;
+  {if Value then TreeView_SelectDropTarget(Handle, ItemId)
+  else if DropTarget then TreeView_SelectDropTarget(Handle, nil);}
+end; 
+
+
+
+
+procedure TCustomTreeView.DragOver(Source: TObject; X,Y: Integer;
+  State: TDragState; var Accept: Boolean);
+var
+  Node: TTreeNode;
+
+
+begin
+  inherited DragOver(Source,X,Y,State,Accept);
+  Node := GetNodeAt(X, Y);
+  {$IFDEF VerboseDrag}
+  DebugLn(['TCustomTreeView.DragOver ',Name,':',ClassName,' ',Node<>nil,' ',Node <> DropTarget,' ',Node = FLastDropTarget]);
+  DebugLn(['TCustomTreeView.DragOver Source ',Source,':',Source.ClassName]);
+  {$ENDIF}
+ 
+  if (Node <> nil)
+  and ((Node <> DropTarget) or (Node = FLastDropTarget)) then
+  begin
+    FLastDropTarget := nil;
+    Node.DropTarget := True;
+  end
+  else if Node = nil then FLastDropTarget := nil;    //added this
+end; 
+

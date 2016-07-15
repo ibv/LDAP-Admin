@@ -1236,13 +1236,15 @@ var
   SelItem: TListItem;
   SelNode: TTreeNode;
 begin
-  if LdapTree.Focused then
+  //if LdapTree.Focused then
+  if LdapTree.Selected <> nil then
   begin
     SelNode := SelectedNode;
     if Assigned(SelNode) then
       List.Add(TObjectInfo(SelNode.Data).dn)
   end
-  else begin
+  else
+  begin
     SelItem := EntryListView.Selected;
     repeat
       List.Add(TObjectInfo(TTreeNode(SelItem.Data).Data).dn);
@@ -1422,6 +1424,14 @@ begin
   end;
 end;
 
+
+{
+http://forum.lazarus.freepascal.org/index.php?topic=30263.0
+
+For correct Drag&Drop function, you must make changes in the include Lazarus files
+"/usr/lib64/lazarus/lcl/include/treeview.inc"
+see DragDrop.info
+}
 procedure TMainFrm.LDAPTreeDragOver(Sender, Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
 var
   srcdn, dstdn: string;
@@ -1430,7 +1440,8 @@ begin
   with LdapTree do
   if Assigned(DropTarget) and (DropTarget = GetNodeAt(X, Y)) and IsContainer(DropTarget) then
     dstdn := TObjectInfo(DropTarget.Data).dn
-  else begin
+  else
+  begin
     Accept := false;
     exit;
   end;
@@ -1472,6 +1483,7 @@ begin
       CopySelection(Connection, TObjectInfo(LDAPTree.DropTarget.Data).dn, '', not cpy)
   end;
 end;
+
 
 procedure TMainFrm.LDAPTreeStartDrag(Sender: TObject; var DragObject: TDragObject);
 begin
@@ -1522,7 +1534,6 @@ begin
        for i := 0 to Schema.ObjectClasses.Count - 1 do
          if Schema.ObjectClasses[i].Must.ByName[Attribute.Name] <> nil then
          begin
-           //Color := clOlive;
            Sender.Canvas.Font.Style := [fsBold];
            Break;
          end;
