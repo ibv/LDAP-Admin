@@ -99,10 +99,14 @@ procedure THexView.ShowMemoryWindow;
 var
   i, j, MemBase, CurOffset: Integer;
   Value: ^Byte;
+  nr: integer;
+  s: UnicodeString;
+  digit:integer;
 begin
   MemBase := Cardinal(fMemory.Memory);
   if MemBase = 0 then
     Exit;
+  SetString(s, PAnsiChar(fMemory.Memory), fMemory.Size);
   CurOffset :=  ScrollBar1.Position * 16;
   for j := scTopRow to scTopRow + scVisibleRows - 1 do
   begin
@@ -111,12 +115,25 @@ begin
     begin
       if CurOffset < fMemory.Size then
       begin
+        digit:=2;
         Value := Pointer(MemBase + CurOffset);
+        nr :=  Value^;
+        if Value^ and $80 = $80 then
+        begin
+          nr := nr shl 8;
+          inc(CurOffset);
+          Value := Pointer(MemBase + CurOffset);
+          if Value^ = $0 then continue;
+          nr:=nr+Value^;
+          HexGrid.ColWidths[i+1]:=34;
+          digit:=4;
+        end;
         if DecimalView then
-          HexGrid.Cells[i + 1, j] := Format('%3d', [Value^])
+          HexGrid.Cells[i + 1, j] := Format('%3d', [nr])
         else
-          HexGrid.Cells[i + 1, j] := IntToHex(Value^, 2);
-        CharGrid.Cells[i, j] := Char(Value^);
+          HexGrid.Cells[i + 1, j] := IntToHex(nr, digit);
+        ///CharGrid.Cells[i, j] := Char(Value^)
+        CharGrid.Cells[i,j] := {UTF8Encode}(s[I+1+j*16]);
       end
       else
       begin
