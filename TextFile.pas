@@ -175,6 +175,7 @@ begin
     feUnicode_LE: Position := SizeOf(UTF_16BOM_LE);
   end;
   Tmp := '';
+  utf8:= '';
   ch := #0;
   while not EOF do
   begin
@@ -186,7 +187,8 @@ begin
       Word(ch) := Word(ch) or b;
     end;
     if Encoding = feUTF8 then
-      utf8 := utf8 + AnsiChar(ch)
+        ///utf8 := utf8 + AnsiChar(ch)
+        utf8 := utf8 + AnsiChar(Lo(word(ch)))
     else
       Tmp := Tmp + ch;
   end;
