@@ -84,7 +84,7 @@ begin
     raise Exception.Create(Format(stReqNoEmpty, [cIpAddress]));
   if esNew in Entry.State then
   begin
-    Entry.dn := 'cn=' + cn.Text + ',' + Entry.dn;
+    Entry.dn := 'cn=' + EncodeLdapString(cn.Text) + ',' + Entry.dn;
     Entry.AttributesByName['cn'].AddValue(cn.Text);
   end;
   Entry.Write;
@@ -102,7 +102,7 @@ begin
   begin
     Entry.Read;
     cn.Enabled := False;
-    cn.Text := GetNameFromDn(dn);
+    cn.Text := DecodeLdapString(GetNameFromDn(dn));
     Caption := Format(cPropertiesOf, [cn.Text]);
     ipHostNumber.Text := Entry.AttributesByName['iphostnumber'].AsString;
     description.Text := Entry.AttributesByName['description'].AsString;

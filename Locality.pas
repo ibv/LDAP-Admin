@@ -73,7 +73,7 @@ begin
     raise Exception.Create(Format(stReqNoEmpty, [NameLabel.Caption]));
   if esNew in Entry.State then
   begin
-    Entry.dn := 'l=' + l.Text + ',' + Entry.dn;
+    Entry.dn := 'l=' + EncodeLdapString(l.Text) + ',' + Entry.dn;
     with Entry.AttributesByName['objectclass'] do
     begin
       AddValue('top');
@@ -95,7 +95,7 @@ begin
   if Mode = EM_MODIFY then
   begin
     l.Enabled := False;
-    l.text := GetNameFromDn(dn);
+    l.text := DecodeLdapString(GetNameFromDn(dn));
     Caption := Format(cPropertiesOf, [l.Text]);
     Entry.Read;
     description.Text := Entry.AttributesByName['description'].AsString;

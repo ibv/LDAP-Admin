@@ -132,6 +132,7 @@ const
   rDirectoryType      = 'Connection\DirectoryType';
   rDontCheckProto     = 'DontCheckProto';
   rEditorSchemaHelp   = 'General\EdSchemaHelp';
+  rEncodedLdapStrings = 'EncodedStrings';
   rEvViewStyle        = 'EvViewStyle';
   rInetDisplayName    = 'Inet\DisplayName';
   rLanguage           = 'Language';

@@ -232,7 +232,7 @@ procedure TMailGroupDlg.edNameChange(Sender: TObject);
 begin
   OkBtn.Enabled := (edName.Text <> '') and (mail.Items.Count > 0);
   if esNew in Entry.State then
-    Entry.Dn := 'cn=' + edName.Text + ',' + ParentDn;
+    Entry.Dn := 'cn=' + EncodeLdapString(edName.Text) + ',' + ParentDn;
   Group.Cn := edName.Text;
 end;
 

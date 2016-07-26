@@ -106,7 +106,7 @@ var
 
 implementation
 
-uses Pickup, Templates, Config;
+uses Pickup, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Input, Main, Templates, Misc, Config;
 
 {$R *.dfm}
 
@@ -624,7 +624,7 @@ end;
 procedure TGroupDlg.edNameChange(Sender: TObject);
 begin
   if esNew in Entry.State then
-    Entry.Dn := 'cn=' + edName.Text + ',' + ParentDn;
+    Entry.Dn := 'cn=' + EncodeLdapString(edName.Text) + ',' + ParentDn;
   Entry.AttributesByName['cn'].AsString := edName.Text;
   OkBtn.Enabled := edName.Text <> '';
 end;

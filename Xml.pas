@@ -50,6 +50,7 @@ uses
 {$ENDIF}
   sysutils, Classes, TextFile, Contnrs;
 
+
 type
   TTagType=(tt_Open, tt_Close, tt_Single);
 
@@ -79,6 +80,7 @@ type
     FNodes:     TObjectList;
     FParent:    TXmlNode;
     FContent:   string;
+    FComment:   string;
     FCaseSens:  boolean;
     function    GetNodes(Index: integer): TXmlNode;
     function    GetCount: integer;
@@ -99,6 +101,7 @@ type
     procedure   Delete(Index: integer);
     function    NodeByName(AName: string; CaseSensitive: boolean=true; Lang: string=''): TXmlNode;
     procedure   Sort(Compare: TListSortCompare; Recurse: Boolean);
+    property    Comment: string read FComment write FComment;
   end;
 
   TStreamCallback = procedure (Node: TXmlNode) of object;
@@ -114,7 +117,7 @@ type
     FBuffer:    string;
     {$ENDIF}
     FCurrBufferPos: Integer;
-    function    GetNextTag(Stream: TTextFile; var PrevContent, TagName, Attrs: string; var TagType: TTagType): boolean;
+    function    GetNextTag(Stream: TTextStream; var PrevContent, TagName, Attrs: string; var TagType: TTagType): boolean;
     procedure   ParseAttributes(S: string; Attributes: TStringList);
     function    ClearContent(S: string): string;
     procedure   ParsePath(const Path: string; Result: TStrings);
@@ -125,8 +128,8 @@ type
     constructor Create; reintroduce;
     destructor  Destroy; override;
     property    Root: TXmlNode read FRoot;
-    procedure   LoadFromStream(const Stream: TTextFile); virtual;
-    procedure   SaveToStream(const Stream: TTextFile; StreamCallback: TStreamCallback = nil); virtual;
+    procedure   LoadFromStream(const Stream: TTextStream); virtual;
+    procedure   SaveToStream(const Stream: TTextStream; StreamCallback: TStreamCallback = nil); virtual;
     procedure   LoadFromFile(const FileName: string);
     procedure   SaveToFile(const FileName: string; StreamCallback: TStreamCallback = nil);
     procedure   Sort(Compare: TListSortCompare);
@@ -324,7 +327,7 @@ begin
   inherited;
 end;
 
-function TXmlTree.GetNextTag(Stream: TTextFile; var PrevContent, TagName, Attrs: string; var TagType: TTagType): boolean;
+function TXmlTree.GetNextTag(Stream: TTextStream; var PrevContent, TagName, Attrs: string; var TagType: TTagType): boolean;
 type
   TState=(tsContent, tsScriptContent, tsTag, tsScriptTag, tsAttrs, tsEnd, tsSkip, tsComment, tsMarkup);
 var
@@ -457,7 +460,7 @@ begin
   end;
 end;
 
-procedure TXmlTree.LoadFromStream(const Stream: TTextFile);
+procedure TXmlTree.LoadFromStream(const Stream: TTextStream);
 var
   PrevContent, TagName: string;
   TagType: TTagType;
@@ -472,8 +475,7 @@ var
     if not GetNextTag(Stream, PrevContent, TagName, Attrs, TagType) then
      raise EXmlException.Create(Stream, TagName, XML_NO_OPENING_TAG, Stream.CharSize);
 
-    ///if TagName = '?xml' then
-    if TagName = 'xml' then
+    if TagName = '?xml' then
     begin
       s := TStringList.Create;
       try
@@ -590,7 +592,7 @@ begin
   result:=copy(S, b, e-b+1);
 end;
 
-procedure TXmlTree.SaveToStream(const Stream: TTextFile; StreamCallback: TStreamCallback = nil);
+procedure TXmlTree.SaveToStream(const Stream: TTextStream; StreamCallback: TStreamCallback = nil);
 
   function GetEncodingString: string;
   begin
@@ -620,7 +622,7 @@ procedure TXmlTree.SaveToStream(const Stream: TTextFile; StreamCallback: TStream
       end;
   end;
 
-  procedure WriteNode(Node: TXmlNode; Indent: string; IsFirst: boolean=false);
+  procedure WriteNode(Node: TXmlNode; Indent: string);
   var
     i: integer;
     Line, encName: string;
@@ -635,10 +637,20 @@ procedure TXmlTree.SaveToStream(const Stream: TTextFile; StreamCallback: TStream
 
     with Stream do
     begin
+      if Node.FComment <> '' then
+        WriteLn(Indent + '<!--' + Node.FComment + '-->');
       Line := Indent + '<' + encName;
       for i := 0 to Node.Attributes.Count - 1 do
         Line := Line + ' ' + Node.Attributes.Names[i] + '="' + Node.Attributes.Values[Node.Attributes.Names[i]] + '"';
+
+      if (Node.Content='') and (Node.Count=0) then
+      begin
+        WriteLn(Line + '/>');
+        exit;
+      end;
+
       Line := Line + '>';
+
       if Node.Content <> '' then
       begin
         if fMarkups then
@@ -646,16 +658,17 @@ procedure TXmlTree.SaveToStream(const Stream: TTextFile; StreamCallback: TStream
         else
           Line := Line + Node.Content;
       end;
+
       if Node.Count = 0 then
       begin
-        Line := Line + '<' + encName + '/>';
+        Line := Line + '</' + encName + '>';
         WriteLn(Line);
       end
       else begin
         WriteLn(Line);
         for i := 0 to Node.Count - 1 do
           WriteNode(Node[i], Indent + TAB);
-        WriteLn(Indent + '<' + encName + '/>');
+        WriteLn(Indent + '</' + encName + '>');
       end;
       if Assigned(StreamCallback) then StreamCallback(Node);
     end;
@@ -663,7 +676,7 @@ procedure TXmlTree.SaveToStream(const Stream: TTextFile; StreamCallback: TStream
 
 begin
   Stream.WriteLn('<?xml version="1.0" encoding="' + GetEncodingString + '"?>');
-  WriteNode(Root, '', True);
+  WriteNode(Root, '');
 end;
 
 procedure TXmlTree.Sort(Compare: TListSortCompare);

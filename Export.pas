@@ -58,6 +58,7 @@ type
     Label4: TLabel;
     cbEncoding: TComboBox;
     Label6: TLabel;
+    cbGenerateComments: TCheckBox;
     procedure BrowseBtnClick(Sender: TObject);
     procedure edFileNameChange(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
@@ -224,6 +225,7 @@ begin
   ldif := TLDIFFile.Create(edFileName.Text, fmWrite);
   ldif.UnixWrite := UnixWrite;
   ldif.Encoding := fEncoding;
+  ldif.GenerateComments := cbGenerateComments.Checked;
   try
     Prepare(sANYCLASS);
     fCount := 0;
@@ -245,6 +247,7 @@ begin
   Prepare(sANYCLASS);
   dsml := TDsmlTree.Create(fEntryList);
   dsml.Encoding := fEncoding;
+  dsml.GenerateComments := cbGenerateComments.Checked;
   try
     dsml.SaveToFile(edFileName.Text, XmlCallback);
   finally

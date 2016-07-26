@@ -79,6 +79,7 @@ type
     TranscodingTable: TStringGrid;
     Label3: TLabel;
     btnEditLang: TButton;
+    cbDisplayEncoded: TCheckBox;
     procedure btnAddClick(Sender: TObject);
     procedure btnDelClick(Sender: TObject);
     procedure cbConnectClick(Sender: TObject);
@@ -122,13 +123,14 @@ begin
   begin
     Parent := GroupBox3;
     Left := cbConnect.Left +  25 + self.Canvas.TextWidth(cbConnect.Caption);
-    Top := cbConnect.Top ;
+    Top := cbConnect.Top - 2;
     Width := SetDefBtn.Left + SetDefBtn.Width - Left;
     Height := 21;
     ItemHeight := 16;
     Style := csOwnerDrawFixed;
     Color := clBtnFace;
     Enabled := False;
+    TabOrder := 1;
     OnDrawItem := cbStartupConnectionDrawItem;
     OnCanCloseUp := cbStartupConnectionCloseUp;
   end;
@@ -147,6 +149,7 @@ begin
     cbSmartDelete.Checked := ReadBool(rSmartDelete, true);
     cbTemplateIcons.Checked := ReadBool(rUseTemplateImages, false);
     CheckAssocCbk.Checked:= not ReadBool(rDontCheckProto, false);
+    cbDisplayEncoded.Checked := ReadBool(rEncodedLdapStrings, false);
 
     s := ReadString(rStartupSession);
     with cbStartupConnection do
@@ -241,6 +244,7 @@ begin
     WriteString(rTemplateDir, TemplateList.Items.CommaText);
     WriteString(rLanguageDir, LanguageList.Items.CommaText);
     WriteBool(rDontCheckProto, not CheckAssocCbk.Checked);
+    WriteBool(rEncodedLdapStrings, cbDisplayEncoded.Checked);
     with cbStartupConnection do
     begin
       if ItemIndex = -1 then

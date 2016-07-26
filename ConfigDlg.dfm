@@ -1,11 +1,11 @@
 object ConfigDlg: TConfigDlg
   Left = 576
-  Height = 435
+  Height = 443
   Top = 224
   Width = 450
   BorderStyle = bsDialog
   Caption = 'Options'
-  ClientHeight = 435
+  ClientHeight = 443
   ClientWidth = 450
   Color = clBtnFace
   OnClose = FormClose
@@ -16,7 +16,7 @@ object ConfigDlg: TConfigDlg
   LCLVersion = '1.6.0.4'
   object PageControl1: TPageControl
     Left = 0
-    Height = 378
+    Height = 386
     Top = 0
     Width = 450
     ActivePage = TabSheet1
@@ -25,135 +25,142 @@ object ConfigDlg: TConfigDlg
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = '&Application'
-      ClientHeight = 341
+      ClientHeight = 349
       ClientWidth = 442
       object GroupBox1: TGroupBox
         Left = 8
-        Height = 84
-        Top = 116
+        Height = 99
+        Top = 105
         Width = 425
         Caption = '&LDAP tree'
-        ClientHeight = 53
+        ClientHeight = 68
         ClientWidth = 421
-        TabOrder = 0
+        TabOrder = 1
         object cbIdObject: TCheckBox
-          Left = 22
+          Left = 24
           Height = 26
-          Top = 0
+          Top = -6
           Width = 124
           Caption = '&Identify objects'
           OnClick = cbIdObjectClick
           TabOrder = 0
         end
         object cbEnforceContainer: TCheckBox
-          Left = 22
+          Left = 24
           Height = 26
-          Top = 24
+          Top = 18
           Width = 190
           AllowGrayed = True
           Caption = '&Enforce container objects'
           Enabled = False
           State = cbGrayed
-          TabOrder = 1
-        end
-        object cbSmartDelete: TCheckBox
-          Left = 238
-          Height = 26
-          Top = 0
-          Width = 112
-          Caption = 'Smart &delete'
           TabOrder = 2
         end
-        object cbTemplateIcons: TCheckBox
-          Left = 238
+        object cbSmartDelete: TCheckBox
+          Left = 240
           Height = 26
-          Top = 24
+          Top = -6
+          Width = 112
+          Caption = 'Smart &delete'
+          TabOrder = 1
+        end
+        object cbTemplateIcons: TCheckBox
+          Left = 240
+          Height = 26
+          Top = 18
           Width = 123
           Caption = '&Template icons'
           TabOrder = 3
         end
+        object cbDisplayEncoded: TCheckBox
+          Left = 24
+          Height = 26
+          Top = 43
+          Width = 207
+          Caption = 'Do not decode LDAP strings'
+          TabOrder = 4
+        end
       end
       object GroupBox3: TGroupBox
         Left = 8
-        Height = 97
+        Height = 89
         Top = 8
         Width = 425
         Caption = '&Startup'
-        ClientHeight = 66
+        ClientHeight = 58
         ClientWidth = 421
-        ParentBidiMode = False
-        TabOrder = 1
+        TabOrder = 0
         object cbConnect: TCheckBox
-          Left = 22
+          Left = 24
           Height = 26
-          Top = 10
+          Top = -3
           Width = 139
           Caption = '&Connect on start:'
           OnClick = cbConnectClick
           TabOrder = 0
         end
         object SetDefBtn: TButton
-          Left = 206
+          Left = 208
           Height = 25
-          Top = 38
+          Top = 25
           Width = 193
           Caption = '&Set as default LDAP browser'
           OnClick = SetDefBtnClick
-          TabOrder = 1
+          TabOrder = 2
         end
         object CheckAssocCbk: TCheckBox
-          Left = 22
+          Left = 25
           Height = 26
-          Top = 42
+          Top = 25
           Width = 195
           Caption = 'Always &check associations'
-          TabOrder = 2
+          TabOrder = 1
         end
       end
       object GroupBox4: TGroupBox
         Left = 8
         Height = 129
-        Top = 208
+        Top = 212
         Width = 425
         Caption = 'Sea&rch'
         ClientHeight = 98
         ClientWidth = 421
         TabOrder = 2
         object Label2: TLabel
-          Left = 22
+          Left = 24
           Height = 15
-          Top = 58
+          Top = 48
           Width = 118
           Caption = '&Quick search filter:'
           ParentColor = False
         end
         object Label4: TLabel
-          Left = 22
+          Left = 24
           Height = 15
-          Top = 10
+          Top = 0
           Width = 34
           Caption = '&Filter:'
           ParentColor = False
         end
         object edQSearch: TEdit
-          Left = 22
+          Left = 24
           Height = 21
-          Top = 74
-          Width = 377
-          TabOrder = 0
-        end
-        object edSearch: TEdit
-          Left = 22
-          Height = 21
-          Top = 26
+          Top = 64
           Width = 377
           TabOrder = 1
+        end
+        object edSearch: TEdit
+          Left = 24
+          Height = 21
+          Top = 19
+          Width = 377
+          TabOrder = 0
         end
       end
     end
     object TabSheet2: TTabSheet
       Caption = '&Templates'
-      ClientHeight = 341
+      ClientHeight = 349
       ClientWidth = 442
       ImageIndex = 1
       object GroupBox2: TGroupBox
@@ -162,22 +169,22 @@ object ConfigDlg: TConfigDlg
         Top = 8
         Width = 425
         Caption = '&Files'
-        ClientHeight = 184
+        ClientHeight = 170
         ClientWidth = 421
         TabOrder = 0
         object Label1: TLabel
-          Left = 22
+          Left = 24
           Height = 15
-          Top = 10
+          Top = -2
           Width = 133
           Caption = '&Template directories:'
           FocusControl = TemplateList
           ParentColor = False
         end
         object TemplateList: TListBox
-          Left = 22
+          Left = 24
           Height = 145
-          Top = 26
+          Top = 14
           Width = 313
           ItemHeight = 0
           OnMouseMove = ListMouseMove
@@ -186,18 +193,18 @@ object ConfigDlg: TConfigDlg
           TopIndex = -1
         end
         object btnAdd: TButton
-          Left = 342
+          Left = 343
           Height = 25
-          Top = 26
+          Top = 15
           Width = 73
           Caption = '&Add...'
           OnClick = btnAddClick
           TabOrder = 1
         end
         object btnDel: TButton
-          Left = 342
+          Left = 344
           Height = 25
-          Top = 58
+          Top = 46
           Width = 73
           Caption = '&Remove'
           OnClick = btnDelClick
@@ -206,33 +213,33 @@ object ConfigDlg: TConfigDlg
       end
       object GroupBox5: TGroupBox
         Left = 8
-        Height = 105
-        Top = 224
+        Height = 129
+        Top = 216
         Width = 425
         Caption = '&Options'
-        ClientHeight = 88
+        ClientHeight = 98
         ClientWidth = 421
         TabOrder = 1
         object cbTemplateExtensions: TCheckBox
-          Left = 22
+          Left = 24
           Height = 26
-          Top = 34
+          Top = 29
           Width = 301
           Caption = 'Allow templates to e&xtend property dialogs'
           TabOrder = 1
         end
         object cbTemplateAutoload: TCheckBox
-          Left = 22
+          Left = 24
           Height = 26
-          Top = 10
+          Top = 5
           Width = 238
           Caption = '&Autoload templates when editing'
           TabOrder = 0
         end
         object cbTemplateProperties: TCheckBox
-          Left = 22
+          Left = 24
           Height = 26
-          Top = 58
+          Top = 53
           Width = 249
           Caption = 'Use templates as property objects'
           TabOrder = 2
@@ -241,7 +248,7 @@ object ConfigDlg: TConfigDlg
     end
     object TabSheet3: TTabSheet
       Caption = '&Localization'
-      ClientHeight = 341
+      ClientHeight = 349
       ClientWidth = 442
       ImageIndex = 2
       object GroupBox6: TGroupBox
@@ -254,18 +261,18 @@ object ConfigDlg: TConfigDlg
         ClientWidth = 421
         TabOrder = 0
         object Label5: TLabel
-          Left = 22
+          Left = 24
           Height = 15
-          Top = 10
+          Top = -1
           Width = 95
           Caption = '&File directories:'
           FocusControl = LanguageList
           ParentColor = False
         end
         object LanguageList: TListBox
-          Left = 22
+          Left = 24
           Height = 97
-          Top = 26
+          Top = 15
           Width = 313
           ItemHeight = 0
           OnMouseMove = ListMouseMove
@@ -274,21 +281,30 @@ object ConfigDlg: TConfigDlg
           TopIndex = -1
         end
         object btnAddLang: TButton
-          Left = 342
+          Left = 344
           Height = 25
-          Top = 26
+          Top = 15
           Width = 73
           Caption = '&Add...'
           OnClick = btnAddLangClick
           TabOrder = 1
         end
         object btnDelLang: TButton
-          Left = 342
+          Left = 343
           Height = 25
-          Top = 58
+          Top = 78
           Width = 73
           Caption = '&Remove'
           OnClick = btnDelLangClick
+          TabOrder = 3
+        end
+        object btnEditLang: TButton
+          Left = 344
+          Height = 25
+          Top = 47
+          Width = 73
+          Caption = '&Edit'
+          OnClick = btnEditLangClick
           TabOrder = 2
         end
       end
@@ -302,17 +318,17 @@ object ConfigDlg: TConfigDlg
         ClientWidth = 421
         TabOrder = 1
         object Label3: TLabel
-          Left = 22
+          Left = 24
           Height = 15
-          Top = 12
+          Top = -2
           Width = 182
           Caption = 'Character transcoding table:'
           ParentColor = False
         end
         object TranscodingTable: TStringGrid
-          Left = 22
+          Left = 24
           Height = 105
-          Top = 26
+          Top = 12
           Width = 385
           ColCount = 2
           DefaultRowHeight = 16
@@ -334,16 +350,16 @@ object ConfigDlg: TConfigDlg
   object Panel1: TPanel
     Left = 0
     Height = 57
-    Top = 378
+    Top = 386
     Width = 450
     Align = alBottom
     ClientHeight = 57
     ClientWidth = 450
     TabOrder = 1
     object OKBtn: TButton
-      Left = 141
+      Left = 143
       Height = 25
-      Top = 14
+      Top = 16
       Width = 75
       Caption = 'OK'
       Default = True
@@ -351,9 +367,9 @@ object ConfigDlg: TConfigDlg
       TabOrder = 0
     end
     object CancelBtn: TButton
-      Left = 229
+      Left = 231
       Height = 25
-      Top = 14
+      Top = 16
       Width = 75
       Cancel = True
       Caption = 'Cancel'
@@ -363,7 +379,7 @@ object ConfigDlg: TConfigDlg
   end
   object OpenConfig: TOpenDialog
     Filter = 'Ldap Admin config files (*.lcf)|*.lcf|All files (*.*)|*.*'
-    left = 24
+    left = 32
     top = 384
   end
 end

@@ -330,9 +330,11 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure btnSearchModifyClick(Sender: TObject);
     procedure ActClearAllExecute(Sender: TObject);
+    {$IFNDEF VER_XEH}
     procedure TabSheet2Resize(Sender: TObject);
     procedure TabSheet3Resize(Sender: TObject);
     procedure TabSheet4Resize(Sender: TObject);
+    {$ENDIF}
     procedure cbRegExpChange(Sender: TObject);
     procedure cbRegExpDropDown(Sender: TObject);
     procedure btnSaveRegExClick(Sender: TObject);
@@ -1685,6 +1687,8 @@ constructor TSearchFrm.Create(AOwner: TComponent; const dn: string; AConnection:
 begin
   inherited Create(AOwner);
 
+  {$IFNDEF VER_XEH}
+  { Delphi5 and 7 had problems with resizing of TabSheets }
   {$IFDEF VER_D7H}
   if ThemeServices.ThemesEnabled then
   begin
@@ -1695,6 +1699,10 @@ begin
     PathBtn.Height := 25;
     PathBtn.Top := PathBtn.Top - 1;
   end;
+  {$ENDIF}
+  TabSheet2.OnResize := TabSheet2Resize;
+  TabSheet3.OnResize := TabSheet3Resize;
+  TabSheet4.OnResize := TabSheet4Resize;
   {$ENDIF}
 
   Connection := AConnection;
@@ -2178,6 +2186,7 @@ begin
   end;
 end;
 
+{$IFNDEF VER_XEH}
 procedure TSearchFrm.TabSheet2Resize(Sender: TObject);
 begin
   with TabSheet2 do begin
@@ -2204,6 +2213,7 @@ begin
     cbRegExp.Width := btnSaveRegex.Left - cbRegExp.Left - 4;
   end;
 end;
+{$ENDIF}
 
 procedure TSearchFrm.cbRegExpChange(Sender: TObject);
 begin

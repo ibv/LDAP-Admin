@@ -61,6 +61,7 @@ type
     fWrap: Integer;
     fLinesRead: Integer;
     fEof: Boolean;
+    FGenerateComments: Boolean;
   protected
     function  IsSafe(const Buffer: PBytes; DataSize: Cardinal): Boolean;
     function  ReadLine: string; virtual; abstract;
@@ -78,6 +79,7 @@ type
     property Wrap: Integer read fWrap write fWrap;
     property RecordLines: TStringList read fRecord;
     property EOF: Boolean read fEof;
+    property GenerateComments: Boolean read FGenerateComments write FGenerateComments ;
   end;
 
   TLDIFFile = class(TLDIF)
@@ -156,14 +158,11 @@ end;
 
 procedure TLDIF.ParseRecord(Entry: TLdapEntry);
 var
-  i, po, vLen: Integer;
+  i, po: Integer;
   Line, s, url: string;
   atName, atValue: string;
   ChangeType: TAttributeOpMode;
   OpType: TValueOpMode;
-  {$IFDEF UNICODE}
-  aOut: AnsiString;
-  {$ENDIF}
 
 function GetNextLine: Boolean;
 begin
@@ -204,17 +203,11 @@ begin
       atValue := ''
     else
     if Line[po + 1] = ':' then
-    begin
-      s := TrimLeft(Copy(Line, po + 2, MaxInt));
-      {$ifdef mswindows}
-      vLen := Length(s);
-      SetLength(atValue, Base64decSize(vLen));
-      vLen := Base64Decode(s[1], vLen, atValue[1]);
-      SetLength(atValue, vLen);
-      {$else}
-      atValue:=DecodeStringBase64(s);
-      {$endif}
-    end
+    {$ifdef mswindows}
+      atValue := Base64Decode(TrimLeft(Copy(Line, po + 2, MaxInt)))
+    {$else}
+      atValue:=DecodeStringBase64(TrimLeft(Copy(Line, po + 2, MaxInt)))
+    {$endif}
     else
     if Line[po + 1] = '<' then
       url := TrimLeft(Copy(Line, po + 2, MaxInt))
@@ -399,8 +392,7 @@ begin
     else
     begin
       {$ifdef mswindows}
-      SetLength(s, Base64encSize(DataSize));
-      Base64Encode(PChar(Buffer)^, DataSize, s[1]);
+      s := string(Base64Encode(Pointer(Buffer)^, DataSize));
       {$else}
       SetString(s, PChar(Buffer), DataSize);
       s:=EncodeStringBase64(s);
@@ -440,6 +432,8 @@ procedure TLDIF.WriteRecord(Entry: TLdapEntry);
 var
   i, j: Integer;
 begin
+  if FGenerateComments then
+    WriteLine('# dn: ' + EncodeLdapString(Entry.dn));
   PutLine('dn', @Entry.utf8dn[1], Length(Entry.utf8dn));
   for i := 0 to Entry.Attributes.Count - 1 do with Entry.Attributes[i] do
     for j := 0 to ValueCount - 1 do with Values[j] do

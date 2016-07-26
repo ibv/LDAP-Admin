@@ -21,10 +21,6 @@
 
 unit TextFile;
 
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 interface
 
 uses SysUtils, Classes;
@@ -37,20 +33,21 @@ const
 type
   TFileEncode = (feAnsi, feUTF8, feUnicode_BE, feUnicode_LE);
 
-  TTextFile = class(TMemoryStream)
+  TTextStream = class(TMemoryStream)
   private
     fUnixWrite: Boolean;
     fEncoding:  TFileEncode;
     fCharSize:  Integer;
-    fFileName:  string;
-    fMode:      Integer;
+    //fFileName:  string;
+    //fMode:      Integer;
     function    IsEof: Boolean;
     procedure   SetEncoding(AEncoding: TFileEncode);
   public
-    constructor Create(const FileName: string; Mode: Word);
-    destructor  Destroy; override;
+    constructor Create;
+    //destructor  Destroy; override;
     //function    Read(var Buffer; Count: Longint): Longint; override;
     //function    Write(const Buffer; Count: Longint): Longint; override;
+    procedure   ReadHeader;
     function    GetText: string;
     function    ReadChar: WideChar;
     procedure   WriteChar(AChar: WideChar);
@@ -63,11 +60,20 @@ type
     property    Encoding: TFileEncode read fEncoding write SetEncoding;
   end;
 
+  TTextFile = class(TTextStream)
+  private
+    fFileName:  string;
+    fMode:      Integer;
+  public
+    constructor Create(const FileName: string; Mode: Word);
+    destructor  Destroy; override;
+  end;
+
 implementation
 
 uses Constant, Misc;
 
-procedure TTextFile.SetEncoding(AEncoding: TFileEncode);
+procedure TTextStream.SetEncoding(AEncoding: TFileEncode);
 var
   Buffer: string;
 begin
@@ -95,73 +101,53 @@ begin
     WriteString(Buffer);
 end;
 
-constructor TTextFile.Create(const FileName: string; Mode: Word);
-
-  procedure ReadHeader;
-  var
-    NumRead: Integer;
-    Bom: Word;
-  begin
-    NumRead := Read(Bom, 2);
-    if NumRead = 2 then
-    begin
-      if Bom = UTF_16BOM_BE then
-      begin
-        fEncoding := feUnicode_BE;
-        fCharSize := 2; // for now
-        exit;
-      end;
-
-      if (Bom = UTF_16BOM_LE) then
-      begin
-        fEncoding := feUnicode_LE;
-        fCharSize := 2; // for now
-        exit;
-      end;
-
-      if Bom = $BBEF then
-      begin
-        NumRead := Read(Bom, 1);
-        if (NumRead = 1) and (Bom and $FF = $BF) then // UTF8 BOM
-        begin
-          fEncoding := feUTF8;
-          exit;
-        end;
-      end;
-    end;
-    fCharSize := 1;
-    Position := 0;
-  end;
-
-begin
-  inherited Create;
-
-  fMode := Mode;
-  fFileName := FileName;
-  fCharSize := 1;
-  if Mode = fmOpenRead then
-  begin
-    LoadFromFile(FileName);
-    ReadHeader;
-  end
-  else
-  if Mode = fmCreate then
-    Encoding := feUtf8; // Default
-end;
-
-destructor TTextFile.Destroy;
-begin
-  if fMode <> fmOpenRead then
-    SaveToFile(fFileName);
-  inherited;
-end;
-
-function TTextFile.IsEof: Boolean;
+function TTextStream.IsEof: Boolean;
 begin
   Result := Position = Size;
 end;
 
-function TTextFile.GetText: string;
+constructor TTextStream.Create;
+begin
+  fCharSize := 1;
+end;
+
+procedure TTextStream.ReadHeader;
+var
+  NumRead: Integer;
+  Bom: Word;
+begin
+  NumRead := Read(Bom, 2);
+  if NumRead = 2 then
+  begin
+    if Bom = UTF_16BOM_BE then
+    begin
+      fEncoding := feUnicode_BE;
+      fCharSize := 2; // for now
+      exit;
+    end;
+
+    if (Bom = UTF_16BOM_LE) then
+    begin
+      fEncoding := feUnicode_LE;
+      fCharSize := 2; // for now
+      exit;
+    end;
+
+    if Bom = $BBEF then
+    begin
+      NumRead := Read(Bom, 1);
+      if (NumRead = 1) and (Bom and $FF = $BF) then // UTF8 BOM
+      begin
+        fEncoding := feUTF8;
+        exit;
+      end;
+    end;
+  end;
+  fCharSize := 1;
+  Position := 0;
+end;
+
+function TTextStream.GetText: string;
 var
   ch: WideChar;
   b: Byte;
@@ -175,7 +161,6 @@ begin
     feUnicode_LE: Position := SizeOf(UTF_16BOM_LE);
   end;
   Tmp := '';
-  utf8:= '';
   ch := #0;
   while not EOF do
   begin
@@ -187,8 +172,8 @@ begin
       Word(ch) := Word(ch) or b;
     end;
     if Encoding = feUTF8 then
-        ///utf8 := utf8 + AnsiChar(ch)
-        utf8 := utf8 + AnsiChar(Lo(word(ch)))
+      ///utf8 := utf8 + AnsiChar(ch)
+      utf8 := utf8 + AnsiChar(Lo(word(ch)))
     else
       Tmp := Tmp + ch;
   end;
@@ -198,7 +183,7 @@ begin
     Result := String(Tmp);
 end;
 
-function TTextFile.ReadChar: WideChar;
+function TTextStream.ReadChar: WideChar;
 var
   b: Byte;
 begin
@@ -212,7 +197,7 @@ begin
   end;
 end;
 
-procedure TTextFile.WriteChar(AChar: WideChar);
+procedure TTextStream.WriteChar(AChar: WideChar);
 var
   b: Byte;
   ch: WideChar;
@@ -226,7 +211,7 @@ begin
   WriteBuffer(AChar, FCharSize);
 end;
 
-procedure TTextFile.WriteString(Value: string);
+procedure TTextStream.WriteString(Value: string);
 var
   {$IFNDEF UNICODE}
   w: WideString;
@@ -275,7 +260,7 @@ begin
   end;
 end;
 
-function TTextFile.ReadLn: string;
+function TTextStream.ReadLn: string;
 var
   ch: WideChar;
   b: Byte;
@@ -313,12 +298,37 @@ begin
     Result := String(Tmp);
 end;
 
-procedure TTextFile.WriteLn(Value: string);
+procedure TTextStream.WriteLn(Value: string);
 begin
   if UnixWrite then
     WriteString(Value + #10)
   else
     WriteString(Value + #13#10);
+end;
+
+{ TTextFile }
+
+constructor TTextFile.Create(const FileName: string; Mode: Word);
+begin
+  inherited Create;
+
+  fMode := Mode;
+  fFileName := FileName;
+  if Mode = fmOpenRead then
+  begin
+    LoadFromFile(FileName);
+    ReadHeader;
+  end
+  else
+  if Mode = fmCreate then
+    Encoding := feUtf8; // Default
+end;
+
+destructor TTextFile.Destroy;
+begin
+  if fMode <> fmOpenRead then
+    SaveToFile(fFileName);
+  inherited;
 end;
 
 end.

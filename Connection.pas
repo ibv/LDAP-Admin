@@ -784,6 +784,7 @@ end;
 procedure TDBConnection.SaveToFile(FileName: string);
 var
   ldif: TLDIFFile;
+  i: Integer;
 
   procedure WriteNode(ANode: TEntryNode);
   var
@@ -799,7 +800,8 @@ begin
   try
     ldif.Encoding := fEncoding;
     { Skip the artificial root }
-    WriteNode(Root.fChildren[0] as TEntryNode);
+    for i := 0 to Root.Children.Count - 1 do
+      WriteNode(Root.Children[i] as TEntryNode);
   finally
     ldif.Free;
   end;

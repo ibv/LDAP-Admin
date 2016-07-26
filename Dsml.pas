@@ -33,10 +33,12 @@ type
   TDsmlTree = class(TXmlTree)
   private
     fEntries: TLdapEntryList;
+    fGenerateComments: Boolean;
   public
     constructor Create(Entries: TLdapEntryList); reintroduce;
-    procedure   LoadFromStream(const Stream: TTextFile); override;
-    procedure   SaveToStream(const Stream: TTextFile; StreamCallback: TStreamCallback = nil); override;
+    procedure   LoadFromStream(const Stream: TTextStream); override;
+    procedure   SaveToStream(const Stream: TTextStream; StreamCallback: TStreamCallback = nil); override;
+    property    GenerateComments: Boolean read fGenerateComments write fGenerateComments;
   end;
 
 implementation
@@ -50,12 +52,12 @@ begin
   fEntries := Entries;
 end;
 
-procedure TDsmlTree.LoadFromStream(const Stream: TTextFile);
+procedure TDsmlTree.LoadFromStream(const Stream: TTextStream);
 begin
   raise Exception.Create('Not implemented!');
 end;
 
-procedure TDsmlTree.SaveToStream(const Stream: TTextFile; StreamCallback: TStreamCallback = nil);
+procedure TDsmlTree.SaveToStream(const Stream: TTextStream; StreamCallback: TStreamCallback = nil);
 var
   i, j, k: Integer;
   OC: TLdapAttribute;
@@ -84,6 +86,8 @@ begin
     begin
       with Add('dsml:entry') do
       begin
+        if GenerateComments then
+          Comment := 'dn: ' + fEntries[i].dn;
         Attributes.Add('dn=' + fEntries[i].dn);
         { write objectclasses }
         OC := fEntries[i].AttributesByName['objectclass'];

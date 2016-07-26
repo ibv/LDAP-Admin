@@ -1,5 +1,5 @@
   {      LDAPAdmin - Bookmarks.pas
-  *      Copyright (C) 2015 Tihomir Karlovic
+  *      Copyright (C) 2015-2016 Tihomir Karlovic
   *
   *      Author: Tihomir Karlovic
   *
@@ -73,6 +73,8 @@ type
     procedure BookmarkListData(Sender: TObject; Item: TListItem);
     procedure BookmarkListDblClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure BookmarkListCustomDrawItem(Sender: TCustomListView;
+      Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
   private
     FBookmarks: TBookmarks;
     FModified: Boolean;
@@ -107,6 +109,8 @@ begin
       mi.OnClick := BookmarkClick;
       mi.Caption := FBookmarks[i];
       mi.ImageIndex := Images[i];
+      if mi.ImageIndex = -1 then
+        mi.Enabled := false;
       FMenu.Items.Add(mi);
     end;
   end;
@@ -156,9 +160,10 @@ begin
       finally
         oi.Free;
       end;
-    finally
-      Entry.Free;
+    except;
+      FBookmarks.Objects[Index] := Pointer(-1);
     end;
+    Entry.Free;
   end;
   Result := Integer(FBookmarks.Objects[Index]);
 end;
@@ -208,6 +213,16 @@ procedure TBookmarkDlg.BookmarkListClick(Sender: TObject);
 begin
   btnRemove.Enabled := BookmarkList.Selected <> nil;
   btnGoto.Enabled := BookmarkList.ItemFocused <> nil;
+end;
+
+procedure TBookmarkDlg.BookmarkListCustomDrawItem(Sender: TCustomListView;
+  Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+begin
+  if Item.ImageIndex = -1 then
+  begin
+    Sender.Canvas.Font.Color := clGrayText;
+    Sender.Canvas.Font.Style := Sender.Canvas.Font.Style + [fsItalic];
+  end;
 end;
 
 procedure TBookmarkDlg.BookmarkListData(Sender: TObject; Item: TListItem);

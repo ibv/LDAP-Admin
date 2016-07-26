@@ -15,7 +15,8 @@
       <ResourceType Value="res"/>
     </General>
     <i18n>
-      <EnableI18N LFM="False"/>
+      <EnableI18N Value="True"/>
+      <OutDir Value="lang"/>
     </i18n>
     <VersionInfo>
       <UseVersionInfo Value="True"/>

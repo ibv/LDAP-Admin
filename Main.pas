@@ -32,7 +32,7 @@ uses
 {$IFnDEF FPC}
   Windows, Tabs, WinLDAP,System.Actions,
 {$ELSE}
-  LCLIntf, LCLType, LinLDAP,
+  LCLIntf, LCLType, LinLDAP, {LCLTranslator,}
 {$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ComCtrls, Menus, ImgList, StdCtrls, ExtCtrls, Clipbrd, ActnList,
@@ -523,8 +523,11 @@ var
       if CurrentLanguage = ACaption then
       begin
         Checked := true;
-        LanguageLoader.CurrentLanguage := ATag;
-        LanguageLoader.Translator.TranslateForm(Self);
+        if ATag <> -1 then
+        begin
+          LanguageLoader.CurrentLanguage := ATag;
+          LanguageLoader.Translator.TranslateForm(Self);
+        end;
       end
       else
         Checked := AChecked;
@@ -643,7 +646,7 @@ begin
         Result := Parent.GetFirstChild;
         while Assigned(Result) do
         begin
-          if AnsiStrIComp(PChar(Result.Text), PCharArray(comp)[i]) = 0 then
+          if AnsiCompareText(Result.Text, DecodeLdapString(PCharArray(comp)[i])) = 0 then
           begin
             Parent := Result;
             if Select then
@@ -654,10 +657,17 @@ begin
         end;
       end;
     end;
-    if Select and Assigned(Result) then
+    if Select then
     begin
-      Result.Selected := true;
-      Result.MakeVisible;
+      if Assigned(Result) then
+      begin
+        Result.Selected := true;
+        Result.MakeVisible;
+      end
+      else begin
+        Parent.Selected := true;
+        Parent.MakeVisible;
+      end;
     end;
   finally
     ldap_value_free(comp);
@@ -685,7 +695,8 @@ begin
         Result := Parent.GetFirstChild;
         while Assigned(Result) do
         begin
-          if AnsiStrIComp(PChar(Result.Text), PChar(comp[i])) = 0 then
+          //if AnsiStrIComp(PChar(Result.Text), PChar(comp[i])) = 0 then
+          if AnsiCompareText(Result.Text, DecodeLdapString(PCharArray(comp)[i])) = 0 then
           begin
             Parent := Result;
             if Select then
@@ -696,10 +707,18 @@ begin
         end;
       end;
     end;
-    if Select and Assigned(Result) then
+    if Select then
     begin
-      Result.Selected := true;
-      Result.MakeVisible;
+      if Assigned(Result) then
+      begin
+        Result.Selected := true;
+        Result.MakeVisible;
+      end
+      else
+      begin
+        Parent.Selected := true;
+        Parent.MakeVisible;
+      end;
     end;
   finally
     comp.free;
@@ -852,15 +871,17 @@ end;
 
 procedure TMainFrm.ReadConfig;
 var
-  a, b, c: Boolean;
+  a, b, c, d: Boolean;
 begin
   fQuickSearchFilter := GlobalConfig.ReadString(rQuickSearchFilter, sDEFQUICKSRCH);
   fLocatedEntry := -1;
   a := fIdObject;
   b := fEnforceContainer;
   c := UseTemplateImages;
+  d := RawLdapStrings;
   fIdObject := GlobalConfig.ReadBool(rMwLTIdentObject, true);
   fEnforceContainer := GlobalConfig.ReadBool(rMwLTEnfContainer, true);
+  RawLdapStrings := GlobalConfig.ReadBool(rEncodedLdapStrings, false);
   fTemplateProperties := GlobalConfig.ReadBool(rTemplateProperties, true);
   UseTemplateImages := GlobalConfig.ReadBool(rUseTemplateImages, false);
   if TemplateParser.ImageList <> ImageList then
@@ -869,7 +890,8 @@ begin
   begin
     InitTemplateMenu;
     InitLanguageMenu;
-    if Assigned(Connection) and ((a <> fIdObject) or (b <> fEnforceContainer) or (c <> UseTemplateImages)) then
+    if Assigned(Connection) and ((a <> fIdObject) or (b <> fEnforceContainer) or
+      (c <> UseTemplateImages) or (d <> RawLdapStrings)) then
       RefreshTree;
   end;
 end;
@@ -895,7 +917,7 @@ begin
     s3 := '';
   StatusBar.Panels[3].Text := s3;
   StatusBar.Panels[4].Text := s4;
-  Application.ProcessMessages;
+  ///Application.ProcessMessages;
 end;
 
 function TMainFrm.ShowSchema: TSchemaDlg;
@@ -1363,7 +1385,7 @@ begin
   if List.Count > 1 then
     msg := Format(stConfirmMultiDel, [List.Count])
   else
-    msg := Format(stConfirmDel, [List[0]]);
+    msg := Format(stConfirmDel, [DecodeLdapString(List[0])]);
 
   if MessageDlg(msg, mtConfirmation, [mbYes, mbNo], 0) = mrYes then
   with TLdapOpDlg.Create(Self, Connection) do
@@ -2275,6 +2297,7 @@ begin
     LdapTree.OnChange := LDAPTreeChange;
     LdapTree.Items.EndUpdate;
     InitStatusBar;
+    InitBookmarks;
   end;
 
 end;
@@ -2457,7 +2480,7 @@ begin
   with (Sender as TMenuItem) do
   begin
     if Tag = LanguageLoader.CurrentLanguage then exit;
-    if Tag = -1 then
+    if LanguageLoader.CurrentLanguage <> -1 then // Always restore first, new file may not cover all strings
       LanguageLoader.Translator.RestoreForm(Self);
     LanguageLoader.CurrentLanguage := Tag;
     if Tag <> -1 then

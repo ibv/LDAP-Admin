@@ -96,8 +96,9 @@ uses
   ListViewDlg in 'ListViewDlg.pas' {ListViewDlg},
   Bookmarks in 'Bookmarks.pas' {BookmarkDlg},
   ast in 'ast.pas',
-  DBLoad in 'DBLoad.pas', {DBLoadDlg}
-  DlgWrap in 'DlgWrap.pas';
+  DBLoad in 'DBLoad.pas' {DBLoadDlg},
+  DlgWrap in 'DlgWrap.pas',
+  EncodedDn in 'EncodedDn.pas';
 
 {$R *.res}
 

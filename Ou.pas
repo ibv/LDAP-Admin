@@ -83,7 +83,7 @@ begin
 
   if esNew in Entry.State then
   begin
-    Entry.dn := 'ou=' + ou.Text + ',' + ParentDn;
+    Entry.dn := 'ou=' + EncodeLdapString(ou.Text) + ',' + ParentDn;
     with Entry.AttributesByName['objectclass'] do
     begin
       AddValue('top');

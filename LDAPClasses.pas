@@ -66,6 +66,7 @@ const
                                   'entryUUID';
 
   LdapInvalidChars = ['=','+','"','\',',','>','<','#',';'];
+  LdapEscapableChars = LdapInvalidChars + [' ']; // Space is invalid only at the end or the beginning of the sting
 
 
 type
@@ -302,13 +303,19 @@ protected
     property AttributesByName[const Name: string]: TLdapAttribute read GetNamedAttribute;
     property OperationalAttributes: TLdapAttributeList read fOperationalAttributes;
   published
+    { dn is internally saved as escaped LDAP string, as returned from LDAP server.
+      We cannot encode dn on write, since we cannot decide reliably if the
+      particular ',' or '=' character should be escaped or not. This means that we
+      have to deal with encoding before we assign a value to the dn property which
+      is basically only when we deal with a user input. And, since vast majority of
+      dn assignments happens internally we have an advantage of no performance impact }
     property dn: string read fdn write SetDn;
     { To avoid perpetual conversions, fdn is internaly coded as UNICODE and not as
       Utf8. The ldap_add_s and ldap_modify_s Windows API functions need no converting,
       since the corresponding API UNICODE functions, which insure propper handling,
       are called. That leavs us with neccessity to convert dn specificaly to UTF8
       for base64 encoding when exporting entry to LDIF or DSML, hence utf8dn property }
-    property utf8dn: {UTF8String} AnsiString read GetUtf8Dn write SetUtf8Dn;
+    property utf8dn: AnsiString read GetUtf8Dn write SetUtf8Dn;
     property State: TLdapEntryStates read fState;
     property OnChange: TDataNotifyEvent read fOnChangeProc write fOnChangeProc;
     property OnRead: TNotifyEvent read fOnRead write fOnRead;
@@ -356,6 +363,9 @@ const
   PSEUDOATTR_RDN        = '*RDN*';
   PSEUDOATTR_PATH       = '*PATH*';
 
+var
+  RawLdapStrings: Boolean = false;
+
 implementation
 
 {$I LdapAdmin.inc}
@@ -366,60 +376,58 @@ uses Misc, Input, Dialogs, Cert, Gss{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
 function DecodeLdapString(const Src: string; const Escape: Char ='\'): string;
 var
-  p0, p, p1, pr: PChar;
+  i, d, l: Integer;
 begin
-  p := PChar(Src);
-  p1 := StrScan(p, Escape);
-  if p1 = nil then
-  begin
-    Result := Src;
+  Result := Src;
+  if RawLdapStrings then
     exit;
-  end;
-  SetLength(Result, length(Src));
-  pr := PChar(Result);
-  p0 := pr;
-  while p^ <> #0 do
+  l := Length(Src);
+  if l = 0 then
+    exit;
+  i := 1;
+  d := 1;
+  while i < l do
   begin
-    p1 := CharNext(p);
-    if p^ = Escape then
+    if Src[i] = Escape then
     begin
-      p := p1;
-      if not (p^ in LdapInvalidChars) then
+      Delete(Result, d, 1);
+      inc(i);
+      if not (Src[i] in LdapEscapableChars) then
       begin
-        p1 := CharNext(p);
-        p1 := CharNext(p1);
-        HexToBin(p, pr, p1-p);
-        pr := CharNext(pr);
+        HexToBin(PChar(@Src[i]), @Result[d], 1);
+        inc(i);
+        Delete(Result, d + 1, 1);
       end;
-      p := p1;
-      continue;
     end;
-    pr^:= p^;
-    p := p1;
-    pr := CharNext(pr);
+    inc(d);
+    inc(i);
   end;
-  SetLength(Result, pr - p0);
 end;
 
 function EncodeLdapString(const Src: string; const Escape: Char ='\'): string;
 var
-  p0, p: PChar;
+  i, d, l: Integer;
 begin
-  p := PChar(Src);
-  p0 := p;
-  Result := '';
-  while (p^ <> #0) do
+  Result := Src;
+  if RawLdapStrings then
+    exit;
+  l := Length(Src);
+  if l = 0 then
+    exit;
+  d := 2;
+  for i := 2 to l - 1 do
   begin
-    if p^ in LdapInvalidChars then
+    if Src[i] in LdapInvalidChars then
     begin
-      Result := Result + Copy(p0, 1, p - p0) + Escape + p^;
-      p := CharNext(p);
-      p0 := p;
-    end
-    else
-      p := CharNext(p);
+      Insert(Escape, Result, d);
+      inc(d);
+    end;
+    inc(d);
   end;
-  Result := Result + Copy(p0, 1, Length(Src));
+  if Src[1] in LdapEscapableChars then
+    Insert(Escape, Result, 1);
+  if Src[l] in LdapEscapableChars then
+    Insert(Escape, Result, Length(Result));
 end;
 
 
@@ -494,6 +502,20 @@ begin
 end;
 {$endif}
 
+function SkipEscaped(p: PChar): PChar; inline;
+begin
+  Result := CharNext(p);
+  if Result^ = #0 then
+    exit;
+  if not (Result^ in LdapEscapableChars) then
+  begin
+    Result := CharNext(p);  // skip the two-byte hex code
+    if Result^ = #0 then
+      exit;
+    Result := CharNext(p);
+  end;
+end;
+
 procedure SplitRdn(const dn: string; var attrib, value: string);
 var
   p, p0, p1: PChar;
@@ -509,7 +531,7 @@ begin
   begin
     if p1^ = '\' then
     begin
-      p1 := CharNext(p1);
+      p1 := SkipEscaped(p1);
       if p1^ = #0 then
         break;
     end;
@@ -542,7 +564,7 @@ begin
   begin
     if p1^ = '\' then
     begin
-      p1 := CharNext(p1);
+      p1 := SkipEscaped(p1);
       if p1^ = #0 then
         break;
     end;
@@ -561,7 +583,7 @@ begin
   begin
     if p1^ = '\' then
     begin
-      p1 := CharNext(p1);
+      p1 := SkipEscaped(p1);
       if p1^ = #0 then
         break;
     end;
@@ -579,7 +601,7 @@ begin
   begin
     if p^ = '\' then
     begin
-      p := CharNext(p);
+      p := SkipEscaped(p);
       if p^ = #0 then
         break;
     end
@@ -788,13 +810,8 @@ begin
     {$endif}
     else
       LdapCheck(Err);
-    {$ifdef mswindows}
     ProcessSearchMessage(pld, NoValues, Result);
-    {$else}
-    ProcessSearchMessage(pld, NoValues, Result);
-    //ProcessSearchMessage(plmSearch, NoValues, Result);
-    {$endif}
-    exit;
+    Exit;
   end;
 
   ServerControls:=nil;
@@ -1641,8 +1658,6 @@ begin
   inherited Create;
 end;
 
-
-
 {$IFDEF CPUX64}
 function TLDapAttributeData.CompareData(P: Pointer; Length: Integer): Boolean;
 begin
@@ -1668,8 +1683,6 @@ asm
 @@3:    POP     ESI
 end;
 {$ENDIF}
-
-
 
 procedure TLdapAttributeData.SetData(AData: Pointer; ADataSize: Cardinal);
 var
