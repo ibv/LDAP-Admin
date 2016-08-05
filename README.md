@@ -15,15 +15,16 @@ Stable functions:
  * Schema browsing
  * LDIF export and import
  * Password management (supports crypt, md5, sha, sha-crypt, samba)
- 
-Unstable/Untried functions: 
  * Template support
+ 
+Untested functions: 
+ 
  * Binary attribute support
  * Management of Posix Groups and Accounts
  * Management of Samba Accounts
  * Postfix MTA Support
  * LDAP SSL support 
- * 
+ 
 
 Disabled functions: 
  * Scripting

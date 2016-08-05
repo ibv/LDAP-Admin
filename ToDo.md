@@ -1,2 +1,2 @@
-* Templates support
 * Multilang support
+* Binary attributes

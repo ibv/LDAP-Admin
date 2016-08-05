@@ -649,6 +649,7 @@ type
   public
     constructor   Create; override;
     destructor    Destroy; override;
+    procedure     Clear; override;
     function      Parse(const FileName: string): TObject; override;
     function      IndexOf(const Name: string): Integer;
     property      Templates[Index: Integer]: TTemplate read GetTemplate;
@@ -2160,15 +2161,16 @@ begin
     if Name = 'tab' then
     begin
       TabSheet := TTemplateCtrlTabSheet.Create(nil);
-      TabSheet.ParentControl := Self;
+      ///TabSheet.ParentControl := Self;
+      TTabSheet(TabSheet).Parent := TPageControl(fControl);
       TabSheet.Load(XmlNode[i]);
       TTabSheet(TabSheet.Control).PageControl := TPageControl(fControl);
-      //TabSheet.ParentControl := Self;
       fElements.Add(TabSheet);
     end;
   end;
   { Reset to first page }
-  with TPageControl(fControl) do begin
+  with TPageControl(fControl) do
+  begin
     ActivePage := nil;
     ActivePageIndex := 0;
   end;
@@ -3398,6 +3400,12 @@ destructor TTemplateParser.Destroy;
 begin
   Clear;
   fExtensionList.Free;
+  inherited;
+end;
+
+procedure TTemplateParser.Clear;
+begin
+  fExtensionList.Clear;
   inherited;
 end;
 

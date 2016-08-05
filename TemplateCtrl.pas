@@ -541,11 +541,13 @@ end;
 
 procedure TTemplatePanel.AdjustControls;
 begin
+  if fPanel=nil then exit;
   try
-  ///fPanel.Control.Width := ClientWidth;
-  //fPanel.Control.Width := 15;
-  ///fPanel.AdjustSizes;
-  finally
+    ///fPanel.Control.Width := ClientWidth;
+    fPanel.Control.Width := 550;
+     //fPanel.Control.Width := 450;
+    fPanel.AdjustSizes;
+  except
   end;
 end;
 
@@ -589,7 +591,7 @@ end;
 procedure THeaderPanel.SetTemplatePanel(APanel: TTemplatePanel);
 begin
   fTemplatePanel := APanel;
-  ///fTemplatePanel.Parent := Self;
+  fTemplatePanel.Parent := Self;
   fTemplatePanel.Width := Width;
   AdjustHeight;
 end;
@@ -613,7 +615,13 @@ begin
 
   //////////////////////////////////////////////////////////////////////////////
 
-  Canvas.Brush.Color:=clAppWorkSpace;
+  ///Canvas.Brush.Color:=clAppWorkSpace;
+  Canvas.Brush.Color:=clBtnShadow;
+
+  Canvas.Font.Color:=clWhite;
+  Canvas.Font.Style:=[fsBold];
+  Canvas.Font.Size:=9;
+
   Canvas.FillRect(rect(1, 1, Width, FCaptionHeight));
   TxtRect:=rect(2, 1, FBtnRect.Left-4, FCaptionHeight);
   DrawText(Canvas.Handle, pchar(TemplatePanel.Template.Name), -1, TxtRect, DT_SINGLELINE or DT_VCENTER or DT_NOPREFIX or DT_END_ELLIPSIS);
@@ -629,7 +637,8 @@ begin
   p.y := FBtnRect.Top + (FBtnRect.Bottom - FBtnRect.Top) div 2;
   Canvas.Polyline([point(FBtnRect.Left+len, p.Y), point(FBtnRect.Right-len, p.Y)]);
   Canvas.Polyline([point(FBtnRect.Left+len, p.Y-1), point(FBtnRect.Right-len, p.Y-1)]);
-  if Rolled then begin
+  if Rolled then
+  begin
     Canvas.Polyline([point(p.X, FBtnRect.Top+len), point(p.X, FBtnRect.Bottom-len)]);
     Canvas.Polyline([point(p.X-1, FBtnRect.Top+len), point(p.X-1, FBtnRect.Bottom-len)]);
   end;
@@ -725,7 +734,8 @@ begin
     TemplatePanel := TTemplatePanel.Create(Self);
     TemplatePanel.LdapEntry := fEntry;
     TemplatePanel.EventHandler := fEventHandler;
-    with TemplatePanel do begin
+    with TemplatePanel do
+    begin
       Template := ATemplate;
       if fFlatPanels then
       begin
@@ -742,11 +752,11 @@ begin
     pnl.Parent:=Self;
     pnl.Align := alBottom; // push it to the end
     pnl.Align := alTop;    // then allign on the top of the last panel
-    pnl.TemplatePanel := TemplatePanel;
+
     TemplatePanel.Anchors := [akLeft, akRight, akTop];
-
+    pnl.TemplatePanel := TemplatePanel;
+    ///TemplatePanel.Anchors := [akLeft, akRight, akTop];
     fTemplateList.Add(pnl);
-
   finally
     LockControl(Self, false);
   end;
@@ -896,7 +906,8 @@ begin
   PageControl.Align := alClient;
 
   Btn := TButton.Create(Self);
-  with Btn do begin
+  with Btn do
+  begin
     Parent := Panel;
     Top := 4;
     Left := Panel.Width - Width - 4;
@@ -905,7 +916,8 @@ begin
     Caption := cCancel;
   end;
 
-  with TButton.Create(Self) do begin
+  with TButton.Create(Self) do
+  begin
     Parent := Panel;
     Top := 4;
     Left := Btn.Left - Width - 8;
