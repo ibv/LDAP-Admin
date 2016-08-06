@@ -39,7 +39,6 @@ uses
 
 type
   TConfigDlg = class(TForm)
-    OpenConfig: TOpenDialog;
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
@@ -106,7 +105,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses FileCtrl, Config, Templates, Constant, Misc, Main
+uses FileCtrl, Config, Templates, Constant, Misc, Main, Lang
 {$IFDEF VER_XEH}, System.Types, System.UITypes{$ENDIF};
 
 {$R *.dfm}
@@ -236,6 +235,8 @@ begin
   begin
     TemplateParser.Paths := TemplateList.Items.CommaText;
     TemplateParser.AddPath(ExtractFileDir(application.ExeName) + '\*.' + TEMPLATE_EXT);
+    LanguageLoader.Paths := LanguageList.Items.CommaText;
+    LanguageLoader.AddPath(ExtractFileDir(application.ExeName) + '\*.' + LANG_EXT);
     WriteBool(rTemplateExtensions, cbTemplateExtensions.Checked);
     WriteBool(rTemplateAutoload, cbTemplateAutoload.Checked);
     WriteBool(rTemplateProperties, cbTemplateProperties.Checked);

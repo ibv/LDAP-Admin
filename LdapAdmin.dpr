@@ -26,7 +26,6 @@ uses
   Pickup in 'Pickup.pas' {PickupDlg},
   ConnProp in 'ConnProp.pas' {ConnPropDlg},
   PassDlg in 'PassDlg.pas' {PasswordDlg},
-  base64 in 'base64.pas',
   smbdes in 'smbdes.pas',
   ConnList in 'ConnList.pas' {ConnListFrm},
   Group in 'Group.pas' {GroupDlg},

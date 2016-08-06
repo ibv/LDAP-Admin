@@ -40,11 +40,11 @@ uses
     Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
     ComCtrls, StdCtrls, LDAPClasses, Menus, ExtCtrls, Sorter,
     ImgList, ActnList, Buttons, Schema, Contnrs, Connection, Xml,
-    DlgWrap, TextFile
+    DlgWrap, TextFile, EncodedDn,
     {$IFDEF REGEXPR}
     { Note: If you want to compile templates with regex support you'll need }
     { Regexpr.pas unit from TRegeExpr library (http://www.regexpstudio.com) }
-    , Regexpr
+    Regexpr
     {$ENDIF};
 
 const
@@ -330,11 +330,13 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure btnSearchModifyClick(Sender: TObject);
     procedure ActClearAllExecute(Sender: TObject);
+    {$ifdef mswindows}
     {$IFNDEF VER_XEH}
     procedure TabSheet2Resize(Sender: TObject);
     procedure TabSheet3Resize(Sender: TObject);
     procedure TabSheet4Resize(Sender: TObject);
     {$ENDIF}
+    {$endif}
     procedure cbRegExpChange(Sender: TObject);
     procedure cbRegExpDropDown(Sender: TObject);
     procedure btnSaveRegExClick(Sender: TObject);
@@ -350,6 +352,7 @@ type
     ResultPages: TResultPageControl;
     ModifyBox: TModifyBox;
     fSearchFilter: string;
+    fEncodedBasePath: TEncodedDn;
     {$IFDEF REGEXPR}
     fSimpleParser: TSimpleParser;
     {$ENDIF}
@@ -1462,7 +1465,7 @@ begin
   Screen.Cursor := crHourGlass;
   try
     SearchList := TSearchList.Create(Connection,
-                                     cbBasePath.Text,
+                                     fEncodedBasePath.Encoded,
                                      Filter,
                                      Attributes,
                                      cbSearchLevel.ItemIndex,
@@ -1518,7 +1521,7 @@ begin
     end;
     ModifyBox.SearchList.Free;
     ModifyBox.SearchList := TSearchList.Create(Connection,
-                                               cbBasePath.Text,
+                                               fEncodedBasePath.Encoded,
                                                Filter,
                                                attrs,
                                                cbSearchLevel.ItemIndex,
@@ -1687,6 +1690,7 @@ constructor TSearchFrm.Create(AOwner: TComponent; const dn: string; AConnection:
 begin
   inherited Create(AOwner);
 
+  {$ifdef mswindows}
   {$IFNDEF VER_XEH}
   { Delphi5 and 7 had problems with resizing of TabSheets }
   {$IFDEF VER_D7H}
@@ -1704,12 +1708,14 @@ begin
   TabSheet3.OnResize := TabSheet3Resize;
   TabSheet4.OnResize := TabSheet4Resize;
   {$ENDIF}
+  {$endif}
 
+  fEncodedBasePath.Attach(cbBasePath);
   Connection := AConnection;
   if dn <> '' then
-    cbBasePath.Text := dn
+    fEncodedBasePath.Encoded := dn
   else
-    cbBasePath.Text := Connection.Base;
+    fEncodedBasePath.Encoded := Connection.Base;
   ResultPages := TResultPageControl.Create(self);
   ResultPages.Align := alClient;
   ResultPages.Parent := ResultPanel;
@@ -1782,7 +1788,7 @@ var
 begin
   s := MainFrm.PickEntry(cSearchBase);
   if s <> '' then
-    cbBasePath.Text := s;
+    fEncodedBasePath.Encoded := s;
 end;
 
 procedure TSearchFrm.ActStartExecute(Sender: TObject);
@@ -2186,6 +2192,7 @@ begin
   end;
 end;
 
+{$ifdef mswindows}
 {$IFNDEF VER_XEH}
 procedure TSearchFrm.TabSheet2Resize(Sender: TObject);
 begin
@@ -2214,6 +2221,7 @@ begin
   end;
 end;
 {$ENDIF}
+{$endif}
 
 procedure TSearchFrm.cbRegExpChange(Sender: TObject);
 begin

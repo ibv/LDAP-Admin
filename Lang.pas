@@ -29,7 +29,7 @@ interface
 
 uses
     {$ifdef FPC}
-    LResources, DelphiReader,
+    DelphiReader,
     {$endif}
     Forms, Xml, XmlLoader, Classes;
 
@@ -114,6 +114,7 @@ type
     procedure     SetCurrentLanguage(Value: Integer);
   public
     constructor   Create; override;
+    procedure     Clear; override;
     function      Parse(const FileName: string): TObject; override;
     property      Languages[Index: Integer]: string read GetLanguageName;
     property      CurrentLanguage: Integer read fCurrentLanguage write SetCurrentLanguage;
@@ -135,9 +136,16 @@ uses
 {$ELSE}
   LCLIntf, LCLType, RtlConsts,
 {$ENDIF}
+  Constant, Consts, ComStrs, SysConst, ComConst,
   TypInfo, Config, SysUtils,
-     Dialogs, Graphics,
-     ComCtrls, ExtCtrls, StdCtrls, Math, Misc{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+  Dialogs, Graphics,
+  ComCtrls, ExtCtrls, StdCtrls, Math, Misc{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+
+
+
+
+
+
 
 function HookLoadResString(ResStringRec: PResStringRec):string;
 var
@@ -147,9 +155,19 @@ begin
 
   Result := LanguageLoader.Translator.GetString(ResStringRec.Identifier);
 
+  {if Result = '' then with LanguageLoader.Translator do
+  begin
+    fRedirectStr.Disable;
+    result := LoadResString(ResStringRec);
+    fRedirectStr.Enable;
+  end;}
 
   if (Result = '') then
     if (ResStringRec.Identifier < 64*1024) then  // direct API call
+      result:=''
+      //FindResourceLFM(PChar(ResStringRec.Module^))
+      //result:=LoadResString(ResStringRec)
+      //result:=PChar(ResStringRec.Module^)
     ///  SetString(Result, Buffer, LoadString(FindResourceHInstance(ResStringRec.Module^),
     ///            ResStringRec.Identifier, Buffer, SizeOf(Buffer)))
 
@@ -350,7 +368,6 @@ var
   Pos: Integer;
   ComponentName: string;
 
-
   procedure RestoreProperty(ct: TPersistent; Node: TXmlNode); forward;
 
   procedure RestoreValue(ct: TPersistent; Node: TXmlNode; const PropName: string);
@@ -452,7 +469,6 @@ var
     end;
   end;
 
-
 begin
   if not Assigned(fXmlForms) then
     exit;
@@ -509,6 +525,7 @@ begin
   (*
   fRedirectForm := TRedirectCode.Create(@THookForm.DoCreate, @THookForm.HookDoCreate);
   fRedirectStr := TRedirectCode.Create(@System.LoadResString, @HookLoadResString);
+
 
   {$IFDEF VER130}
   fStringTable[$10000 - PResStringRec(@SysConst.SRangeError     ).Identifier] := 463;
@@ -1400,7 +1417,7 @@ SysConst_SUnkWin32Error}
   fStringTable[$10000 - PResStringRec(@SysConst.SSafecallException).Identifier] := 405;
   fStringTable[$10000 - PResStringRec(@SysConst.SAssertError).Identifier] := 406;
   fStringTable[$10000 - PResStringRec(@SysConst.SAbstractError).Identifier] := 407;
-  fStringTable[$10000 - PResStringRec(@SysConst.SModuleAccessViolation).Identifier] := 408;
+  ///fStringTable[$10000 - PResStringRec(@SysConst.SModuleAccessViolation).Identifier] := 408;
   fStringTable[$10000 - PResStringRec(@SysConst.SOSError).Identifier] := 409;
   fStringTable[$10000 - PResStringRec(@SysConst.SUnkOSError).Identifier] := 410;
   fStringTable[$10000 - PResStringRec(@SysConst.SShortMonthNameJan).Identifier] := 411;
@@ -1410,8 +1427,8 @@ SysConst_SUnkWin32Error}
   fStringTable[$10000 - PResStringRec(@SysConst.SShortMonthNameMay).Identifier] := 415;
   fStringTable[$10000 - PResStringRec(@SysConst.SArgumentMissing).Identifier] := 416;
   fStringTable[$10000 - PResStringRec(@SysConst.SDispatchError).Identifier] := 417;
-  fStringTable[$10000 - PResStringRec(@SysConst.SReadAccess).Identifier] := 418;
-  fStringTable[$10000 - PResStringRec(@SysConst.SWriteAccess).Identifier] := 419;
+  ///fStringTable[$10000 - PResStringRec(@SysConst.SReadAccess).Identifier] := 418;
+  ///fStringTable[$10000 - PResStringRec(@SysConst.SWriteAccess).Identifier] := 419;
   fStringTable[$10000 - PResStringRec(@SysConst.SVarArrayCreate).Identifier] := 420;
   fStringTable[$10000 - PResStringRec(@SysConst.SVarArrayBounds).Identifier] := 421;
   fStringTable[$10000 - PResStringRec(@SysConst.SVarArrayLocked).Identifier] := 422;
@@ -1431,22 +1448,22 @@ SysConst_SUnkWin32Error}
   fStringTable[$10000 - PResStringRec(@SysConst.SUnderflow).Identifier] := 436;
   fStringTable[$10000 - PResStringRec(@SysConst.SInvalidPointer).Identifier] := 437;
   fStringTable[$10000 - PResStringRec(@SysConst.SInvalidCast).Identifier] := 438;
-  fStringTable[$10000 - PResStringRec(@SysConst.SAccessViolationArg3).Identifier] := 439;
-  fStringTable[$10000 - PResStringRec(@SysConst.SAccessViolationNoArg).Identifier] := 440;
+  ///fStringTable[$10000 - PResStringRec(@SysConst.SAccessViolationArg3).Identifier] := 439;
+  ///fStringTable[$10000 - PResStringRec(@SysConst.SAccessViolationNoArg).Identifier] := 440;
   fStringTable[$10000 - PResStringRec(@SysConst.SStackOverflow).Identifier] := 441;
   fStringTable[$10000 - PResStringRec(@SysConst.SControlC).Identifier] := 442;
   fStringTable[$10000 - PResStringRec(@SysConst.SPrivilege).Identifier] := 443;
-  fStringTable[$10000 - PResStringRec(@SysConst.SOperationAborted).Identifier] := 444;
-  fStringTable[$10000 - PResStringRec(@SysConst.SException).Identifier] := 445;
-  fStringTable[$10000 - PResStringRec(@SysConst.SExceptTitle).Identifier] := 446;
+  ///fStringTable[$10000 - PResStringRec(@SysConst.SOperationAborted).Identifier] := 444;
+  ///fStringTable[$10000 - PResStringRec(@SysConst.SException).Identifier] := 445;
+  ///fStringTable[$10000 - PResStringRec(@SysConst.SExceptTitle).Identifier] := 446;
   fStringTable[$10000 - PResStringRec(@SysConst.SInvalidFormat).Identifier] := 447;
   fStringTable[$10000 - PResStringRec(@SysConst.SInvalidInteger).Identifier] := 448;
   fStringTable[$10000 - PResStringRec(@SysConst.SInvalidFloat).Identifier] := 449;
   fStringTable[$10000 - PResStringRec(@SysConst.SInvalidDateTime).Identifier] := 450;
-  fStringTable[$10000 - PResStringRec(@SysConst.STimeEncodeError).Identifier] := 451;
-  fStringTable[$10000 - PResStringRec(@SysConst.SDateEncodeError).Identifier] := 452;
+  ///fStringTable[$10000 - PResStringRec(@SysConst.STimeEncodeError).Identifier] := 451;
+  ///fStringTable[$10000 - PResStringRec(@SysConst.SDateEncodeError).Identifier] := 452;
   fStringTable[$10000 - PResStringRec(@SysConst.SOutOfMemory).Identifier] := 453;
-  fStringTable[$10000 - PResStringRec(@SysConst.SInOutError).Identifier] := 454;
+  ///fStringTable[$10000 - PResStringRec(@SysConst.SInOutError).Identifier] := 454;
   fStringTable[$10000 - PResStringRec(@SysConst.SFileNotFound).Identifier] := 455;
   fStringTable[$10000 - PResStringRec(@SysConst.SInvalidFilename).Identifier] := 456;
   fStringTable[$10000 - PResStringRec(@SysConst.STooManyOpenFiles).Identifier] := 457;
@@ -1484,6 +1501,7 @@ SysConst_SUnkWin32Error}
   fStringTable[$10000 - PResStringRec(@ComConst.SVarNotObject).Identifier] := 489;
   fStringTable[$10000 - PResStringRec(@ComConst.STooManyParams).Identifier] := 490;
   fStringTable[$10000 - PResStringRec(@ComConst.SDCOMNotInstalled).Identifier] := 491;
+  {
   fStringTable[$10000 - PResStringRec(@JConsts.sJPEGImageFile).Identifier] := 492;
   fStringTable[$10000 - PResStringRec(@JConsts.sChangeJPGSize).Identifier] := 493;
   fStringTable[$10000 - PResStringRec(@JConsts.sJPEGError).Identifier] := 494;
@@ -1492,6 +1510,7 @@ SysConst_SUnkWin32Error}
   fStringTable[$10000 - PResStringRec(@OleConst.SInvalidLicense).Identifier] := 497;
   fStringTable[$10000 - PResStringRec(@OleConst.SNotLicensed).Identifier] := 498;
   fStringTable[$10000 - PResStringRec(@OleConst.sNoRunningObject).Identifier] := 499;
+  }
   //fStringTable[$10000 - PResStringRec(@HelpIntfs.hNothingFound).Identifier] := 500;
   //fStringTable[$10000 - PResStringRec(@HelpIntfs.hNoContext).Identifier] := 501;
   //fStringTable[$10000 - PResStringRec(@HelpIntfs.hNoTopics).Identifier] := 502;
@@ -2076,6 +2095,13 @@ begin
   Result := TTranslator(fFiles.Objects[Index]).Name;
 end;
 
+procedure TLangLoader.Clear;
+begin
+  CurrentLanguage := -1;
+  //fTranslator := nil; already set to nil by SetCurrentLanguage
+  inherited;
+end;
+
 function TLangLoader.Parse(const FileName: string): TObject;
 begin
   Result := TTranslator.Create;
@@ -2104,6 +2130,8 @@ initialization
     on E: Exception do
       MessageDlg(E.Message, mtError, [mbOK], 0);
   end;
+
+
 
 finalization
 

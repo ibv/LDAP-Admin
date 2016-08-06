@@ -764,8 +764,8 @@ end;
 
 procedure LockControl(c: TWinControl; bLock: Boolean);
 begin
-  {$IFDEF MSWINDOWS}
   if (c = nil) or (c.Parent = nil) or (c.Handle = 0) then Exit;
+  {$IFDEF MSWINDOWS}
   if bLock then
     SendMessage(c.Handle, WM_SETREDRAW, 0, 0)
   else

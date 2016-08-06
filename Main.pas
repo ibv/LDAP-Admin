@@ -32,7 +32,7 @@ uses
 {$IFnDEF FPC}
   Windows, Tabs, WinLDAP,System.Actions,
 {$ELSE}
-  LCLIntf, LCLType, LinLDAP, {LCLTranslator,}
+  LCLIntf, LCLType, LinLDAP, LCLTranslator,
 {$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ComCtrls, Menus, ImgList, StdCtrls, ExtCtrls, Clipbrd, ActnList,

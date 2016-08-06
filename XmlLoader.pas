@@ -42,7 +42,7 @@ type
   public
     constructor     Create; virtual;
     destructor      Destroy; override;
-    procedure       Clear;
+    procedure       Clear; virtual;
     function        Parse(const FileName: string): TObject; virtual; abstract;
     procedure       AddPath(Path: string);
     property        Count: Integer read GetCount;

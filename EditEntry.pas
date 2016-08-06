@@ -260,13 +260,13 @@ begin
   else
     shift := 0;
 
-  if shift <> 0 then
+  if shift <> 0 then ;
     ///keybd_event(shift, 1,0,0);                              // press shift key
 
   ///keybd_event(c, MapVirtualKey(c, 0), 0, 0);                // press key
   ///keybd_event(c, MapVirtualKey(c, 0), KEYEVENTF_KEYUP, 0);  // release key
 
-  if shift <> 0 then
+  if shift <> 0 then  ;
     ///keybd_event(shift, 1, KEYEVENTF_KEYUP, 0);              // release shift key
 
   Command.ShortCut := 0;                                    // deaktivate accelerator
@@ -757,7 +757,8 @@ begin
   Screen.Cursor := crHourGlass;
   try
     fTemplateScrollBox := TTemplateBox.Create(Self);
-    with fTemplateScrollBox do begin
+    with fTemplateScrollBox do
+    begin
       FlatPanels := true;
       Align := alClient;
       LdapEntry := Entry;
@@ -772,7 +773,8 @@ begin
     begin
       Template := TemplateParser.Templates[i];
       Item := TMenuItem.Create(Self);
-      with Item do begin
+      with Item do
+      begin
         Caption := Template.Name;
         Tag := Integer(Template);
         OnClick := TemplatePopupClick;
@@ -784,7 +786,8 @@ begin
     end;
     if TemplateListBox.Items.Count > 1 then
     begin
-      TemplateListBox.ItemIndex := 0;
+      ///TemplateListBox.ItemIndex := 0;
+      TemplateListBox.ItemIndex := 1;
       TemplateListBoxClick(nil);
     end;
   finally
@@ -1320,7 +1323,8 @@ end;
 
 procedure TEditEntryFrm.TemplateListBoxDrawItem(Control: TWinControl; Index: Integer; Rect: TRect; State: TOwnerDrawState);
 begin
-  with TemplateListBox do begin
+  with TemplateListBox do
+  begin
     Canvas.Brush.Color:=Color;
     Canvas.FillRect(Rect);
     InflateRect(Rect, -2, -2);
