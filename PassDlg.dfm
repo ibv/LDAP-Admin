@@ -76,7 +76,7 @@ object PasswordDlg: TPasswordDlg
   end
   object cbMethod: TComboBox
     Left = 133
-    Height = 23
+    Height = 27
     Top = 72
     Width = 129
     DropDownCount = 12

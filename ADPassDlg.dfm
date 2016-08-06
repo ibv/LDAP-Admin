@@ -1,64 +1,68 @@
 object ADPassDlg: TADPassDlg
   Left = 411
+  Height = 82
   Top = 220
+  Width = 420
   BorderStyle = bsDialog
   Caption = 'Set Password'
   ClientHeight = 82
   ClientWidth = 420
   Color = clBtnFace
-  ParentFont = True
-  OldCreateOrder = True
-  Position = poScreenCenter
   OnCloseQuery = FormCloseQuery
-  PixelsPerInch = 96
-  TextHeight = 13
+  ParentFont = True
+  Position = poScreenCenter
+  LCLVersion = '1.6.0.4'
   object Label1: TLabel
-    Left = 8
+    Left = 24
+    Height = 15
     Top = 12
-    Width = 73
-    Height = 13
+    Width = 95
     Caption = '&New password:'
+    ParentColor = False
   end
   object Label2: TLabel
-    Left = 8
+    Left = 1
+    Height = 15
     Top = 44
-    Width = 86
-    Height = 13
+    Width = 118
     Caption = '&Confirm password:'
+    ParentColor = False
   end
   object Password: TEdit
-    Left = 104
+    Left = 120
+    Height = 21
     Top = 8
     Width = 217
-    Height = 21
+    EchoMode = emPassword
     PasswordChar = '*'
     TabOrder = 0
   end
   object OKBtn: TButton
-    Left = 334
+    Left = 339
+    Height = 25
     Top = 7
     Width = 75
-    Height = 25
     Caption = '&OK'
     Default = True
     ModalResult = 1
     TabOrder = 2
   end
   object CancelBtn: TButton
-    Left = 334
-    Top = 39
-    Width = 75
+    Left = 339
     Height = 25
+    Top = 38
+    Width = 75
     Cancel = True
     Caption = '&Cancel'
     ModalResult = 2
     TabOrder = 3
   end
   object Password2: TEdit
-    Left = 104
+    Left = 120
+    Height = 21
     Top = 40
     Width = 217
-    Height = 21
+    EchoMode = emPassword
     PasswordChar = '*'
     TabOrder = 1
   end

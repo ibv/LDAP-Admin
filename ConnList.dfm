@@ -154,7 +154,7 @@ object ConnListFrm: TConnListFrm
         end      
         item
           Caption = 'user'
-          Width = 417
+          Width = 434
         end>
       HideSelection = False
       LargeImages = SmallImgs
@@ -523,7 +523,7 @@ object ConnListFrm: TConnListFrm
   end
   object ViewStyleMenu: TPopupMenu
     OnPopup = ViewStyleMenuPopup
-    left = 216
+    left = 288
     top = 47
     object vmSmall: TMenuItem
       Caption = 'Small icons'

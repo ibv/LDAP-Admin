@@ -1,6 +1,8 @@
 object InputDlg: TInputDlg
   Left = 410
+  Height = 108
   Top = 260
+  Width = 313
   ActiveControl = Edit
   BorderStyle = bsDialog
   Caption = 'Dialog'
@@ -8,21 +10,20 @@ object InputDlg: TInputDlg
   ClientWidth = 313
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = True
   Position = poOwnerFormCenter
-  PixelsPerInch = 96
-  TextHeight = 13
+  LCLVersion = '1.6.0.4'
   object Prompt: TLabel
     Left = 16
+    Height = 1
     Top = 16
-    Width = 3
-    Height = 13
+    Width = 1
+    ParentColor = False
   end
   object OKBtn: TButton
     Left = 79
+    Height = 25
     Top = 68
     Width = 75
-    Height = 25
     Caption = 'OK'
     Default = True
     ModalResult = 1
@@ -30,9 +31,9 @@ object InputDlg: TInputDlg
   end
   object CancelBtn: TButton
     Left = 159
+    Height = 25
     Top = 68
     Width = 75
-    Height = 25
     Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
@@ -40,10 +41,10 @@ object InputDlg: TInputDlg
   end
   object Edit: TEdit
     Left = 16
+    Height = 21
     Top = 32
     Width = 281
-    Height = 21
-    TabOrder = 2
     OnChange = EditChange
+    TabOrder = 2
   end
 end

@@ -255,7 +255,6 @@ object EditEntryFrm: TEditEntryFrm
       Caption = '&Templates'
       ClientHeight = 398
       ClientWidth = 763
-      ImageIndex = 1
       object Splitter2: TSplitter
         Left = 129
         Height = 398
@@ -280,7 +279,7 @@ object EditEntryFrm: TEditEntryFrm
           Top = 0
           Width = 129
           Align = alClient
-          Color = clAppWorkspace
+          Color = clBtnShadow
           Font.Color = clWindow
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
@@ -827,7 +826,7 @@ object EditEntryFrm: TEditEntryFrm
   end
   object MainMenu1: TMainMenu
     Images = ImageList1
-    left = 552
+    left = 528
     top = 320
     object mbFile: TMenuItem
       Caption = '&File'

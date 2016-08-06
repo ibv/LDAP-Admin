@@ -148,7 +148,7 @@ object ConnPropDlg: TConnPropDlg
           end
           object VersionCombo: TComboBox
             Left = 334
-            Height = 23
+            Height = 27
             Top = 9
             Width = 61
             ItemHeight = 0
@@ -216,7 +216,7 @@ object ConnPropDlg: TConnPropDlg
             TabOrder = 8
           end
           object cbTLS: TCheckBox
-            Left = 270
+            Left = 283
             Height = 26
             Top = 74
             Width = 51
@@ -241,7 +241,7 @@ object ConnPropDlg: TConnPropDlg
           ClientWidth = 405
           TabOrder = 0
           object Label15: TLabel
-            Left = 238
+            Left = 239
             Height = 15
             Top = 90
             Width = 64

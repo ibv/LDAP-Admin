@@ -74,28 +74,28 @@ object PrefDlg: TPrefDlg
           ParentColor = False
         end
         object edHomeDir: TEdit
-          Left = 118
+          Left = 127
           Height = 19
           Top = 74
           Width = 353
           TabOrder = 2
         end
         object edLoginShell: TEdit
-          Left = 118
+          Left = 127
           Height = 19
           Top = 106
           Width = 353
           TabOrder = 3
         end
         object edDisplayName: TEdit
-          Left = 118
+          Left = 127
           Height = 19
           Top = 42
           Width = 353
           TabOrder = 1
         end
         object edUsername: TEdit
-          Left = 118
+          Left = 127
           Height = 19
           Top = 10
           Width = 353
@@ -139,8 +139,8 @@ object PrefDlg: TPrefDlg
         object cbxExtendGroups: TCheckBox
           Left = 118
           Height = 26
-          Top = 49
-          Width = 190
+          Top = 48
+          Width = 175
           Caption = 'Extend Posix groups with:'
           OnClick = cbxExtendGroupsClick
           TabOrder = 2
@@ -372,29 +372,29 @@ object PrefDlg: TPrefDlg
             ParentColor = False
           end
           object edScript: TEdit
-            Left = 112
+            Left = 117
             Height = 19
             Top = 87
             Width = 353
             TabOrder = 0
           end
           object edHomeShare: TEdit
-            Left = 112
+            Left = 117
             Height = 19
             Top = 23
             Width = 353
             TabOrder = 1
           end
           object edProfilePath: TEdit
-            Left = 112
+            Left = 117
             Height = 19
             Top = 119
             Width = 353
             TabOrder = 2
           end
           object cbHomeDrive: TComboBox
-            Left = 112
-            Height = 27
+            Left = 117
+            Height = 21
             Top = 55
             Width = 65
             ItemHeight = 0
@@ -462,7 +462,7 @@ object PrefDlg: TPrefDlg
             ChildSizing.ShrinkVertical = crsScaleChilds
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 1
-            ClientHeight = 66
+            ClientHeight = 52
             ClientWidth = 461
             ItemIndex = 0
             Items.Strings = (
@@ -507,14 +507,14 @@ object PrefDlg: TPrefDlg
           ParentColor = False
         end
         object edMaildrop: TEdit
-          Left = 150
+          Left = 157
           Height = 19
           Top = 66
           Width = 321
           TabOrder = 1
         end
         object edMailAddress: TEdit
-          Left = 150
+          Left = 157
           Height = 19
           Top = 26
           Width = 177

@@ -263,7 +263,7 @@ object ImportDlg: TImportDlg
   object OpenDialog: TOpenDialog
     DefaultExt = '.ldif'
     Filter = 'Ldif Files (*.ldif)|*.ldif|All Files (*.*)|*.*'
-    left = 16
-    top = 208
+    left = 56
+    top = 224
   end
 end

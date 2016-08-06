@@ -21,7 +21,7 @@ object SambaAdvancedDlg: TSambaAdvancedDlg
   object Label1: TLabel
     Left = 32
     Height = 15
-    Top = 176
+    Top = 174
     Width = 136
     Caption = 'Allowed workstations:'
     ParentColor = False
@@ -91,7 +91,7 @@ object SambaAdvancedDlg: TSambaAdvancedDlg
   object AddBtn: TButton
     Left = 352
     Height = 25
-    Top = 192
+    Top = 190
     Width = 73
     Caption = 'Add...'
     OnClick = AddBtnClick
@@ -100,7 +100,7 @@ object SambaAdvancedDlg: TSambaAdvancedDlg
   object RemoveBtn: TButton
     Left = 352
     Height = 25
-    Top = 232
+    Top = 230
     Width = 73
     Caption = 'Remove'
     Enabled = False
@@ -188,7 +188,7 @@ object SambaAdvancedDlg: TSambaAdvancedDlg
   object wsList: TListView
     Left = 32
     Height = 161
-    Top = 192
+    Top = 190
     Width = 305
     Columns = <>
     MultiSelect = True

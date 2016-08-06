@@ -176,7 +176,7 @@ object HexView: THexView
     OnChange = ScrollBar1Change
   end
   object PopupMenu: TPopupMenu
-    left = 64
+    left = 104
     top = 360
     object pbHex: TMenuItem
       Caption = 'Hex view'

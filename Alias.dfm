@@ -47,7 +47,7 @@ object AliasDlg: TAliasDlg
     object Label1: TLabel
       Left = 16
       Height = 13
-      Top = 24
+      Top = 2
       Width = 87
       Caption = 'Create alias in:'
       ParentColor = False
@@ -63,7 +63,7 @@ object AliasDlg: TAliasDlg
     object Label4: TLabel
       Left = 16
       Height = 13
-      Top = 120
+      Top = 98
       Width = 49
       Caption = 'Alias dn:'
       ParentColor = False
@@ -71,7 +71,7 @@ object AliasDlg: TAliasDlg
     object Label5: TLabel
       Left = 176
       Height = 13
-      Top = 91
+      Top = 69
       Width = 9
       Caption = '='
       ParentColor = False
@@ -79,7 +79,7 @@ object AliasDlg: TAliasDlg
     object edAliasDir: TEdit
       Left = 16
       Height = 19
-      Top = 40
+      Top = 18
       Width = 505
       OnChange = edAliasDNChange
       TabOrder = 0
@@ -87,7 +87,7 @@ object AliasDlg: TAliasDlg
     object btnAliasDir: TButton
       Left = 530
       Height = 23
-      Top = 39
+      Top = 17
       Width = 24
       Caption = '...'
       OnClick = btnAliasDirClick
@@ -96,7 +96,7 @@ object AliasDlg: TAliasDlg
     object edAliasNameValue: TEdit
       Left = 192
       Height = 19
-      Top = 88
+      Top = 66
       Width = 329
       OnChange = edAliasDNChange
       TabOrder = 2
@@ -104,7 +104,7 @@ object AliasDlg: TAliasDlg
     object edAliasDN: TEdit
       Left = 16
       Height = 19
-      Top = 136
+      Top = 114
       Width = 505
       Enabled = False
       TabOrder = 3
@@ -112,7 +112,7 @@ object AliasDlg: TAliasDlg
     object cbAliasNameAttr: TComboBox
       Left = 16
       Height = 20
-      Top = 88
+      Top = 66
       Width = 153
       ItemHeight = 0
       OnChange = edAliasDNChange
@@ -132,7 +132,7 @@ object AliasDlg: TAliasDlg
     object Label3: TLabel
       Left = 16
       Height = 13
-      Top = 24
+      Top = 5
       Width = 51
       Caption = 'Entry dn:'
       ParentColor = False
@@ -140,7 +140,7 @@ object AliasDlg: TAliasDlg
     object edObjectDN: TEdit
       Left = 16
       Height = 19
-      Top = 40
+      Top = 21
       Width = 505
       OnChange = edObjectDNChange
       TabOrder = 0
@@ -148,7 +148,7 @@ object AliasDlg: TAliasDlg
     object btnObjDN: TButton
       Left = 530
       Height = 23
-      Top = 39
+      Top = 20
       Width = 24
       Caption = '...'
       OnClick = btnObjDNClick

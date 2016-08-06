@@ -589,7 +589,7 @@ object SchemaDlg: TSchemaDlg
   end
   object PopupMenu: TPopupMenu
     OnPopup = PopupMenuPopup
-    left = 232
+    left = 264
     top = 448
     object pmCopy: TMenuItem
       Caption = '&Copy'

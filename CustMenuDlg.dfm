@@ -1,53 +1,55 @@
 object CustomMenuDlg: TCustomMenuDlg
   Left = 428
+  Height = 548
   Top = 183
   Width = 695
-  Height = 548
   ActiveControl = TreeView
   Caption = 'Customize menu'
+  ClientHeight = 529
+  ClientWidth = 695
   Color = clBtnFace
-  Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
-  Font.Style = []
   Menu = MainMenu
-  Position = poMainFormCenter
   OnCloseQuery = FormCloseQuery
   OnResize = FormResize
-  PixelsPerInch = 96
+  Position = poMainFormCenter
+  LCLVersion = '1.6.0.4'
   object Panel2: TPanel
-    Left = 313
+    Left = 321
+    Height = 483
     Top = 0
     Width = 11
-    Height = 456
     Align = alRight
     BevelOuter = bvNone
     TabOrder = 0
   end
   object Panel3: TPanel
     Left = 0
-    Top = 456
-    Width = 687
     Height = 46
+    Top = 483
+    Width = 695
     Align = alBottom
     BevelOuter = bvNone
+    ClientHeight = 46
+    ClientWidth = 695
     TabOrder = 1
     object btnCancel: TButton
-      Left = 597
+      Left = 605
+      Height = 25
       Top = 10
       Width = 75
-      Height = 25
       Anchors = [akTop, akRight]
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 1
     end
     object btnOK: TButton
-      Left = 517
+      Left = 525
+      Height = 25
       Top = 10
       Width = 75
-      Height = 25
       Anchors = [akTop, akRight]
       Caption = '&OK'
       ModalResult = 1
@@ -55,120 +57,126 @@ object CustomMenuDlg: TCustomMenuDlg
     end
   end
   object Panel4: TPanel
-    Left = 681
+    Left = 689
+    Height = 483
     Top = 0
     Width = 6
-    Height = 456
     Align = alRight
     BevelOuter = bvNone
     TabOrder = 2
   end
   object Panel6: TPanel
     Left = 0
+    Height = 483
     Top = 0
     Width = 6
-    Height = 456
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 3
   end
   object Panel1: TPanel
-    Left = 324
+    Left = 332
+    Height = 483
     Top = 0
     Width = 357
-    Height = 456
     Align = alRight
     BevelOuter = bvNone
+    ClientHeight = 483
+    ClientWidth = 357
     TabOrder = 4
     object Panel5: TPanel
       Left = 0
+      Height = 483
       Top = 0
       Width = 357
-      Height = 456
       Align = alClient
       BevelInner = bvLowered
       BevelOuter = bvNone
+      ClientHeight = 483
+      ClientWidth = 357
       TabOrder = 0
       object Panel8: TPanel
-        Left = 0
-        Top = 0
-        Width = 355
+        Left = 1
         Height = 72
+        Top = 1
+        Width = 355
         Align = alTop
         BevelOuter = bvNone
+        ClientHeight = 72
+        ClientWidth = 355
         TabOrder = 0
         object Label1: TLabel
           Left = 14
-          Top = 14
-          Width = 39
           Height = 13
+          Top = 14
+          Width = 47
           Caption = 'Ca&ption:'
+          ParentColor = False
         end
         object edCaption: TEdit
           Left = 14
+          Height = 19
           Top = 30
           Width = 329
-          Height = 21
-          TabOrder = 0
           OnChange = edCaptionChange
+          TabOrder = 0
         end
       end
       object GroupBox1: TGroupBox
         Left = 14
+        Height = 169
         Top = 70
         Width = 329
-        Height = 169
         Caption = ' &Action '
+        ClientHeight = 140
+        ClientWidth = 325
         TabOrder = 1
         object rbDisabled: TRadioButton
           Left = 22
+          Height = 26
           Top = 18
-          Width = 105
-          Height = 17
+          Width = 77
           Caption = '&Disabled'
-          TabOrder = 0
+          Checked = True
           OnClick = rbClick
+          TabOrder = 0
         end
         object rbDefaultAction: TRadioButton
           Left = 22
+          Height = 26
           Top = 58
-          Width = 105
-          Height = 17
+          Width = 106
           Caption = 'Defaul&t action'
-          TabOrder = 1
           OnClick = rbClick
+          TabOrder = 1
         end
         object rbTemplate: TRadioButton
           Left = 22
+          Height = 26
           Top = 98
-          Width = 105
-          Height = 17
+          Width = 79
           Caption = '&Template'
-          TabOrder = 2
           OnClick = rbClick
+          TabOrder = 2
         end
         object cbTemplate: TComboBox
           Left = 126
+          Height = 27
           Top = 96
           Width = 185
-          Height = 22
-          Style = csOwnerDrawFixed
           Enabled = False
           ItemHeight = 16
-          TabOrder = 3
           OnChange = cbTemplateChange
           OnDrawItem = cbTemplateDrawItem
+          Style = csOwnerDrawFixed
+          TabOrder = 3
         end
         object cbDefaultAction: TComboBox
           Left = 126
+          Height = 27
           Top = 56
           Width = 185
-          Height = 22
-          Style = csOwnerDrawFixed
           ItemHeight = 16
-          TabOrder = 4
-          OnChange = cbDefaultActionChange
-          OnDrawItem = cbDefaultActionDrawItem
           Items.Strings = (
             'Entry'
             'User'
@@ -177,59 +185,65 @@ object CustomMenuDlg: TCustomMenuDlg
             'Mailing list'
             'Transport table'
             'Organizational unit'
-            'Group of unique names')
+            'Group of unique names'
+          )
+          OnChange = cbDefaultActionChange
+          OnDrawItem = cbDefaultActionDrawItem
+          Style = csOwnerDrawFixed
+          TabOrder = 4
         end
         object ComboText: TStaticText
           Left = 30
+          Height = 4
           Top = 122
           Width = 4
-          Height = 4
-          Font.Charset = DEFAULT_CHARSET
           Font.Color = clBtnShadow
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsItalic]
+          OnMouseDown = ComboTextMouseDown
           ParentFont = False
           TabOrder = 5
-          OnMouseDown = ComboTextMouseDown
         end
       end
       object GroupBox2: TGroupBox
         Left = 14
+        Height = 89
         Top = 254
         Width = 329
-        Height = 89
         Caption = 'Hotkey'
+        ClientHeight = 60
+        ClientWidth = 325
         TabOrder = 2
         object cbShortcutKey: TComboBox
           Left = 198
+          Height = 20
           Top = 26
           Width = 97
-          Height = 21
-          ItemHeight = 13
+          ItemHeight = 0
           TabOrder = 0
         end
         object cbCtrl: TCheckBox
           Left = 22
+          Height = 26
           Top = 26
-          Width = 57
-          Height = 17
+          Width = 50
           Caption = 'Ctrl'
           TabOrder = 1
         end
         object cbShift: TCheckBox
           Left = 78
+          Height = 26
           Top = 26
           Width = 57
-          Height = 17
           Caption = 'Shift'
           TabOrder = 2
         end
         object cbAlt: TCheckBox
           Left = 134
+          Height = 26
           Top = 26
-          Width = 57
-          Height = 17
+          Width = 45
           Caption = 'Alt'
           TabOrder = 3
         end
@@ -238,16 +252,18 @@ object CustomMenuDlg: TCustomMenuDlg
   end
   object TreeView: TTreeView
     Left = 6
+    Height = 483
     Top = 0
-    Width = 307
-    Height = 456
+    Width = 315
     Align = alClient
+    DefaultItemHeight = 16
     DragCursor = crDefault
     DragMode = dmAutomatic
     HideSelection = False
     Indent = 19
     PopupMenu = PopupMenu
     ReadOnly = True
+    ScrollBars = ssAutoBoth
     TabOrder = 5
     OnChange = TreeViewChange
     OnChanging = TreeViewChanging
@@ -257,18 +273,19 @@ object CustomMenuDlg: TCustomMenuDlg
     OnDragOver = TreeViewDragOver
     OnEndDrag = TreeViewEndDrag
     OnStartDrag = TreeViewStartDrag
+    Options = [tvoAutoItemHeight, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
   end
   object MainMenu: TMainMenu
-    Left = 48
-    Top = 400
+    left = 48
+    top = 400
     object mbTest: TMenuItem
       Caption = '&Test'
     end
   end
   object PopupMenu: TPopupMenu
     OnPopup = PopupMenuPopup
-    Left = 80
-    Top = 400
+    left = 80
+    top = 400
     object mbAddItem: TMenuItem
       Caption = 'Add &item'
       OnClick = mbAddItemClick
@@ -289,7 +306,7 @@ object CustomMenuDlg: TCustomMenuDlg
   object ScrollTimer: TTimer
     Enabled = False
     OnTimer = ScrollTimerTimer
-    Left = 16
-    Top = 400
+    left = 16
+    top = 400
   end
 end

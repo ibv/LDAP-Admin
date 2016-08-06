@@ -32,7 +32,7 @@ object ListViewDlg: TListViewDlg
           Width = 160
         end      
         item
-          Width = 320
+          Width = 324
         end>
       HideSelection = False
       MultiSelect = True

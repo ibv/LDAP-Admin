@@ -1,30 +1,28 @@
 object SearchFrm: TSearchFrm
   Left = 482
-  Height = 519
+  Height = 409
   Top = 181
-  Width = 561
+  Width = 692
   Caption = 'Search'
-  ClientHeight = 519
-  ClientWidth = 561
+  ClientHeight = 409
+  ClientWidth = 692
   Color = clBtnFace
   Constraints.MinHeight = 409
   Constraints.MinWidth = 473
-  Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'MS Sans Serif'
   KeyPreview = True
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnDeactivate = FormDeactivate
   OnDestroy = FormDestroy
   OnKeyPress = FormKeyPress
+  ParentFont = True
   Position = poMainFormCenter
   LCLVersion = '1.6.0.4'
   object StatusBar: TStatusBar
     Left = 0
     Height = 19
-    Top = 500
-    Width = 561
+    Top = 390
+    Width = 692
     Panels = <    
       item
         Width = 50
@@ -37,47 +35,47 @@ object SearchFrm: TSearchFrm
     Left = 0
     Height = 172
     Top = 29
-    Width = 561
+    Width = 692
     Align = alTop
     BorderWidth = 3
     ClientHeight = 172
-    ClientWidth = 561
+    ClientWidth = 692
     TabOrder = 1
     object Panel2: TPanel
       Left = 4
       Height = 164
       Top = 4
-      Width = 553
+      Width = 684
       Align = alClient
       BevelOuter = bvNone
       ClientHeight = 164
-      ClientWidth = 553
+      ClientWidth = 684
       TabOrder = 0
       object Panel40: TPanel
         Left = 0
         Height = 164
         Top = 0
-        Width = 553
+        Width = 684
         Align = alClient
         BevelOuter = bvNone
         ClientHeight = 164
-        ClientWidth = 553
+        ClientWidth = 684
         TabOrder = 0
         object Panel41: TPanel
           Left = 0
-          Height = 49
+          Height = 41
           Top = 0
-          Width = 553
+          Width = 684
           Align = alTop
           BevelOuter = bvNone
-          ClientHeight = 49
-          ClientWidth = 553
+          ClientHeight = 41
+          ClientWidth = 684
           TabOrder = 0
           object Label5: TLabel
             Left = 8
-            Height = 13
+            Height = 15
             Top = 12
-            Width = 29
+            Width = 32
             Caption = 'Path:'
             ParentColor = False
           end
@@ -85,24 +83,24 @@ object SearchFrm: TSearchFrm
             Left = 8
             Height = 10
             Top = 28
-            Width = 549
+            Width = 680
             Anchors = [akTop, akLeft, akRight]
             Shape = bsBottomLine
           end
           object cbBasePath: TComboBox
             Left = 48
-            Height = 20
+            Height = 21
             Top = 8
-            Width = 417
+            Width = 539
             Anchors = [akTop, akLeft, akRight]
             ItemHeight = 0
             TabOrder = 0
           end
           object PathBtn: TButton
-            Left = 472
+            Left = 593
             Height = 23
             Top = 7
-            Width = 81
+            Width = 85
             Anchors = [akTop, akRight]
             Caption = '&Browse...'
             OnClick = PathBtnClick
@@ -111,45 +109,45 @@ object SearchFrm: TSearchFrm
         end
         object Panel4: TPanel
           Left = 0
-          Height = 115
-          Top = 49
-          Width = 553
+          Height = 123
+          Top = 41
+          Width = 684
           Align = alClient
           BevelOuter = bvNone
-          ClientHeight = 115
-          ClientWidth = 553
+          ClientHeight = 123
+          ClientWidth = 684
           TabOrder = 1
           object PageControl: TPageControl
             Left = 0
-            Height = 115
+            Height = 123
             Top = 0
-            Width = 456
-            ActivePage = TabSheet1
+            Width = 587
+            ActivePage = TabSheet2
             Align = alClient
-            TabIndex = 0
+            TabIndex = 1
             TabOrder = 0
             object TabSheet1: TTabSheet
               Caption = '&Search'
-              ClientHeight = 80
-              ClientWidth = 448
+              ClientHeight = 86
+              ClientWidth = 579
               object Label6: TLabel
                 Left = 24
-                Height = 13
+                Height = 15
                 Top = 0
-                Width = 37
+                Width = 43
                 Caption = '&Name:'
                 ParentColor = False
               end
               object Label7: TLabel
                 Left = 24
-                Height = 13
+                Height = 15
                 Top = 40
-                Width = 37
+                Width = 42
                 Caption = '&E-Mail:'
                 ParentColor = False
               end
               object sbCustom1: TSpeedButton
-                Left = 423
+                Left = 554
                 Height = 21
                 Top = 16
                 Width = 21
@@ -187,7 +185,7 @@ object SearchFrm: TSearchFrm
                 OnClick = sbCustom1Click
               end
               object sbCustom2: TSpeedButton
-                Left = 423
+                Left = 554
                 Height = 21
                 Top = 56
                 Width = 21
@@ -225,10 +223,10 @@ object SearchFrm: TSearchFrm
                 OnClick = sbCustom2Click
               end
               object edCustom1: TEdit
-                Left = 160
-                Height = 19
+                Left = 24
+                Height = 21
                 Top = 16
-                Width = 259
+                Width = 526
                 Anchors = [akTop, akLeft, akRight]
                 Color = clInfoBk
                 Enabled = False
@@ -236,17 +234,17 @@ object SearchFrm: TSearchFrm
               end
               object edName: TEdit
                 Left = 24
-                Height = 19
+                Height = 21
                 Top = 16
-                Width = 395
+                Width = 526
                 Anchors = [akTop, akLeft, akRight]
                 TabOrder = 0
               end
               object edCustom2: TEdit
-                Left = 160
-                Height = 19
+                Left = 24
+                Height = 21
                 Top = 56
-                Width = 259
+                Width = 526
                 Anchors = [akTop, akLeft, akRight]
                 Color = clInfoBk
                 Enabled = False
@@ -254,32 +252,32 @@ object SearchFrm: TSearchFrm
               end
               object edEmail: TEdit
                 Left = 24
-                Height = 19
+                Height = 21
                 Top = 56
-                Width = 395
+                Width = 526
                 Anchors = [akTop, akLeft, akRight]
                 TabOrder = 1
               end
             end
             object TabSheet2: TTabSheet
               Caption = '&Custom'
-              ClientHeight = 80
-              ClientWidth = 448
+              ClientHeight = 86
+              ClientWidth = 579
               ImageIndex = 1
-              OnResize = TabSheet2Resize
               object Label1: TLabel
                 Left = 8
-                Height = 13
-                Top = 8
-                Width = 31
+                Height = 15
+                Top = 3
+                Width = 34
                 Caption = 'Filter:'
                 ParentColor = False
               end
               object Memo1: TMemo
                 Left = 40
                 Height = 49
-                Top = 8
-                Width = 405
+                Top = 3
+                Width = 537
+                Anchors = [akTop, akLeft, akRight]
                 Font.Color = clWindowText
                 Font.Height = -12
                 Font.Name = 'Courier New'
@@ -287,32 +285,33 @@ object SearchFrm: TSearchFrm
                 TabOrder = 0
               end
               object cbFilters: TComboBox
-                Left = 40
-                Height = 20
-                Top = 60
-                Width = 250
+                Left = 39
+                Height = 21
+                Top = 57
+                Width = 402
+                Anchors = [akTop, akLeft, akRight]
                 ItemHeight = 0
                 OnChange = cbFiltersChange
                 OnDropDown = cbFiltersDropDown
                 TabOrder = 1
               end
               object SaveFilterBtn: TButton
-                Left = 325
+                Left = 443
                 Height = 23
-                Top = 59
+                Top = 57
                 Width = 65
-                Anchors = []
+                Anchors = [akRight]
                 Caption = 'Sa&ve'
                 Enabled = False
                 OnClick = SaveFilterBtnClick
                 TabOrder = 2
               end
               object DeleteFilterBtn: TButton
-                Left = 377
+                Left = 512
                 Height = 23
-                Top = 59
+                Top = 57
                 Width = 65
-                Anchors = []
+                Anchors = [akRight]
                 Caption = '&Delete'
                 Enabled = False
                 OnClick = DeleteFilterBtnClick
@@ -321,61 +320,60 @@ object SearchFrm: TSearchFrm
             end
             object TabSheet3: TTabSheet
               Caption = '&Options'
-              ClientHeight = 80
-              ClientWidth = 448
+              ClientHeight = 86
+              ClientWidth = 579
               ImageIndex = 2
-              OnResize = TabSheet3Resize
               object Label4: TLabel
-                Left = 20
-                Height = 13
-                Top = 12
-                Width = 59
+                Left = 11
+                Height = 15
+                Top = 14
+                Width = 67
                 Alignment = taRightJustify
                 Caption = 'Attributes:'
                 ParentColor = False
               end
               object Label2: TLabel
-                Left = 4
-                Height = 13
-                Top = 52
-                Width = 74
+                Left = 11
+                Height = 15
+                Top = 45
+                Width = 82
                 Alignment = taRightJustify
                 Caption = 'Search level:'
                 ParentColor = False
               end
               object Label3: TLabel
-                Left = 256
-                Height = 13
-                Top = 52
-                Width = 119
+                Left = 222
+                Height = 15
+                Top = 45
+                Width = 131
                 Alignment = taRightJustify
                 Caption = 'Dereference aliases:'
                 ParentColor = False
               end
               object cbAttributes: TComboBox
-                Left = 72
-                Height = 20
-                Top = 8
-                Width = 296
+                Left = 68
+                Height = 21
+                Top = 11
+                Width = 419
                 Anchors = [akTop, akLeft, akRight]
                 ItemHeight = 0
                 TabOrder = 0
               end
               object edAttrBtn: TButton
-                Left = 384
+                Left = 493
                 Height = 23
-                Top = 8
-                Width = 76
-                Anchors = [akTop]
+                Top = 10
+                Width = 80
+                Anchors = [akTop, akRight]
                 Caption = 'Edit...'
                 OnClick = edAttrBtnClick
                 TabOrder = 1
               end
               object cbSearchLevel: TComboBox
-                Left = 72
-                Height = 21
-                Top = 48
-                Width = 161
+                Left = 93
+                Height = 23
+                Top = 41
+                Width = 130
                 ItemHeight = 0
                 Items.Strings = (
                   'This entry only'
@@ -386,10 +384,10 @@ object SearchFrm: TSearchFrm
                 TabOrder = 2
               end
               object cbDerefAliases: TComboBox
-                Left = 360
-                Height = 21
-                Top = 48
-                Width = 8
+                Left = 357
+                Height = 23
+                Top = 41
+                Width = 130
                 Anchors = [akTop, akLeft, akRight]
                 ItemHeight = 0
                 Items.Strings = (
@@ -404,102 +402,103 @@ object SearchFrm: TSearchFrm
             end
             object TabSheet4: TTabSheet
               Caption = '&Regular Expressions'
-              ClientHeight = 80
-              ClientWidth = 448
+              ClientHeight = 86
+              ClientWidth = 579
               ImageIndex = 3
-              OnResize = TabSheet4Resize
               object Label8: TLabel
-                Left = 11
-                Height = 13
+                Left = 6
+                Height = 15
                 Top = 10
-                Width = 57
+                Width = 64
                 Alignment = taRightJustify
                 Caption = 'Evaluator:'
                 ParentColor = False
               end
               object cbRegExp: TComboBox
-                Left = 64
-                Height = 20
-                Top = 60
-                Width = 250
+                Left = 7
+                Height = 21
+                Top = 52
+                Width = 432
+                Anchors = [akTop, akLeft, akRight]
                 ItemHeight = 0
                 OnChange = cbRegExpChange
                 OnDropDown = cbRegExpDropDown
                 TabOrder = 4
               end
               object btnSaveRegEx: TButton
-                Left = 329
+                Left = 443
                 Height = 23
-                Top = 58
+                Top = 50
                 Width = 65
-                Anchors = []
+                Anchors = [akRight]
                 Caption = 'Sa&ve'
                 Enabled = False
                 OnClick = btnSaveRegExClick
                 TabOrder = 5
               end
               object btnDeleteRegEx: TButton
-                Left = 381
+                Left = 512
                 Height = 23
-                Top = 58
+                Top = 50
                 Width = 65
-                Anchors = []
+                Anchors = [akRight]
                 Caption = '&Delete'
                 Enabled = False
                 OnClick = btnDeleteRegExClick
                 TabOrder = 6
               end
               object edRegExp: TEdit
-                Left = 64
-                Height = 19
+                Left = 70
+                Height = 21
                 Top = 7
-                Width = 537
+                Width = 509
+                Anchors = [akTop, akLeft, akRight]
                 TabOrder = 0
               end
               object cbxReGreedy: TCheckBox
-                Left = 64
+                Left = 24
                 Height = 26
-                Top = 35
-                Width = 105
+                Top = 27
+                Width = 115
                 Caption = 'Greedy mode'
                 Checked = True
                 State = cbChecked
                 TabOrder = 1
               end
               object cbxReCase: TCheckBox
-                Left = 180
+                Left = 141
                 Height = 26
-                Top = 35
-                Width = 112
+                Top = 27
+                Width = 120
                 Caption = 'Case sensitive'
                 Checked = True
                 State = cbChecked
                 TabOrder = 2
               end
               object cbxReMultiline: TCheckBox
-                Left = 308
+                Left = 264
                 Height = 26
-                Top = 35
-                Width = 130
+                Top = 27
+                Width = 144
                 Caption = 'Multiline matching'
                 TabOrder = 3
               end
             end
           end
           object Panel3: TPanel
-            Left = 456
-            Height = 115
+            Left = 587
+            Height = 123
             Top = 0
             Width = 97
             Align = alRight
             BevelOuter = bvNone
-            ClientHeight = 115
+            ClientHeight = 123
             ClientWidth = 97
             TabOrder = 1
             object StartBtn: TBitBtn
               Left = 8
               Height = 25
-              Top = 20
+              Top = 26
               Width = 83
               Action = ActStart
               Caption = 'Sta&rt'
@@ -510,7 +509,7 @@ object SearchFrm: TSearchFrm
             object ClearAllBtn: TButton
               Left = 8
               Height = 25
-              Top = 52
+              Top = 58
               Width = 83
               Action = ActClearAll
               ParentShowHint = False
@@ -524,9 +523,9 @@ object SearchFrm: TSearchFrm
   end
   object ResultPanel: TPanel
     Left = 0
-    Height = 299
+    Height = 189
     Top = 201
-    Width = 561
+    Width = 692
     Align = alClient
     BorderWidth = 3
     TabOrder = 2
@@ -535,10 +534,9 @@ object SearchFrm: TSearchFrm
     Left = 0
     Height = 29
     Top = 0
-    Width = 561
+    Width = 692
     ButtonHeight = 28
     ButtonWidth = 28
-    Caption = 'ToolBar1'
     DisabledImages = MainFrm.ImageList
     Images = MainFrm.ImageList
     ParentShowHint = False
@@ -548,7 +546,6 @@ object SearchFrm: TSearchFrm
       Left = 1
       Hint = 'Search'
       Top = 2
-      Caption = 'Search'
       Down = True
       Grouped = True
       ImageIndex = 20
@@ -559,7 +556,6 @@ object SearchFrm: TSearchFrm
       Left = 29
       Hint = 'Modify'
       Top = 2
-      Caption = 'Modify'
       Grouped = True
       ImageIndex = 38
       OnClick = btnSearchModifyClick
@@ -570,7 +566,6 @@ object SearchFrm: TSearchFrm
       Height = 28
       Top = 2
       Width = 8
-      Caption = 'ToolButton7'
       ImageIndex = 6
       Style = tbsSeparator
     end
@@ -589,7 +584,6 @@ object SearchFrm: TSearchFrm
       Height = 28
       Top = 2
       Width = 8
-      Caption = 'ToolButton8'
       ImageIndex = 32
       Style = tbsSeparator
     end
@@ -613,7 +607,6 @@ object SearchFrm: TSearchFrm
       Height = 28
       Top = 2
       Width = 8
-      Caption = 'ToolButton2'
       ImageIndex = 19
       Style = tbsSeparator
     end
@@ -625,8 +618,8 @@ object SearchFrm: TSearchFrm
   end
   object PopupMenu1: TPopupMenu
     Images = MainFrm.ImageList
-    left = 48
-    top = 424
+    left = 32
+    top = 320
     object pbGoto: TMenuItem
       Action = ActGoto
       Bitmap.Data = {
@@ -844,8 +837,8 @@ object SearchFrm: TSearchFrm
   object ActionList: TActionList
     Images = MainFrm.ImageList
     OnUpdate = ActionListUpdate
-    left = 96
-    top = 424
+    left = 128
+    top = 320
     object ActStart: TAction
       Caption = '&Start'
       Hint = 'Start searching'
@@ -866,6 +859,7 @@ object SearchFrm: TSearchFrm
     end
     object ActSave: TAction
       Caption = '&Save'
+      Hint = 'Save results to file'
       ImageIndex = 31
       OnExecute = ActSaveExecute
     end
@@ -877,7 +871,7 @@ object SearchFrm: TSearchFrm
     end
     object ActClose: TAction
       Caption = '&Close'
-      Hint = 'Close'
+      Hint = 'Close search window'
       ImageIndex = 18
       OnExecute = ActCloseExecute
     end
@@ -910,7 +904,7 @@ object SearchFrm: TSearchFrm
     end
   end
   object OpenDialog: TOpenDialog
-    left = 136
-    top = 424
+    left = 144
+    top = 409
   end
 end

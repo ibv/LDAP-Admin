@@ -177,7 +177,7 @@ object MailGroupDlg: TMailGroupDlg
         TabOrder = 3
       end
       object edMailRoutingAddress: TEdit
-        Left = 8
+        Left = 7
         Height = 19
         Top = 256
         Width = 369

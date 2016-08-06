@@ -34,7 +34,7 @@ object BookmarkDlg: TBookmarkDlg
       item
         AutoSize = True
         Caption = 'DN'
-        Width = 419
+        Width = 436
       end>
     HideSelection = False
     OwnerData = True

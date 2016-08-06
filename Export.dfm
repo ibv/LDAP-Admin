@@ -47,7 +47,7 @@ object ExportDlg: TExportDlg
     Height = 145
     Top = 16
     Width = 465
-    PageIndex = 1
+    PageIndex = 0
     TabOrder = 2
     TabStop = True
     object page1: TPage
@@ -125,7 +125,7 @@ object ExportDlg: TExportDlg
       object SubDirsCbk: TCheckBox
         Left = 8
         Height = 26
-        Top = 104
+        Top = 102
         Width = 167
         Caption = '&Include subdirectories'
         Checked = True

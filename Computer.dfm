@@ -1,52 +1,55 @@
 object ComputerDlg: TComputerDlg
   Left = 385
+  Height = 251
   Top = 204
+  Width = 313
   ActiveControl = edComputername
   BorderStyle = bsDialog
   Caption = 'Create computer account'
   ClientHeight = 251
   ClientWidth = 313
   Color = clBtnFace
-  ParentFont = True
-  OldCreateOrder = True
-  Position = poMainFormCenter
   OnClose = FormClose
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
-  TextHeight = 13
+  ParentFont = True
+  Position = poMainFormCenter
+  LCLVersion = '1.6.0.4'
   object Bevel1: TBevel
     Left = 8
+    Height = 185
     Top = 8
     Width = 297
-    Height = 185
     Shape = bsFrame
   end
   object Label1: TLabel
     Left = 24
+    Height = 15
     Top = 32
-    Width = 265
-    Height = 13
+    Width = 105
     Caption = '&Computername:'
+    ParentColor = False
   end
   object Label2: TLabel
     Left = 24
+    Height = 15
     Top = 128
-    Width = 265
-    Height = 13
+    Width = 72
     Caption = 'D&escription'
+    ParentColor = False
   end
   object Label3: TLabel
     Left = 24
+    Height = 15
     Top = 80
-    Width = 265
-    Height = 13
+    Width = 54
     Caption = '&Domain:'
+    ParentColor = False
   end
   object OKBtn: TButton
     Left = 79
+    Height = 25
     Top = 212
     Width = 75
-    Height = 25
     Caption = '&OK'
     Default = True
     Enabled = False
@@ -55,9 +58,9 @@ object ComputerDlg: TComputerDlg
   end
   object CancelBtn: TButton
     Left = 159
+    Height = 25
     Top = 212
     Width = 75
-    Height = 25
     Cancel = True
     Caption = '&Cancel'
     ModalResult = 2
@@ -65,27 +68,27 @@ object ComputerDlg: TComputerDlg
   end
   object edComputername: TEdit
     Left = 24
+    Height = 21
     Top = 48
     Width = 265
-    Height = 21
     MaxLength = 15
-    TabOrder = 0
     OnChange = edComputernameChange
+    TabOrder = 0
   end
   object edDescription: TEdit
     Left = 24
+    Height = 21
     Top = 144
     Width = 265
-    Height = 21
     TabOrder = 2
   end
   object cbDomain: TComboBox
     Left = 24
+    Height = 27
     Top = 96
     Width = 265
-    Height = 21
+    ItemHeight = 0
     Style = csDropDownList
-    ItemHeight = 13
     TabOrder = 1
   end
 end

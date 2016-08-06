@@ -1022,7 +1022,7 @@ object UserDlg: TUserDlg
     end
   end
   object OpenPictureDialog: TOpenPictureDialog
-    left = 356
-    top = 408
+    left = 336
+    top = 448
   end
 end
