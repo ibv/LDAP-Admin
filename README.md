@@ -30,10 +30,20 @@ Disabled functions:
  * Scripting
 
 
+
 Requirements
 ------------
  * Lazarus (FPC) compiler
  * Linux desktop
+
+
+How to compile
+--------------
+ * install Lazarus (1.6 or above) from binaries - http://wiki.freepascal.org/Installing_Lazarus
+ * get source code Ldap-Admin from https://github.com/ibv/LDAP-Admin
+ * in Lazarus IDE, menu - File -> Open -> "/path/to/LdapAdmin.lpi"
+ * in Lazarus IDE, menu - Run -> F9 (run) or Ctrl+F9 (compile) or Shift+F9 (link)
+
 
 Further information
 -------------------
