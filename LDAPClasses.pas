@@ -35,7 +35,7 @@ uses
 {$IFnDEF FPC}
   Windows,  WinLDAP,
 {$ELSE}
-  LCLIntf, LCLType, LazUtils, LinLDAP, lDapSend, lazutf8,
+  LCLIntf, LCLType, LazUtils, LinLDAP, lDapSend, lazutf8, LazFileUtils,
 {$ENDIF}
   Sysutils,  Classes, Events, Constant;
 
@@ -121,7 +121,7 @@ type
     property DataSize: Cardinal read fBerval.Bv_Len;
     property Data: PBytes read fBerval.Bv_Val;
     property Berval: PLdapBerval read BervalAddr;
-    property ModOp: Cardinal read fModOp;
+    property ModOp: Cardinal read fModOp write fModOp;
     property Attribute: TLdapAttribute read fAttribute;
   end;
 
@@ -226,7 +226,7 @@ type
     procedure ProcessSearchEntry(const plmEntry: TLDAPResult; Attributes: TLdapAttributeList);
     procedure ProcessSearchMessage(const plmSearch: TLDAPsend; const NoValues: LongBool; Result: TLdapEntryList);
     {$endif}
-protected
+  protected
     function  ISConnected: Boolean; virtual;    
   public
     constructor Create;
@@ -630,6 +630,7 @@ procedure TLdapSession.LDAPCheck(const err: ULONG; const Critical: Boolean = tru
 var
   ErrorEx: PChar;
   msg: string;
+  c: ULONG;
 begin
   if (err = LDAP_SUCCESS) then exit;
   if ((ldap_get_option(pld, LDAP_OPT_SERVER_ERROR, @ErrorEx)=LDAP_SUCCESS) and Assigned(ErrorEx)) then
@@ -647,6 +648,11 @@ begin
   {$else}
     msg := Format(stLdapError, [ldap_err2string(pld,err)]);
   {$endif}
+    // TODO check with OpenLdap
+    if (ldap_get_option(pld, LDAP_OPT_SERVER_EXT_ERROR, @c) = LDAP_SUCCESS) then
+      msg := msg + #10 + SysErrorMessage(c);
+    //
+
   if Critical then
     raise ErrLDAP.Create(msg);
   MessageDlg(msg, mtError, [mbOk], 0);
@@ -703,6 +709,7 @@ begin
           pszdn:= plmEntry.Attributes[i][j];
 
           data:=TLdapAttributeData.Create(Attr);
+
           if plmEntry.Attributes[i].IsBinary then
              data:=@pszdn[1]
           else
@@ -1534,36 +1541,9 @@ var
   end;
   {$ENDIF}
 
-  function IsText(p:  PAnsiChar): boolean;
-  var
-    dt: TSysCharSet;
-    charlen: integer;
+  function IsText(p:  PAnsiChar; size:integer): boolean;
   begin
-    {
-    result:=false;
-    while True do
-       case p^ of
-            #0: begin result:=true;break; end; //done, okay if past the end of the string
-            #8, #10, #12, #13, ' '..#$7E: inc(p); //okay
-            #$C0..#$DF: inc(p); //2 bytes
-            #$E0..#$EF: inc(p); //3 bytes
-            #$F0..#$F4: inc(p); //4 bytes
-       else exit(False); //not valid text
-    end;
-    }
-
-    result:=true;
-    repeat
-      CharLen := UTF8CharacterLength(p);
-      if CharLen=0 then
-      begin
-        result:=false;
-        break;
-      end;
-      inc(p,CharLen);
-    until (CharLen=0) or (p^ = #0);
-
-    //result:= not(IsEmptyStr(p,dt));
+    result := FindInvalidUTF8Character(p, size,true) = -1;
   end;
 
 begin
@@ -1575,7 +1555,7 @@ begin
       if (MultiByteToWideChar( CP_UTF8, 8{MB_ERR_INVALID_CHARS}, PAnsiChar(Data), DataSize, nil, 0) <> 0) then
        Attribute.fDataType := dtText
     {$ELSE}
-       if IsText(PAnsiChar(Data)) then Attribute.fDataType := dtText
+       if IsText(PChar(Data),DataSize) then Attribute.fDataType := dtText
     {$ENDIF}
     else begin
       w := PWord(Data)^;
@@ -1649,6 +1629,7 @@ begin
   fEntry := Attribute.fEntry;
   //fType := dtUnknown;
   {$ifdef mswindows}
+  end;
   if not (Assigned(fEntry) and Assigned(fEntry.Session) and (fEntry.Session.Version < LDAP_VERSION3)) then
     fUtf8 := true;
   {$else}
