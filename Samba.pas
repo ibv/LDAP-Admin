@@ -223,7 +223,7 @@ const
 
 { This function is ported from mkntpwd.c written by Anton Roeckseisen (anton@genua.de) }
 
-function PutUniCode(var adst; src: PChar): Integer;
+function PutUniCode(var adst; src: PAnsiChar): Integer;
 var
   i,ret: Integer;
   dst: array[0..255] of Byte absolute adst;
@@ -490,7 +490,7 @@ begin
   inherited;
   { Get NT Password }
   fillchar(passwd, 255, 0);
-  slen := PutUniCode(Passwd, PChar(Password));
+  slen := PutUniCode(Passwd, PAnsiChar(AnsiString(Password)));
   fillchar(hash, 17, 0);
   mdfour(hash, Passwd, slen);
   SetString(eSambaNTPassword, HashToHex(@Hash, 16));

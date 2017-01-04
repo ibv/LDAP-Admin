@@ -431,10 +431,14 @@ begin
       finally
         LdapTree.Items.EndUpdate;
       end;
-    end
-    else
+    end;
+    {else
     if ValueListView.Visible and (TObjectInfo(Node.Data).dn = Entry.dn) then
-        RefreshValueListView(Node);
+        RefreshValueListView(Node);}
+    if ValueListView.Visible then
+      RefreshValueListView(LDAPTree.Selected);
+    if EntryListView.Visible then
+      RefreshEntryListView(LDAPTree.Selected);
   end;
 end;
 
@@ -696,7 +700,7 @@ begin
         while Assigned(Result) do
         begin
           //if AnsiStrIComp(PChar(Result.Text), PChar(comp[i])) = 0 then
-          if AnsiCompareText(Result.Text, DecodeLdapString(PCharArray(comp)[i])) = 0 then
+          if AnsiCompareText(Result.Text, DecodeLdapString(PChar(comp[i]))) = 0 then
           begin
             Parent := Result;
             if Select then
@@ -1047,7 +1051,7 @@ var
   var
     i, j: Integer;
 
-    function DataTypeToText(const AType: TDataTYpe): string;
+    function DataTypeToText(const AType: TDataType): string;
     begin
       case AType of
         dtText: Result := cText;
@@ -1506,7 +1510,6 @@ begin
   end;
 end;
 
-
 procedure TMainFrm.LDAPTreeStartDrag(Sender: TObject; var DragObject: TDragObject);
 begin
   ScrollTimer.Enabled := True;
@@ -1516,8 +1519,6 @@ procedure TMainFrm.LDAPTreeEndDrag(Sender, Target: TObject; X, Y: Integer);
 begin
   ScrollTimer.Enabled := False;
 end;
-
-
 
 procedure TMainFrm.ScrollTimerTimer(Sender: TObject);
 begin
@@ -1617,7 +1618,7 @@ var
   i: Integer;
 begin
   with Sender.Canvas do
-  begin
+  try
     if odd(Item.Index) then Brush.Color:=$00f0f0f0;
     with TLdapAttributeData(Item.Data), Font do
     begin
@@ -1645,6 +1646,9 @@ begin
            end;
         end;
     end;
+  except
+  { Ignore errors. Any errors here would be non-critical and in case of an eror
+    we would have to exit the app or otherwise never come out of the exception loop.}
   end;
 end;
 

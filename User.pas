@@ -609,14 +609,14 @@ end;
 procedure TUserDlg.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 var
   uidnr: Integer;
-  newdn: string;
+  newdn, olddn: string;
 begin
   if ModalResult = mrOk then
   begin
     CheckSchema;
     if esNew in Entry.State then
     begin
-      Entry.Dn := 'uid=' + PosixAccount.Uid + ',' + ParentDn;
+      Entry.Dn := 'uid=' + EncodeLdapString(PosixAccount.Uid) + ',' + ParentDn;
       if InetOrgPerson.DisplayName <> '' then
         PosixAccount.Cn := InetOrgPerson.DisplayName
       else
@@ -634,11 +634,13 @@ begin
     if uid.Modified then
     begin
       { Handle username change }
-      newdn := 'uid=' + uid.Text + ',' + GetDirFromDn(ParentDn);
+      newdn := 'uid=' + EncodeLdapString(uid.Text) + ',' + GetDirFromDn(ParentDn);
       if newdn <> Entry.Dn then
       begin
-        Entry.Delete;
+        olddn := Entry.dn;
         Entry.Dn := newdn;
+        Entry.Write;
+        Connection.DeleteEntry(olddn);
       end;
     end;
     Entry.Write;

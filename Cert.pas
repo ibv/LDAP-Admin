@@ -252,7 +252,11 @@ begin
       begin
         if (PCERT_ALT_NAME_ENTRY(pNameInfo^.rgAltEntry)[i].dwAltNameChoice = CERT_ALT_NAME_DNS_NAME) then
         begin
+          {$IFDEF UNICODE}
+          DNSName := PCERT_ALT_NAME_ENTRY(pNameInfo^.rgAltEntry)[i].pwszDNSName;
+          {$ELSE}
           DNSName := WideCharToString(PCERT_ALT_NAME_ENTRY(pNameInfo^.rgAltEntry)[i].pwszDNSName);
+          {$ENDIF}
           if (CompareText(HostName, DNSName) = 0) then
           begin
             Result := true;
@@ -274,13 +278,13 @@ begin
   // No subjectAltName extension -- check commonName
 
   dwCommonNameLength := CertGetNameString(pCertContext, {CERT_NAME_ATTR_TYPE}3, 0,
-                                          PChar(szOID_COMMON_NAME), nil, 0);
+                                          PAnsiChar(szOID_COMMON_NAME), nil, 0);
   if (dwCommonNameLength <> 0) then
   begin
 
     SetLength(CommonName, dwCommonNameLength);
 
-    CertGetNameString(pCertContext, {CERT_NAME_ATTR_TYPE}3, 0, PChar(szOID_COMMON_NAME),
+    CertGetNameString(pCertContext, {CERT_NAME_ATTR_TYPE}3, 0, PAnsiChar(szOID_COMMON_NAME),
     {$IFDEF MSWINDOWS}
                        PChar(CommonName), dwCommonNameLength);
     {$ELSE}
@@ -314,8 +318,10 @@ end;
 
 function EnumSysCallback(pvSystemStore: Pointer; dwFlags: DWORD; pStoreInfo: PCERT_SYSTEM_STORE_INFO;
                          pvReserved: Pointer; pvArg: Pointer): BOOL; stdcall;
+{$IFNDEF UNICODE}
 var
   s: string;
+{$ENDIF}
 begin
   {$IFNDEF UNICODE}
    s := WideCharToString(pvSystemStore);

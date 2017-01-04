@@ -1530,6 +1530,7 @@ begin
       Rewrite(LogFile);
     try
         WriteLn(LogFile, st);
+        writeln(LogFile,'========>');
     finally
       CloseFile(LogFile);
     end;

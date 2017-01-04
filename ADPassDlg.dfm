@@ -11,7 +11,7 @@ object ADPassDlg: TADPassDlg
   OnCloseQuery = FormCloseQuery
   ParentFont = True
   Position = poScreenCenter
-  LCLVersion = '1.6.0.4'
+  LCLVersion = '1.6.2.0'
   object Label1: TLabel
     Left = 24
     Height = 15

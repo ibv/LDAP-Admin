@@ -46,6 +46,7 @@ type
     Label2: TLabel;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
+    fEntry: TLdapEntry;
     fLdapPath: WideString;
     fUsername: wideString;
     fPassword: WideString;
@@ -59,36 +60,63 @@ var
 implementation
 
 {$R *.dfm}
+{.$DEFINE USE_ADSIE}
 
-uses {$IFnDEF FPC}ActiveDs_TLB,{$endif} adsie, Constant;
+uses
+{$IFDEF USE_ADSIE}
+  ActiveDs_TLB, adsie,
+{$ELSE}
+  {$IFnDEF FPC}
+  AdObjects,
+  {$ENDIF}
+{$ENDIF}
+  Constant {$IFNDEF UNICODE}, Misc{$ENDIF};
 
 constructor TADPassDlg.Create(AOwner: TComponent; Entry: TLdapEntry);
 begin
   inherited Create(AOwner);
+  fEntry := Entry;
+  {$IFDEF USE_ADSIE}
   with Entry.Session do
   begin
     fLdapPath := 'LDAP://' + Server + '/' + Entry.dn;
     fUserName := User;
     fPassword := Password;
   end;
+  {$ENDIF}
 end;
 
 procedure TADPassDlg.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-///var
-///  User: IADSUser;
+{$IFDEF USE_ADSIE}
+var
+  User: IADSUser;
 begin
   if (ModalResult = mrOk) then
   begin
     if Password.Text <> Password2.Text then
       raise Exception.Create(stPassDiff);
     try
-      ///ADOpenObject(fLdapPath, fUserName, fPassword, IID_IADsUser, User);
-      ///User.setpassword(Password.Text);
+      ADOpenObject(fLdapPath, fUserName, fPassword, IID_IADsUser, User);
+      User.setpassword(Password.Text);
     finally
-      ///User := nil;
+      User := nil;
     end;
   end;
 end;
+{$ELSE}
+var
+  Pwd: Widestring;
+  val: TLdapAttributeData;
+begin
+  if (ModalResult = mrOk) then
+  begin
+    if Password.Text <> Password2.Text then
+      raise Exception.Create(stPassDiff);
+    ///fEntry.SetPassword(Password.Text);
+    ///fEntry.Write;
+  end;
+end;
+{$ENDIF}
 
 end.
 

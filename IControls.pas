@@ -82,17 +82,17 @@ type
   TComboBoxEx = class(TComboBox)
   private
     fOnCloseUp: TNotifyEvent;
-    fAutoComplete: Boolean;
-    fCanComplete: Boolean;
+    {fAutoComplete: Boolean;
+    fCanComplete: Boolean;}
     procedure CNCommand(var Message: TWMCommand); message CN_COMMAND;
-    procedure SetAutoComplete(Value: Boolean);
+    //procedure SetAutoComplete(Value: Boolean);
   protected
-    procedure Change; override;
-    procedure KeyDown(var Key: Word; Shift: TShiftState); override;
+    {procedure Change; override;
+    procedure KeyDown(var Key: Word; Shift: TShiftState); override;}
   public
     constructor Create(AOwner: TComponent); override;
     property OnCloseUp: TNotifyEvent read fOnCloseup write fOnCloseUp;
-    property AutoComplete: Boolean read fAutoComplete write SetAutoComplete;
+    //property AutoComplete: Boolean read fAutoComplete write SetAutoComplete;
   end;
 
   TInplaceComboBox = class(TInplaceAttribute)
@@ -285,7 +285,7 @@ begin
     fOnCloseUp(Self);
 end;
 
-procedure TComboBoxEx.SetAutoComplete(Value: Boolean);
+{procedure TComboBoxEx.SetAutoComplete(Value: Boolean);
 begin
   fAutoComplete := Value;
   fCanComplete := Value;
@@ -319,7 +319,7 @@ begin
   inherited;
   if Key in [VK_LEFT, VK_RIGHT, VK_DELETE, VK_BACK] then
     fCanComplete := false;
-end;
+end;}
 
 constructor TComboBoxEx.Create(AOwner: TComponent);
 begin
