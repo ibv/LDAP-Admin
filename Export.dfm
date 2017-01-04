@@ -13,7 +13,7 @@ object ExportDlg: TExportDlg
   OnShow = FormShow
   ParentFont = True
   Position = poOwnerFormCenter
-  LCLVersion = '1.6.0.4'
+  LCLVersion = '1.6.2.0'
   object Bevel1: TBevel
     Left = 8
     Height = 161
@@ -49,12 +49,11 @@ object ExportDlg: TExportDlg
     Width = 465
     PageIndex = 0
     TabOrder = 2
-    TabStop = True
     object page1: TPage
       object Label1: TLabel
         Left = 8
         Height = 15
-        Top = 24
+        Top = 16
         Width = 61
         Caption = '&Filename:'
         FocusControl = edFileName
@@ -63,7 +62,7 @@ object ExportDlg: TExportDlg
       object BrowseBtn: TSpeedButton
         Left = 427
         Height = 23
-        Top = 39
+        Top = 31
         Width = 24
         Flat = True
         Glyph.Data = {
@@ -93,7 +92,7 @@ object ExportDlg: TExportDlg
       object Label4: TLabel
         Left = 8
         Height = 13
-        Top = 80
+        Top = 72
         Width = 49
         Caption = 'Export: '
         Font.Color = clWindowText
@@ -106,9 +105,9 @@ object ExportDlg: TExportDlg
         ShowHint = True
       end
       object Label6: TLabel
-        Left = 247
+        Left = 246
         Height = 15
-        Top = 105
+        Top = 107
         Width = 62
         Alignment = taRightJustify
         Caption = 'Encoding:'
@@ -117,7 +116,7 @@ object ExportDlg: TExportDlg
       object edFileName: TEdit
         Left = 8
         Height = 21
-        Top = 40
+        Top = 31
         Width = 417
         OnChange = edFileNameChange
         TabOrder = 0
@@ -125,7 +124,7 @@ object ExportDlg: TExportDlg
       object SubDirsCbk: TCheckBox
         Left = 8
         Height = 26
-        Top = 102
+        Top = 96
         Width = 167
         Caption = '&Include subdirectories'
         Checked = True
@@ -136,7 +135,7 @@ object ExportDlg: TExportDlg
       object cbEncoding: TComboBox
         Left = 311
         Height = 23
-        Top = 102
+        Top = 104
         Width = 114
         ItemHeight = 0
         ItemIndex = 1
@@ -148,13 +147,21 @@ object ExportDlg: TExportDlg
         )
         OnChange = cbEncodingChange
         Style = csDropDownList
-        TabOrder = 2
+        TabOrder = 3
         Text = 'UTF-8'
+      end
+      object cbGenerateComments: TCheckBox
+        Left = 8
+        Height = 26
+        Top = 119
+        Width = 161
+        Caption = 'Generate comments'
+        TabOrder = 2
       end
     end
     object page2: TPage
       object Label2: TLabel
-        Left = 8
+        Left = 7
         Height = 15
         Top = 56
         Width = 60
@@ -180,7 +187,7 @@ object ExportDlg: TExportDlg
         ParentColor = False
       end
       object Label5: TLabel
-        Left = 4
+        Left = 7
         Height = 15
         Top = 16
         Width = 64
