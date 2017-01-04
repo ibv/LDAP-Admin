@@ -1,3 +1,35 @@
+* Wed Jan 4 2017 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Fixed export form
++ Fixed function  IsText, Attribute.fDataType
++ Adapt changes from win version 1.7.2.0
+
+
+* Sat Sep 6 2016 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Convert *.pas file LF to CRLF
+
+
+* Fri Sep 5 2016 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Fixed drawing templates
+
+
+* Tue Jul 26 2016 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Adapt changes from Tihomir's SourceForge git
+
+
+* Thu Jul 21 2016 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Fixed display the contents lang files
+
+
+* Wed Jul 20 2016  Ivo <ivo.brhel at gmail.com>
+---------------------
++ Fixed BinView 2-byte chars
+
+
 * Fri Jul 15 2016 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Fixed Drag&Drop in LdapTree
