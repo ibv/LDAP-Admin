@@ -1,3 +1,8 @@
+* Thu Jan 5 2017 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Fixed binary attribute
+
+
 * Wed Jan 4 2017 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Fixed export form

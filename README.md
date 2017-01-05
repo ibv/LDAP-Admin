@@ -16,10 +16,9 @@ Stable functions:
  * LDIF export and import
  * Password management (supports crypt, md5, sha, sha-crypt, samba)
  * Template support
+ * Binary attribute support
  
 Untested functions: 
- 
- * Binary attribute support
  * Management of Posix Groups and Accounts
  * Management of Samba Accounts
  * Postfix MTA Support

@@ -710,12 +710,7 @@ begin
 
           data:=TLdapAttributeData.Create(Attr);
 
-          if plmEntry.Attributes[i].IsBinary then
-             data:=@pszdn[1]
-          else
-             data.AsString:=trim(pszdn);
-
-          Attr.AddValue(data.Data,data.DataSize);
+          Attr.AddValue(PAnsiChar(pszdn),length(pszdn));
 
         end;
 
@@ -1541,15 +1536,38 @@ var
   end;
   {$ENDIF}
 
+
+  function IsText2(p:  PAnsiChar; size:integer): boolean;
+  const
+    SafeChar:     set of AnsiChar = [#$00..#09, #$0B..#$0C, #$0E..#$1f];
+  var
+    EndBuf: PAnsiChar;
+  begin
+    Result := true;
+    EndBuf := p + Size;
+    while (p <> EndBuf) do
+    begin
+      if (p^ in SafeChar) then
+      begin
+        Result := false;
+        break;
+      end;
+      Inc(p);
+    end;
+  end;
+
   function IsText(p:  PAnsiChar; size:integer): boolean;
   begin
-    result := FindInvalidUTF8Character(p, size,true) = -1;
+    if not IsText2(p,size) then
+      result:=false
+    else
+      result := FindInvalidUTF8Character(p, size,true) = -1;
   end;
 
 begin
   if (Attribute.fDataType = dtUnknown) and (DataSize > 0) then
   begin
-    if (LengthAsStr(Data, DataSize) >= DataSize)   then
+    //if (LengthAsStr(Data, DataSize) >= DataSize) then
     {$IFDEF WINDOWS}
     //if (LengthAsStr(Data, DataSize) >= DataSize) and
       if (MultiByteToWideChar( CP_UTF8, 8{MB_ERR_INVALID_CHARS}, PAnsiChar(Data), DataSize, nil, 0) <> 0) then
@@ -1557,7 +1575,8 @@ begin
     {$ELSE}
        if IsText(PChar(Data),DataSize) then Attribute.fDataType := dtText
     {$ENDIF}
-    else begin
+    else
+    begin
       w := PWord(Data)^;
       if w = $8230 then   // DER Sequence '30 82'
         Attribute.fDataType := dtCert
