@@ -136,7 +136,7 @@ uses
 {$ELSE}
   LCLIntf, LCLType, RtlConsts,
 {$ENDIF}
-  Constant, Consts, ComStrs, SysConst, ComConst,
+  Constant, {Consts, ComStrs, SysConst, ComConst,}
   TypInfo, Config, SysUtils,
   Dialogs, Graphics,
   ComCtrls, ExtCtrls, StdCtrls, Math, Misc{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
@@ -2061,6 +2061,66 @@ SysConst_SUnkWin32Error}
   fStringTable[$10000 - PResStringRec(@Constant.cAddDelReplace).Identifier]  := 548;
   fStringTable[$10000 - PResStringRec(@Constant.cEMail).Identifier]  := 549;
   fStringTable[$10000 - PResStringRec(@Constant.stAllFilesFilter).Identifier]  := 550;
+  {v 1.8}
+    fStringTable[$10000 - PResStringRec(@Constant.cCreateFolder).Identifier] := 551;
+    fStringTable[$10000 - PResStringRec(@Constant.cCopySelection).Identifier] := 552;
+    fStringTable[$10000 - PResStringRec(@Constant.cFolderName).Identifier] := 553;
+    fStringTable[$10000 - PResStringRec(@Constant.mcAdContainer).Identifier] := 554;
+    fStringTable[$10000 - PResStringRec(@Constant.stDeleteFolder).Identifier] := 555;
+    fStringTable[$10000 - PResStringRec(@Constant.stChangePwdGetErr).Identifier] := 556;
+    fStringTable[$10000 - PResStringRec(@Constant.stChangePwdSetErr).Identifier] := 557;
+    fStringTable[$10000 - PResStringRec(@Constant.stExportSelect).Identifier] := 558;
+    fStringTable[$10000 - PResStringRec(@Constant.stExportAccounts).Identifier] := 559;
+    fStringTable[$10000 - PResStringRec(@Constant.stDeleteSelected).Identifier] := 560;
+    fStringTable[$10000 - PResStringRec(@Constant.stImportTo).Identifier] := 561;
+    fStringTable[$10000 - PResStringRec(@Constant.stImportSelect).Identifier] := 562;
+    fStringTable[$10000 - PResStringRec(@Constant.stImportAccounts).Identifier] := 563;
+    fStringTable[$10000 - PResStringRec(@Constant.stFolderNotEmpty).Identifier] := 564;
+    fStringTable[$10000 - PResStringRec(@Constant.stPwdNoEncryption).Identifier] := 565;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stSmartcardRequired).Identifier] := 566;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stMnsLogonAccount).Identifier] := 567;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stDontExpirePassword).Identifier] := 568;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stServerTrustAccount).Identifier] := 569;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stWorkstationTrustAccount).Identifier] := 570;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stInterdomainTrustAccount).Identifier] := 571;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stNormalAccount).Identifier] := 572;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stTempDuplicateAccount).Identifier] := 573;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stEncryptedTextPwdAllowed).Identifier] := 574;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stPasswdCantChange).Identifier] := 575;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stPasswdNotreqd).Identifier] := 576;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stLockout).Identifier] := 577;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stHomedirRequired).Identifier] := 578;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stAccountdisable).Identifier] := 579;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stScript).Identifier] := 580;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stDelPrimaryGroup).Identifier] := 581;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stWkstOrServer).Identifier] := 582;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stDomainController).Identifier] := 583;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stPartialSecretsAccount).Identifier] := 584;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stTrustedToAuthFor).Identifier] := 585;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stPasswordExpired).Identifier] := 586;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stDontReqPreauth).Identifier] := 587;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stUseDesKeyOnly).Identifier] := 588;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stNotDelegated).Identifier] := 589;
+    fStringTable[$10000 - PResStringRec(@ADObjects.stTrustedForDelegation).Identifier] := 590;
+    fStringTable[$10000 - PResStringRec(@Constant.stInvalidChar).Identifier] := 591;
+    fStringTable[$10000 - PResStringRec(@Constant.stInvalidChars).Identifier] := 592;
+    fStringTable[$10000 - PResStringRec(@Constant.stPwdNotEncrypted).Identifier] := 593;
+    fStringTable[$10000 - PResStringRec(@Constant.stPwdInclude).Identifier] := 594;
+    fStringTable[$10000 - PResStringRec(@Constant.stImgInvalidForm).Identifier] := 595;
+    fStringTable[$10000 - PResStringRec(@RTLConsts.SMissingDateTimeField).Identifier] := 596;
+    fStringTable[$10000 - PResStringRec(@Constant.cMerge).Identifier] := 597;
+    fStringTable[$10000 - PResStringRec(@Constant.cRename).Identifier] := 598;
+    fStringTable[$10000 - PResStringRec(@Constant.cOverwrite).Identifier] := 599;
+    fStringTable[$10000 - PResStringRec(@Constant.stAutodetectDT).Identifier] := 600;
+    fStringTable[$10000 - PResStringRec(@Constant.stDoNotShowAgain).Identifier] := 601;
+    fStringTable[$10000 - PResStringRec(@Constant.stFolderMerge).Identifier] := 602;
+    fStringTable[$10000 - PResStringRec(@Constant.stFolderExists).Identifier] := 603;
+    fStringTable[$10000 - PResStringRec(@Constant.stInvalidSid).Identifier] := 604;
+    fStringTable[$10000 - PResStringRec(@Constant.stMutuallyExclusive).Identifier] := 605;
+    fStringTable[$10000 - PResStringRec(@Constant.stRepeatCopyAction).Identifier] := 606;
+    fStringTable[$10000 - PResStringRec(@Constant.stOverwriteOrRename).Identifier] := 607;
+    fStringTable[$10000 - PResStringRec(@Constant.stUpnIncomplete).Identifier] := 608;
+    fStringTable[$10000 - PResStringRec(@Constant.stUnclosedReference).Identifier] := 609;
   {$ENDIF VER260}
   *)
 end;
