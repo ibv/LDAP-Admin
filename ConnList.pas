@@ -233,6 +233,7 @@ end;
 procedure TConnListFrm.AccountsViewDblClick(Sender: TObject);
 begin
   if AccountsView.Selected=nil then exit;
+  AccountsView.ReadOnly:=true;
   if AccountsView.Selected.Data=nil then ActNewAccountExecute(Self)
   else ModalResult := mrOk;
 end;
