@@ -1,3 +1,8 @@
+* Wed Feb 8 2017 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Fixed doubleclik error on ConnList Form, ConnListFrm: Can not focus
+
+
 * Thu Jan 5 2017 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Fixed binary attribute
