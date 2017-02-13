@@ -78,7 +78,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure AdjustHeight;
-    procedure AdjustControls;
+    procedure AdjustControlSizes;
     procedure RefreshData;
     property LdapEntry: TLdapEntry read fEntry write SetEntry;
     property Attributes: TTemplateAttributeList read fAttributes;
@@ -451,8 +451,9 @@ begin
     HandleElements(fPanel.Elements);
     HandleDataControls;
 
-    fPanel.ArrangeControls;
-    AdjustControls;
+    if fTemplate.AutoArrangeControls then
+      fPanel.ArrangeControls;
+    AdjustControlSizes;
 
     if not Active then InstallHandlers;
     (*
@@ -500,7 +501,7 @@ end;
 procedure TTemplatePanel.Resize;
 begin
   inherited;
-  AdjustControls;
+  ///AdjustControlSizes;
 end;
 
 constructor TTemplatePanel.Create(AOwner: TComponent);
@@ -539,15 +540,13 @@ begin
     Self.ClientHeight := Top + Height + fSpacing;
 end;
 
-procedure TTemplatePanel.AdjustControls;
+procedure TTemplatePanel.AdjustControlSizes;
 begin
-  if fPanel=nil then exit;
-  try
+  if fTemplate.AutoSizeControls then
+  begin
     ///fPanel.Control.Width := ClientWidth;
     fPanel.Control.Width := 550;
-     //fPanel.Control.Width := 450;
     fPanel.AdjustSizes;
-  except
   end;
 end;
 
@@ -766,7 +765,6 @@ procedure TTemplateBox.Insert(ATemplate: TTemplate; Index: Integer);
 var
   TemplatePanel: TTemplatePanel;
 begin
-  //TODO
   TemplatePanel := TTemplatePanel.Create(Self);
   TemplatePanel.Template := ATemplate;
   fTemplateList.Insert(Index, ATemplate);

@@ -29,12 +29,12 @@ interface
 
 uses
 {$IFnDEF FPC}
-  Windows,
+  Windows, Validator,
 {$ELSE}
   LCLIntf, LCLType,
 {$ENDIF}
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-     Buttons, ExtCtrls, Config, ComCtrls, LDAPClasses;
+  Messages, Buttons, ExtCtrls, Config, ComCtrls, LDAPClasses,Constant, Connection;
 
 type
   TConnPropDlg = class(TForm)
@@ -90,6 +90,9 @@ type
     cbSSL: TCheckBox;
     cbSASL: TCheckBox;
     cbTLS: TCheckBox;
+    GroupBox3: TGroupBox;
+    Label9: TLabel;
+    cbDirectoryType: TComboBox;
     procedure     MethodChange(Sender: TObject);
     procedure     cbAnonymousClick(Sender: TObject);
     procedure     FetchDnBtnClick(Sender: TObject);
@@ -102,12 +105,23 @@ type
     procedure     btnAddClick(Sender: TObject);
     procedure     btnRemoveClick(Sender: TObject);
     procedure     cbSSLClick(Sender: TObject);
-    procedure cbSASLClick(Sender: TObject);
-    procedure cbTLSClick(Sender: TObject);
+    procedure     cbSASLClick(Sender: TObject);
+    procedure     cbTLSClick(Sender: TObject);
+    procedure     FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure     cbDirectoryTypeChange(Sender: TObject);
+    procedure     WMWindowPosChanged(var AMessage: TMessage); message WM_WINDOWPOSCHANGED;
+    procedure     WMActivateApp(var AMessage: TMessage); message WM_ACTIVATE;
+    procedure     ActiveControlChanged(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     FUser:        string;
     FPass:        string;
     FPassEnable:  boolean;
+    FFolder:      TAccountFolder;
+    FEditMode:    TEditMode;
+    ///FNameValidator: TValidateInput;
+    ///FHostValidator: TValidateInput;
+    //FBase:        TEncodedDn; ???
     function      GetBase: string;
     procedure     SetBase(const Value: string);
     function      GetLdapVersion: integer;
@@ -145,10 +159,13 @@ type
     procedure     SetOperationalAttrs(const Value: string);
     procedure     SetConnectionName(const Value: string);
     procedure     SetPassEnable(const Value: boolean);
+    function      GetDirectoryType: TDirectoryType;
+    procedure     SetDirectoryType(Value: TDirectoryType);
+    function      CustomValidate(Control: TCustomEdit): Integer;
   protected
     procedure     DoShow; override;
   public
-    constructor   Create(AOwner: TComponent); override;
+    constructor   Create(AOwner: TComponent; AFolder: TAccountFolder; EditMode: TEditMode); reintroduce;
     property      Name: string read GetName write SetConnectionName;
     property      SSL: boolean read GetSSL write SetSSL;
     property      TLS: boolean read GetTLS write SetTLS;
@@ -168,6 +185,7 @@ type
     property      ChaseReferrals: Boolean read GetReferrals write SetReferrals;
     property      ReferralHops: Integer read GetReferralHops write SetReferralHops;
     property      OperationalAttrs: string read GetOperationalAttrs write SetOperationalAttrs;
+    property      DirectoryType: TDirectoryType read GetDirectoryType write SetDirectoryType;
   end;
 
 var
@@ -175,13 +193,34 @@ var
 
 implementation
 
-uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Constant, Dialogs;
+uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Math, Dialogs, Misc;
 
 {$R *.dfm}
 
-constructor TConnPropDlg.Create(AOwner: TComponent);
+procedure TConnPropDlg.WMActivateApp(var AMessage: TMessage);
+begin
+  ///FNameValidator.HideHint;
+  ///FHostValidator.HideHint;
+  inherited;
+end;
+procedure TConnPropDlg.WMWindowPosChanged(var AMessage: TMessage);
+begin
+  ///FNameValidator.HideHint;
+  ///FHostValidator.HideHint;
+  inherited;
+end;
+
+procedure TConnPropDlg.ActiveControlChanged(Sender: TObject);
+begin
+  ///FNameValidator.HideHint;
+  ///FHostValidator.HideHint;
+end;
+
+constructor TConnPropDlg.Create(AOwner: TComponent; AFolder: TAccountFolder; EditMode: TEditMode);
 begin
   inherited Create(AOwner);
+  FFolder := AFolder;
+  FEditMode := EditMode;
   Port               := LDAP_PORT;
   LdapVersion        := LDAP_VERSION3;
   TimeLimit          := SESS_TIMEOUT;
@@ -191,6 +230,14 @@ begin
   ChaseReferrals     := true;
   ReferralHops       := SESS_REFF_HOP_LIMIT;
   DereferenceAliases := LDAP_DEREF_NEVER;
+  DirectoryType      := dtAutodetect;
+  ///FNameValidator.Attach(NameEd);
+  ///FNameValidator.Caption := Label1.Caption;
+  ///FNameValidator.InvalidChars := '<>\';
+  ///FHostValidator.Attach(ServerEd);
+  ///FHostValidator.Caption := cHostName;
+  ///FHostValidator.CustomValidate := CustomValidate;
+  Screen.OnActiveControlChange := ActiveControlChanged;
 end;
 
 procedure TConnPropDlg.DoShow;
@@ -203,12 +250,12 @@ end;
 
 function TConnPropDlg.GetName: string;
 begin
-  result:=NameEd.Text;
+  result := Trim(NameEd.Text);
 end;
 
 procedure TConnPropDlg.SetConnectionName(const Value: string);
 begin
-  NameEd.Text:=Value;
+  NameEd.Text := Trim(Value);
 end;
 
 function TConnPropDlg.GetServer: string;
@@ -218,7 +265,7 @@ end;
 
 procedure TConnPropDlg.SetServer(const Value: string);
 begin
-  ServerEd.Text:=Value;
+  ServerEd.Text := Trim(Value);
 end;
 
 function TConnPropDlg.GetBase: string;
@@ -228,7 +275,7 @@ end;
 
 procedure TConnPropDlg.SetBase(const Value: string);
 begin
-  BaseEd.Text:=Value;
+  BaseEd.Text := Trim(Value);
 end;
 
 function TConnPropDlg.GetUser: string;
@@ -419,27 +466,45 @@ begin
   else begin
     cbSASL.Enabled := true;
     cbSSL.Enabled := false;
+    cbSSL.Checked := false;
     cbTLS.Enabled := false;
+    cbTLS.Checked := false;
     cbAnonymous.Caption := cSASLCurrUser;
   end;
 end;
 
 procedure TConnPropDlg.cbAnonymousClick(Sender: TObject);
 begin
-  UserEd.Enabled:=not cbAnonymous.Checked;
-  PasswordEd.Enabled:=not cbAnonymous.Checked;
-  Label4.Enabled:=not cbAnonymous.Checked;
-  Label5.Enabled:=not cbAnonymous.Checked;
+  UserEd.Enabled := not cbAnonymous.Checked;
+  PasswordEd.Enabled := not cbAnonymous.Checked;
+  Label4.Enabled := not cbAnonymous.Checked;
+  Label5.Enabled := not cbAnonymous.Checked;
 
   if cbAnonymous.Checked then begin
-    FUser:=UserEd.Text;
-    FPass:=PasswordEd.Text;
-    UserEd.Text:='';
-    PasswordEd.Text:='';
+    FUser := UserEd.Text;
+    FPass := PasswordEd.Text;
+    UserEd.Text := '';
+    PasswordEd.Text := '';
   end
   else begin
-    UserEd.Text:=FUser;
-    PasswordEd.Text:=FPass;
+    UserEd.Text := FUser;
+    PasswordEd.Text := FPass;
+  end;
+end;
+
+procedure TConnPropDlg.cbDirectoryTypeChange(Sender: TObject);
+var
+  r, w: Boolean;
+begin
+  if DirectoryType = dtAutodetect then
+    exit;
+  r := GlobalConfig.ReadBool(rWarnDTAutodetect, false);
+  if not r then
+  begin
+    w := false;
+    CheckedMessageDlg(stAutodetectDT, mtWarning, [mbOk], stDoNotShowAgain, w);
+    if w then
+      GlobalConfig.WriteBool(rWarnDTAutodetect, true);
   end;
 end;
 
@@ -450,14 +515,15 @@ var
   i,j: integer;
 
 begin
-  ASession:=TLDAPSession.Create;
-  AList:=TLdapEntryList.Create;
+  ASession := TLDAPSession.Create;
+  AList := TLdapEntryList.Create;
   BaseEd.Items.Clear;
-  Asession.Server:=ServerEd.Text;
-  Asession.SSL:=SSL;
-  ASession.AuthMethod:=AuthMethod;
-  ASession.Port:= Port;
-  ASession.Version:=LDAP_VERSION3;
+  Asession.Server := ServerEd.Text;
+  Asession.TLS := TLS;
+  Asession.SSL := SSL;
+  ASession.AuthMethod := AuthMethod;
+  ASession.Port := Port;
+  ASession.Version := LDAP_VERSION3;
   ASession.User := UserEd.Text;
   ASession.Password := PasswordEd.Text;
 
@@ -468,14 +534,14 @@ begin
       for j:=0 to AList[i].AttributesByName['namingContexts'].ValueCount-1 do
         BaseEd.Items.Add(AList[i].AttributesByName['namingContexts'].Values[j].AsString);
 
-    if BaseEd.Items.Count>0 then begin
-      BaseEd.Style:=csDropDown;
-      BaseEd.DroppedDown:=true;
-      if BaseEd.Text='' then BaseEd.ItemIndex:=0;
+    if BaseEd.Items.Count > 0 then begin
+      BaseEd.Style := csDropDown;
+      BaseEd.DroppedDown := true;
+      if BaseEd.Text = '' then
+        BaseEd.ItemIndex := 0;
     end
     else BaseEd.Style:=csSimple;
 
-    ///BaseEd.ItemIndex:=0;
     ASession.Disconnect;
   finally
     Asession.Free;
@@ -483,9 +549,25 @@ begin
   end;
 end;
 
+procedure TConnPropDlg.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if (ModalResult = mrOk) then
+  begin
+    if Name = '' then
+      raise Exception.Create(stAccntNameReq);
+    if (FEditMode = EM_ADD) and (FFolder.Items.AccountByName(Name) <> nil) then
+      raise Exception.CreateFmt(stAccntExist, [Name]);
+  end;
+end;
+
+procedure TConnPropDlg.FormDestroy(Sender: TObject);
+begin
+  Screen.OnActiveControlChange := nil;
+end;
+
 procedure TConnPropDlg.VersionComboChange(Sender: TObject);
 begin
-  FetchDnBtn.Enabled:=VersionCombo.Text='3';
+  FetchDnBtn.Enabled := VersionCombo.Text = '3';
 end;
 
 procedure TConnPropDlg.TestBtnClick(Sender: TObject);
@@ -513,13 +595,42 @@ begin
   end;
 end;
 
-
 procedure TConnPropDlg.SetPassEnable(const Value: boolean);
 begin
   FPassEnable := Value;
   PasswordEd.Visible:=Value;
-  if Value then Label5.Caption:= cPassword
-  else Label5.Caption:=stCantStorPass;
+  if Value then
+  begin
+    Label5.Font.Color := clWindowText;
+    Label5.Caption:= cPassword;
+  end
+  else begin
+    Label5.Font.Color := clGrayText;
+    Label5.Caption:=stCantStorPass;
+  end;
+end;
+
+function TConnPropDlg.GetDirectoryType: TDirectoryType;
+begin
+  case cbDirectoryType.ItemIndex of
+    0: Result := dtAutodetect;
+    1: Result := dtPosix;
+    2: Result := dtActiveDirectory;
+  else
+    Assert(false);
+  end;
+end;
+
+procedure TConnPropDlg.SetDirectoryType(Value: TDirectoryType);
+begin
+  with cbDirectoryType do
+  case Value of
+    dtAutodetect:      ItemIndex := 0;
+    dtPosix:           ItemIndex := 1;
+    dtActiveDirectory: ItemIndex := 2;
+  else
+    Assert(false);
+  end;
 end;
 
 procedure TConnPropDlg.cbxPagedSearchClick(Sender: TObject);
@@ -619,6 +730,33 @@ procedure TConnPropDlg.cbTLSClick(Sender: TObject);
 begin
   if TLS then
     cbSSL.Checked := false;
+end;
+
+function TConnPropDlg.CustomValidate(Control: TCustomEdit): Integer;
+var
+  i: Integer;
+  s, InvalidChars: string;
+begin
+  Result := 0;
+  s := Trim(Control.Text);
+  InvalidChars := '';
+  i := Length(s);
+  while i > 0 do begin
+    if not (s[i] in ['a'..'z', 'A'..'Z', '0'..'9', '-', '.']) then
+    begin
+      InvalidChars := InvalidChars + s[i];
+      Delete(s, i, 1);
+      if Result = 0 then
+        Result := i;
+    end;
+    dec(i);
+  end;
+  if Result <> 0 then
+  begin
+    Control.Text := s;
+    Control.SelStart := Result - 1;
+    ///FHostValidator.InvalidChars := InvalidChars;
+  end;
 end;
 
 end.

@@ -1,6 +1,6 @@
 object MainFrm: TMainFrm
   Left = 381
-  Height = 691
+  Height = 672
   Top = 166
   Width = 1057
   Caption = 'LDAP Admin'
@@ -17,7 +17,7 @@ object MainFrm: TMainFrm
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   Position = poDefault
-  LCLVersion = '1.6.0.4'
+  Visible = False
   object TreeSplitter: TSplitter
     Left = 257
     Height = 591
@@ -2872,6 +2872,7 @@ object MainFrm: TMainFrm
     object ActConnect: TAction
       Category = 'Start'
       Caption = 'Connect...'
+      Enabled = False
       Hint = 'Connect'
       ImageIndex = 10
       OnExecute = ActConnectExecute
@@ -2887,12 +2888,14 @@ object MainFrm: TMainFrm
     object ActExit: TAction
       Category = 'Start'
       Caption = '&Exit'
+      Enabled = False
       Hint = 'Exit'
       OnExecute = ActExitExecute
     end
     object ActSchema: TAction
       Category = 'Tools'
       Caption = 'Schema...'
+      Enabled = False
       Hint = 'Schema Viewer'
       ImageIndex = 27
       OnExecute = ActSchemaExecute
@@ -2926,6 +2929,7 @@ object MainFrm: TMainFrm
     object ActEditEntry: TAction
       Category = 'Edit'
       Caption = '&Edit Entry...'
+      Enabled = False
       Hint = 'Edit entry'
       ImageIndex = 14
       OnExecute = ActEditEntryExecute
@@ -2943,6 +2947,7 @@ object MainFrm: TMainFrm
     object ActDeleteEntry: TAction
       Category = 'Edit'
       Caption = '&Delete'
+      Enabled = False
       Hint = 'Delete entry'
       ImageIndex = 12
       OnExecute = ActDeleteEntryExecute
@@ -2950,6 +2955,7 @@ object MainFrm: TMainFrm
     object ActRefresh: TAction
       Category = 'Edit'
       Caption = '&Refresh'
+      Enabled = False
       Hint = 'Refresh'
       ImageIndex = 17
       OnExecute = ActRefreshExecute
@@ -2958,6 +2964,7 @@ object MainFrm: TMainFrm
     object ActSearch: TAction
       Category = 'Edit'
       Caption = 'Search...'
+      Enabled = False
       Hint = 'Search'
       ImageIndex = 20
       OnExecute = ActSearchExecute
@@ -2966,6 +2973,7 @@ object MainFrm: TMainFrm
     object ActProperties: TAction
       Category = 'Edit'
       Caption = '&Properties...'
+      Enabled = False
       Hint = 'Edit properties'
       ImageIndex = 16
       OnExecute = ActPropertiesExecute
@@ -3050,6 +3058,7 @@ object MainFrm: TMainFrm
     object ActModifySet: TAction
       Category = 'Edit'
       Caption = '&Modify set...'
+      Enabled = False
       Hint = 'Modify attribute values on multiple objects'
       ImageIndex = 38
       OnExecute = ActModifySetExecute
@@ -3080,6 +3089,7 @@ object MainFrm: TMainFrm
     object ActBookmark: TAction
       Category = 'Edit'
       Caption = 'Bookmarks...'
+      Enabled = False
       ImageIndex = 49
       OnExecute = ActBookmarkExecute
       ShortCut = 16450

@@ -1,3 +1,11 @@
+* Mon Feb 13 2017 <ivo.brhel at gmail.com>
+---------------------
++ Adapt changes from Tihomir's SourceForge git, win version 1.7.2.0
++ New storage type 
++ Fixed template changes
++ Fixed ConnList dialog
+
+
 * Wed Feb 8 2017 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Fixed doubleclik error on ConnList Form, ConnListFrm: Can not focus

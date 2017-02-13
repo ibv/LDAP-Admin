@@ -127,11 +127,9 @@ end;
 
 procedure TCopyDlg.cbConnectionsCloseUp(var Index: integer; var CanCloseUp: boolean);
 begin
-  if cbConnections.Items.Objects[Index] is TConfigStorage then
-  begin
-    Beep;
+  with cbConnections.Items do
+  if (Objects[Index] is TConfigStorage) or (Objects[Index] is TAccountFolder) then
     CanCloseUp := false;
-  end;
 end;
 
 function TCopyDlg.GetTgtDn: string;
@@ -161,6 +159,33 @@ constructor TCopyDlg.Create(AOwner: TComponent;
 var
   v, tgt: string;
   i,j: integer;
+
+  procedure DoAddFolder(AFolder: TAccountFolder);
+  var
+    i: Integer;
+  begin
+    with cbConnections.Items, AFolder.Items do begin
+      AddObject(AFolder.Name, AFolder);
+      for i := 0 to Accounts.Count - 1 do
+        AddObject(Accounts[i].Name, Accounts[i]);
+      for i := 0 to Folders.Count - 1 do
+        DoAddFolder(Folders[i]);
+    end;
+  end;
+
+  function GetActiveIndex(Account: TAccount): Integer;
+  begin
+    with cbConnections.Items do
+    begin
+      Result := Count - 1;
+      while Result > 0 do begin
+        if Account = Objects[Result] then
+          break;
+        dec(Result);
+      end;
+    end;
+  end;
+
 begin
   inherited Create(AOwner);
   TSizeGrip.Create(Panel1);
@@ -181,11 +206,15 @@ begin
     OnDrawItem := cbConnectionsDrawItem;
     OnCanCloseUp := cbConnectionsCloseUp;
   end;
-  for i:=0 to GlobalConfig.StoragesCount-1 do
+
+  with GlobalConfig do
+  for i := 0 to Storages.Count - 1 do with Storages[i] do
   begin
-    cbConnections.Items.AddObject(GlobalConfig.Storages[i].Name, GlobalConfig.Storages[i]);
-    for j:=0 to GlobalConfig.Storages[i].AccountsCount-1 do
-      cbConnections.Items.AddObject(GlobalConfig.Storages[i].Accounts[j].Name, GlobalConfig.Storages[i].Accounts[j]);
+    cbConnections.Items.AddObject(Name, Storages[i]);
+    for j := 0 to RootFolder.Items.Accounts.Count -1 do
+      cbConnections.Items.AddObject(RootFolder.Items.Accounts[j].Name, RootFolder.Items.Accounts[j]);
+    for j := 0 to RootFolder.Items.Folders.Count - 1 do
+      DoAddFolder(RootFolder.Items.Folders[j]);
   end;
 
   for i := 0 to MainFrm.ConnectionCount - 1 do
@@ -194,10 +223,10 @@ begin
 
   SplitRdn(GetRdnFromDn(dn), RdnAttribute, v);
   edName.Text := v;
-  MainConnectionIdx := cbConnections.Items.IndexOf(Connection.Account.Name);
+
+  MainConnectionIdx := GetActiveIndex(Connection.Account);
   if MainConnectionIdx = -1 then
   begin
-    //raise Exception.Create(stNoActiveConn);
     MainConnectionIdx := 0;
     cbConnections.Items.Insert(0, cCurrentConn);
   end;
@@ -239,27 +268,44 @@ begin
     with Connection do
     try
       Screen.Cursor := crHourGlass;
-      Server   := Account.Server;
-      Base     := Account.Base;
-      User     := Account.User;
-      Password := Account.Password;
-      SSL      := Account.SSL;
-      Port     := Account.Port;
-      Version  := Account.ldapVersion;
+      Server             := Account.Server;
+      Base               := Account.Base;
+      User               := Account.User;
+      Password           := Account.Password;
+      SSL                := Account.SSL;
+      TLS                := Account.TLS;
+      Port               := Account.Port;
+      Version            := Account.LdapVersion;
+      TimeLimit          := Account.TimeLimit;
+      SizeLimit          := Account.SizeLimit;
+      PagedSearch        := Account.PagedSearch;
+      PageSize           := Account.PageSize;
+      DereferenceAliases := Account.DereferenceAliases;
+      ChaseReferrals     := Account.ChaseReferrals;
+      ReferralHops       := Account.ReferralHops;
+      OperationalAttrs   := Account.OperationalAttrs;
+      AuthMethod         := Account.AuthMethod;
       Connect;
       cbConnections.Items.Objects[cbConnections.ItemIndex] := Connection;
-    finally
+    except
       Screen.Cursor := crDefault;
+      Connection.Free;
+      raise;
     end;
   end;
-  ddRoot := TreeView.Items.Add(nil, Format('%s [%s]', [Connection.Base, Connection.Server]));
-  ddRoot.Data := TObjectInfo.Create(TLdapEntry.Create(Connection, Connection.Base));
+  Screen.Cursor := crHourGlass;
+  try
+    ddRoot := TreeView.Items.Add(nil, Format('%s [%s]', [Connection.Base, Connection.Server]));
+    ddRoot.Data := TObjectInfo.Create(TLdapEntry.Create(Connection, Connection.Base));
   fExpandNode(ddRoot, Connection, TreeView);
-  ddRoot.ImageIndex := bmRoot;
-  ddRoot.SelectedIndex := bmRoot;
+    ddRoot.ImageIndex := bmRoot;
+    ddRoot.SelectedIndex := bmRoot;
   ///TreeView.CustomSort(@fSortProc, 0);
   TreeView.CustomSort(MainFrm.TreeSortProc);
   ddRoot.Expand(false);
+  finally
+    Screen.Cursor := crDefault;
+  end;
 end;
 
 procedure TCopyDlg.FormDestroy(Sender: TObject);
@@ -300,30 +346,35 @@ procedure TCopyDlg.cbConnectionsDrawItem(Control: TWinControl;
   Index: Integer; Rect: TRect; State: TOwnerDrawState);
 var
   s: string;
-  ImageIndex: Integer;
+  ImageIndex, Indent: Integer;
+
+  function GetImageIndex(o: TObject): Integer;
+  begin
+    if o is TConfigStorage then
+    begin
+      if o is TRegistryConfigStorage then
+        Result := bmRegistry
+      else
+        Result := bmFileStorage;
+    end
+    else
+    if o is TAccountFolder then
+      Result := bmEntry
+    else
+      Result := bmHost;
+  end;
+
 begin
   with cbConnections do
   begin
-    {
-    Canvas.FillRect(rect);
-    if Items.Objects[Index] is TConfigStorage then
-    begin
-      if Index = 0 then
-        ImageIndex := 32
-      else
-        ImageIndex := 33;
-    end
+    if Items.Objects[Index] is TConnection then
+      Indent := GetIndent(TConnection(Items.Objects[Index]).Account)
     else
-    begin
-      ImageIndex := bmHost;
-      Rect.Left:=Rect.Left+20;
-    end;
-    Rect.Top:=Rect.Top+1;
-    Rect.Bottom:=Rect.Bottom-1;
-    Rect.Left:=rect.Left+2;
+      Indent := GetIndent(Items.Objects[Index]);
+    Inc(Rect.Left, Indent);
+    ImageIndex := GetImageIndex(Items.Objects[Index]);
     TreeView.Images.Draw(Canvas, Rect.Left, Rect.Top, ImageIndex);
     Rect.Left := Rect.Left + 20;
-    }
     s := Items[Index];
     DrawText(Canvas.Handle, PChar(s), Length(s), Rect, DT_SINGLELINE or DT_VCENTER or DT_NOPREFIX);
   end;

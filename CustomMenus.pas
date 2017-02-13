@@ -52,6 +52,10 @@ const
   aidLocality          = 11;
   aidGroupOfUN         = 12;
   aidAlias             = 13;
+  aidAdUser            = 14;
+  aidAdGroup           = 15;
+  aidAdComputer        = 16;
+  aidAdContainer       = 17;
 
 type
   TCustomMenuItem = class;
@@ -169,7 +173,7 @@ const
                         Shift: [ssCtrl]);
 
 
-  ActionIdToImage: array[aidSeparatorItem..aidAlias] of Integer = (
+  ActionIdToImage: array[aidSeparatorItem..aidAdContainer] of Integer = (
                     -1,
                     -1,
                     -1,
@@ -183,9 +187,13 @@ const
                     bmHost,
                     bmLocality,
                     bmGrOfUnqNames,
-                    bmAlias);
+                    bmAlias,
+                    bmAdUser,
+                    bmAdGroup,
+                    bmAdComputer,
+                    bmAdContainer);
 
-  ActionIdToObject: array[aidUser..aidAlias] of Integer = (
+  ActionIdToObject: array[aidUser..aidAdContainer] of Integer = (
                     oidSambaUser,
                     oidComputer,
                     oidGroup,
@@ -195,7 +203,11 @@ const
                     oidHost,
                     oidLocality,
                     oidGroupOfUN,
-                    oidAlias);
+                    oidAlias,
+                    oidAdUser,
+                    oidAdGroup,
+                    oidAdComputer,
+                    oidAdContainer);
 
   ObjectIdToAction: array[oidEntry..oidADConfiguration] of Integer = (
                     aidNone,
@@ -215,10 +227,10 @@ const
                     aidNone,
                     aidNone,
                     aidNone,
-                    aidUser,
-                    aidNone,
-                    aidNone,
-                    aidNone,
+                    aidAdUser,
+                    aidAdComputer,
+                    aidAdContainer,
+                    aidAdGroup,
                     aidNone,
                     aidNone,
                     aidNone,
@@ -663,10 +675,13 @@ begin
   inherited Create(Config);
   if Load then exit;
   AddMenuItem(mcEntry, aidEntry);
+  AddMenuItem(mcUser, aidAdUser, @scCtrlU);
+  AddMenuItem(mcGroup, aidAdGroup, @scCtrlG);
+  AddMenuItem(mcComputer, aidAdComputer, @scCtrlW);
   AddMenuItem(mcOU, aidOu, @scCtrlO);
   AddMenuItem(mcHost, aidHost);
   AddMenuItem(mcLocality, aidLocality);
-  AddMenuItem(mcUser, aidUser, @scCtrlU);
+  AddMenuItem(mcAdContainer, aidAdContainer);
 end;
 
 end.

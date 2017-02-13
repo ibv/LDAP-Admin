@@ -1,5 +1,5 @@
   {      LDAPAdmin - uAccountCopyDlg.pas
-  *      Copyright (C) 2005 Alexander Sokoloff
+  *      Copyright (C) 2005-2016 Alexander Sokoloff
   *
   *      Author: Alexander Sokoloff
   *
@@ -17,6 +17,8 @@
   * You should have received a copy of the GNU General Public License
   * along with this program; if not, write to the Free Software
   * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+  *
+  *      Added support for account folders - 16.11.2016, T.Karlovic
   }
 
 unit uAccountCopyDlg;
@@ -42,23 +44,21 @@ type
     NameEd:     TEdit;
     Label2:     TLabel;
     StorageCbx: TComboBox;
-    OkBtn:      TBitBtn;
-    CancelBtn:  TBitBtn;
     Images:     TImageList;
+    OkBtn: TButton;
+    CancelBtn: TButton;
     procedure   StorageCbxDrawItem(Control: TWinControl; Index: Integer; Rect: TRect; State: TOwnerDrawState);
     procedure OkBtnClick(Sender: TObject);
   private
-    function    GetStorage: TConfigStorage;
-    procedure   SetStorage(const Value: TConfigStorage);
-    function GetAccountName: string;
-    procedure SetAccountName(const Value: string);
+    function    GetTarget: TAccountFolder;
+    procedure   SetTarget(const Value: TAccountFolder);
+    function    GetAccountName: string;
+    procedure   SetAccountName(const Value: string);
   public
     constructor Create(AOwner: TComponent); override;
-    destructor  Destroy; override;
-    property    Storage: TConfigStorage read GetStorage write SetStorage;
+    property    TargetFolder: TAccountFolder read GetTarget write SetTarget;
     property    AccountName: string read GetAccountName write SetAccountName;
   end;
-
 
 implementation
 
@@ -70,18 +70,26 @@ uses Math, Constant;
 
 constructor TAccountCopyDlg.Create(AOwner: TComponent);
 var
-  i: integer;
-begin
-  inherited;
-  for i:=0 to GlobalConfig.StoragesCount-1 do begin
-    StorageCbx.Items.Add(GlobalConfig.Storages[i].Name);
+  i, j: integer;
+
+  procedure AddFolder(AFolder: TAccountFolder);
+  var
+    i: Integer;
+  begin
+    StorageCbx.Items.AddObject(AFolder.Name, AFolder);
+    for i := 0 to AFolder.Items.Folders.Count - 1 do
+      AddFolder(AFolder.Items.Folders[i]);
   end;
-end;
 
-destructor TAccountCopyDlg.Destroy;
 begin
-
   inherited;
+  with GlobalConfig do
+  for i := 0 to Storages.Count - 1 do with Storages[i] do
+  begin
+    StorageCbx.Items.AddObject(Name, Storages[i]);
+    for j := 0 to RootFolder.Items.Folders.Count - 1 do
+      AddFolder(RootFolder.Items.Folders[j]);
+  end;
 end;
 
 function TAccountCopyDlg.GetAccountName: string;
@@ -94,37 +102,53 @@ begin
   NameEd.Text:=Value;
 end;
 
-function TAccountCopyDlg.GetStorage: TConfigStorage;
+function TAccountCopyDlg.GetTarget: TAccountFolder;
 begin
-  if StorageCbx.ItemIndex=-1 then result:=nil
-  else result:=GlobalConfig.Storages[StorageCbx.ItemIndex];
+  if StorageCbx.ItemIndex = -1 then
+    Result:=nil
+  else
+    Result := ConfigGetFolder(StorageCbx.Items.Objects[StorageCbx.ItemIndex]);
 end;
 
-procedure TAccountCopyDlg.SetStorage(const Value: TConfigStorage);
+procedure TAccountCopyDlg.SetTarget(const Value: TAccountFolder);
 var
   i: integer;
 begin
-  for i:=0 to GlobalConfig.StoragesCount-1 do begin
-    if GlobalConfig.Storages[i]=Value then StorageCbx.ItemIndex:=i;
-  end;
+  for i := 0 to StorageCbx.Items.Count - 1 do
+    if ConfigGetFolder(StorageCbx.Items.Objects[i]) = Value then
+      StorageCbx.ItemIndex := i;
 end;
 
 procedure TAccountCopyDlg.StorageCbxDrawItem(Control: TWinControl; Index: Integer; Rect: TRect; State: TOwnerDrawState);
+var
+  idx: Integer;
+
+  function GetImageIndex: Integer;
+  begin
+    if Index = 0 then
+    begin
+      Result := 0;
+      exit;
+    end;
+    if StorageCbx.Items.Objects[Index] is TAccountFolder then
+      Result := 2
+    else
+      Result := 1;
+  end;
+
 begin
   StorageCbx.Canvas.FillRect(Rect);
-  Images.Draw(StorageCbx.Canvas, Rect.Left, Rect.Top, min(Index, 1));
-  Rect.Left:=Images.Width+6;
-  DrawText(StorageCbx.Canvas.Handle, pchar(GlobalConfig.Storages[Index].Name), -1, Rect, DT_SINGLELINE or DT_VCENTER or DT_NOPREFIX);
+  idx := GetImageIndex;
+  Rect.Left := Rect.Left + GetIndent(StorageCbx.Items.Objects[Index]);
+  Images.Draw(StorageCbx.Canvas, Rect.Left, Rect.Top, idx);
+  Rect.Left := Rect.Left + Images.Width + 6;
+  DrawText(StorageCbx.Canvas.Handle, PChar(StorageCbx.Items[Index]), -1, Rect, DT_SINGLELINE or DT_VCENTER or DT_NOPREFIX);
 end;
 
 procedure TAccountCopyDlg.OkBtnClick(Sender: TObject);
 begin
-  ModalResult:=mrNone;
-  if NameEd.Text='' then raise Exception.Create(stAccntNameReq);
-  if (Storage.AccountByName(NameEd.Text)<>nil) and
-    (Application.MessageBox(pchar(stAccntExist), pchar(application.Title), MB_ICONQUESTION or MB_YESNO)<>IDYes) then exit;
-
-  ModalResult:=mrOK;
+  if NameEd.Text = '' then raise
+    Exception.Create(stAccntNameReq);
 end;
 
 end.

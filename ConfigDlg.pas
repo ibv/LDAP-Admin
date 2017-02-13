@@ -133,11 +133,11 @@ begin
     OnDrawItem := cbStartupConnectionDrawItem;
     OnCanCloseUp := cbStartupConnectionCloseUp;
   end;
-  for i:=0 to GlobalConfig.StoragesCount-1 do with GlobalConfig.Storages[i] do
+  for i:=0 to GlobalConfig.Storages.Count-1 do with GlobalConfig.Storages[i] do
   begin
     cbStartupConnection.Items.AddObject(Name, GlobalConfig.Storages[i]);
-    for j:=0 to AccountsCount-1 do
-      cbStartupConnection.Items.AddObject(Accounts[j].Name, Accounts[j]);
+    for j:=0 to RootFolder.Items.Accounts.Count-1 do
+      cbStartupConnection.Items.AddObject(RootFolder.Items.Accounts[j].Name, RootFolder.Items.Accounts[j]);
   end;
   with GlobalConfig do begin
     LanguageList.Items.CommaText := ReadString(rLanguageDir);

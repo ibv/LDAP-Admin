@@ -42,6 +42,8 @@ const
   bmGroupSel           =  6;
   bmComputer           =  7;
   bmComputerSel        =  7;
+  bmAdComputer         =  7;
+  bmAdComputerSel      =  7;
   bmMailGroup          =  9;
   bmMailGroupSel       =  9;
   bmDelete             = 12;
@@ -69,6 +71,8 @@ const
   bmLockedSel          = 28;
   bmUnlocked           = 29;
   bmUnlockedSel        = 29;
+  bmRegistry           = 32;
+  bmFileStorage        = 33;
   bmGrOfUnqNames       = 35;
   bmGrOfUnqNamesSel    = 35;
   bmSambaGroup         = 39;
@@ -81,8 +85,8 @@ const
   bmAttributeSchemaSel = 41;
   bmConfiguration      = 42;
   bmConfigurationSel   = 42;
-  bmContainer          = 43;
-  bmContainerSel       = 43;
+  bmAdContainer        = 43;
+  bmAdContainerSel     = 43;
   bmAlias              = 44;
   bmAliasSel           = 44;
   bmTemplateEntry      = 45;
@@ -160,6 +164,16 @@ const
   rPostfixMailAddress = 'Postfix\MailAddress';
   rPostfixMaildrop    = 'Postfix\Maildrop';
   rQuickSearchFilter  = 'QuickSearchFilter';
+  rAdDisplayName      = 'Ad\DisplayName';
+  rAdCommonName       = 'Ad\CommonName';
+  rAdHomeDrive        = 'Ad\HomeDrive';
+  rAdHomeDirectory    = 'Ad\HomeDir';
+  rAdNTDomain         = 'Ad\NTDomain';
+  rAdNTLoginName      = 'Ad\NTLogonName';
+  rAdProfilePath      = 'Ad\ProfilePath';
+  rAdLoginScript      = 'Ad\Script';
+  rAdUPNDomain        = 'Ad\UPNDomain';
+  rAdUserPrincipalName= 'Ad\UserPrincipalName';
   rSambaDomainName    = 'Samba\DomainName';
   rSambaHomeDrive     = 'Samba\HomeDrive';
   rSambaHomeShare     = 'Samba\HomeShare';
@@ -182,6 +196,7 @@ const
   rSearchRegExCase    = 'Search\RegExCase';
   rSmartDelete        = 'SmartDelete';
   rStartupSession     = 'StartupSession';
+  rTabCache           = 'TabCache';
   rTemplateAutoload   = 'TemplateAutoload';
   rTemplateDir        = 'TemplateDir';
   rTemplateExtensions = 'TemplateExtensions';
@@ -189,9 +204,11 @@ const
   rTemplateFormWidth  = 'TemplateForm\Width';
   rTemplateProperties = 'TemplateProperites';
   rUseTemplateImages  = 'UseTemplateImages';
+  rWarnDTAutodetect   = 'WarnDTAuto';
 
 // Search filters
 
+  sADCOMPUTERS      = '(objectclass=computer)';
   sANYCLASS         = '(objectclass=*)';
   sSAMBAACCNT       = '(objectclass=sambaAccount)';
   sPOSIXACCNT       = '(objectclass=posixAccount)';
@@ -260,7 +277,10 @@ resourcestring
   cColumnNames      = 'Name,DN';
   cConfirm          = 'Confirmation';
   cCopying          = 'Copying...';
+  cCopySelection    = 'Copy selection to...';
   cCopyTo           = 'Copy %s to...';
+  //cCommonName       = 'Common name';
+  cCreateFolder     = 'Create folder';
   cCurrentConn      = 'Current connection';
   cDecimal          = 'Decimal:';
   cDelete           = '&Delete';
@@ -280,6 +300,7 @@ resourcestring
   cEnterRDN         = 'Enter rdn:';
   cError            = 'Error';
   cFinish           = '&Finish';
+  cFolderName       = 'Folder name:';
   cHex              = 'Hex:';
   cHomeDir          = 'Home Directory';
   cHostName         = 'Host Name:';
@@ -288,6 +309,8 @@ resourcestring
   cIpAddress        = 'IP Address';
   cLoadBatchFromFile= 'Load batch from file';
   cMaildrop         = 'Maildrop';
+  cMerge            = 'Merge';
+  cMidnight         = 'Midnight';
   cModifyOk         = 'Ok.';
   cModifySkipped    = 'Skipped.';
   cMore             = 'More...';
@@ -306,6 +329,7 @@ resourcestring
   cOk               = '&OK';
   cOldValue         = 'Old value';
   cOperation        = 'Operation:';
+  cOverwrite        = 'Overwrite';
   cParentDir        = 'Parent directory:';
   cPassword         = 'Password:';
   cPath             = 'Path: %s';
@@ -339,6 +363,8 @@ resourcestring
   cSurname          = 'Second name';
   cText             = 'Text';
   cUnknown          = 'Unknown';
+  {cUpnPrefix        = 'UPN-Prefix';
+  cUpnSuffix        = 'UPN-Suffix';}
   cUser             = 'User: %s';
   cUsername         = 'Username';
   cUserPrompt       = 'User Prompt';
@@ -361,20 +387,22 @@ resourcestring
   mcLocality          = '&Locality...';
   mcGroupOfUN         = 'Grou&p of unique names...';
   mcAlias             = 'Alias...';
+  mcAdContainer       = 'Container...';
 
 // Messages
 
   stConnectSuccess  = 'Connection is successful.';
   stAbortScript     = 'Do you want to abort the script?';
-  stAccntExist      = 'Account with this name already exists.' + #10#13 + 'Do you want to overwrite it?';
+  stAccntExist      = 'Account with name "%s" already exists!';
   stAccntNameReq    = 'You have to enter a name for this connection!';
   stAllFilesFilter  = 'All files (*.*)|*.*';
   stArgDecNum       = 'Argument must be a decimal number: %s!';
   stAssertDecNum    = 'Assertion value %s must be decimal number!';
   stAskTreeCopy     = 'Copy %s to %s?';
   stAskTreeMove     = 'Move %s to %s?';
+  stAutodetectDT    = 'Manually setting of this option is not recommended! Unless you are certain that there is a problem with autodetection it is recommended to let LdapAdmin detect the directory type.';
   stBinaryMatchDn   = 'Binary match on dn is not allowed!';
-  stCantStorPass    = 'This storage does not allow to keep the password';
+  stCantStorPass    = 'This storage can not store passwords';
   stCertConfirmConn = 'The server you are trying to connect to is using a certificate which could not be verified!'#10#13#10#13'%s'#10#13'Do you want to proceed?';
   stCertInvalidName = 'The name of the security certificate is invalid or does not match the server name!';
   stCertInvalidSig  = 'Signature check failed!';
@@ -383,6 +411,8 @@ resourcestring
   stCertOpenStoreErr= 'Error opening certificate system store %s: %s!';
   stCertSelfSigned  = 'The certificate is self-signed root certificate';
   stClassNotFound   = 'Class %s not found!';
+  stChangePwdSetErr = 'An attempt to set user change password priviledge failed: ';
+  stChangePwdGetErr = 'An attempt to retrieve user change password priviledge failed: ';
   stCntObjects      = '%d object(s) retrieved.';
   stCntSubentries   = '%d subentries';
   stConfirmDel      = 'Delete entry "%s"?';
@@ -391,7 +421,9 @@ resourcestring
   stConvErrSambaRid = 'Error converting sambaNextRid:';
   stDateFormat      = 'date format';
   stDeleteAll       = '"%s"'#10#13'This directory entry is not empty (it contains further leaves). Delete all recursively?';
+  stDeleteFolder    = 'Delete folder "%s"?';
   stDeleteMenuItem  = 'Delete this menu item?';
+  stDeleteSelected  = 'Delete selected?';
   stDeleteSubmenu   = 'Delete this submenu?';
   stDelNamingAttr   = 'Attribute %s is the naming value of this entry! Do you want to delete it?';
   stDirNotExists    = 'Directory does not exist: %s!';
@@ -408,26 +440,39 @@ resourcestring
   stExtConfirmAssoc = 'LDAPAdmin is currently not your default LDAP browser.'+#10+'Would you like to make it your default LDAP browser?';
   stExpectedAt      = 'Expected %s at %s!';
   stExpectedEndOfStr= 'Expected end of string but found "%s" at %s!';
-  stExpectedButReceived  = 'Expected "=" but recieved "';
+  stExpectedButReceived = 'Expected "=" but recieved "';
+  stExportAccounts  = 'Export accounts';
+  stExportSelect    = 'Select items to export:';
   stExportSuccess   = 'Success: %d Object(s) succesfully exported!';
   stFileModified    = 'File %s was modifed. Save changes?';
   stFileOverwrite   = 'File ''%s'' exists, overwrite?';
   stFileReadOnly    = 'File opened in read only mode!';
+  stFolderExists    = 'Folder with name "%s" already exists.';
+  stFolderMerge     = 'Folder with name "%s" already exists. Merge or save with different name?';
+  stFolderNameReq   = 'You have to enter a name for this folder!';
+  stFolderNotEmpty  = 'The folder "%s" is not empty. Delete anyway?';
   stGetProcAddrErr  = 'Cannot GetProcAddress of %s.';
   stGidNotSamba     = 'Selected primary group is not a Samba group or it does not map to user domain. Do you still want to continue?';
   stGroupMailReq    = 'You have to enter at least one mail address for this group!';
   stGroupNameReq    = 'You have to enter a name for this group!';
   stIdentIsnotValid = '"%s" is not a valid %s!';
+  stImgInvalidForm  = 'Image format not supported!';
+  stImportAccounts  = 'Import accounts';
+  stImportSelect    = 'Select items to import:';
+  stImportTo        = 'Import to:';
   stInserting       = 'Inserting, %d of %d. Press ESC to abort...';
   stInteger         = 'integer number';
   stInvalidArgIndex = 'Invalid Argument Index: %d';
-  stInvalidChr      = 'Invalid  character code: %s!';
+  stInvalidChr      = 'Invalid character: "%s" in "%s"!';
+  stInvalidChar     = '%s may not contain the character "%s"';
+  stInvalidChars    = '%s may not contain any of the following characters:'#10'%s';
   stInvalidCmdVer   = 'Invalid LDAP version in command line: %s';
   stInvalidFilter   = 'Invalid or unsupported filter type: %s!';
   stInvalidLdapOp   = 'Invalid Ldap operation!';
   stInvalidOperator = 'Invalid operator "%s"!';
+  stInvalidSid      = 'Could not set "User cannot change password" flag.'#10#10'Error message: %s'#10#10'Probable reason: the computer %s is not a member of the domain %s or a trusted domain.';
   stInvalidTagValue = 'Invalid value %s for <%s>!';
-  stInvalidTimeFmt  = 'Invalid time format!';
+  stInvalidTimeFmt  = 'Invalid time format: %s!';
   stInvalidURL      = 'Invalid URL format!';
   stLdapError       = 'LDAP error: %s!';
   stLdapErrorEx     = 'LDAP error! %s: %s.';
@@ -467,10 +512,16 @@ resourcestring
   stObjectNotFound  = 'Object not found: %s!';
   stObjnRetrvd      = 'Object not yet retrieved!';
   stOverwrite       = 'Do you want to overwrite?';
+  stOverwriteOrRename = 'Overwrite or save under a different name?';
   stPathNotFound    = 'Path not found:%s!';
   stPassDiff        = 'Passwords do not match!';
   stPassFor         = 'Password for : %s';
+  stRepeatCopyAction= 'Repeat for all';
+  stMutuallyExclusive = 'The options "%s" and "%s" can not be selected simultaneously!';
+  stPwdInclude      = 'Include passwords';
+  stPwdNotEncrypted = 'Warning: exported passwords will not be encrypted!';
   stPropReadOnly    = 'Property is read only!';
+  stPwdNoEncryption = 'You are trying to change a password over a connection that is neither SSL/TLS-encrypted nor SASL-encrypted!';
   stRefUpdateError  = 'An error is occured while updating references:'#10#13'%s'#10#13'Not all references could be updated.';
   stRegAccntErr     = 'Could not read account data!';
   stRegApplying     = 'Applying regular expression...';
@@ -487,7 +538,7 @@ resourcestring
   stSchemaNoSubentry= 'Can''t find SubschemaSubentry';
   stScriptNoProc    = 'Procedure "%s" could not be located.';
   stScriptNotEvent  = 'Property ''%s'' is not an event!';
-  stScriptNotSupp   = '''%s'' does not support ''%s'' event !';
+  stScriptNotSupp   = '''%s'' does not support ''%s'' event!';
   stScriptParamType = 'Unsupported parameter type!';
   stScriptSetErr    = 'Could not convert set to integer!';
   stSequentialID    = 'Activating this option could cause a significant network traffic with large user databases. Unless you REALLY need sequential id''s, leave the default option (random) on!';
@@ -499,12 +550,14 @@ resourcestring
   stTooManyArgs     = 'Too many arguments!';
   stUnclosedParam   = 'Invalid (Unclosed) parameter!';
   stUnclosedStr     = 'Unclosed string!';
+  stUnclosedReference = 'Invalid (unclosed) reference: %s';
   stUnexpectedEofStr= 'Unexpected end of string: %s!';
   stUnknownValueType= 'Unknown value type.'#10'key:%s'#10'value:%s"';
   stUnsupportedAuth = 'Unsupported authentication method: %s!';
   stUnsupportedRule = 'Unsupported matching rule %s!';
   stUnsuppOperation = 'Unsupported operation: %s!';
   stUnsuppScript    = 'Unsupported script type: ';
+  stUpnIncomplete   = 'User logon name is incomplete!';
   stUserBreak       = 'User break!';
   stWritePropRO     = 'Can not write to read only property!';
 

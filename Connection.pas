@@ -81,7 +81,7 @@ const
                     bmIdPool,
                     bmSamba3USer,
                     bmComputer,
-                    bmContainer,
+                    bmAdContainer,
                     bmADGroup,
                     bmClassSchema,
                     bmAttributeSchema,
@@ -89,9 +89,6 @@ const
                     bmConfiguration);
 
 type
-
-  TDirectoryType = (dtAutodetect, dtPosix, dtActiveDirectory);
-
   TConnection = class;
 
   IDirectoryIdentity = Interface
@@ -105,13 +102,13 @@ type
 
   TConnection = class(TLdapSession)
   private
+    FHelper:    TObject;
     FAccount:   TAccount;
-    FLVSorter:  TListViewSorter;
     FSchema:    TLdapSchema;
-    FSelected:  string;
     FDirectoryIdentity: IDirectoryIdentity;
     FActionMenu: TCustomActionMenu;
     FBookmarks: TBookmarks;
+    function    GetHelper: TObject;
     function    GetDirectoryType: TDirectoryType;
     function    GetDirectoryIdentity: IDirectoryIdentity;
     function    GetActionMenu: TCustomActionMenu;
@@ -128,13 +125,12 @@ type
     function    GetUid: Integer;
     function    GetGid: Integer;
     property    Account: TAccount read FAccount;
-    property    LVSorter: TListViewSorter read FLVSorter write FLVSorter;
     property    Schema: TLdapSchema read GetSchema;
-    property    Selected: string read FSelected write FSelected;
     property    DirectoryType: TDirectoryType read GetDirectoryType;
     property    DI: IDirectoryIdentity read GetDirectoryIdentity;
     property    ActionMenu: TCustomActionMenu read GetActionMenu;
     property    Bookmarks: TBookmarks read FBookmarks;
+    property    Helper: TObject read GetHelper;
   end;
 
   { Local LDAP DB }
@@ -185,7 +181,9 @@ var
 
 implementation
 
-uses SysUtils, User, Host, Locality, Computer, Group, LDIF, Dialogs,
+uses SysUtils,  User, Host, Locality, Computer, Group, LDIF, Dialogs,
+     AdObjects, ADUser, AdGroup, AdComputer, AdContainer,
+     {$ifdef mswindows} UiTypes,      {$endif}
      MailGroup, Transport, Ou, Classes, PassDlg, ADPassDlg, Alias, Ast ;
 
 { IDirectoryIdentity }
@@ -219,24 +217,36 @@ type
     function  CreateMenu: TCustomActionMenu;
   end;
 
+function TConnection.GetHelper: TObject;
+begin
+  if not Assigned(FHelper) then
+  begin
+    case DirectoryType of
+      //dtPosix:           FHelper := TPosixHelper(Self); TODO: Posix helper
+      dtActiveDirectory: FHelper := TAdHelper.Create(Self);
+    end;
+  end;
+  Result := FHelper;
+end;
+
 function TConnection.GetDirectoryType: TDirectoryType;
 begin
-  Result := TDirectoryType(Account.ReadInteger(rDirectoryType, Integer(dtAutodetect)));
+  Result := Account.DirectoryType;
   if (Result = dtAutodetect) and Connected then
   begin
     if Lookup('', sAnyClass,'isGlobalCatalogReady', LDAP_SCOPE_BASE) <> '' then
       Result := dtActiveDirectory
     else
       Result := dtPosix;
-    Account.WriteInteger(rDirectoryType, Integer(Result));
+    Account.DirectoryType := Result;
   end;
 end;
 
 function TConnection.GetSchema: TLdapSchema;
 begin
-  if not Assigned(FSchema) then
-    FSchema := TLdapSchema.Create(Self);
-  Result := FSchema;
+   if not Assigned(FSchema) then
+     FSchema := TLdapSchema.Create(Self);
+   Result := FSchema;
 end;
 
 function TConnection.GetDirectoryIdentity: IDirectoryIdentity;
@@ -264,7 +274,6 @@ begin
   inherited Create;
   FAccount := Account;
   try
-    FLVSorter := TListViewSorter.Create;
     FBookmarks := TBookmarks.Create(Self);
   except
     on E: Exception do
@@ -277,7 +286,6 @@ begin
   try
     FActionMenu.Free;
     FSchema.Free;
-    FLVSorter.Free;
     FBookmarks.Free;
   except
     on E: Exception do
@@ -593,9 +601,13 @@ function  TADDirectoryIdentity.NewProperty(Owner: TControl; const Index: Integer
 begin
   Result := true;
   case Index of
-    aidOu:       TOuDlg.Create(Owner, dn, Connection, EM_ADD).ShowModal;
-    aidHost:     THostDlg.Create(Owner, dn, Connection, EM_ADD).ShowModal;
-    aidLocality: TLocalityDlg.Create(Owner, dn, Connection, EM_ADD).ShowModal;
+    aidOu:         TOuDlg.Create(Owner, dn, Connection, EM_ADD).ShowModal;
+    aidHost:       THostDlg.Create(Owner, dn, Connection, EM_ADD).ShowModal;
+    aidLocality:   TLocalityDlg.Create(Owner, dn, Connection, EM_ADD).ShowModal;
+    aidAdUser:     TADUserDlg.Create(Owner, dn, Connection, EM_ADD).ShowModal;
+    aidAdGroup:    TADGroupDlg.Create(Owner, dn, Connection, EM_ADD).ShowModal;
+    aidAdComputer: TADComputerDlg.Create(Owner, dn, Connection, EM_ADD).ShowModal;
+    aidAdContainer:TADContainerDlg.Create(Owner, dn, Connection, EM_ADD).ShowModal;
   else
     Result := false;
   end;
@@ -608,6 +620,10 @@ begin
     oidOu:           TOuDlg.Create(Owner, dn, Connection, EM_MODIFY).ShowModal;
     oidLocality:     TLocalityDlg.Create(Owner, dn, Connection, EM_MODIFY).ShowModal;
     oidHost:         THostDlg.Create(Owner, dn, Connection, EM_MODIFY).ShowModal;
+    aidAdUser:       TADUserDlg.Create(Owner, dn, Connection, EM_MODIFY).ShowModal;
+    aidAdGroup:      TADGroupDlg.Create(Owner, dn, Connection, EM_MODIFY).ShowModal;
+    aidAdComputer:   TADComputerDlg.Create(Owner, dn, Connection, EM_MODIFY).ShowModal;
+    aidAdContainer:  TADContainerDlg.Create(Owner, dn, Connection, EM_MODIFY).ShowModal;
   else
     Result := false;
   end;
@@ -708,8 +724,9 @@ end;
 destructor TDBConnection.Destroy;
 begin
   fDestroying := true;
-  inherited; // inherited calls disconnect
+  inherited; // inherited calls Disconnect()
   Root.Free;
+  FHelper.Free;
 end;
 
 { Note: NoValue and attrs are ignored, for the time being all attributes and values are returned }

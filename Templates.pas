@@ -123,7 +123,7 @@ type
     property      LdapSession: TLdapSession read GetLdapSession write fLdapSession;
     property      ParentControl: TTemplateControl read fParentControl write SetParentControl;
     property      Elements: TObjectList read fElements;
-    property      AutoSize: Boolean read fAutoSize;
+    property      AutoSize: Boolean read fAutoSize write fAutoSize;
     property      AutoArrange: Boolean read fAutoArrange write fAutoArrange {SetAutoArrange};
     property      Caption: string read fCaption;
     property      Name: string read fName;
@@ -598,6 +598,7 @@ type
     FFileName:    string;
     FRdn:         string;
     FAutoArrange: Boolean;
+    FAutoSize: Boolean;
     FObjectclass: TTemplateAttribute;
     FExtends:     TStringList;
     FIcon:        TBitmap;
@@ -613,7 +614,8 @@ type
     property      Description: string read FDescription;
     property      Objectclasses[Index: Integer]: string read GetObjectclasses;
     property      ObjectclassCount: Integer read GetObjectclassCount;
-    property      AutoarrangeControls: Boolean read fAutoarrange;
+    property      AutoArrangeControls: Boolean read fAutoArrange;
+    property      AutoSizeControls: Boolean read fAutoSize;
     property      Extends: TStringlist read fExtends;
     property      Rdn: string read fRdn;
     property      Icon: TBitmap read FIcon;
@@ -980,14 +982,14 @@ begin
   for i := 0 to Elements.Count - 1 do
     if Elements[i] is TTemplateControl then with TTemplateControl(Elements[i]) do
     begin
-      if AutoArrange and Assigned(Control) and Assigned(Control.Parent) then
+      if AutoSize and Assigned(Control) and Assigned(Control.Parent) then
         Control.Width := Control.Parent.ClientWidth - CT_LEFT_BORDER - CT_RIGHT_BORDER;
       AdjustSizes;
     end
     else if Elements[i] is TTemplateAttribute then with TTemplateAttribute(Elements[i]) do
       for j := 0 to Controls.Count - 1 do with Controls[j] do
       begin
-        if Assigned(Control) and Assigned(Control.Parent) then
+        if AutoSize and Assigned(Control) and Assigned(Control.Parent) then
           Control.Width := Control.Parent.ClientWidth - CT_LEFT_BORDER - CT_RIGHT_BORDER;
         AdjustSizes;
       end;
@@ -1123,7 +1125,22 @@ begin
       end
       else
       if Name = 'width' then
-        fControl.Width := CheckStrToInt(Content, Name)
+      begin
+        fControl.Width := CheckStrToInt(Content, Name);
+        fAutoSize := false;
+      end
+      else
+      if Name = 'top' then
+      begin
+        fControl.Top := CheckStrToInt(Content, Name);
+        fAutoArrange := false;
+      end
+      else
+      if Name = 'left' then
+      begin
+        fControl.Left := CheckStrToInt(Content, Name);
+        fAutoArrange := false;
+      end
       else
       if Name = 'color' then
         TLabel(fControl).Color := GetColor(Content, Name)
@@ -1136,7 +1153,7 @@ begin
       else
       if Name = 'enabled' then
       begin
-        if Content='false' then
+        if Content = 'false' then
           fControl.Enabled := false;
       end
       else
@@ -1144,6 +1161,12 @@ begin
       begin
         fName := Content;
         fControl.Name := fName;
+      end
+      else
+      if Name = 'autosize' then
+      begin
+        if Content = 'false' then
+          fControl.Enabled := false;
       end
       else
       if Name = 'datacontrol' then
@@ -3140,6 +3163,7 @@ var
 
     fElements.Add(Ctrl);
     Ctrl.AutoArrange := false;
+    Ctrl.AutoSize := false;
     Ctrl.ParentControl := Self;
     btn := Ctrl.Control as TButton;
     btn.Height := fBtnHeight;
@@ -3189,11 +3213,11 @@ begin
   fList.Control.Name := fName;
   fName := fName + 'Panel';*)
 
-  { Make the list accessible to scripts through a compound name }
+  { Make the list accessible to scripts }
   fName := fName;
   fControl.Name := fName;
-  fList.fName := fName + '_list';
-  fList.Control.Name := fName+ '_list';
+  fList.fName := 'list';
+  fList.Control.Name := 'list';
 
   ArrangeBox;
   ArrangeButtons;
@@ -3520,6 +3544,7 @@ begin
   inherited Create;
   FImageIndex := -1;
   FAutoArrange := true;
+  FAutoSize := true;
   FFileName:=AFileName;
   FExtends := TStringList.Create;
   FXmlTree:=TXmlTree.Create;
@@ -3547,6 +3572,18 @@ begin
     else
     if Name = 'icon' then
       LoadIcon(fIcon, FXmlTree.Root[i])
+    else
+    if Name = 'autoarrange' then
+    begin
+      if Content = 'false' then
+        FAutoArrange := false;
+    end
+    else
+    if Name = 'autosize' then
+    begin
+      if Content = 'false' then
+        FAutoSize := false;
+    end;
   end;
 end;
 

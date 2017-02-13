@@ -23,6 +23,7 @@
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
       <MinorVersionNr Value="7"/>
+      <RevisionNr Value="2"/>
       <BuildNr Value="3"/>
       <Attributes pvaPreRelease="True"/>
       <StringTable ProductVersion=""/>
