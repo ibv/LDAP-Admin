@@ -17,12 +17,12 @@ Stable functions:
  * Password management (supports crypt, md5, sha, sha-crypt, samba)
  * Template support
  * Binary attribute support
+ * LDAP SSL/TLS support
  
 Untested functions: 
  * Management of Posix Groups and Accounts
  * Management of Samba Accounts
  * Postfix MTA Support
- * LDAP SSL support 
  
 
 Disabled functions: 
