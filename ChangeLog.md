@@ -1,3 +1,8 @@
+* Fri Feb 17 2017 <ivo.brhel at gmail.com>
+---------------------
++ Add LDAP SSL/TLS support from synapse library
+
+
 * Mon Feb 13 2017 <ivo.brhel at gmail.com>
 ---------------------
 + Adapt changes from Tihomir's SourceForge git, win version 1.7.2.0

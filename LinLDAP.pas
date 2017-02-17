@@ -34,7 +34,8 @@ uses
   Windows;
 {$ELSE}
 uses
-  SysUtils, ldapsend, Classes, LazFileUtils,
+  SysUtils, ldapsend, ssl_openssl,
+  Classes, LazFileUtils,
   LCLIntf, LCLType, LMessages, Ctypes;
 {$ENDIF}
 
@@ -1659,8 +1660,8 @@ function ldap_start_tls_s( ExternalHandle: TLDAPsend; ServerReturnValue: PULONG;
                            res: PPLDAPMessage; ServerControls: PPLDAPControl;
                            ClientControls: PPLDAPControl): ULONG;
 begin
-  result:=LDAP_OPERATIONS_ERROR;
-  if ExternalHandle.StartTLS then result:=LDAP_SUCCESS;
+  ExternalHandle.AutoTLS := true;
+  result:=LDAP_SUCCESS;;
 end;
 
 {
@@ -1696,7 +1697,7 @@ function ldap_sslinit(ld:TLDAPsend; HostName: AnsiString; PortNumber: ULONG; sec
 begin
   ld.TargetHost:=Hostname;
   ld.TargetPort:=IntToStr(PortNumber);
-  ld.AutoTLS:=true;
+  ld.FullSSL := true;
   result:=ld.login;
 end;
 

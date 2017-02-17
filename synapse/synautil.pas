@@ -86,7 +86,7 @@ uses
 {$IFDEF CIL}
   System.IO,
 {$ENDIF}
-  SysUtils, Classes, SynaFpc;
+  SysUtils, Classes{, SynaFpc};
 
 {$IFDEF VER100}
 type
