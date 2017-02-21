@@ -1291,14 +1291,12 @@ begin
     exit;
   {$ifdef mswindows}
   Splitted := APath.Split(['\']);
-  AFolder := RootFolder;
   h := High(Splitted);
   l := Low(Splitted);
   {$else}
   SPlitted := TStringlist.Create;
   ExtractStrings(['\'], [], PChar(APath), Splitted);
-  //split(APath, Splitted, '/');
-  h := Splitted.count;
+  h := Splitted.count-1;
   l := 0;
   {$endif}
   AFolder := RootFolder;
@@ -1317,8 +1315,8 @@ begin
     if not Assigned(Result) then
       exit;
   end;
-  if ConfigIsFolder(Splitted[h-1]) then
-    Result := AFolder.Items.FolderByName(ConfigUnpackFolder(Splitted[h-1]));
+  if ConfigIsFolder(Splitted[h]) then
+    Result := AFolder.Items.FolderByName(ConfigUnpackFolder(Splitted[h]));
   {$ifndef mswindows}
   Splitted.Free;
   {$endif}
@@ -1795,7 +1793,6 @@ begin
   {$else}
   Splitted:=TStringList.Create;
   ExtractStrings(['\'], [], PChar(PArent), Splitted);
-  //split(APArent, Splitted, '/');
   {$endif}
   ParentNode := FXml.Root;
   Node := ParentNode;

@@ -1,3 +1,8 @@
+* Tue Feb 21 2017 <ivo.brhel at gmail.com>
+---------------------
++ Fixed export nested list, ConnList form
+
+
 * Fri Feb 17 2017 <ivo.brhel at gmail.com>
 ---------------------
 + Add LDAP SSL/TLS support from synapse library
