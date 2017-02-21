@@ -1675,6 +1675,8 @@ end;
 
 function ldap_stop_tls_s( ExternalHandle: TLDAPsend): BOOLEAN;
 begin
+  ExternalHandle.AutoTLS := false;
+  result:=true;
 
 end;
 
