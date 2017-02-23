@@ -1343,6 +1343,11 @@ const
   //function ldap_modify_s(ld: TLDAPsend; dn: PChar; mods: PLDAPMod): ULONG;
   function ldap_modify_s(ld: TLDAPsend; dn: PChar; ModOp: TLDAPModifyOp; Value: TLDAPAttribute): ULONG;
 
+
+  function ldap_rename_ext_s(ld: TLDAPSend; dn, NewRDN, NewParent: PChar; DeleteOldRdn: Integer;
+                              var ServerControls, ClientControls: PLDAPControl): ULONG;
+
+
   function ldap_delete_s(ld: TLDAPsend; dn: PChar): ULONG;
 
 
@@ -1649,6 +1654,17 @@ begin
 end;
 
 
+function ldap_rename_ext_s(ld: TLDAPSend; dn, NewRDN, NewParent: PChar; DeleteOldRdn: Integer;
+                            var ServerControls, ClientControls: PLDAPControl): ULONG;
+begin
+  result:=LDAP_NOT_SUPPORTED;
+  if ld.Version>= LDAP_VERSION3 then
+  begin
+    ld.ModifyDN(dn, newRDN, newParent, DeleteOldRDN=1);
+    result := ld.ResultCode;
+  end;
+end;
+
 function ldap_delete_s(ld: TLDAPsend; dn: PChar): ULONG;
 begin
   ld.Delete(dn);
@@ -1661,7 +1677,7 @@ function ldap_start_tls_s( ExternalHandle: TLDAPsend; ServerReturnValue: PULONG;
                            ClientControls: PPLDAPControl): ULONG;
 begin
   ExternalHandle.AutoTLS := true;
-  result:=LDAP_SUCCESS;;
+  result:=LDAP_SUCCESS;
 end;
 
 {
