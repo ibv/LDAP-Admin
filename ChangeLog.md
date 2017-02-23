@@ -1,3 +1,9 @@
+* Thu Feb 23 2017 <ivo.brhel at gmail.com>
+---------------------
++ Add ldap_rename_ext_s function [LDAPClasses.pas]
++ Fixed ConvertVariant function [Templates.pas]
+
+
 * Tue Feb 21 2017 <ivo.brhel at gmail.com>
 ---------------------
 + Fixed export nested list, ConnList form

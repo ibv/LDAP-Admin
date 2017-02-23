@@ -1208,15 +1208,13 @@ begin
     rdn := NewRdn;
 
   nilControl := nil;
-  ///
-  {
   Result := ldap_rename_ext_s(pld, PChar(OldDn),
 						 PChar(rdn),
 						 PChar(NewParent),
 						 Ord(TRUE),
 						 nilControl,
 						 nilControl);
-   }
+
   if FailOnError then
     LdapCheck(Result);
 end;

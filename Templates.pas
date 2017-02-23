@@ -2283,7 +2283,11 @@ function TTemplateCtrlDate.GetTime(Value: string): TDateTime;
     aValue: string;
   begin
     try
-      ///Result := VarToDateTime(Value);
+      {$ifdef mswindows}
+      Result := VarToDateTime(Value);
+      {$else}
+      Result := StrToDateTime(Value);
+      {$endif}
     except
       on E: EVariantError do
         { try some common variants }
@@ -2292,7 +2296,11 @@ function TTemplateCtrlDate.GetTime(Value: string): TDateTime;
           aValue := Value;
           Insert('-', AValue, 7);
           Insert('-', AValue, 5);
-          ///Result := VarToDateTime(aValue);
+          {$ifdef mswindows}
+          Result := VarToDateTime(aValue);
+          {$else}
+          Result := StrToDateTime(Value);
+          {$endif}
         end
         else raise;
     end;
@@ -2313,8 +2321,11 @@ end;
 
 function TTemplateCtrlDate.GetDisplayFormat: string;
 begin
-  ///Result := TDateTimePickerFixed(fControl).Format;
+  {$ifdef mswindows}
+  Result := TDateTimePickerFixed(fControl).Format;
+  {$else}
   result:='';
+  {$endif}
 end;
 
 procedure TTemplateCtrlDate.SetDisplayFormat(Value: string);
@@ -2328,11 +2339,12 @@ var
   t: string;
 
   function GetDateOrTime(DateTime: TDateTime; DataFormat: string; Kind: TDateTimeKind): string;
+  {$ifdef mswindows}
   var
     Buffer: array [0..256] of byte;
     flags: ULONG;
     p: PChar;
-    ///st: SystemTime;
+    st: TSystemTime;
   begin
     flags := 0;
     p := nil;
@@ -2340,12 +2352,19 @@ var
       ///flags := LOCALE_NOUSEROVERRIDE
     else
       p := PChar(DataFormat);
-    ///DateTimeToSystemTime(DateTime, st);
-    ///case Kind of
-      ///dtkDate: GetDateFormat(LOCALE_SYSTEM_DEFAULT, flags, @st, p, @Buffer, 256);
-      ///dtkTime: GetTimeFormat(LOCALE_SYSTEM_DEFAULT, flags, @st, p, @Buffer, 256);
-    ///end;
+    DateTimeToSystemTime(DateTime, st);
+    case Kind of
+      dtkDate: GetDateFormat(LOCALE_SYSTEM_DEFAULT, flags, @st, p, @Buffer, 256);
+      dtkTime: GetTimeFormat(LOCALE_SYSTEM_DEFAULT, flags, @st, p, @Buffer, 256);
+    end;
     Result := PChar(@Buffer);
+    {$else}
+  begin
+    case Kind of
+      dtkDate: Result:=FormatDateTime('d.m.yyyy',DateTime);
+      dtkTime: Result:=FormatDateTime('hh:nn',DateTime);
+    end;
+    {$endif}
   end;
 
 begin
