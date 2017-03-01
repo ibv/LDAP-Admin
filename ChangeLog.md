@@ -1,3 +1,8 @@
+* Wed Mar 1 2017 <ivo.brhel at gmail.com>
+---------------------
++ Add function ldap_get_dn
+
+
 * Thu Feb 23 2017 <ivo.brhel at gmail.com>
 ---------------------
 + Add ldap_rename_ext_s function [LDAPClasses.pas]

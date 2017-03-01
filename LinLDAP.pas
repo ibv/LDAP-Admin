@@ -1485,7 +1485,6 @@ begin
   begin
     result:=ld.SearchResult.Items[0];
   end;
-  //result:=ldap.ldap_first_entry(ld,res);
 end;
 
 
@@ -1505,13 +1504,12 @@ begin
     end;
     inc(i);
   end;
-  //result:=ldap.ldap_next_entry(ld,entry);
 end;
 
 
 function ldap_get_dn(ld: TLDAPsend; entry: TLDAPResult): PChar;
 begin
-  //result:=PChar(ldap.ldap_get_dn(ld,entry));
+  result:=PChar(entry.ObjectName);
 end;
 
 
