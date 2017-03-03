@@ -1,3 +1,9 @@
+* Fri Mar 3 2017 <ivo.brhel at gmail.com>
+---------------------
++ Add function ldap_bind_s, DIGEST-MD5 SASL method
++ Fixed templates sizeX,Y
+
+
 * Wed Mar 1 2017 <ivo.brhel at gmail.com>
 ---------------------
 + Add function ldap_get_dn

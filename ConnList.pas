@@ -1026,7 +1026,8 @@ begin
           RootOffset := 1 + Length(ConfigGetFolder(Elements[i]).Name);
           Continue; // skip root folder
         end
-        else begin
+        else
+        begin
           c := XmlStorage.ByPath(Copy(ExtractFileDir(TConfig(Elements[i]).Path), RootOffset), true); // Find parent
           if Assigned(c) then
             Folder := c as TAccountFolder

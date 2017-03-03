@@ -78,7 +78,8 @@ type
     fExitProc:    TNotifyEvent;
     fParentControl: TTemplateControl;
     fElements:    TObjectList;
-    fAutoSize:    Boolean;
+    fAutoSizeX:    Boolean;
+    fAutoSizeY:    Boolean;
     fAutoArrange: Boolean;
     fCaption:     string;
     fName:        string;
@@ -123,7 +124,8 @@ type
     property      LdapSession: TLdapSession read GetLdapSession write fLdapSession;
     property      ParentControl: TTemplateControl read fParentControl write SetParentControl;
     property      Elements: TObjectList read fElements;
-    property      AutoSize: Boolean read fAutoSize write fAutoSize;
+    property      AutoSizeX: Boolean read fAutoSizeX write fAutoSizeX;
+    property      AutoSizeY: Boolean read fAutoSizeY write fAutoSizeY;
     property      AutoArrange: Boolean read fAutoArrange write fAutoArrange {SetAutoArrange};
     property      Caption: string read fCaption;
     property      Name: string read fName;
@@ -982,14 +984,14 @@ begin
   for i := 0 to Elements.Count - 1 do
     if Elements[i] is TTemplateControl then with TTemplateControl(Elements[i]) do
     begin
-      if AutoSize and Assigned(Control) and Assigned(Control.Parent) then
+      if AutoSizeX and Assigned(Control) and Assigned(Control.Parent) then
         Control.Width := Control.Parent.ClientWidth - CT_LEFT_BORDER - CT_RIGHT_BORDER;
       AdjustSizes;
     end
     else if Elements[i] is TTemplateAttribute then with TTemplateAttribute(Elements[i]) do
       for j := 0 to Controls.Count - 1 do with Controls[j] do
       begin
-        if AutoSize and Assigned(Control) and Assigned(Control.Parent) then
+        if AutoSizeX and Assigned(Control) and Assigned(Control.Parent) then
           Control.Width := Control.Parent.ClientWidth - CT_LEFT_BORDER - CT_RIGHT_BORDER;
         AdjustSizes;
       end;
@@ -1121,13 +1123,13 @@ begin
       if Name = 'height' then
       begin
         fControl.Height := CheckStrToInt(Content, Name);
-        fAutoSize := false;
+        fAutoSizeY := false;
       end
       else
       if Name = 'width' then
       begin
         fControl.Width := CheckStrToInt(Content, Name);
-        fAutoSize := false;
+        fAutoSizeX := false;
       end
       else
       if Name = 'top' then
@@ -1177,7 +1179,22 @@ begin
           fElements.Add(TTemplateScriptEvent.Create(Self, XmlNode[i]));
      end;
 
-    NotParented:=(fControl.Parent=nil);
+    { NotParented:=(fControl.Parent=nil);
+      For some reason, if TTemplateCtrlDateTime control is created within
+      attribute which itself is placed on a panel control and if TTemplateCtrlDateTime
+      control gets its parent set and unset here, it will produce "Control has
+      no parent window" exception when parented again:
+
+      if Name = 'attribute' then
+      begin
+        AAttribute := TTemplateAttribute.Create(XmlNode[i]);
+        fElements.Add(AAttribute);
+        for j := 0 to AAttribute.Controls.Count - 1 do
+          AAttribute.Controls[j].ParentControl := Self; -> exception
+      end
+      I can't find better solution here }
+    NotParented := (fControl.Parent = nil) and not (Self is TTemplateCtrlDateTime);
+
 
     if NotParented then begin
       // Prevent "Control has no parent window" exception when Items are set
@@ -1319,7 +1336,7 @@ begin
       end;
     end;
   end;
-  if AutoSize and (yPos > Control.Height) then
+  if AutoSizeY and (yPos > Control.Height) then
     Control.Height := yPos;
 end;
 
@@ -1327,7 +1344,8 @@ constructor TTemplateControl.Create(Attribute: TTemplateAttribute);
 begin
   fElements := TObjectList.Create;
   fTemplateAttribute := Attribute;
-  fAutoSize := true;
+  fAutoSizeX := true;
+  fAutoSizeY := true;
   fAutoArrange := true;
   {$IFDEF REGEXPR}
   fRegex := TRegExpr.Create;
@@ -1861,7 +1879,7 @@ procedure TTemplateCtrlGrid.LoadProc(XmlNode: TXmlNode);
 var
   Node: TXmlNode;
 begin
-  if not fAutoSize then Exit;
+  if not fAutoSizeY then Exit;
   Node:=XmlNode.NodeByName('rows');
   if Assigned(Node) then with TEditGrid(fControl) do
   begin
@@ -2344,7 +2362,7 @@ var
     Buffer: array [0..256] of byte;
     flags: ULONG;
     p: PChar;
-    st: TSystemTime;
+    st: SystemTime;
   begin
     flags := 0;
     p := nil;
@@ -3182,7 +3200,8 @@ var
 
     fElements.Add(Ctrl);
     Ctrl.AutoArrange := false;
-    Ctrl.AutoSize := false;
+    Ctrl.AutoSizeX := false;
+    Ctrl.AutoSizeY := false;
     Ctrl.ParentControl := Self;
     btn := Ctrl.Control as TButton;
     btn.Height := fBtnHeight;

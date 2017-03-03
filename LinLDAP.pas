@@ -36,7 +36,7 @@ uses
 uses
   SysUtils, ldapsend, ssl_openssl,
   Classes, LazFileUtils,
-  LCLIntf, LCLType, LMessages, Ctypes;
+  LCLIntf, LCLType, LMessages, Ctypes, Gss;
 {$ENDIF}
 
 
@@ -1738,13 +1738,17 @@ end;
 
 function ldap_bind_s(ld: TLDAPsend; dn, cred: PChar; method: ULONG): ULONG;
 begin
-
+  ld.UserName:=PSEC_WINNT_AUTH_IDENTITY(cred)^.User;
+  ld.Password:=PSEC_WINNT_AUTH_IDENTITY(cred)^.Password;
+  ld.BindSasl;
+  result:=ld.ResultCode;
 end;
 
 
 function ldap_unbind_s(ld: TLDAPsend): ULONG;
 begin
-
+  result:=LDAP_OPERATIONS_ERROR;
+  if ld.Logout then result:=LDAP_SUCCESS;
 end;
 
 
