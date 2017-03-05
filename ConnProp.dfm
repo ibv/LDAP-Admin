@@ -12,7 +12,7 @@ object ConnPropDlg: TConnPropDlg
   Color = clBtnFace
   ParentFont = True
   Position = poOwnerFormCenter
-  LCLVersion = '1.6.2.0'
+  Visible = False
   object Panel1: TPanel
     Left = 8
     Height = 34
@@ -133,13 +133,13 @@ object ConnPropDlg: TConnPropDlg
           object Label2: TLabel
             Left = 8
             Height = 15
-            Top = 1
+            Top = 0
             Width = 34
             Caption = 'Host:'
             ParentColor = False
           end
           object Label3: TLabel
-            Left = 216
+            Left = 211
             Height = 15
             Top = 0
             Width = 30
@@ -148,9 +148,9 @@ object ConnPropDlg: TConnPropDlg
             ParentColor = False
           end
           object Label7: TLabel
-            Left = 296
+            Left = 286
             Height = 15
-            Top = 1
+            Top = 0
             Width = 51
             Caption = 'Version:'
             ParentColor = False
@@ -182,7 +182,7 @@ object ConnPropDlg: TConnPropDlg
           object VersionCombo: TComboBox
             Left = 336
             Height = 27
-            Top = -3
+            Top = -4
             Width = 61
             ItemHeight = 0
             Items.Strings = (
@@ -250,7 +250,7 @@ object ConnPropDlg: TConnPropDlg
             TabOrder = 8
           end
           object cbTLS: TCheckBox
-            Left = 272
+            Left = 286
             Height = 26
             Top = 61
             Width = 51
@@ -505,7 +505,6 @@ object ConnPropDlg: TConnPropDlg
       Width = 75
       Anchors = [akRight, akBottom]
       Caption = 'OK'
-      Default = True
       ModalResult = 1
       TabOrder = 1
     end
@@ -515,7 +514,6 @@ object ConnPropDlg: TConnPropDlg
       Top = 8
       Width = 75
       Anchors = [akRight, akBottom]
-      Cancel = True
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 2

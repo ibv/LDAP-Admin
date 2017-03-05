@@ -37,6 +37,9 @@ uses
   Messages, Buttons, ExtCtrls, Config, ComCtrls, LDAPClasses,Constant, Connection;
 
 type
+
+  { TConnPropDlg }
+
   TConnPropDlg = class(TForm)
     OKBtn:        TButton;
     CancelBtn:    TButton;

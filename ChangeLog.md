@@ -1,3 +1,9 @@
+* Sun Mar 5 2017 <ivo.brhel at gmail.com>
+---------------------
++ Fixed MessageDlg
++ Confirm rename entry
+
+
 * Fri Mar 3 2017 <ivo.brhel at gmail.com>
 ---------------------
 + Add function ldap_bind_s, DIGEST-MD5 SASL method

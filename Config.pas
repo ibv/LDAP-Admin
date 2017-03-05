@@ -39,7 +39,7 @@ uses
      {$IFnDEF FPC}
      Windows,Generics.Collections, Contnrs,
      {$else}
-     fgl, strutils, LCLIntf, LCLType, LazFileUtils,
+     fgl, strutils, LCLIntf, LCLType, LazFileUtils, Buttons,
      {$endif}
      Registry, IniFiles,
      Classes,  SysUtils, LDAPClasses, Xml,
@@ -697,23 +697,32 @@ begin
     NoCheckCbx.Parent:=Form;
     NoCheckCbx.Caption:=stNoMoreChecks;
     NoCheckCbx.Width:=NoCheckCbx.Parent.Width - NoCheckCbx.Left;
-    {$ifdef mswindows}
     for i:=0 to Form.ComponentCount-1 do begin
+      {$ifdef mswindows}
       if Form.Components[i] is TLabel then begin
         TLabel(Form.Components[i]).Top:=16;
         NoCheckCbx.Top:=TLabel(Form.Components[i]).Top+TLabel(Form.Components[i]).Height+16;
         NoCheckCbx.Left:=TLabel(Form.Components[i]).Left;
       end;
+      {$else}
+      if Form.Components[i] is TBitBtn then begin
+        NoCheckCbx.Top:=Form.Height-(NoCheckCbx.Height+32);
+        NoCheckCbx.Left:=46;
+      end;
+      {$endif}
     end;
-    {$else}
-    NoCheckCbx.Top:=38;
-    NoCheckCbx.Left:=46;
-    {$endif}
     for i:=0 to Form.ComponentCount-1 do begin
+    {$ifdef mswindows}
       if Form.Components[i] is TButton then begin
         TButton(Form.Components[i]).Top:=NoCheckCbx.Top+NoCheckCbx.Height+24;
         Form.ClientHeight:=TButton(Form.Components[i]).Top+TButton(Form.Components[i]).Height+16;
       end;
+    {$else}
+      if Form.Components[i] is TBitBtn then begin
+        TBitBtn(Form.Components[i]).Top:=NoCheckCbx.Top+NoCheckCbx.Height+24;
+        Form.ClientHeight:=TBitBtn(Form.Components[i]).Top+TBitBtn(Form.Components[i]).Height+16;
+      end;
+    {$endif}
     end;
 
     if Form.ShowModal=mrYes then begin

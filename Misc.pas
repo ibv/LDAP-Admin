@@ -1,5 +1,5 @@
   {      LDAPAdmin - Misc.pas
-  *      Copyright (C) 2003-2016 Tihomir Karlovic
+  *      Copyright (C) 2003-2017 Tihomir Karlovic
   *
   *      Author: Tihomir Karlovic & Alexander Sokoloff
   *
@@ -65,7 +65,7 @@ procedure ParseURL(const URL: string; var proto, user, password, host, path: str
 { Some handy dialogs }
 function  CheckedMessageDlg(const Msg: string; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons; CbCaption: string; var CbChecked: Boolean): TModalResult;
 function  ComboMessageDlg(const Msg: string; const csItems: string; var Text: string): TModalResult;
-function  CreateMessageDlgEx(const Msg: string; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons; Captions: array of string; Events: array of TNotifyEvent): TForm;
+function  CreateMessageDlgEx(const Msg: string; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons; Captions: array of string; Events: array of TNotifyEvent; MinTextWidth: Integer = 0): TForm;
 function  MessageDlgEx(const Msg: string; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons; Captions: array of string; Events: array of TNotifyEvent): TModalResult;
 function  CheckedMessageDlgEx(const Msg: string; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons; Captions: array of string; Events: array of TNotifyEvent; CbCaption: string; var CbChecked: Boolean): TModalResult;
 { Tree sort procedure }
@@ -97,7 +97,7 @@ implementation
 {$I LdapAdmin.inc}
 
 uses StdCtrls, Messages, Constant, Config {$IFDEF VARIANTS} ,variants {$ENDIF},
-     WinBase64, DateUtils, Math;
+     WinBase64, DateUtils, Math, Buttons;
 
 {$ifdef mswindows}
 function TreeSortProc(Node1, Node2: TTreeNode; Data: Integer): Integer; stdcall;
@@ -1030,21 +1030,37 @@ begin
     Combo.Items.CommaText := csItems;
     Combo.Style := csDropDown;
     for i:=0 to ComponentCount-1 do begin
+      {$ifdef mswindows}
       if Components[i] is TLabel then begin
         TLabel(Components[i]).Top:=16;
         Width := TLabel(Components[i]).Width + 32;
         Combo.Top:=TLabel(Components[i]).Top+TLabel(Components[i]).Height+4;
         Combo.Left:=TLabel(Components[i]).Left;
       end;
+      {$else}
+        if Components[i] is TBitBtn then begin
+          width:=Form.Width;
+          Combo.Top:=Height-(Combo.Height+48);
+          Combo.Left:=48;
+        end;
+      {$endif}
+
     end;
     if Combo.Width > Width - 32 then
       Width := Combo.Width + 32;
 
     for i:=0 to ComponentCount-1 do begin
+    {$ifdef mswindows}
       if Components[i] is TButton then begin
         TButton(Components[i]).Top:=Combo.Top+Combo.Height+24;
         ClientHeight:=TButton(Components[i]).Top+TButton(Components[i]).Height+16;
       end;
+    {$else}
+      if Components[i] is TBitBtn then begin
+        TBitBtn(Components[i]).Top:=Combo.Top+Combo.Height+16;
+        ClientHeight:=TBitBtn(Components[i]).Top+TBitBtn(Components[i]).Height+16;
+      end;
+    {$endif}
     end;
     ActiveControl := Combo;
     Result := ShowModal;
@@ -1056,7 +1072,7 @@ end;
 
 { Uses Caption array to replace captions and Events array to assign OnClick event to buttons}
 function CreateMessageDlgEx(const Msg: string; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons;
-         Captions: array of string; Events: array of TNotifyEvent): TForm;
+         Captions: array of string; Events: array of TNotifyEvent; MinTextWidth: Integer = 0): TForm;
 const
   cbBtnSpacing = 4;
   cbDlgMargin  = 8;
@@ -1067,18 +1083,30 @@ begin
   Result := CreateMessageDialog(Msg, DlgType, Buttons);
   with Result do
   begin
+    leftPos := 0;
+    w := 0;
     {$ifdef mswindows}
-    Width := Min(Max(GetTextExtent(Msg + 'W', Font).Width, Width), Screen.Width div 2);
-    {$else}
-    Width := Min(Max(GetTextExtent(Msg + 'W', Font).cx, Width), Screen.Width div 2);
+    for i := 0 to ControlCount - 1 do
+      if Result.Controls[i] is TLabel then with Controls[i] do
+      begin
+        leftPos := Left;
+        w := Width;
+        break;
+      end;
     {$endif}
+    Width := Max(LeftPos + MinTextWidth, Width);
+    Width := Min(Max(LeftPos + w, Width), Screen.Width div 2);
     ci := 0;
     ce := 0;
     btnWidth := 0;
     btnCount := 0;
     for i:=0 to ComponentCount - 1 do
     begin
+      {$ifdef mswindows}
       if (Components[i] is TButton) then with TButton(Components[i]) do
+      {$else}
+      if (Components[i] is TBitBtn) then with TBitbtn(Components[i]) do
+      {$endif}
       begin
         inc(btnCount);
         if ci <= High(Captions) then
@@ -1120,11 +1148,15 @@ begin
 
     leftPos := (Width - btnWidth) div 2;
     for i:=0 to ComponentCount - 1 do
-    if (Components[i] is TButton) then with TButton(Components[i]) do
-    begin
-      Left := leftPos;
-      inc(leftPos, Width + cbBtnSpacing);
-    end;
+     {$ifdef mswindows}
+     if (Components[i] is TButton) then with TButton(Components[i]) do
+     {$else}
+     if (Components[i] is TBitBtn) then with TBitbtn(Components[i]) do
+     {$endif}
+     begin
+       Left := leftPos;
+       inc(leftPos, Width + cbBtnSpacing);
+     end;
   end;
 end;
 
@@ -1148,8 +1180,28 @@ var
   Form: TForm;
   i: integer;
   CheckCbx: TCheckBox;
+
+
+  function GetCheckWidth: Integer;
+  //const OBM_CHECKBOXES = 32759;
+  begin
+    {
+    with TBitmap.Create do
+      try
+        Handle := LoadBitmap(0, PChar(OBM_CHECKBOXES));
+        Result := Width div 4;
+      finally
+        Free;
+      end;
+    }
+    result:=4;
+  end;
+
+
 begin
-  Form := CreateMessageDlgEx(Msg, DlgType, Buttons, Captions, Events);
+
+  Form := CreateMessageDlgEx(Msg, DlgType, Buttons, Captions, Events,
+            GetCheckWidth + GetTextExtent(CbCaption + 'W', Screen.SystemFont).cx + 4);
   with Form do
   try
     CheckCbx := TCheckBox.Create(Form);
@@ -1160,18 +1212,31 @@ begin
     CheckCbx.Checked := CbChecked;
 
     for i:=0 to ComponentCount-1 do begin
+    {$ifdef mswindows}
       if Components[i] is TLabel then begin
         TLabel(Components[i]).Top:=16;
         CheckCbx.Top:=TLabel(Components[i]).Top+TLabel(Components[i]).Height+16;
         CheckCbx.Left:=TLabel(Components[i]).Left;
       end;
+    {$else}
+      if Components[i] is TBitBtn then begin
+        CheckCbx.Top:=Height-(CheckCbx.Height+32);
+        CheckCbx.Left:=48;
+      end;
+    {$endif}
     end;
-
     for i:=0 to ComponentCount-1 do begin
+    {$ifdef mswindows}
       if Components[i] is TButton then begin
         TButton(Components[i]).Top:=CheckCbx.Top+CheckCbx.Height+24;
         ClientHeight:=TButton(Components[i]).Top+TButton(Components[i]).Height+16;
       end;
+    {$else}
+    if Components[i] is TBitBtn then begin
+      TBitBtn(Components[i]).Top:=CheckCbx.Top+CheckCbx.Height+16;
+      ClientHeight:=TBitBtn(Components[i]).Top+TBitBtn(Components[i]).Height+16;
+    end;
+    {$endif}
     end;
     Result := ShowModal;
     CbChecked := CheckCbx.Checked;
