@@ -1496,6 +1496,26 @@ procedure TMainFrm.LDAPTreeEdited(Sender: TObject; Node: TTreeNode; var S: Strin
 var
   newdn, pdn, temp: string;
   i: Integer;
+
+  function ConfirmRename: Boolean;
+  var
+    cbx: Boolean;
+  begin
+    Result := true;
+    cbx := not GlobalConfig.ReadBool(rRenamePrompt, true);
+    if cbx then
+      exit;
+    temp := Node.Text;
+    Node.Text := S;
+    if CheckedMessageDlg(Format(stRenameEntry, [S]), mtConfirmation, [mbYes, mbNo], stDoNotShowAgain, cbx) <> mrYes then
+    begin
+      S := temp;
+      Result := false;
+    end;
+    if cbx then
+      GlobalConfig.WriteBool(rRenamePrompt, false);
+  end;
+
 begin
   i := Pos('=', S);
   if i = 0 then
@@ -1507,6 +1527,9 @@ begin
   else
     newdn := Copy(S, 1, i - 1) + '=' + EncodeLdapString(Copy(S, i + 1, Length(S) - i));
   pdn := GetDirFromDn(TObjectInfo(LDAPTree.Selected.Data).dn);
+
+  if not ConfirmRename then
+    exit;
 
   if not (FConnection is TDBConnection) and (FConnection.Version >= LDAP_VERSION3) then
     FConnection.RenameEntry(TObjectInfo(LDAPTree.Selected.Data).dn, newdn, pdn)

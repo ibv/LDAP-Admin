@@ -164,6 +164,7 @@ const
   rPostfixMailAddress = 'Postfix\MailAddress';
   rPostfixMaildrop    = 'Postfix\Maildrop';
   rQuickSearchFilter  = 'QuickSearchFilter';
+  rRenamePrompt       = 'RenamePrompt';
   rAdDisplayName      = 'Ad\DisplayName';
   rAdCommonName       = 'Ad\CommonName';
   rAdHomeDrive        = 'Ad\HomeDrive';
@@ -517,6 +518,7 @@ resourcestring
   stPassDiff        = 'Passwords do not match!';
   stPassFor         = 'Password for : %s';
   stRepeatCopyAction= 'Repeat for all';
+  stRenameEntry     = 'Rename entry to %s?';
   stMutuallyExclusive = 'The options "%s" and "%s" can not be selected simultaneously!';
   stPwdInclude      = 'Include passwords';
   stPwdNotEncrypted = 'Warning: exported passwords will not be encrypted!';
