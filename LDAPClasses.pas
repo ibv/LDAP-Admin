@@ -184,6 +184,7 @@ type
     function IndexOf(const Name: string): Integer;
     function AttributeOf(const Name: string): TLdapAttribute;
     procedure Clear;
+    procedure Delete(Index: Integer);
     property Items[Index: Integer]: TLdapAttribute read GetNode; default;
     property Count: Integer read GetCount;
   end;
@@ -2103,6 +2104,11 @@ begin
   for i := 0 to fList.Count - 1 do
     TLdapAttribute(fList[i]).Free;
   fList.Clear;
+end;
+
+procedure TLdapAttributeList.Delete(Index: Integer);
+begin
+  fList.Delete(Index);
 end;
 
 { TLdapEntry }

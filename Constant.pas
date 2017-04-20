@@ -535,6 +535,7 @@ resourcestring
   stReqNoEmpty      = '%s must have a value!';
   stRequired        = '%s is required!';
   stResetAutolock   = 'This account has been locked down by SAMBA server! Do you want to reset the autolock flag and enable it now?';
+  stResetToDefault  = 'Reset to default settings?';
   stRetrieving      = 'Reading: %d objects retrieved. Press ESC to abort...';
   stSaslSSL         = 'SASL encryption can not be used over an SSL connection!';
   stSchemaNoSubentry= 'Can''t find SubschemaSubentry';

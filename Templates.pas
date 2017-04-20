@@ -1,5 +1,5 @@
   {      LDAPAdmin - Templates.pas
-  *      Copyright (C) 2006-2016 Tihomir Karlovic
+  *      Copyright (C) 2006-2017 Tihomir Karlovic
   *
   *      Author: Tihomir Karlovic & Alexander Sokoloff
   *
@@ -292,6 +292,7 @@ type
   private
     fFalse:       string;
     fTrue:        string;
+    fMultivalue:  Boolean;
     function      GetCbState(const AState: string): TCheckBoxState;
   protected
     procedure     LoadProc(XmlNode: TXmlNode); override;
@@ -674,7 +675,7 @@ uses
 {$ELSE}
 {$ENDIF}
   WinBase64, {SysUtils,} Misc, Params, Config, PassDlg, Constant, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}
-  Pickup, ParseErr {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+  Connection,Pickup, ParseErr {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
 const
   CONTROLS_CLASSES: array[0..21] of TTControl = ( TTemplateCtrlEdit,
@@ -1947,12 +1948,14 @@ end;
 { TTemplateCtrlPasswordButton }
 
 procedure TTemplateCtrlPasswordButton.ButtonClick(Sender: TObject);
+var
+  Entry: TLdapEntry;
 begin
-  with TPasswordDlg.Create(Sender as TControl, fLdapAttribute.Entry, fLdapAttribute.Name) do
-  try
-    ShowModal;
-  finally
-    Free;
+  if Assigned(fLdapAttribute) then
+  begin
+    Entry := fLdapAttribute.Entry;
+    if Assigned(Entry) and Assigned(Entry.Session) then
+      (Entry.Session as TConnection).DI.ChangePassword(Entry);
   end;
 end;
 
@@ -2018,7 +2021,7 @@ begin
   if s = fTrue then
     Result := cbChecked
   else
-  if s = fFalse then
+  if fMultivalue or (s = fFalse) then
     Result := cbUnChecked
   else
     Result := cbGrayed;
@@ -2031,18 +2034,53 @@ begin
 end;
 
 procedure TTemplateCtrlCheckBox.Read;
+
+  function GetValue: string;
+  var
+    i: Integer;
+  begin
+    if fMultivalue and Assigned(fLdapValue.Attribute) then
+    begin
+      Result := '';
+      if (fLdapValue.DataSize = 0) and (fLdapValue.ModOp = LdapOpAdd) then // disable value added by constructor
+        fLdapValue.ModOp := LdapOpNoop;
+      i := fLdapValue.Attribute.IndexOf(fTrue);
+      if i <> -1 then
+        Result := fLdapValue.Attribute.Values[i].AsString;
+    end
+    else
+      Result := fLdapValue.AsString;
+  end;
+
 begin
   if Assigned(fControl) and Assigned(fLdapValue) then
-    (Control as TCheckBox).State := GetCbState(fLdapValue.AsString);
+    (Control as TCheckBox).State := GetCbState(GetValue);
 end;
 
 procedure TTemplateCtrlCheckBox.Write;
-begin
-  if Assigned(fControl) and Assigned(fLdapValue) then with (Control as TCheckBox) do
-    case State of
-      cbChecked: fLdapValue.AsString := fTrue;
-      cbUnchecked: fLdapValue.AsString := fFalse;
+
+  procedure SetValue(State: TCheckboxState);
+  var
+    i: Integer;
+  begin
+    if fMultivalue and Assigned(fLdapValue.Attribute) then
+    begin
+      i := fLdapValue.Attribute.IndexOf(fTrue);
+      case State of
+        cbChecked:   if i = -1 then fLdapValue.Attribute.AddValue(fTrue);
+        cbUnchecked: if i <> -1 then fLdapValue.Attribute.DeleteValue(fTrue);
+      end;
+    end
+    else
+      case State of
+        cbChecked: fLdapValue.AsString := fTrue;
+        cbUnchecked: fLdapValue.AsString := fFalse;
+      end;
   end;
+
+begin
+  if Assigned(fControl) and Assigned(fLdapValue) then
+    SetValue((Control as TCheckBox).State);
 end;
 
 procedure TTemplateCtrlCheckBox.LoadProc(XmlNode: TXmlNode);
@@ -2056,7 +2094,13 @@ begin
       fTrue := Content
     else
     if Name = 'false' then
-      fFalse := Content;
+      fFalse := Content
+    else
+    if Name = 'value' then
+    begin
+      fTrue := Content;
+      fMultivalue := true;
+    end;
   end;
 end;
 
@@ -2073,6 +2117,9 @@ begin
     if Assigned(TemplateAttribute) then
       if TemplateAttribute.Description <> '' then
         Caption := TemplateAttribute.Description
+      else
+      if fMultivalue then
+        Caption := fTrue
       else
         Caption := TemplateAttribute.Name;
     OnClick := OnChangeProc;

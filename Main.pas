@@ -2487,13 +2487,26 @@ end;
 procedure TMainFrm.ListPopupPopup(Sender: TObject);
 var
   Value: TLdapAttributeData;
+
+  function IsReadOnly(Attribute: TLdapAttribute): Boolean;
+  const
+    OID_STRUCTIRAL_OBJECTCLASS = '2.5.21.9';
+  begin
+    if FConnection.Schema.Loaded then with FConnection.Schema.Attributes.ByName[Attribute.Name] do
+      Result := NoUserModification or (Oid = OID_STRUCTIRAL_OBJECTCLASS)
+    else
+      Result := Attribute.Entry.OperationalAttributes.IndexOf(Value.Attribute.Name) <> -1;
+  end;
+  
 begin
   pbViewCert.Visible := false;
   pbViewPicture.Visible := false;
   if not Assigned(ValueListView.Selected) then exit;
   Value := ValueListView.Selected.Data;
-  ActEditValue.Enabled := (Value.DataType = dtText) and
-                          (Value.Attribute.Entry.OperationalAttributes.IndexOf(Value.Attribute.Name) = -1) and
+  ///ActEditValue.Enabled := (Value.DataType = dtText) and
+  ///			  (Value.Attribute.Entry.OperationalAttributes.IndexOf(Value.Attribute.Name) = -1) and
+  ActEditValue.Enabled := (Value.DataType = dtText) and not IsReadOnly(Value.Attribute) and
+			  
                           (lowercase(Value.Attribute.Name) <> 'objectclass') and
                           (GetAttributeFromDn(Value.Attribute.Entry.dn) <> Value.Attribute.Name);
   ActGoto.Enabled := (Value.DataType = dtText) and IsValidDn(Value.AsString);

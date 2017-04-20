@@ -1,38 +1,47 @@
-* Sun Mar 5 2017 <ivo.brhel at gmail.com>
+* Thu Apr 20 2017 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Version 1.8.2
++ Add reset to menus
++ Fixed deleting of attributes and values in TDBConnection
++ Multivalue template checkbox
++ Fixed Edit popup to use Schema info to determine read only status
+
+
+* Sun Mar 5 2017 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Fixed MessageDlg
 + Confirm rename entry
 
 
-* Fri Mar 3 2017 <ivo.brhel at gmail.com>
+* Fri Mar 3 2017 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Add function ldap_bind_s, DIGEST-MD5 SASL method
 + Fixed templates sizeX,Y
 
 
-* Wed Mar 1 2017 <ivo.brhel at gmail.com>
+* Wed Mar 1 2017 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Add function ldap_get_dn
 
 
-* Thu Feb 23 2017 <ivo.brhel at gmail.com>
+* Thu Feb 23 2017 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Add ldap_rename_ext_s function [LDAPClasses.pas]
 + Fixed ConvertVariant function [Templates.pas]
 
 
-* Tue Feb 21 2017 <ivo.brhel at gmail.com>
+* Tue Feb 21 2017 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Fixed export nested list, ConnList form
 + Fixed ldap_stop_tls_s
 
 
-* Fri Feb 17 2017 <ivo.brhel at gmail.com>
+* Fri Feb 17 2017 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Add LDAP SSL/TLS support from synapse library
 
 
-* Mon Feb 13 2017 <ivo.brhel at gmail.com>
+* Mon Feb 13 2017 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Adapt changes from Tihomir's SourceForge git, win version 1.7.2.0
 + New storage type 

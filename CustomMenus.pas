@@ -113,14 +113,19 @@ type
     fTemplateMenu: TCustomMenuItem;
     fOnClick:      TNotifyEvent;
     fConfig:       TConfig;
+    fDefault:      Boolean;
     procedure      SetOnClick(Value: TNotifyEvent);
     procedure      ActionChange(Sender: TCustomActionItem);
+  protected
+    procedure      CreateDefault; virtual;
   public
     constructor    Create(Config: TConfig); virtual;
     destructor     Destroy; override;
     function       Load: Boolean; virtual;
     procedure      Save; virtual;
-    procedure      Clone(ActionMenu: TCustomActionMenu);
+    procedure      Reset(Save: Boolean = false);
+    function       Clone: TCustomActionMenu; overload;
+    procedure      Clone(ActionMenu: TCustomActionMenu); overload;
     procedure      AddMenuItem(ACaption: string; AActionId: Integer = -1; AShortCut: PCtrlRec = nil);
     procedure      AssignItems(MenuItem: TMenuItem);
     function       GetActionId(const ObjectID: Integer): Integer;
@@ -129,17 +134,20 @@ type
     property       Items: TCustomActionItem read FItems;
     property       TemplateMenu: TCustomMenuItem read fTemplateMenu write fTemplateMenu;
     property       OnClick: TNotifyEvent read fOnClick write SetOnClick;
+    property       DefaultMenu: Boolean read fDefault;
   end;
 
   TPosixActionMenu = class(TCustomActionMenu)
-  public
-    constructor    Create(Config: TConfig); override;
+  protected
+    procedure      CreateDefault; override;
   end;
 
   TADActionMenu = class(TCustomActionMenu)
-  public
-    constructor Create(Config: TConfig); override;
+  protected
+    procedure      CreateDefault; override;
   end;
+
+  TCMClass = class of TCustomActionMenu;
 
   TCustomMenuItem = class(TMenuItem)
   private
@@ -498,6 +506,11 @@ begin
   end;
 end;
 
+procedure TCustomActionMenu.CreateDefault;
+begin
+  fDefault := true;
+end;
+
 constructor TCustomActionMenu.Create(Config: TConfig);
 begin
   fConfig := Config;
@@ -507,6 +520,8 @@ begin
   fItems.Caption := mcNew;
   SetLength(FObjectIdToAction, Length(ObjectIdToAction));
   Move(ObjectIdToAction[0], FObjectIdToAction[0], SizeOf(ObjectIdToAction));
+  if not Load then
+    CreateDefault;
 end;
 
 destructor TCustomActionMenu.Destroy;
@@ -517,7 +532,7 @@ end;
 
 function TCustomActionMenu.Load: Boolean;
 
-  function ReadItem(ActionItem: TCustomActionItem; Path: string): Boolean;
+  function ReadItem(ActionItem: TCustomActionItem; ItemPath: string): Boolean;
   var
     i: integer;
     names: TStrings;
@@ -528,11 +543,11 @@ function TCustomActionMenu.Load: Boolean;
     names := TStringList.Create;
     with fConfig do
     try
-      GetKeyNames(Path, names);
+      GetKeyNames(ItemPath, names);
       Result := names.Count > 0;
       for i := 0 to names.Count - 1 do
       begin
-        valPath := Path + names[i] + '\';
+        valPath := ItemPath + names[i] + '\';
         NewItem := TCustomActionItem.Create(ActionItem);
         with NewItem do
         begin
@@ -564,20 +579,19 @@ procedure TCustomActionMenu.Save;
 var
   i: Integer;
 
-  procedure WriteItem(ActionItem: TCustomActionItem; Path: string);
+  procedure WriteItem(ActionItem: TCustomActionItem; ItemPath: string);
   var
     i: integer;
-
   begin
     with fConfig, ActionItem do begin
-      WriteString(Path + 'Caption', Caption);
-      WriteInteger(Path + 'ShortCut', ShortCut);
-      WriteBool(Path + 'Enabled', Enabled);
-      WriteInteger(Path + 'ActionId', ActionId);
-      WriteInteger(Path + 'DefaultAction', DefaultAction);
-      WriteString(Path + 'TemplateName', TemplateName);
+      WriteString(ItemPath + 'Caption', Caption);
+      WriteInteger(ItemPath + 'ShortCut', ShortCut);
+      WriteBool(ItemPath + 'Enabled', Enabled);
+      WriteInteger(ItemPath + 'ActionId', ActionId);
+      WriteInteger(ItemPath + 'DefaultAction', DefaultAction);
+      WriteString(ItemPath + 'TemplateName', TemplateName);
       for i:= 0 to Count - 1 do
-        WriteItem(Items[i], Path + Format('%.4d', [i]) + '\');
+        WriteItem(Items[i], ItemPath + Format('%.4d', [i]) + '\');
     end;
   end;
 
@@ -588,6 +602,22 @@ begin
     WriteItem(Items[i], CONF_MENU + Format('%.4d', [i]) + '\');
 end;
 
+procedure TCustomActionMenu.Reset(Save: Boolean = false);
+var
+  i: Integer;
+begin
+  if Save then
+    fConfig.Delete(CONF_MENU);
+  for i := Items.Count - 1 downto 0 do
+    Items.Delete(i);
+  CreateDefault;
+end;
+
+function TCustomActionMenu.Clone: TCustomActionMenu;
+begin
+  Result := TCMClass(Self.ClassType).Create(FConfig);
+  Clone(Result);
+end;
 
 procedure TCustomActionMenu.Clone(ActionMenu: TCustomActionMenu);
 begin
@@ -650,11 +680,9 @@ begin
 end;
 
 { TPosixActionMenu }
-
-constructor TPosixActionMenu.Create(Config: TConfig);
+procedure TPosixActionMenu.CreateDefault;
 begin
-  inherited Create(Config);
-  if Load then exit;
+  inherited;
   AddMenuItem(mcEntry, aidEntry);
   AddMenuItem(mcUser, aidUser, @scCtrlU);
   AddMenuItem(mcComputer, aidComputer, @scCtrlW);
@@ -669,11 +697,9 @@ begin
 end;
 
 { TADActionMenu }
-
-constructor TADActionMenu.Create(Config: TConfig);
+procedure TADActionMenu.CreateDefault;
 begin
-  inherited Create(Config);
-  if Load then exit;
+  inherited;
   AddMenuItem(mcEntry, aidEntry);
   AddMenuItem(mcUser, aidAdUser, @scCtrlU);
   AddMenuItem(mcGroup, aidAdGroup, @scCtrlG);

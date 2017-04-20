@@ -244,9 +244,9 @@ end;
 
 function TConnection.GetSchema: TLdapSchema;
 begin
-   if not Assigned(FSchema) then
-     FSchema := TLdapSchema.Create(Self);
-   Result := FSchema;
+  if not Assigned(FSchema) then
+    FSchema := TLdapSchema.Create(Self);
+  Result := FSchema;
 end;
 
 function TConnection.GetDirectoryIdentity: IDirectoryIdentity;
@@ -685,6 +685,16 @@ begin
   end;
 end;
 
+  { Put all values outputted by LDIF reader in browse mode }
+  procedure SetBrowseMode(Entry: TLdapEntry);
+  var
+    i, j: Integer;
+  begin
+    for i := 0 to Entry.Attributes.Count - 1 do
+    for j := 0 to Entry.Attributes[i].ValueCount - 1 do
+      Entry.Attributes[i].Values[j].ModOp := LdapOpRead;
+  end;
+
 constructor TDBConnection.Create(Account: TDBAccount; CallbackProc: TLoadCallback = nil);
 var
   Entry, Parent: TEntryNode;
@@ -708,6 +718,7 @@ begin
       end;
       if not (esDeleted in Entry.State) then
       begin
+        SetBrowseMode(Entry);
         Parent := FindNode(GetDirFromDn(Entry.dn));
         if Assigned(Parent) then
           Parent.Children.Add(Entry);
@@ -747,10 +758,28 @@ begin
   end;
 end;
 
+  { Need to remove deleted attributes and prevent deleted values from cloning }
+  procedure Purify(Entry: TLdapEntry);
+  var
+    i, j: Integer;
+  begin
+    for i := Entry.Attributes.Count - 1 downto 0 do
+    begin
+      if asDeleted in Entry.Attributes[i].State then
+        Entry.Attributes.Delete(i)
+      else
+        for j := 0 to Entry.Attributes[i].ValueCount - 1 do
+          if Entry.Attributes[i].Values[j].ModOp = LdapOpDelete then
+            Entry.Attributes[i].Values[j].Berval.bv_len := 0;  // Skip when cloning
+    end;
+  end;
+
+
 procedure TDBConnection.WriteEntry(Entry: TLdapEntry);
 var
   Node, NewNode: TentryNode;
 begin
+  Purify(Entry);
   if esNew in Entry.State then
   begin
     Node := FindNode(GetDirFromDN(Entry.dn)); // find parent
@@ -768,6 +797,7 @@ begin
       Node.Attributes.Clear;
       Node.OperationalAttributes.Clear;
       Entry.Clone(Node);
+      SetBrowseMode(Node);
     end;
   end;
   fModified := true;
