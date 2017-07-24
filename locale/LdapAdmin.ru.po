@@ -1,0 +1,2243 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+"X-Generator: Poedit 1.8.7.1\n"
+
+#: constant.bad_xml_document
+msgid "Not a well formed XML file."
+msgstr "Nicht wohlgeformtes XML."
+
+#: constant.cadd
+msgctxt "constant.cadd"
+msgid "&Add"
+msgstr "Добавить"
+
+#: constant.caddaddress
+msgid "Add Address"
+msgstr "Добавить адрес"
+
+#: constant.caddattribute
+msgid "Add attribute..."
+msgstr "Добавить атрибут..."
+
+#: constant.caddconn
+msgid "New connection"
+msgstr "Новое соединение"
+
+#: constant.cadddelreplace
+msgid "Add,Delete,Replace"
+msgstr ""
+
+#: constant.caddhost
+msgid "Add Host"
+msgstr "Добавть хост"
+
+#: constant.caddvalue
+msgid "Add value"
+msgstr "Добавить значение"
+
+#: constant.canonymousconn
+msgctxt "constant.canonymousconn"
+msgid "Anonymous connection"
+msgstr "Анонимное соединение"
+
+#: constant.cappname
+msgid "LDAP Admin"
+msgstr "LDAP Admin"
+
+#: constant.cattribute
+msgctxt "constant.cattribute"
+msgid "Attribute"
+msgstr "Атрибут"
+
+#: constant.cattributename
+msgid "Attribute name:"
+msgstr "Название атрибута:"
+
+#: constant.cbinary
+msgid "Binary"
+msgstr "Binär"
+
+#: constant.cbrowse
+msgid "&Browse..."
+msgstr "&Durschsuchen..."
+
+#: constant.ccancel
+msgctxt "constant.ccancel"
+msgid "&Cancel"
+msgstr "Отмена"
+
+#: constant.ccert
+msgid "Certificate"
+msgstr "Сертификат"
+
+#: constant.cclose
+msgid "&Close"
+msgstr "Закрыть"
+
+#: constant.ccolumnnames
+msgid "Name,DN"
+msgstr ""
+
+#: constant.cconfirm
+msgid "Confirmation"
+msgstr "Подтверждение"
+
+#: constant.ccopying
+msgid "Copying..."
+msgstr "Копировать..."
+
+#: constant.ccopyselection
+msgid "Copy selection to..."
+msgstr ""
+
+#: constant.ccopyto
+msgid "Copy %s to..."
+msgstr "Копировать %s в ..."
+
+#: constant.ccreatefolder
+msgid "Create folder"
+msgstr ""
+
+#: constant.ccurrentconn
+msgid "Current connection"
+msgstr ""
+
+#: constant.cdecimal
+msgid "Decimal:"
+msgstr "Десятичное:"
+
+#: constant.cdelete
+msgctxt "constant.cdelete"
+msgid "&Delete"
+msgstr "Удалить"
+
+#: constant.cdeleting
+msgid "Deleting:"
+msgstr "Удаляется:"
+
+#: constant.cdescription
+msgid "Description"
+msgstr "Описание"
+
+#: constant.cdetails
+msgid "&Details"
+msgstr "Детали"
+
+#: constant.cedit
+msgctxt "constant.cedit"
+msgid "&Edit"
+msgstr "Правка"
+
+#: constant.ceditaddress
+msgid "Edit Address"
+msgstr "Редактировать адрес"
+
+#: constant.ceditentry
+msgctxt "constant.ceditentry"
+msgid "Edit entry"
+msgstr "Редактирование объекта"
+
+#: constant.cedithost
+msgid "Edit Host"
+msgstr "Редактировать хост"
+
+#: constant.ceditresource
+msgid "Edit Resource"
+msgstr ""
+
+#: constant.ceditvalue
+msgid "Edit value"
+msgstr "Изменить значение"
+
+#: constant.cemail
+msgid "&E-Mail"
+msgstr ""
+
+#: constant.cenglish
+msgid "English"
+msgstr "Английский"
+
+#: constant.centernewvalue
+msgid "Enter new value:"
+msgstr "Ведите новое значение:"
+
+#: constant.centerpasswd
+msgid "Enter password"
+msgstr "Введите пароль для соединения"
+
+#: constant.centerrdn
+msgid "Enter rdn:"
+msgstr "Введите RDN:"
+
+#: constant.cerror
+msgid "Error"
+msgstr "Ошибка"
+
+#: constant.cfinish
+msgid "&Finish"
+msgstr "Выход"
+
+#: constant.cfoldername
+msgid "Folder name:"
+msgstr ""
+
+#: constant.chex
+msgid "Hex:"
+msgstr "Hex:"
+
+#: constant.chomedir
+msgid "Home Directory"
+msgstr "Папка пользователя"
+
+#: constant.chostname
+msgid "Host Name:"
+msgstr "Имя хоста:"
+
+#: constant.cimage
+msgid "Image"
+msgstr "Изображение"
+
+#: constant.cinformation
+msgid "Information"
+msgstr "Информация"
+
+#: constant.cipaddress
+msgid "IP Address"
+msgstr "IP Адрес"
+
+#: constant.cloadbatchfromfile
+msgid "Load batch from file"
+msgstr ""
+
+#: constant.cmaildrop
+msgid "Maildrop"
+msgstr "Основной адрес"
+
+#: constant.cmerge
+msgid "Merge"
+msgstr ""
+
+#: constant.cmidnight
+msgid "Midnight"
+msgstr ""
+
+#: constant.cmodifyok
+msgid "Ok."
+msgstr "Ok."
+
+#: constant.cmodifyskipped
+msgid "Skipped."
+msgstr "Übersprüngen."
+
+#: constant.cmore
+msgid "More..."
+msgstr "Шаблоны..."
+
+#: constant.cmoveto
+msgid "Move %s to..."
+msgstr "Переместить %s в ..."
+
+#: constant.cmoving
+msgid "Moving..."
+msgstr "Eintrag wird переместить2 ..."
+
+#: constant.cname
+msgctxt "constant.cname"
+msgid "Name"
+msgstr "Имя"
+
+#: constant.cnew
+msgid "<<new>>"
+msgstr "<<Новый>>"
+
+#: constant.cnewentry
+msgid "New entry"
+msgstr "Новая запись"
+
+#: constant.cnewitem
+msgid "New item"
+msgstr "Новый элемент"
+
+#: constant.cnewname
+msgid "New name:"
+msgstr ""
+
+#: constant.cnewresource
+msgid "New Resource"
+msgstr ""
+
+#: constant.cnewsubmenu
+msgid "New submenu"
+msgstr "Новое подменю"
+
+#: constant.cnewvalue
+msgid "New value"
+msgstr "Новое значение"
+
+#: constant.cnext
+msgid "&Next"
+msgstr "Далее"
+
+#: constant.cobjectclass
+msgid "Objectclass"
+msgstr "Класс объекта"
+
+#: constant.cok
+msgctxt "constant.cok"
+msgid "&OK"
+msgstr "&OK"
+
+#: constant.coldvalue
+msgid "Old value"
+msgstr "Прежнее значение"
+
+#: constant.connlist_save_filter
+msgid "Account Files (*.lcf)|*.lcf|All Files (*.*)|*.*"
+msgstr ""
+
+#: constant.coperation
+msgid "Operation:"
+msgstr "Действие:"
+
+#: constant.coverwrite
+msgid "Overwrite"
+msgstr ""
+
+#: constant.cparentdir
+msgid "Parent directory:"
+msgstr "Папка верхнего уровня:"
+
+#: constant.cpassword
+msgctxt "constant.cpassword"
+msgid "Password:"
+msgstr "Пароль:"
+
+#: constant.cpath
+msgid "Path: %s"
+msgstr "Путь: %s"
+
+#: constant.cpickaccounts
+msgid "Choose Accounts"
+msgstr "Список компьютеров"
+
+#: constant.cpickgroups
+msgid "Choose Groups"
+msgstr "Список групп"
+
+#: constant.cpickmembers
+msgid "Choose members"
+msgstr "Выбор членов группы"
+
+#: constant.cpickquery
+msgid "Choose query"
+msgstr ""
+
+#: constant.cpreparing
+msgid "Preparing..."
+msgstr "Подготовка..."
+
+#: constant.cprogress
+msgid "Progress:"
+msgstr "Ход выполнения:"
+
+#: constant.cpropertiesof
+msgid "Properties of %s"
+msgstr "Свойства объекта: %s"
+
+#: constant.cregistrycfgname
+msgid "Private"
+msgstr "Реестр"
+
+#: constant.crename
+msgid "Rename"
+msgstr ""
+
+#: constant.cresource
+msgid "Resource:"
+msgstr ""
+
+#: constant.cretry
+msgid "&Retry"
+msgstr "Повторить"
+
+#: constant.csambadomain
+msgid "Samba Domain"
+msgstr "Домен Samba"
+
+#: constant.csaslcurruser
+msgid "Use current user credentials"
+msgstr "Использовать данные текущего пользователя"
+
+#: constant.csavebatchprotocol
+msgid "Save protocol"
+msgstr ""
+
+#: constant.csavebatchtofile
+msgid "Save batch to file"
+msgstr ""
+
+#: constant.csavesrchresults
+msgid "Save search results"
+msgstr ""
+
+#: constant.csavetoldap
+msgid "Save to LDAP"
+msgstr "Сохранить в LDAP"
+
+#: constant.csearchbase
+msgid "Search base"
+msgstr "База поиска"
+
+#: constant.csearchresults
+msgid "Search results:"
+msgstr "Результат поиска:"
+
+#: constant.cselectaliasdir
+msgid "Select alias directory"
+msgstr "Путь к псевдониму"
+
+#: constant.cselectentry
+msgid "Select entry"
+msgstr "Путь к источнику"
+
+#: constant.cserver
+msgid "Server: %s"
+msgstr "Сервер: %s"
+
+#: constant.csetpassword
+msgid "Set password..."
+msgstr "Установить пароль..."
+
+#: constant.cskip
+msgid "&Skip"
+msgstr "Пропустить"
+
+#: constant.cskipall
+msgid "Skip &all"
+msgstr "Все пропустить"
+
+#: constant.csmartdelete
+msgid "&Smart delete"
+msgstr "Удалить ссылки"
+
+#: constant.csmtpaddress
+msgid "SMTP Address:"
+msgstr "SMTP Адрес:"
+
+#: constant.csurname
+msgid "Second name"
+msgstr "Фамилия"
+
+#: constant.ctext
+msgid "Text"
+msgstr "Текст"
+
+#: constant.cunknown
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#: constant.cuser
+msgid "User: %s"
+msgstr "Пользователь: %s"
+
+#: constant.cusername
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: constant.cuserprompt
+msgid "User Prompt"
+msgstr "Benutzereingabe"
+
+#: constant.cvalue
+msgctxt "constant.cvalue"
+msgid "Value"
+msgstr "Значение"
+
+#: constant.cview
+msgctxt "constant.cview"
+msgid "&View"
+msgstr "Вид"
+
+#: constant.cviewpic
+msgid "View picture: "
+msgstr "Просмотр изображения: "
+
+#: constant.cwarning
+msgid "Warning"
+msgstr "Предупреждение"
+
+#: constant.lac_notlac
+msgid "The file \"%s\" is not an Ldap Admin accounts file"
+msgstr ""
+
+#: constant.mcadcontainer
+msgid "Container..."
+msgstr ""
+
+#: constant.mcalias
+msgid "Alias..."
+msgstr "Псевдоним (Alias)..."
+
+#: constant.mccomputer
+msgid "&Computer..."
+msgstr "Компьютер..."
+
+#: constant.mcentry
+msgid "&Entry..."
+msgstr "Запись..."
+
+#: constant.mcgroup
+msgid "&Group..."
+msgstr "Группа..."
+
+#: constant.mcgroupofun
+msgid "Grou&p of unique names..."
+msgstr "Группа уникальных имен..."
+
+#: constant.mchost
+msgid "&Host..."
+msgstr "&Хост..."
+
+#: constant.mclocality
+msgid "&Locality..."
+msgstr "Местоположение..."
+
+#: constant.mcmailinglist
+msgid "&Mailing list..."
+msgstr "&Список рассылки..."
+
+#: constant.mcnew
+msgctxt "constant.mcnew"
+msgid "&New..."
+msgstr "Новый..."
+
+#: constant.mcou
+msgid "&Organizational unit..."
+msgstr "&Организация..."
+
+#: constant.mctransporttable
+msgid "&Transport table..."
+msgstr "&Транспортная таблица..."
+
+#: constant.mcuser
+msgid "&User..."
+msgstr "Пользователь..."
+
+#: constant.save_modify_filter
+msgid "LDAP Admin batch file (*.lbf)|*.lbf"
+msgstr ""
+
+#: constant.save_modify_log_filter
+msgid "Text file (*.txt)|*.txt"
+msgstr ""
+
+#: constant.save_search_filter
+msgid "Ldif file, Windows format (CR/LF) (*.ldif)|*.ldif|Ldif file, Unix format (LF only) (*.ldif)|*.ldif|CSV (Comma-separated) (*.csv)|*.csv|XML (*.xml)|*.xml"
+msgstr ""
+
+#: constant.stabortscript
+msgid "Do you want to abort the script?"
+msgstr ""
+
+#: constant.staccntexist
+msgid "Account with name \"%s\" already exists!"
+msgstr ""
+
+#: constant.staccntnamereq
+msgid "You have to enter a name for this connection!"
+msgstr "Sie müssen einer Name für diese Verbindung eingeben!"
+
+#: constant.stallfilesfilter
+msgid "All files (*.*)|*.*"
+msgstr ""
+
+#: constant.stargdecnum
+msgid "Argument must be a decimal number: %s!"
+msgstr ""
+
+#: constant.stasktreecopy
+msgid "Copy %s to %s?"
+msgstr ""
+
+#: constant.stasktreemove
+msgid "Move %s to %s?"
+msgstr ""
+
+#: constant.stassertdecnum
+msgid "Assertion value %s must be decimal number!"
+msgstr ""
+
+#: constant.stautodetectdt
+msgid "Manually setting of this option is not recommended! Unless you are certain that there is a problem with autodetection it is recommended to let LdapAdmin detect the directory type."
+msgstr ""
+
+#: constant.stbinarymatchdn
+msgid "Binary match on dn is not allowed!"
+msgstr ""
+
+#: constant.stcantstorpass
+msgid "This storage can not store passwords"
+msgstr "In diesem Speicher können keine Passwörter aufbewahrt werden!"
+
+#: constant.stcertconfirmconn
+msgid ""
+"The server you are trying to connect to is using a certificate which could not be verified!\n"
+"\n"
+"%s\n"
+"Do you want to proceed?\n"
+msgstr ""
+
+#: constant.stcertinvalidname
+msgid "The name of the security certificate is invalid or does not match the server name!"
+msgstr "Der CN-Name des Zertifikats ist ungültig oder stimmt nicht mit dem Servernamen überein!"
+
+#: constant.stcertinvalidsig
+msgid "Signature check failed!"
+msgstr "Signaturprüfung ist fehlgeschlagen!"
+
+#: constant.stcertinvalidtime
+msgid "The security certificate has expired or is not yet valid!"
+msgstr "Das Sicherheitszertifikat ist abgelaufen oder noch nicht gültig!"
+
+#: constant.stcertnotfound
+msgid "Issuer certificate not found"
+msgstr "Das Herausgeberzertifikat ist nicht vorhanden, bzw. nicht vertraunswürdig!"
+
+#: constant.stcertopenstoreerr
+msgid "Error opening certificate system store %s: %s!"
+msgstr ""
+
+#: constant.stcertselfsigned
+msgid "The certificate is self-signed root certificate"
+msgstr "Das Zertifikat ist ein selbst-signiertes Root-Zertifikat."
+
+#: constant.stchangepwdgeterr
+msgid "An attempt to retrieve user change password priviledge failed: "
+msgstr ""
+
+#: constant.stchangepwdseterr
+msgid "An attempt to set user change password priviledge failed: "
+msgstr ""
+
+#: constant.stclassnotfound
+msgid "Class %s not found!"
+msgstr "Класс %s könnte nicht gefunden werden!"
+
+#: constant.stcntobjects
+msgid "%d object(s) retrieved."
+msgstr ""
+
+#: constant.stcntsubentries
+msgid "%d subentries"
+msgstr "%d вложенных объектов"
+
+#: constant.stconfirmdel
+msgid "Delete entry \"%s\"?"
+msgstr ""
+
+#: constant.stconfirmdelaccnt
+msgid "Delete account \"%s\"?"
+msgstr ""
+
+#: constant.stconfirmmultidel
+msgid "Delete %d entries?"
+msgstr ""
+
+#: constant.stconnectsuccess
+msgid "Connection is successful."
+msgstr "Соединение прошло успешно"
+
+#: constant.stconverrsambarid
+msgid "Error converting sambaNextRid:"
+msgstr ""
+
+#: constant.stdateformat
+msgid "date format"
+msgstr "Datumsformat"
+
+#: constant.stdeleteall
+msgid ""
+"\"%s\"\n"
+"This directory entry is not empty (it contains further leaves). Delete all recursively?\n"
+msgstr ""
+
+#: constant.stdeletefolder
+msgid "Delete folder \"%s\"?"
+msgstr ""
+
+#: constant.stdeletemenuitem
+msgid "Delete this menu item?"
+msgstr ""
+
+#: constant.stdeleteselected
+msgid "Delete selected?"
+msgstr ""
+
+#: constant.stdeletesubmenu
+msgid "Delete this submenu?"
+msgstr ""
+
+#: constant.stdelnamingattr
+msgid "Attribute %s is the naming value of this entry! Do you want to delete it?"
+msgstr ""
+
+#: constant.stdirnotexists
+msgid "Directory does not exist: %s!"
+msgstr ""
+
+#: constant.stdisplaying
+msgid "Displaying first %d results."
+msgstr ""
+
+#: constant.stdonotcheckagain
+msgctxt "constant.stdonotcheckagain"
+msgid "Do not perform this check in the future."
+msgstr ""
+
+#: constant.stdonotshowagain
+msgid "Do not show this message in the future."
+msgstr ""
+
+#: constant.stduplicateentry
+msgid "EntryList does not allow duplicates"
+msgstr ""
+
+#: constant.stduplicatesc
+msgid "Shortcut '%s' is already assigned to '%s' menu item!"
+msgstr "Tastaturkürzel '%s' ist bereits dem Menüeintrag '%s' zugewiesen!"
+
+#: constant.stemptyarg
+msgid "Empty argument!"
+msgstr "Parameter ist leer!"
+
+#: constant.stemptyfile
+msgid "File %s is empty!"
+msgstr ""
+
+#: constant.sterrextmethname
+msgid "Error extracting method name!"
+msgstr "Ошибка beim extrahieren von Methodennamen! !"
+
+#: constant.sterrunaryop
+msgid "Unary operator \"%s\" can not be applied to multiple operands: %s!"
+msgstr ""
+
+#: constant.stevtypeevtypeerr
+msgid "Error setting %s event: %s event type is not supported!"
+msgstr "Ошибка beim setzen von Ereigniss %s: %s Ereignisstyp ist nicht unterstützt!"
+
+#: constant.stexpectedat
+msgid "Expected %s at %s!"
+msgstr ""
+
+#: constant.stexpectedbutreceived
+msgid "Expected \"=\" but recieved \""
+msgstr ""
+
+#: constant.stexpectedendofstr
+msgid "Expected end of string but found \"%s\" at %s!"
+msgstr ""
+
+#: constant.stexportaccounts
+msgid "Export accounts"
+msgstr ""
+
+#: constant.stexportselect
+msgid "Select items to export:"
+msgstr ""
+
+#: constant.stexportsuccess
+msgid "Success: %d Object(s) succesfully exported!"
+msgstr ""
+
+#: constant.stextconfirmassoc
+msgid ""
+"LDAPAdmin is currently not your default LDAP browser.\n"
+"Would you like to make it your default LDAP browser?\n"
+msgstr ""
+
+#: constant.stfilemodified
+msgid "File %s was modifed. Save changes?"
+msgstr ""
+
+#: constant.stfileoverwrite
+msgid "File '%s' exists, overwrite?"
+msgstr ""
+
+#: constant.stfilereadonly
+msgid "File opened in read only mode!"
+msgstr ""
+
+#: constant.stfolderexists
+msgid "Folder with name \"%s\" already exists."
+msgstr ""
+
+#: constant.stfoldermerge
+msgid "Folder with name \"%s\" already exists. Merge or save with different name?"
+msgstr ""
+
+#: constant.stfoldernamereq
+msgid "You have to enter a name for this folder!"
+msgstr ""
+
+#: constant.stfoldernotempty
+msgid "The folder \"%s\" is not empty. Delete anyway?"
+msgstr ""
+
+#: constant.stgetprocaddrerr
+msgid "Cannot GetProcAddress of %s."
+msgstr "GetProcAddress für %s fehlgeschlagen."
+
+#: constant.stgidnotsamba
+msgid "Selected primary group is not a Samba group or it does not map to user domain. Do you still want to continue?"
+msgstr ""
+
+#: constant.stgroupmailreq
+msgid "You have to enter at least one mail address for this group!"
+msgstr "Sie müssen mindestens eine E-Mail Adresse für diese Gruppe festlegen!"
+
+#: constant.stgroupnamereq
+msgid "You have to enter a name for this group!"
+msgstr "Sie müssen ein Name für diese Gruppe eingeben!"
+
+#: constant.stidentisnotvalid
+msgid "\"%s\" is not a valid %s!"
+msgstr ""
+
+#: constant.stimginvalidform
+msgid "Image format not supported!"
+msgstr ""
+
+#: constant.stimportaccounts
+msgid "Import accounts"
+msgstr ""
+
+#: constant.stimportselect
+msgid "Select items to import:"
+msgstr ""
+
+#: constant.stimportto
+msgid "Import to:"
+msgstr ""
+
+#: constant.stinserting
+msgid "Inserting, %d of %d. Press ESC to abort..."
+msgstr ""
+
+#: constant.stinteger
+msgid "integer number"
+msgstr "Ganzzahl"
+
+#: constant.stinvalidargindex
+msgid "Invalid Argument Index: %d"
+msgstr "Ungültiger Parameter-Index: %d"
+
+#: constant.stinvalidchar
+msgid "%s may not contain the character \"%s\""
+msgstr ""
+
+#: constant.stinvalidchars
+msgid ""
+"%s may not contain any of the following characters:\n"
+"%s\n"
+msgstr ""
+
+#: constant.stinvalidchr
+msgid "Invalid character: \"%s\" in \"%s\"!"
+msgstr ""
+
+#: constant.stinvalidcmdver
+msgid "Invalid LDAP version in command line: %s"
+msgstr "Ungültige LDAP-version in Befehlszeile: %s"
+
+#: constant.stinvalidfilter
+msgid "Invalid or unsupported filter type: %s!"
+msgstr "Üngultiger oder nicht unterstützter Filtertyp!"
+
+#: constant.stinvalidldapop
+msgid "Invalid Ldap operation!"
+msgstr ""
+
+#: constant.stinvalidoperator
+msgid "Invalid operator \"%s\"!"
+msgstr ""
+
+#: constant.stinvalidsid
+msgid ""
+"Could not set \"User cannot change password\" flag.\n"
+"\n"
+"Error message: %s\n"
+"\n"
+"Probable reason: the computer %s is not a member of the domain %s or a trusted domain.\n"
+msgstr ""
+
+#: constant.stinvalidtagvalue
+msgid "Invalid value %s for <%s>!"
+msgstr "Ungültiges %s für <%s>!"
+
+#: constant.stinvalidtimefmt
+msgid "Invalid time format: %s!"
+msgstr "Ungültiges Zeitformat!"
+
+#: constant.stinvalidurl
+msgid "Invalid URL format!"
+msgstr "Ungültiges URL-Format!"
+
+#: constant.stldaperror
+msgid "LDAP error: %s!"
+msgstr "Ошибка LDAP: %s!"
+
+#: constant.stldaperrorex
+msgid "LDAP error! %s: %s."
+msgstr "Ошибка LDAP ! %s: %s."
+
+#: constant.stldifefold
+msgid "Line %d: Empty line may not be folded!"
+msgstr "Zeile %d ist leer, Zeilenumbruch nicht möglich!"
+
+#: constant.stldifeinvmode
+msgid "Internal error: Invalid LDIF mode!"
+msgstr "Interner Ошибка: Ungültige LDIF-Mode!"
+
+#: constant.stldifenocol
+msgid "Line %d: Missing \":\"."
+msgstr ""
+
+#: constant.stldifenodn
+msgid "Line %d: dn expected but %s found!"
+msgstr "Zeile %d: dn erwartet aber %s gefunden!"
+
+#: constant.stldifeof
+msgid "End of file reached!"
+msgstr "Файл1Dateiende erreicht!"
+
+#: constant.stldifever
+msgid "Invalid version value: %s!"
+msgstr "Ungültiger Versionswert: %s!"
+
+#: constant.stldiffailure
+msgid "%d Object(s) could not be imported!"
+msgstr ""
+
+#: constant.stldifinvalidurl
+msgid "Invalid URL!"
+msgstr "Ungültige URL!"
+
+#: constant.stldifinvattrname
+msgid "Line %d: Invalid attribute name, expected \"%s\" but found \"%s\"!"
+msgstr ""
+
+#: constant.stldifinvchtype
+msgid "Line %d: Invalid changetype \"%s\"!"
+msgstr ""
+
+#: constant.stldifinvop
+msgid "Line %d: Invalid operation \"%s\"!"
+msgstr ""
+
+#: constant.stldifnotexpected
+msgid "Line %d: Expected \"%s\" but found \"%s\"!"
+msgstr ""
+
+#: constant.stldifsuccess
+msgid "%d Object(s) succesfully imported!"
+msgstr ""
+
+#: constant.stldifurlnotsupp
+msgid "URL method not supported!"
+msgstr "URL-Methode ist nicht unterstützt!"
+
+#: constant.stmenuassigntempl
+msgid "A template name must not be empty!"
+msgstr "Templatename muss eingegeben werden!"
+
+#: constant.stmenulocatetempl
+msgid "The template \"%s\" which is assigned to this action could not be located!"
+msgstr ""
+
+#: constant.stmissingin
+msgid "Missing %s in %s!"
+msgstr ""
+
+#: constant.stmissingoperator
+msgid "Missing operator!"
+msgstr ""
+
+#: constant.stmoveoverlap
+msgid "Source and destination paths overlap!"
+msgstr "Переместить3 nicht möglich. Der Zielordner ist dem Quellordner untergeordnet!"
+
+#: constant.stmutuallyexclusive
+msgid "The options \"%s\" and \"%s\" can not be selected simultaneously!"
+msgstr ""
+
+#: constant.stneedelevated
+msgid "On Vista or higher, LDAPAdmin must be executed with elevated privileges for this operation to succesfully complete!"
+msgstr "При работе в Windows Vista и более поздних версиях программа должна запускаться с правами Администратора!"
+
+#: constant.stnoactiveconn
+msgid "Connection error: could not locate active connection!"
+msgstr "Verbindungsfehler: aktive Verbindung könnte nicht gefunden werden!"
+
+#: constant.stnoclosingparenthesis
+msgid "Missing closing parenthesis!"
+msgstr ""
+
+#: constant.stnodehaschildren
+msgid "Node has children!"
+msgstr ""
+
+#: constant.stnomorechecks
+msgctxt "constant.stnomorechecks"
+msgid "Do not perform this check in the future."
+msgstr "Больше не задавать этот вопрос."
+
+#: constant.stnomorenums
+msgid "Pool depleted! No more available free id's for %s!"
+msgstr "Pool ausgeschopft! Für %s! stehen keine freie ID's zu Verfügung!"
+
+#: constant.stnoopeningparenthesis
+msgid "Missing opening parenthesis!"
+msgstr ""
+
+#: constant.stnoposixid
+msgid "You should disable id creation only if you use a server side id assignment! Otherwise, you will not be able to create any users or groups."
+msgstr "Sie sollten die ID-Erstellung nur dann deaktivieren wenn die ID's serverseitig zugewiesen werden. Anderenfalls werden keine Benutzer oder Gruppen erstellt werden können."
+
+#: constant.stnordn
+msgid "You have to enter the unique name (rdn) for this entry!"
+msgstr ""
+
+#: constant.stnoschema
+msgid "Can't load LDAP schema"
+msgstr "Könnte LDAP-schema nicht laden!"
+
+#: constant.stnotenoughargs
+msgid "Not enough arguments!"
+msgstr "Nicht genügend Parameter!"
+
+#: constant.stnotlabatchfile
+msgid "%s is not LDAPAdmin batch file!"
+msgstr ""
+
+#: constant.stnumber
+msgid "number"
+msgstr "Zahl"
+
+#: constant.stnumobjects
+msgid "%d objects"
+msgstr "%d Objekte"
+
+#: constant.stobjectnotfound
+msgid "Object not found: %s!"
+msgstr ""
+
+#: constant.stobjnretrvd
+msgid "Object not yet retrieved!"
+msgstr ""
+
+#: constant.stoverwrite
+msgid "Do you want to overwrite?"
+msgstr ""
+
+#: constant.stoverwriteorrename
+msgid "Overwrite or save under a different name?"
+msgstr ""
+
+#: constant.stpassdiff
+msgid "Passwords do not match!"
+msgstr "Die eingegebenen Kennwörter stimmen nicht überein!"
+
+#: constant.stpassfor
+msgid "Password for : %s"
+msgstr "Пароль для %s:"
+
+#: constant.stpathnotfound
+msgid "Path not found:%s!"
+msgstr ""
+
+#: constant.stpropreadonly
+msgid "Property is read only!"
+msgstr "Редактировать4 kann nur gelesen werden!"
+
+#: constant.stpwdinclude
+msgid "Include passwords"
+msgstr ""
+
+#: constant.stpwdnoencryption
+msgid "You are trying to change a password over a connection that is neither SSL/TLS-encrypted nor SASL-encrypted!"
+msgstr ""
+
+#: constant.stpwdnotencrypted
+msgid "Warning: exported passwords will not be encrypted!"
+msgstr ""
+
+#: constant.strefupdateerror
+msgid ""
+"An error is occured while updating references:\n"
+"%s\n"
+"Not all references could be updated.\n"
+msgstr ""
+
+#: constant.stregaccnterr
+msgid "Could not read account data!"
+msgstr ""
+
+#: constant.stregapplying
+msgid "Applying regular expression..."
+msgstr ""
+
+#: constant.stregcntmatching
+msgid "%s %d object(s) match regular expression."
+msgstr ""
+
+#: constant.stregexerror
+msgid ""
+"Error in regex filter: %s\n"
+"%s\n"
+msgstr ""
+
+#: constant.stregexfailed
+msgid "Regexp validation failed!"
+msgstr "Regexp: Gültigkeitsprüfung fehlgeschlagen!"
+
+#: constant.strenameentry
+msgid "Rename entry to %s?"
+msgstr ""
+
+#: constant.strepeatcopyaction
+msgid "Repeat for all"
+msgstr ""
+
+#: constant.streqattr
+msgid "Attribute %s may not be empty!"
+msgstr ""
+
+#: constant.streqmail
+msgid "At least one E-Mail address must be defined!"
+msgstr "Es muss mindestens eine E-Mail Adresse eingegeben werden!"
+
+#: constant.streqnoempty
+msgid "%s must have a value!"
+msgstr "%s не дожно быть пустым!"
+
+#: constant.strequired
+msgid "%s is required!"
+msgstr "%s ist erforderlich!"
+
+#: constant.stresetautolock
+msgid "This account has been locked down by SAMBA server! Do you want to reset the autolock flag and enable it now?"
+msgstr ""
+
+#: constant.stresettodefault
+msgid "Reset to default settings?"
+msgstr ""
+
+#: constant.stretrieving
+msgid "Reading: %d objects retrieved. Press ESC to abort..."
+msgstr "Lesen: %d Objekte gelesen. Drücken Sie Escape-Taste zu beenden..."
+
+#: constant.stretrywithtrust
+msgid ""
+"To continue, LdapAdmin can try to create a temporary trust connection to %s by creating a \\\\%0:s\\IPC$ share connection.\n"
+"\n"
+"Would you like to create a temporary trust connection to %0:s and retry the operation?\n"
+msgstr ""
+
+#: constant.stsaslssl
+msgid "SASL encryption can not be used over an SSL connection!"
+msgstr "Шифрование SASL не может быть использовано в SSL соединении!"
+
+#: constant.stschemanosubentry
+msgid "Can't find SubschemaSubentry"
+msgstr "Kann SubschemaSubentry nicht finden!"
+
+#: constant.stscriptnoproc
+msgid "Procedure \"%s\" could not be located."
+msgstr ""
+
+#: constant.stscriptnotevent
+msgid "Property '%s' is not an event!"
+msgstr "Редактировать3 '%s' ist kein Ereigniss!"
+
+#: constant.stscriptnotsupp
+msgid "'%s' does not support '%s' event!"
+msgstr "'%s' unterstützt den Ereigniss '%s' nicht!"
+
+#: constant.stscriptparamtype
+msgid "Unsupported parameter type!"
+msgstr "Nicht unterstützter Parametertyp!"
+
+#: constant.stscriptseterr
+msgid "Could not convert set to integer!"
+msgstr "Set könnte nicht in Integer kovertiert werden!"
+
+#: constant.stsequentialid
+msgid "Activating this option could cause a significant network traffic with large user databases. Unless you REALLY need sequential id's, leave the default option (random) on!"
+msgstr ""
+
+#: constant.stskiprecord
+msgid ""
+"%s\n"
+"Skip this record?\n"
+msgstr ""
+
+#: constant.stsmbdomainreq
+msgid "You have to select samba domain to which this group should be mapped!"
+msgstr ""
+
+#: constant.stsorting
+msgid "Sorting..."
+msgstr ""
+
+#: constant.ststoptlserror
+msgid "Stop TLS Failed! The connection will be closed due to unrecoverable error."
+msgstr "Ошибка bei Stop TLS Befehl! Die Verbindung wird geschlossen."
+
+#: constant.sttimeformat
+msgid "time format"
+msgstr "Zeitformat"
+
+#: constant.sttoomanyargs
+msgid "Too many arguments!"
+msgstr "Zu viele Parameter!"
+
+#: constant.sttrustconnfailed
+msgid ""
+"Could not establish trust connection to %s.\n"
+"\n"
+"%s\n"
+msgstr ""
+
+#: constant.sttrustconnmanual
+msgid "Please create a manual connection to \\\\%s\\IPC$ and retry the operation."
+msgstr ""
+
+#: constant.stunclosedparam
+msgid "Invalid (Unclosed) parameter!"
+msgstr ""
+
+#: constant.stunclosedreference
+msgid "Invalid (unclosed) reference: %s"
+msgstr ""
+
+#: constant.stunclosedstr
+msgid "Unclosed string!"
+msgstr "Nicht abgeschlossener String!"
+
+#: constant.stunexpectedeofstr
+msgid "Unexpected end of string: %s!"
+msgstr ""
+
+#: constant.stunknownvaluetype
+msgid ""
+"Unknown value type.\n"
+"key:%s\n"
+"value:%s\"\n"
+msgstr ""
+
+#: constant.stunsuppoperation
+msgid "Unsupported operation: %s!"
+msgstr ""
+
+#: constant.stunsupportedauth
+msgid "Unsupported authentication method: %s!"
+msgstr "Nicht unterstütze Authentifizierungsmethode: %s!"
+
+#: constant.stunsupportedrule
+msgid "Unsupported matching rule %s!"
+msgstr ""
+
+#: constant.stunsuppscript
+msgid "Unsupported script type: "
+msgstr "Nicht unterstütze Scriptsprache: "
+
+#: constant.stupnincomplete
+msgid "User logon name is incomplete!"
+msgstr ""
+
+#: constant.stuserbreak
+msgid "User break!"
+msgstr "Abbruch durch Benutzer!"
+
+#: constant.stwritepropro
+msgid "Can not write to read only property!"
+msgstr "Einer Nur-Lesen Редактировать2 kann kein Wert zugewiesen werden !"
+
+#: constant.xml_bad_close_tag
+msgid "The \"%s\" is expected, but the \"%s\" is received"
+msgstr ""
+
+#: constant.xml_no_opening_tag
+msgid "No opening tag!"
+msgstr ""
+
+#: constant.xml_unexpected_close_tag
+msgid "Unexpected closing tag \"%s\""
+msgstr ""
+
+#: tadpassdlg.cancelbtn.caption
+msgctxt "tadpassdlg.cancelbtn.caption"
+msgid "&Cancel"
+msgstr "Отмена"
+
+#: tadpassdlg.cbxpwdmustchange.caption
+msgid "User must change password on next login"
+msgstr ""
+
+#: tadpassdlg.cbxpwdneverexpires.caption
+msgid "Password never expires"
+msgstr ""
+
+#: tadpassdlg.label1.caption
+msgid "&New password:"
+msgstr "Новый пароль:"
+
+#: tadpassdlg.label2.caption
+msgid "&Confirm password:"
+msgstr "Подтверждение:"
+
+#: tadpassdlg.okbtn.caption
+msgctxt "tadpassdlg.okbtn.caption"
+msgid "&OK"
+msgstr ""
+
+#: tconfigdlg.btnadd.caption
+msgctxt "tconfigdlg.btnadd.caption"
+msgid "&Add..."
+msgstr "Добавить..."
+
+#: tconfigdlg.btnaddlang.caption
+msgctxt "TCONFIGDLG.BTNADDLANG.CAPTION"
+msgid "&Add..."
+msgstr "Добавить..."
+
+#: tconfigdlg.btndel.caption
+msgctxt "tconfigdlg.btndel.caption"
+msgid "&Remove"
+msgstr "Удалить"
+
+#: tconfigdlg.btndellang.caption
+msgctxt "TCONFIGDLG.BTNDELLANG.CAPTION"
+msgid "&Remove"
+msgstr "Удалить"
+
+#: tconfigdlg.btneditlang.caption
+msgctxt "tconfigdlg.btneditlang.caption"
+msgid "&Edit"
+msgstr ""
+
+#: tconfigdlg.cancelbtn.caption
+msgid "Cancel"
+msgstr "Отмена"
+
+#: tconfigdlg.cbconnect.caption
+msgid "&Connect on start:"
+msgstr "Соединяться по запуске с:"
+
+#: tconfigdlg.cbdisplayencoded.caption
+msgid "Do not decode LDAP strings"
+msgstr ""
+
+#: tconfigdlg.cbenforcecontainer.caption
+msgid "&Enforce container objects"
+msgstr "Использовать встроенные шаблоны"
+
+#: tconfigdlg.cbidobject.caption
+msgid "&Identify objects"
+msgstr "Идентифицировать объекты"
+
+#: tconfigdlg.cbsmartdelete.caption
+msgid "Smart &delete"
+msgstr "\"Умное\" удаление"
+
+#: tconfigdlg.cbtemplateautoload.caption
+msgid "&Autoload templates when editing"
+msgstr "Автоматически загружать шаблоны"
+
+#: tconfigdlg.cbtemplateextensions.caption
+msgid "Allow templates to e&xtend property dialogs"
+msgstr "Шаблоны в диалогах"
+
+#: tconfigdlg.cbtemplateicons.caption
+msgid "&Template icons"
+msgstr "Картинки шаблонов"
+
+#: tconfigdlg.cbtemplateproperties.caption
+msgid "Use templates as property objects"
+msgstr "Использовать шаблоны для создания объектов"
+
+#: tconfigdlg.checkassoccbk.caption
+msgid "Always &check associations"
+msgstr "Всегда проверять ассоциацию"
+
+#: tconfigdlg.groupbox1.caption
+msgid "&LDAP tree"
+msgstr "Дерево LDAP"
+
+#: tconfigdlg.groupbox2.caption
+msgid "&Files"
+msgstr "Файлы"
+
+#: tconfigdlg.groupbox3.caption
+msgid "&Startup"
+msgstr "Запуск"
+
+#: tconfigdlg.groupbox4.caption
+msgid "Sea&rch"
+msgstr "Поиск"
+
+#: tconfigdlg.groupbox5.caption
+msgctxt "tconfigdlg.groupbox5.caption"
+msgid "&Options"
+msgstr "Настройки"
+
+#: tconfigdlg.groupbox6.caption
+msgid "&Languages"
+msgstr "Языки"
+
+#: tconfigdlg.groupbox7.caption
+msgid "&Transcoding"
+msgstr "Транскодирование"
+
+#: tconfigdlg.label1.caption
+msgid "&Template directories:"
+msgstr "Папки с шаблонами:"
+
+#: tconfigdlg.label2.caption
+msgid "&Quick search filter:"
+msgstr "Schnellsuche:"
+
+#: tconfigdlg.label3.caption
+msgid "Character transcoding table:"
+msgstr "Таблица символов:"
+
+#: tconfigdlg.label4.caption
+msgid "&Filter:"
+msgstr "Фильтр:"
+
+#: tconfigdlg.label5.caption
+msgid "&File directories:"
+msgstr "Справочники:"
+
+#: tconfigdlg.okbtn.caption
+msgctxt "tconfigdlg.okbtn.caption"
+msgid "OK"
+msgstr ""
+
+#: tconfigdlg.setdefbtn.caption
+msgid "&Set as default LDAP browser"
+msgstr "Устан. LDAP-браузер по умолчанию"
+
+#: tconfigdlg.tabsheet1.caption
+msgid "&Application"
+msgstr "Программа"
+
+#: tconfigdlg.tabsheet2.caption
+msgid "&Templates"
+msgstr "Шаблоны"
+
+#: tconfigdlg.tabsheet3.caption
+msgid "&Localization"
+msgstr "Перевод"
+
+#: tconnlistfrm.accountsview.columns[0].caption
+msgctxt "tconnlistfrm.accountsview.columns[0].caption"
+msgid "Name"
+msgstr ""
+
+#: tconnlistfrm.accountsview.columns[1].caption
+msgid "Host"
+msgstr ""
+
+#: tconnlistfrm.accountsview.columns[2].caption
+msgid "Base"
+msgstr ""
+
+#: tconnlistfrm.accountsview.columns[3].caption
+msgid "User"
+msgstr ""
+
+#: tconnlistfrm.actcopyaccount.caption
+msgctxt "tconnlistfrm.actcopyaccount.caption"
+msgid "&Copy..."
+msgstr "Копировать..."
+
+#: tconnlistfrm.actcopyaccount.hint
+msgid "Copy account"
+msgstr ""
+
+#: tconnlistfrm.actdeleteaccount.caption
+msgctxt "tconnlistfrm.actdeleteaccount.caption"
+msgid "&Delete"
+msgstr "Удалить"
+
+#: tconnlistfrm.actdeleteaccount.hint
+msgid "Delete account"
+msgstr "Удалить соединение"
+
+#: tconnlistfrm.actdeletefolder.caption
+msgctxt "tconnlistfrm.actdeletefolder.caption"
+msgid "Delete folder"
+msgstr ""
+
+#: tconnlistfrm.actdeletefolder.hint
+msgctxt "TCONNLISTFRM.ACTDELETEFOLDER.HINT"
+msgid "Delete folder"
+msgstr ""
+
+#: tconnlistfrm.actdeletestorage.caption
+msgid "Delete storage"
+msgstr ""
+
+#: tconnlistfrm.actdeletestorage.hint
+msgid "Delete file storage"
+msgstr ""
+
+#: tconnlistfrm.actexport.caption
+msgid "Export..."
+msgstr ""
+
+#: tconnlistfrm.actexport.hint
+msgid "Export to file"
+msgstr ""
+
+#: tconnlistfrm.actimport.caption
+msgid "Import..."
+msgstr ""
+
+#: tconnlistfrm.actimport.hint
+msgid "Import from file"
+msgstr ""
+
+#: tconnlistfrm.actnewaccount.caption
+msgctxt "tconnlistfrm.actnewaccount.caption"
+msgid "&New..."
+msgstr "Новое соединение..."
+
+#: tconnlistfrm.actnewaccount.hint
+msgid "Create new account"
+msgstr "Создать новое соединение"
+
+#: tconnlistfrm.actnewfolder.caption
+msgid "New folder..."
+msgstr ""
+
+#: tconnlistfrm.actnewfolder.hint
+msgid "Create new folder"
+msgstr ""
+
+#: tconnlistfrm.actnewstorage.hint
+msgid "Create new file storage"
+msgstr "Сохранить соединения как..."
+
+#: tconnlistfrm.actopenstorage.hint
+msgid "Open existing file storage"
+msgstr "Открыть соединения"
+
+#: tconnlistfrm.actpropertiesaccount.caption
+msgctxt "tconnlistfrm.actpropertiesaccount.caption"
+msgid "&Properties..."
+msgstr "Редактировать..."
+
+#: tconnlistfrm.actrenameaccount.caption
+msgid "&Rename"
+msgstr "Переименовать"
+
+#: tconnlistfrm.actrenameaccount.hint
+msgid "Rename account"
+msgstr "Переименовать соединение"
+
+#: tconnlistfrm.actrenamefolder.caption
+msgctxt "tconnlistfrm.actrenamefolder.caption"
+msgid "Rename folder"
+msgstr ""
+
+#: tconnlistfrm.actrenamefolder.hint
+msgctxt "TCONNLISTFRM.ACTRENAMEFOLDER.HINT"
+msgid "Rename folder"
+msgstr ""
+
+#: tconnlistfrm.cancelbtn.caption
+msgctxt "TCONNLISTFRM.CANCELBTN.CAPTION"
+msgid "&Cancel"
+msgstr "Отмена"
+
+#: tconnlistfrm.label1.caption
+msgid " "
+msgstr ""
+
+#: tconnlistfrm.n1.caption
+msgctxt "TCONNLISTFRM.N1.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tconnlistfrm.n2.caption
+msgctxt "tconnlistfrm.n2.caption"
+msgid "-"
+msgstr ""
+
+#: tconnlistfrm.n3.caption
+msgctxt "TCONNLISTFRM.N3.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tconnlistfrm.okbtn.caption
+msgctxt "TCONNLISTFRM.OKBTN.CAPTION"
+msgid "&OK"
+msgstr ""
+
+#: tconnlistfrm.viewbtn.hint
+msgid "Change view style"
+msgstr ""
+
+#: tconnlistfrm.vmlarge.caption
+msgid "Large icons"
+msgstr "Крупные значки"
+
+#: tconnlistfrm.vmlist.caption
+msgid "List"
+msgstr "Список"
+
+#: tconnlistfrm.vmsmall.caption
+msgid "Small icons"
+msgstr "Значки"
+
+#: tconnlistfrm.vmtable.caption
+msgid "Table"
+msgstr "Таблица"
+
+#: tconnpropdlg.accountbox.caption
+msgid " Account "
+msgstr "Авторизация"
+
+#: tconnpropdlg.btnadd.caption
+msgctxt "tconnpropdlg.btnadd.caption"
+msgid "&Add"
+msgstr "Добавить"
+
+#: tconnpropdlg.btnremove.caption
+msgctxt "TCONNPROPDLG.BTNREMOVE.CAPTION"
+msgid "&Remove"
+msgstr "Удалить"
+
+#: tconnpropdlg.cancelbtn.caption
+msgctxt "TCONNPROPDLG.CANCELBTN.CAPTION"
+msgid "&Cancel"
+msgstr "Отмена"
+
+#: tconnpropdlg.cbanonymous.caption
+msgctxt "tconnpropdlg.cbanonymous.caption"
+msgid "Anonymous connection"
+msgstr "Анонимное соединение"
+
+#: tconnpropdlg.cbsasl.caption
+msgid "SASL"
+msgstr "SASL"
+
+#: tconnpropdlg.cbssl.caption
+msgid "SSL"
+msgstr "SSL"
+
+#: tconnpropdlg.cbtls.caption
+msgid "TLS"
+msgstr "TLS"
+
+#: tconnpropdlg.cbxpagedsearch.caption
+msgid "Paged search"
+msgstr "Paged Search"
+
+#: tconnpropdlg.cbxshowattrs.caption
+msgid "&Show operational attributes:"
+msgstr "Показать атрибуты:"
+
+#: tconnpropdlg.connectionbox.caption
+msgid " Connection: "
+msgstr "Соединение:"
+
+#: tconnpropdlg.fetchdnbtn.caption
+msgid "Fetch DNs"
+msgstr "Получить DN"
+
+#: tconnpropdlg.groupbox1.caption
+msgctxt "tconnpropdlg.groupbox1.caption"
+msgid "Search"
+msgstr "Поиск"
+
+#: tconnpropdlg.groupbox2.caption
+msgid "Referrals"
+msgstr "Referrals"
+
+#: tconnpropdlg.groupbox3.caption
+msgid "Directory"
+msgstr ""
+
+#: tconnpropdlg.label1.caption
+msgid "Connection name:"
+msgstr "Имя соединение:"
+
+#: tconnpropdlg.label10.caption
+msgid "Chase referrals:"
+msgstr "Использовать Referrals:"
+
+#: tconnpropdlg.label11.caption
+msgid "Referral hops:"
+msgstr "Количество узлов:"
+
+#: tconnpropdlg.label13.caption
+msgid "Size limit:"
+msgstr "Лимит размера:"
+
+#: tconnpropdlg.label14.caption
+msgid "Time limit:"
+msgstr "Лимит времени:"
+
+#: tconnpropdlg.label15.caption
+msgid "Page size:"
+msgstr "Page Size:"
+
+#: tconnpropdlg.label2.caption
+msgid "Host:"
+msgstr "Хост:"
+
+#: tconnpropdlg.label3.caption
+msgid "Port:"
+msgstr "Порт:"
+
+#: tconnpropdlg.label4.caption
+msgid "Username:"
+msgstr "Пользователь:"
+
+#: tconnpropdlg.label5.caption
+msgctxt "tconnpropdlg.label5.caption"
+msgid "Password:"
+msgstr "Пароль:"
+
+#: tconnpropdlg.label6.caption
+msgid "Base:"
+msgstr "База:"
+
+#: tconnpropdlg.label7.caption
+msgid "Version:"
+msgstr "Версия:"
+
+#: tconnpropdlg.label8.caption
+msgid "Dereference aliases:"
+msgstr "Разыменовать псевдонимы:"
+
+#: tconnpropdlg.label9.caption
+msgid "Directory type:"
+msgstr ""
+
+#: tconnpropdlg.okbtn.caption
+msgctxt "TCONNPROPDLG.OKBTN.CAPTION"
+msgid "OK"
+msgstr ""
+
+#: tconnpropdlg.passworded.hint
+msgid "This storage does not allow to keep the password"
+msgstr ""
+
+#: tconnpropdlg.ported.text
+msgid "389"
+msgstr ""
+
+#: tconnpropdlg.rbgssapi.caption
+msgid "GSS-API"
+msgstr "GSS-API"
+
+#: tconnpropdlg.rbsimpleauth.caption
+msgid "Simple authentication"
+msgstr "Простая авторизация"
+
+#: tconnpropdlg.tabsheet1.caption
+msgid "General"
+msgstr "Основное"
+
+#: tconnpropdlg.tabsheet2.caption
+msgctxt "TCONNPROPDLG.TABSHEET2.CAPTION"
+msgid "&Options"
+msgstr "Настройки"
+
+#: tconnpropdlg.tabsheet3.caption
+msgid "&Attributes"
+msgstr "Атрибуты"
+
+#: tconnpropdlg.testbtn.caption
+msgid "Test connection"
+msgstr "Протестировать"
+
+#: tmainfrm.actabout.caption
+msgid "&About..."
+msgstr "О программе..."
+
+#: tmainfrm.actalias.caption
+msgid "Create &alias..."
+msgstr "Создать псевдоним..."
+
+#: tmainfrm.actbookmark.caption
+msgid "Bookmarks..."
+msgstr ""
+
+#: tmainfrm.actconnect.caption
+msgid "Connect..."
+msgstr "Соединение..."
+
+#: tmainfrm.actconnect.hint
+msgid "Connect"
+msgstr "Установить/создать соединение"
+
+#: tmainfrm.actcopy.caption
+msgid "Copy"
+msgstr "Копировать"
+
+#: tmainfrm.actcopydn.caption
+msgid "Copy &dn to clipboard"
+msgstr "Копировать путь (DN)"
+
+#: tmainfrm.actcopyentry.caption
+msgctxt "TMAINFRM.ACTCOPYENTRY.CAPTION"
+msgid "&Copy..."
+msgstr "Копировать..."
+
+#: tmainfrm.actcopyname.caption
+msgid "Copy Attribute name"
+msgstr "Копировать только имя"
+
+#: tmainfrm.actcopyvalue.caption
+msgid "Copy Value"
+msgstr "Копировать только значение"
+
+#: tmainfrm.actcustomizemenu.caption
+msgid "&Customize menu..."
+msgstr "Настроить меню..."
+
+#: tmainfrm.actdeleteentry.caption
+msgctxt "TMAINFRM.ACTDELETEENTRY.CAPTION"
+msgid "&Delete"
+msgstr "Удалить"
+
+#: tmainfrm.actdeleteentry.hint
+msgid "Delete entry"
+msgstr "Удалить объект"
+
+#: tmainfrm.actdisconnect.caption
+msgid "Disconnect..."
+msgstr "Разорвать..."
+
+#: tmainfrm.actdisconnect.hint
+msgid "Disconnect"
+msgstr "Разорвать соединение"
+
+#: tmainfrm.acteditentry.caption
+msgid "&Edit Entry..."
+msgstr "Редактировать..."
+
+#: tmainfrm.acteditentry.hint
+msgctxt "tmainfrm.acteditentry.hint"
+msgid "Edit entry"
+msgstr "Редактировать объект"
+
+#: tmainfrm.acteditvalue.caption
+msgid "Edit value..."
+msgstr "Изменить значение..."
+
+#: tmainfrm.actentries.caption
+msgid "Show &Entries"
+msgstr "Показывать вложенные объекты"
+
+#: tmainfrm.actexit.caption
+msgid "&Exit"
+msgstr "Выход"
+
+#: tmainfrm.actexit.hint
+msgid "Exit"
+msgstr "Выйти из LdapAdmin"
+
+#: tmainfrm.actexport.caption
+msgid "&Export..."
+msgstr "Экспортировать..."
+
+#: tmainfrm.actfindinschema.caption
+msgid "&Find in schema..."
+msgstr "Найти в схеме..."
+
+#: tmainfrm.actgoto.caption
+msgid "&Go to..."
+msgstr ""
+
+#: tmainfrm.acthelp.caption
+msgid "&Help..."
+msgstr ""
+
+#: tmainfrm.acticonview.caption
+msgid "&Icons"
+msgstr "Значки"
+
+#: tmainfrm.actimport.caption
+msgid "&Import..."
+msgstr "Импортировать..."
+
+#: tmainfrm.actlistview.caption
+msgid "&List"
+msgstr "Список"
+
+#: tmainfrm.actlocateentry.caption
+msgid "&Locate entry (Quick Search)..."
+msgstr ""
+
+#: tmainfrm.actmodifyset.caption
+msgid "&Modify set..."
+msgstr "Пакетная обработка..."
+
+#: tmainfrm.actmodifyset.hint
+msgid "Modify attribute values on multiple objects"
+msgstr "Пакетная обработка (изменение) объектов "
+
+#: tmainfrm.actmoveentry.caption
+msgid "&Move..."
+msgstr "Переместить..."
+
+#: tmainfrm.actopenfile.caption
+msgid "Open..."
+msgstr ""
+
+#: tmainfrm.actoptions.caption
+msgid "&Options..."
+msgstr "Настройки..."
+
+#: tmainfrm.actpassword.caption
+msgid "&Set Password..."
+msgstr "Установить пароль..."
+
+#: tmainfrm.actpreferences.caption
+msgid "Session &preferences..."
+msgstr "Настройки соединения..."
+
+#: tmainfrm.actproperties.caption
+msgctxt "TMAINFRM.ACTPROPERTIES.CAPTION"
+msgid "&Properties..."
+msgstr "Свойства..."
+
+#: tmainfrm.actproperties.hint
+msgid "Edit properties"
+msgstr "Редактировать свойства объекта"
+
+#: tmainfrm.actrefresh.caption
+msgid "&Refresh"
+msgstr "Обновить"
+
+#: tmainfrm.actrefresh.hint
+msgid "Refresh"
+msgstr "Обновить"
+
+#: tmainfrm.actrenameentry.caption
+msgid "&Rename..."
+msgstr "Переименовать..."
+
+#: tmainfrm.actschema.caption
+msgid "Schema..."
+msgstr "Схема..."
+
+#: tmainfrm.actschema.hint
+msgid "Schema Viewer"
+msgstr "Просмотр схем"
+
+#: tmainfrm.actsearch.caption
+msgid "Search..."
+msgstr "Поиск..."
+
+#: tmainfrm.actsearch.hint
+msgctxt "TMAINFRM.ACTSEARCH.HINT"
+msgid "Search"
+msgstr "Поиск"
+
+#: tmainfrm.actsmallview.caption
+msgid "&Small Icons"
+msgstr ""
+
+#: tmainfrm.actvalues.caption
+msgid "Show V&alues"
+msgstr "Показывать атрибуты и значения"
+
+#: tmainfrm.actviewbinary.caption
+msgid "&View binary..."
+msgstr "В двоичном виде..."
+
+#: tmainfrm.label1.caption
+msgid "Search for:"
+msgstr "Найти:"
+
+#: tmainfrm.mbedit.caption
+msgctxt "TMAINFRM.MBEDIT.CAPTION"
+msgid "&Edit"
+msgstr "Правка"
+
+#: tmainfrm.mbgettemplates.caption
+msgid "Get templates..."
+msgstr "Получить шаблоны из интернет..."
+
+#: tmainfrm.mbinfo.caption
+msgid "Inf&o..."
+msgstr ""
+
+#: tmainfrm.mblanguage.caption
+msgid "&Language"
+msgstr "Язык"
+
+#: tmainfrm.mbnew.caption
+msgctxt "tmainfrm.mbnew.caption"
+msgid "&New"
+msgstr "Новый объект"
+
+#: tmainfrm.mbstart.caption
+msgid "&Start"
+msgstr ""
+
+#: tmainfrm.mbtools.caption
+msgid "&Tools"
+msgstr "Инструменты"
+
+#: tmainfrm.mbview.caption
+msgctxt "tmainfrm.mbview.caption"
+msgid "&View"
+msgstr "Вид"
+
+#: tmainfrm.mbviewstyle.caption
+msgid "&View Style"
+msgstr ""
+
+#: tmainfrm.n1.caption
+msgctxt "TMAINFRM.N1.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n10.caption
+msgctxt "TMAINFRM.N10.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n11.caption
+msgctxt "TMAINFRM.N11.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n12.caption
+msgctxt "TMAINFRM.N12.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n13.caption
+msgctxt "TMAINFRM.N13.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n14.caption
+msgctxt "TMAINFRM.N14.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n15.caption
+msgctxt "TMAINFRM.N15.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n16.caption
+msgctxt "TMAINFRM.N16.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n17.caption
+msgctxt "TMAINFRM.N17.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n18.caption
+msgctxt "TMAINFRM.N18.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n19.caption
+msgctxt "TMAINFRM.N19.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n2.caption
+msgctxt "TMAINFRM.N2.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n20.caption
+msgctxt "TMAINFRM.N20.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n21.caption
+msgctxt "TMAINFRM.N21.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n22.caption
+msgctxt "TMAINFRM.N22.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n23.caption
+msgctxt "TMAINFRM.N23.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n24.caption
+msgctxt "TMAINFRM.N24.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n25.caption
+msgctxt "TMAINFRM.N25.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n3.caption
+msgctxt "TMAINFRM.N3.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n4.caption
+msgctxt "TMAINFRM.N4.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n5.caption
+msgctxt "TMAINFRM.N5.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n6.caption
+msgctxt "TMAINFRM.N6.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n7.caption
+msgctxt "TMAINFRM.N7.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.n8.caption
+msgid "&?"
+msgstr ""
+
+#: tmainfrm.n9.caption
+msgctxt "TMAINFRM.N9.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainfrm.pbnew.caption
+msgctxt "TMAINFRM.PBNEW.CAPTION"
+msgid "&New"
+msgstr "Новый объект"
+
+#: tmainfrm.pbviewcert.caption
+msgid "View &certificate..."
+msgstr "Посмотреть сертификат..."
+
+#: tmainfrm.pbviewpicture.caption
+msgid "View &picture..."
+msgstr "Посмотреть изображение..."
+
+#: tmainfrm.redobtn.hint
+msgctxt "tmainfrm.redobtn.hint"
+msgid "Forward"
+msgstr "Вернуть"
+
+#: tmainfrm.toolbar.caption
+msgid "LagerToolBar"
+msgstr ""
+
+#: tmainfrm.toolbutton1.caption
+msgid "ToolButton1"
+msgstr ""
+
+#: tmainfrm.toolbutton2.caption
+msgid "ToolButton2"
+msgstr ""
+
+#: tmainfrm.toolbutton6.caption
+msgid "ToolButton6"
+msgstr ""
+
+#: tmainfrm.undobtn.hint
+msgid "Backward"
+msgstr "Отмена"
+
+#: tmainfrm.valuelistview.columns[0].caption
+msgctxt "tmainfrm.valuelistview.columns[0].caption"
+msgid "Attribute"
+msgstr "Атрибут"
+
+#: tmainfrm.valuelistview.columns[1].caption
+msgctxt "tmainfrm.valuelistview.columns[1].caption"
+msgid "Value"
+msgstr "Значение"
+
+#: tmainfrm.valuelistview.columns[2].caption
+msgid "Type"
+msgstr "Тип"
+
+#: tmainfrm.valuelistview.columns[3].caption
+msgid "Size"
+msgstr "Длина"
+
+#: tschemadlg.btnclose.hint
+msgid "Close"
+msgstr "Закрыть"
+
+#: tschemadlg.btnsave.hint
+msgid "Export Schema"
+msgstr "Экспортировать схему"
+
+#: tschemadlg.label1.caption
+msgid "     Search: "
+msgstr "Искать:"
+
+#: tschemadlg.n1.caption
+msgctxt "TSCHEMADLG.N1.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tschemadlg.pmcopy.caption
+msgid "&Copy"
+msgstr "Копировать..."
+
+#: tschemadlg.pmopen.caption
+msgid "Open"
+msgstr "Открыть"
+
+#: tschemadlg.pmopennewtab.caption
+msgid "Open in new Tab"
+msgstr "Открыть в новой вкладке"
+
+#: tschemadlg.pmundo.caption
+msgid "Undo"
+msgstr "Отменить"
+
+#: tschemadlg.redobtn.hint
+msgctxt "TSCHEMADLG.REDOBTN.HINT"
+msgid "Forward"
+msgstr "Вернуть"
+
+#: tschemadlg.undobtn.hint
+msgid "Back"
+msgstr "Отмена"
+
+#: tschemadlg.wholewordscbx.caption
+msgid "Whole words only"
+msgstr "Только целое слово"

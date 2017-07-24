@@ -10,6 +10,7 @@ uses
 cthreads,
   //cmem,
 Interfaces,
+DefaultTranslator,
 {$ENDIF}
 Forms,
 Main in 'Main.pas' {MainFrm},

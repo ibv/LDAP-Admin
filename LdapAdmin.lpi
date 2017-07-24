@@ -16,17 +16,16 @@
     </General>
     <i18n>
       <EnableI18N Value="True"/>
-      <OutDir Value="lang"/>
+      <OutDir Value="locale"/>
     </i18n>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
       <MinorVersionNr Value="8"/>
-      <RevisionNr Value="2"/>
-      <BuildNr Value="2"/>
+      <RevisionNr Value="3"/>
+      <BuildNr Value="1"/>
       <Attributes pvaPreRelease="True"/>
-      <StringTable ProductVersion=""/>
     </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
@@ -492,6 +491,9 @@
       </SyntaxOptions>
     </Parsing>
     <CodeGeneration>
+      <Checks>
+        <StackChecks Value="True"/>
+      </Checks>
       <TargetCPU Value="x86_64"/>
       <TargetOS Value="linux"/>
     </CodeGeneration>
