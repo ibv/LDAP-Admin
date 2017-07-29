@@ -1196,7 +1196,6 @@ begin
       I can't find better solution here }
     NotParented := (fControl.Parent = nil) and not (Self is TTemplateCtrlDateTime);
 
-
     if NotParented then begin
       // Prevent "Control has no parent window" exception when Items are set
       fControl.Visible:=false;
@@ -2249,8 +2248,10 @@ begin
     if Name = 'tab' then
     begin
       TabSheet := TTemplateCtrlTabSheet.Create(nil);
+
       ///TabSheet.ParentControl := Self;
-      TTabSheet(TabSheet).Parent := TPageControl(fControl);
+      //TTabSheet(TabSheet).Parent := TPageControl(fControl);
+      TabSheet.fControl.Parent := TWinControl(fControl);
       TabSheet.Load(XmlNode[i]);
       TTabSheet(TabSheet.Control).PageControl := TPageControl(fControl);
       fElements.Add(TabSheet);
