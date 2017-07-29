@@ -32,7 +32,7 @@ uses
 {$IFnDEF FPC}
   Windows, Tabs, WinLDAP,System.Actions, Generics.Collections
 {$ELSE}
-  LCLIntf, LCLType, LinLDAP, LCLTranslator, fgl,
+  LCLIntf, LCLType, LinLDAP, LCLTranslator, fgl, LCLVersion,
 {$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ComCtrls, Menus, ImgList, StdCtrls, ExtCtrls, Clipbrd, ActnList,
@@ -1653,7 +1653,7 @@ procedure TMainFrm.ValueListViewAdvancedCustomDrawSubItem(
   Sender: TCustomListView; Item: TListItem; SubItem: Integer;
   State: TCustomDrawState; Stage: TCustomDrawStage; var DefaultDraw: Boolean);
 var mRect: TRect;
-      i: Integer;
+      i,j: Integer;
       S: String;
 begin
     with Sender.Canvas do
@@ -1688,7 +1688,10 @@ begin
       end;
       mRect := Item.DisplayRect(drlabel);
       s:=Item.SubItems[SubItem-1];
-      for i :=1 to SubItem-1 do mRect.Left := mRect.Left + Sender.Column[i].Width;
+      j:=1;
+      // for Lazarus > 1.7 index is 0
+      if (lcl_major >= 1)  and (lcl_minor > 7) then j:=0 ;
+      for i := j to SubItem-1 do mRect.Left := mRect.Left + Sender.Column[i].Width;
       if SubItem <> 3 then
         TextRect(mRect,mRect.Left + 3 , mRect.Top , s)
       else

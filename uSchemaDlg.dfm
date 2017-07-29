@@ -13,7 +13,7 @@ object SchemaDlg: TSchemaDlg
   OnClose = FormClose
   OnDeactivate = FormDeactivate
   Position = poMainFormCenter
-  LCLVersion = '1.6.0.4'
+  Visible = False
   object Splitter1: TSplitter
     Left = 208
     Height = 465
@@ -61,6 +61,7 @@ object SchemaDlg: TSchemaDlg
     Width = 208
     Align = alLeft
     DefaultItemHeight = 16
+    ExpandSignType = tvestPlusMinus
     HideSelection = False
     Images = ImageList1
     Indent = 19
@@ -77,6 +78,7 @@ object SchemaDlg: TSchemaDlg
     Width = 546
     Align = alClient
     DefaultItemHeight = 16
+    ExpandSignType = tvestPlusMinus
     Indent = 19
     PopupMenu = PopupMenu
     ReadOnly = True

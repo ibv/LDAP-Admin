@@ -109,7 +109,7 @@ begin
   {$ifndef mswindows}
   Path:=StringReplace(path,'\','/',[rfReplaceAll]);
   {$endif}
-  if FindFirstUTF8(Path,faArchive,sr) { *Converted from FindFirst* } = 0 then
+  if FindFirst(Path,faArchive,sr) { *Converted from FindFirst* } = 0 then
   begin
     {$ifdef mswindows}
     Dir := ExtractFileDir(Path) + '\';
@@ -119,10 +119,10 @@ begin
     with fFiles do
     try
       AddFile(Dir + sr.Name);
-      while FindNextUTF8(sr) { *Converted from FindNext* } = 0 do
+      while FindNext(sr) { *Converted from FindNext* } = 0 do
         AddFile(Dir + sr.Name);
     finally
-      FindCloseUTF8(sr); { *Converted from FindClose* }
+      FindClose(sr); { *Converted from FindClose* }
     end;
   end;
 end;

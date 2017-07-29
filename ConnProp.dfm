@@ -12,7 +12,7 @@ object ConnPropDlg: TConnPropDlg
   Color = clBtnFace
   ParentFont = True
   Position = poOwnerFormCenter
-  Visible = False
+  LCLVersion = '1.8.0.2'
   object Panel1: TPanel
     Left = 8
     Height = 34

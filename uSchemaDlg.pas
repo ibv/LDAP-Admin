@@ -342,9 +342,9 @@ begin
     rect:=GetLinkRect(Node);
     n:=pos(':', Node.Text);
     if n>0 then inc(n,2);
-    //logs('|'+copy(Node.Text, n, length(Node.Text)));
+	  //logs('|'+copy(Node.Text, n, length(Node.Text)));
     ///View.Canvas.TextRect(Rect, Rect.Left+1, Rect.Top+1, copy(Node.Text, n, length(Node.Text)));
-    View.Canvas.TextRect(Rect, Rect.Left+3, Rect.Top+1, copy(Node.Text, n, length(Node.Text)));
+ 	  View.Canvas.TextRect(Rect, Rect.Left+3, Rect.Top+1, copy(Node.Text, n, length(Node.Text)));
   end;
 end;
 

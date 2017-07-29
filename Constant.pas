@@ -536,6 +536,7 @@ resourcestring
   stRequired        = '%s is required!';
   stResetAutolock   = 'This account has been locked down by SAMBA server! Do you want to reset the autolock flag and enable it now?';
   stResetToDefault  = 'Reset to default settings?';
+  stRetryWithTrust  = 'To continue, LdapAdmin can try to create a temporary trust connection to %s by creating a \\%0:s\IPC$ share connection.'#10#10'Would you like to create a temporary trust connection to %0:s and retry the operation?';
   stRetrieving      = 'Reading: %d objects retrieved. Press ESC to abort...';
   stSaslSSL         = 'SASL encryption can not be used over an SSL connection!';
   stSchemaNoSubentry= 'Can''t find SubschemaSubentry';
@@ -550,6 +551,8 @@ resourcestring
   stSorting         = 'Sorting...';
   stStopTLSError    = 'Stop TLS Failed! The connection will be closed due to unrecoverable error.';
   stTimeFormat      = 'time format';
+  stTrustConnFailed = 'Could not establish trust connection to %s.'#10#10'%s';
+  stTrustConnManual = 'Please create a manual connection to \\%s\IPC$ and retry the operation.';
   stTooManyArgs     = 'Too many arguments!';
   stUnclosedParam   = 'Invalid (Unclosed) parameter!';
   stUnclosedStr     = 'Unclosed string!';

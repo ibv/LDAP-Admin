@@ -237,7 +237,7 @@ procedure TViewPicFrm.ActSaveToFileExecute(Sender: TObject);
 begin
   with SaveDialog do
   begin
-    if not Execute or (FileExistsUTF8(FileName) { *Converted from FileExists* } and
+    if not Execute or (FileExists(FileName) { *Converted from FileExists* } and
        (MessageDlg(Format(stFileOverwrite, [FileName]), mtConfirmation, [mbYes, mbNo], 0) <> mrYes)) then Exit;
     Image1.Picture.SaveToFile(FileName);
   end;

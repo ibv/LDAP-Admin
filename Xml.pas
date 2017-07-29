@@ -574,6 +574,7 @@ begin
   end;
 end;
 
+
 function TXmlTree.ClearContent(S: string):string;
 var
   b, e: integer;

@@ -1,5 +1,5 @@
   {      LDAPAdmin - CustMenuDlg.pas
-  *      Copyright (C) 2013 Tihomir Karlovic
+  *      Copyright (C) 2013-2017 Tihomir Karlovic
   *
   *      Author: Tihomir Karlovic
   *

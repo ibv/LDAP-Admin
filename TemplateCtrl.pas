@@ -540,15 +540,17 @@ begin
     Self.ClientHeight := Top + Height + fSpacing;
 end;
 
+
 procedure TTemplatePanel.AdjustControlSizes;
 begin
-  if fTemplate.AutoSizeControls then
+  if Assigned(fTemplate) and fTemplate.AutoSizeControls then
   begin
     fPanel.Control.Width := ClientWidth*3;
     //fPanel.Control.Width := 550;
     fPanel.AdjustSizes;
   end;
 end;
+
 
 procedure TTemplatePanel.RefreshData;
 var

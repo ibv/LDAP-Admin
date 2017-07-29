@@ -34,7 +34,7 @@ uses
 {$IFnDEF FPC}
   ShellApi, Windows, WinLDAP,
 {$ELSE}
-  LCLIntf, LCLType, LMessages, DateTimePicker, HtmlMisc, LinLDAP,
+  LCLIntf, LCLType, LMessages, DateTimePicker, {HtmlMisc,} LinLDAP,
 {$ENDIF}
   Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, ComCtrls, LDAPClasses, ImgList, Posix, Shadow,
@@ -45,6 +45,16 @@ uses
 const
   GRP_ADD           =  1;
   GRP_DEL           = -1;
+
+/// from hmlmisc
+type
+  TWMDropFiles = packed record
+    Msg: Cardinal;
+    Drop: THANDLE;
+    Unused: Longint;
+    Result: Longint;
+  end;
+
 
 type
   TUserDlg = class(TForm)

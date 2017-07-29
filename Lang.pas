@@ -2121,6 +2121,12 @@ SysConst_SUnkWin32Error}
     fStringTable[$10000 - PResStringRec(@Constant.stOverwriteOrRename).Identifier] := 607;
     fStringTable[$10000 - PResStringRec(@Constant.stUpnIncomplete).Identifier] := 608;
     fStringTable[$10000 - PResStringRec(@Constant.stUnclosedReference).Identifier] := 609;
+fStringTable[$10000 - PResStringRec(@Constant.cMidnight).Identifier] := 610;
+  fStringTable[$10000 - PResStringRec(@Constant.stRenameEntry).Identifier] := 611;
+  fStringTable[$10000 - PResStringRec(@Constant.stRetryWithTrust).Identifier] := 612;
+  fStringTable[$10000 - PResStringRec(@Constant.stResetToDefault).Identifier] := 613;
+  fStringTable[$10000 - PResStringRec(@Constant.stTrustConnManual).Identifier] := 614;
+  fStringTable[$10000 - PResStringRec(@Constant.stTrustConnFailed).Identifier] := 615;    
   {$ENDIF VER260}
   *)
 end;

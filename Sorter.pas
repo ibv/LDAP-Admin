@@ -451,6 +451,7 @@ procedure TStringGridSorter.SortGrid;
 
 begin
   with StringGrid do
+    if (FixedRows + fTopFix + RowCount - fBottomFix - 1) shr 1 >= fBottomFix then
   begin
     QuickSort(FixedRows + fTopFix, RowCount - fBottomFix - 1, Cols[fSortColumn]);
     Repaint;
