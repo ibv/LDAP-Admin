@@ -1,3 +1,11 @@
+* Sat Jul 29 2017 Ivo <ivo.brhel at gmail.com>
+---------------------
++ fixed drawing templates for Lazarus version > 1.7
++ fixed .lpi file for publish clean project
++ fixed deprecated utf8 file utils (fpc version > 3.0)
++ prepare for new .lrj resource file
+
+
 * Thu Apr 20 2017 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Version 1.8.2
