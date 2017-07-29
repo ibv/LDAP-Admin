@@ -32,6 +32,9 @@
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
+      <DestinationDirectory Value="$(ProjPath)/published/"/>
+      <IncludeFileFilter Value="*.(pas|pp|inc|lpr|lfm|dfm|lrs|lpi|lpk|xml|sh|dpr)"/>
+      <UseExcludeFileFilter Value="True"/>
     </PublishOptions>
     <RunParams>
       <local>
@@ -46,7 +49,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="79">
+    <Units Count="78">
       <Unit0>
         <Filename Value="LdapAdmin.dpr"/>
         <IsPartOfProject Value="True"/>
@@ -468,10 +471,6 @@
         <Filename Value="Unixpass.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit77>
-      <Unit78>
-        <Filename Value="u1.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit78>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -492,6 +491,7 @@
     </Parsing>
     <CodeGeneration>
       <Checks>
+        <IOChecks Value="True"/>
         <StackChecks Value="True"/>
       </Checks>
       <TargetCPU Value="x86_64"/>
