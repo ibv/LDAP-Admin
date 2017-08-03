@@ -3515,7 +3515,9 @@ end;
 
 procedure TTemplateParser.Clear;
 begin
+  {$ifdef mswindows}
   fExtensionList.Clear;
+  {$endif}
   inherited;
 end;
 

@@ -1,9 +1,15 @@
+* Thu Sep 3 2017 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Fixed Exception on delete templates
++ Fixed Exception Access violation on close app
+
+
 * Sat Jul 29 2017 Ivo <ivo.brhel at gmail.com>
 ---------------------
-+ fixed drawing templates for Lazarus version > 1.7
-+ fixed .lpi file for publish clean project
-+ fixed deprecated utf8 file utils (fpc version > 3.0)
-+ prepare for new .lrj resource file
++ Fixed drawing templates for Lazarus version > 1.7
++ Fixed .lpi file for publish clean project
++ Fixed deprecated utf8 file utils (fpc version > 3.0)
++ Prepare for new .lrj resource file
 
 
 * Thu Apr 20 2017 Ivo <ivo.brhel at gmail.com>
