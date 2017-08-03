@@ -437,7 +437,7 @@ begin
       Free;
     end;
     Rows[Index].Clear;
-    if RowCount > 2 then
+    if RowCount > {2}3 then
     begin
       for i := Index to RowCount - 2 do
         Rows[i] := Rows[i+1];

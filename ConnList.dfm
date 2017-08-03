@@ -15,7 +15,7 @@ object ConnListFrm: TConnListFrm
   OnResize = FormResize
   ParentFont = True
   Position = poOwnerFormCenter
-  LCLVersion = '1.8.0.2'
+  LCLVersion = '1.8.0.3'
   object Panel1: TPanel
     Left = 0
     Height = 42
@@ -158,15 +158,15 @@ object ConnListFrm: TConnListFrm
     TabOrder = 2
     object Splitter1: TSplitter
       Left = 122
-      Height = 373
+      Height = 377
       Top = 1
       Width = 5
     end
     object AccountsView: TListView
       Left = 127
-      Height = 373
+      Height = 377
       Top = 1
-      Width = 487
+      Width = 491
       Align = alClient
       Columns = <      
         item
@@ -203,7 +203,7 @@ object ConnListFrm: TConnListFrm
     end
     object TreeView: TTreeView
       Left = 1
-      Height = 373
+      Height = 377
       Top = 1
       Width = 121
       Align = alLeft
@@ -1288,7 +1288,6 @@ object ConnListFrm: TConnListFrm
     object ActNewAccount: TAction
       Category = 'Accounts'
       Caption = '&New...'
-      Enabled = False
       Hint = 'Create new account'
       ImageIndex = 0
       OnExecute = ActNewAccountExecute
@@ -1296,7 +1295,6 @@ object ConnListFrm: TConnListFrm
     object ActDeleteAccount: TAction
       Category = 'Accounts'
       Caption = '&Delete'
-      Enabled = False
       Hint = 'Delete account'
       ImageIndex = 9
       OnExecute = ActDeleteAccountExecute
@@ -1311,14 +1309,12 @@ object ConnListFrm: TConnListFrm
     end
     object ActNewStorage: TAction
       Category = 'Storages'
-      Enabled = False
       Hint = 'Create new file storage'
       ImageIndex = 3
       OnExecute = ActNewStorageExecute
     end
     object ActOpenStorage: TAction
       Category = 'Storages'
-      Enabled = False
       Hint = 'Open existing file storage'
       ImageIndex = 6
       OnExecute = ActOpenStorageExecute
@@ -1337,7 +1333,6 @@ object ConnListFrm: TConnListFrm
     object ActDeleteStorage: TAction
       Category = 'Storages'
       Caption = 'Delete storage'
-      Enabled = False
       Hint = 'Delete file storage'
       ImageIndex = 7
       OnExecute = ActDeleteStorageExecute
@@ -1345,7 +1340,6 @@ object ConnListFrm: TConnListFrm
     object ActExport: TAction
       Category = 'Accounts'
       Caption = 'Export...'
-      Enabled = False
       Hint = 'Export to file'
       ImageIndex = 12
       OnExecute = ActExportExecute
@@ -1353,7 +1347,6 @@ object ConnListFrm: TConnListFrm
     object ActImport: TAction
       Category = 'Accounts'
       Caption = 'Import...'
-      Enabled = False
       Hint = 'Import from file'
       ImageIndex = 11
       OnExecute = ActImportExecute
@@ -1361,7 +1354,6 @@ object ConnListFrm: TConnListFrm
     object ActNewFolder: TAction
       Category = 'Storages'
       Caption = 'New folder...'
-      Enabled = False
       Hint = 'Create new folder'
       ImageIndex = 4
       OnExecute = ActNewFolderExecute
@@ -1375,7 +1367,6 @@ object ConnListFrm: TConnListFrm
     object ActDeleteFolder: TAction
       Category = 'Storages'
       Caption = 'Delete folder'
-      Enabled = False
       Hint = 'Delete folder'
       ImageIndex = 10
       OnExecute = ActDeleteFolderExecute
