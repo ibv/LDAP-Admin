@@ -1,3 +1,13 @@
+* Tue Sep 8 2017 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Fixed read/write credentials for Lazarus 1.8 and FPC > 3.0
+
+
+* Tue Sep 4 2017 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Add How to localize to README
+
+
 * Thu Sep 3 2017 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Fixed Exception on delete templates

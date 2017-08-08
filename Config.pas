@@ -39,7 +39,7 @@ uses
      {$IFnDEF FPC}
      Windows,Generics.Collections, Contnrs,
      {$else}
-     fgl, strutils, LCLIntf, LCLType, LazFileUtils, Buttons,
+     fgl, strutils, LCLIntf, LCLType, {LazFileUtils,} Buttons, LCLVersion,
      {$endif}
      Registry, IniFiles,
      Classes,  SysUtils, LDAPClasses, Xml,
@@ -406,8 +406,9 @@ uses
   ComObj,
 {$ELSE}
 {$ENDIF}
-  Constant, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}Dialogs, Forms, StdCtrls, Controls, WinBase64,
+  Constant, {$ifdef mswindows}WinLDAP,{$else} LinLDAP, base64,{$endif}Dialogs, Forms, StdCtrls, Controls, WinBase64,
   Math {$IFDEF VER_XEH}, System.Types{$ENDIF};
+
 
 function GetIndent(o: TObject): Integer;
 const
@@ -764,6 +765,7 @@ constructor TAccount.Create(AParent: TObject; const AName: string);
 begin
   if AName = '' then
     raise Exception.Create(stAccntNameReq);
+
   inherited;
 end;
 
@@ -919,7 +921,6 @@ begin
 end;
 
 
-
 procedure TAccount.ReadCredentials;
 { Format of credentials:
   Flags ........ 4 byte
@@ -930,6 +931,10 @@ var
   len: Integer;
   Offset: integer;
   Flags: Integer;
+  st: string;
+  list: TStringList;
+
+
 
   function RdInteger: Integer;
   begin
@@ -953,14 +958,31 @@ begin
   if FStorage=nil then exit;
   FUser:='';
   FPassword:='';
-  len:=GetDataSize(CONNECT_CREDIT);
-  if len=0 then exit;
-  setlength(Buffer, len);
-  ReadBinaryData(CONNECT_CREDIT, Buffer[0], len);
-  Offset:=0;
-  Flags := RdInteger; // Read flags
-  FUser:=RdStr;       // Read user name
-  FPassword:=RdStr;   // Read password
+  // for Lazarus < 1.7
+  if (lcl_major >= 1)  and (lcl_minor < 7) then
+  begin
+    len:=GetDataSize(CONNECT_CREDIT);
+    if len=0 then exit;
+    setlength(Buffer, len);
+    ReadBinaryData(CONNECT_CREDIT, Buffer[0], len);
+    Offset:=0;
+    Flags := RdInteger; // Read flags
+    FUser:=RdStr;       // Read user name
+    FPassword:=RdStr;   // Read password
+  end
+  else
+  begin
+    st:=ReadString(CONNECT_CREDIT);
+    st:=DecodeStringBase64(st,true);
+    if pos('|',st) < 0 then  exit;
+    List:=TStringList.Create;
+    ExtractStrings(['|'], [], PChar(st), list);
+    if list.Count < 2 then exit;
+    Flags := StrToInt(list[0]);
+    FUser := list[1] ;
+    FPassword := list[2];
+    List.Free;
+  end;
 end;
 
 
@@ -972,6 +994,7 @@ procedure TAccount.WriteCredentials;
 var
   Buffer: array of byte;
   len: Integer;
+  st : string;
 
   procedure WrInteger(i: Integer);
   begin
@@ -994,15 +1017,30 @@ var
 begin
   if FStorage=nil then exit;
   len:=0;
-  setlength(Buffer,0);
-  WrInteger(cfUnicodeStrings);  // Write flags
-  WrString(FUser);              // Write user name
+    // for Lazarus < 1.7
+  if (lcl_major >= 1)  and (lcl_minor < 7) then
+  begin
+    setlength(Buffer,0);
+    WrInteger(cfUnicodeStrings);  // Write flags
+    WrString(FUser);              // Write user name
                                 // Write password, if PasswordCanSave
-  if FStorage.PasswordCanSave then WrString(FPassword)
-  else WrString('');
+    if FStorage.PasswordCanSave then WrString(FPassword)
+    else WrString('');
 
-  WriteBinaryData(CONNECT_CREDIT, Buffer[0], length(Buffer));
+    WriteBinaryData(CONNECT_CREDIT, Buffer[0], length(Buffer));
+  end
+  else
+  begin
+    st:=IntToStr(cfUnicodeStrings)+'|'+FUser+'|';
+    if FStorage.PasswordCanSave then
+      st:=st+FPassword+'|'
+    else
+      st:=st+'|';
+
+    WriteString(CONNECT_CREDIT, EncodeStringBase64(st));
+  end;
 end;
+
 
 function TAccount.GetDirectoryType: TDirectoryType;
 begin
@@ -1637,7 +1675,7 @@ begin
   FFileName := AFileName;
   FXml := TXmlTree.Create;
   FXml.CaseSensitive:=false;
-  if FileExistsUTF8(AFileName) then begin
+  if FileExists(AFileName) then begin
     try
       FXml.LoadFromFile(FFileName);
       if FXml.Root.Name<>LAC_ROOTNAME then raise Exception.Create(format(LAC_NOTLAC, [FFileName]));
