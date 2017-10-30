@@ -45,8 +45,8 @@ The recommended way to locate in linux is as follows,
 ## How to compile
 - install Lazarus (1.6 or above) from binaries - http://wiki.freepascal.org/Installing_Lazarus
 - get source code Ldap-Admin from https://github.com/ibv/LDAP-Admin
-- in Lazarus IDE, menu - File -> Open -> "/path/to/LdapAdmin.lpi"
-- in Lazarus IDE, menu - Run -> F9 (run) or Ctrl+F9 (compile) or Shift+F9 (link)
+- in Lazarus IDE, menu - File -> Open -> " 
+- in Lazarus IDE, menu - Run -> F9 (run) or Ctrl+F9 (compile) or Shift+F9 (link) or "/usr/bin/lazbuild /path/to/LdapAdmin.lpi"
 
 
 ## Further information
