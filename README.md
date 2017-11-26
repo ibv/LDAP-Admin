@@ -28,7 +28,9 @@ Disabled functions:
 
 
 ## Requirements
-- Lazarus (FPC) compiler
+- Lazarus 1.6.2+, developed on version 1.8.0RC5
+- compiler FPC 3.0.0+, developed on version 3.0.4
+- library libssl.so, libcrypto.so, for usign SSL/TLS
 - Linux desktop
 
 

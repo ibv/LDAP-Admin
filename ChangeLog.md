@@ -1,3 +1,9 @@
+* Sun Nov 26 2017 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Fixed system requirements for SSL/TLSr
+
+
+
 * Tue Sep 8 2017 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Fixed read/write credentials for Lazarus 1.8 and FPC > 3.0
