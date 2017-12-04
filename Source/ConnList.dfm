@@ -1,7 +1,7 @@
 object ConnListFrm: TConnListFrm
-  Left = 349
+  Left = 513
   Height = 449
-  Top = 176
+  Top = 193
   Width = 619
   Caption = 'Connections'
   ClientHeight = 449
@@ -171,19 +171,19 @@ object ConnListFrm: TConnListFrm
       Columns = <      
         item
           Caption = 'Name'
-          Width = 1
+          Width = 150
         end      
         item
           Caption = 'Host'
-          Width = 1
+          Width = 120
         end      
         item
           Caption = 'Base'
-          Width = 1
+          Width = 200
         end      
         item
           Caption = 'User'
-          Width = 484
+          Width = 87
         end>
       DragMode = dmAutomatic
       HideSelection = False
