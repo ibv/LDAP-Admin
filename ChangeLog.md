@@ -1,6 +1,11 @@
+* Mon Dec 4 2017 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Fixed display format in ConnListFrm, (list,table)
+
+
 * Sun Nov 26 2017 Ivo <ivo.brhel at gmail.com>
 ---------------------
-+ Fixed system requirements for SSL/TLSr
++ Fixed system requirements for SSL/TLS
 
 
 
