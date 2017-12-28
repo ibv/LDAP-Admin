@@ -501,7 +501,7 @@ end;
 procedure TTemplatePanel.Resize;
 begin
   inherited;
-  ///AdjustControlSizes;
+  AdjustControlSizes;
 end;
 
 constructor TTemplatePanel.Create(AOwner: TComponent);
@@ -522,6 +522,7 @@ begin
   fFixTop := CT_FIX_TOP;
   fGroupSpacing := CT_GROUP_SPACING;
   fSpacing := CT_SPACING;
+
 end;
 
 destructor TTemplatePanel.Destroy;
@@ -545,8 +546,8 @@ procedure TTemplatePanel.AdjustControlSizes;
 begin
   if Assigned(fTemplate) and fTemplate.AutoSizeControls then
   begin
-    fPanel.Control.Width := ClientWidth*3;
-    //fPanel.Control.Width := 550;
+    ///fPanel.Control.Width := ClientWidth*3;
+    fPanel.Control.Width := ClientWidth;
     fPanel.AdjustSizes;
   end;
 end;

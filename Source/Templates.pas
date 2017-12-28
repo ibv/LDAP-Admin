@@ -985,7 +985,7 @@ begin
   for i := 0 to Elements.Count - 1 do
     if Elements[i] is TTemplateControl then with TTemplateControl(Elements[i]) do
     begin
-      if AutoSizeX and Assigned(Control) and Assigned(Control.Parent) then
+      if (ClassName <> 'TTemplateCtrlTabSheet') and AutoSizeX and Assigned(Control) and Assigned(Control.Parent) then
         Control.Width := Control.Parent.ClientWidth - CT_LEFT_BORDER - CT_RIGHT_BORDER;
       AdjustSizes;
     end

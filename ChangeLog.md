@@ -1,3 +1,8 @@
+* Thu Dec 28 2017 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Fixed Template AdjustSize
+
+
 * Mon Dec 4 2017 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Fixed display format in ConnListFrm, (list,table)

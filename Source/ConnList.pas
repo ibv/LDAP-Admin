@@ -41,6 +41,8 @@ type
   TPrepareMode = (pmExport, pmImport);
   TCopyAction  = (caNone, caAsk, caAskOnce, caOverwrite, caMerge, caRename, caAbort);
 
+  { TConnListFrm }
+
   TConnListFrm = class(TForm)
     PopupMenu1: TPopupMenu;
     pbNew: TMenuItem;
@@ -1118,11 +1120,11 @@ begin
         Data := Accounts[i];
         SubItems.Add(Accounts[i].Server);
         SubItems.Add(Accounts[i].Base);
-        {if Accounts[i].User = '' then
+        if Accounts[i].User = '' then
           SubItems.Add('anonymous')
         else
           SubItems.Add(Accounts[i].User);
-        }ImageIndex := imComputer;
+        ImageIndex := imComputer;
         Selected := (Data = SelData);
       end;
 
@@ -1175,7 +1177,7 @@ begin
   SetSelPath(TreeView, SelectedPath);
   TreeView.FullExpand;
   TreeView.Items.EndUpdate;
-  Sleep(10);
+  Sleep(1);
   Application.ProcessMessages;
   RefreshAccountsView;
 end;
