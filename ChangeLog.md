@@ -1,6 +1,7 @@
 * Thu Dec 28 2017 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Fixed Template AdjustSize
++ Fixed EditEntryForm Template AdjustSize
 
 
 * Mon Dec 4 2017 Ivo <ivo.brhel at gmail.com>

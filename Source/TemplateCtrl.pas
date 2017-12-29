@@ -593,7 +593,7 @@ end;
 procedure THeaderPanel.SetTemplatePanel(APanel: TTemplatePanel);
 begin
   fTemplatePanel := APanel;
-  fTemplatePanel.Parent := Self;
+  fTemplatePanel.Parent := Self.Parent;
   fTemplatePanel.Width := Width;
   AdjustHeight;
 end;
