@@ -54,4 +54,4 @@ The recommended way to locate in linux is as follows,
 ## Further information
 
 For more information about it, please visit:
-> http://ivb.sweb.cz/ldap-en.html
+> http://ivb.sweb.cz/en/ldap.html
