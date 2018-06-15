@@ -34,7 +34,7 @@ uses
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, ComCtrls, LDAPClasses, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}LAControls,
+  Buttons, ExtCtrls, ComCtrls, LDAPClasses, {$ifdef mswindows}WinLDAP,LAControls,{$else} LinLDAP,{$endif}
   ImgList, Connection;
 
 type
@@ -69,7 +69,8 @@ type
     procedure TreeViewDeletion(Sender: TObject; Node: TTreeNode);
     procedure FormResize(Sender: TObject);
   private
-    cbConnections: TLAComboBox;
+    ///cbConnections: TLAComboBox;
+    cbConnections: TComboBox;
     RdnAttribute: string;
     MainConnectionIdx: Integer;
     fExpandNode: TExpandNodeProc;
@@ -190,7 +191,8 @@ begin
   inherited Create(AOwner);
   TSizeGrip.Create(Panel1);
   OkBtn.Enabled := false;
-  cbConnections := TLAComboBox.Create(Self);
+  ///cbConnections := TLAComboBox.Create(Self);
+  cbConnections := TComboBox.Create(Self);
   with cbConnections do
   begin
     Parent := Panel3;
@@ -198,13 +200,13 @@ begin
     Top := 8;
     Width := edName.Width;
     Height := 22;
-    ///Style := csOwnerDrawFixed;
-    Style := csDropDown;
+    Style := csOwnerDrawFixed;
+    //Style := csDropDown;
     ItemHeight := 16;
     TabOrder := 0;
     OnChange := cbConnectionsChange;
     OnDrawItem := cbConnectionsDrawItem;
-    OnCanCloseUp := cbConnectionsCloseUp;
+    ///OnCanCloseUp := cbConnectionsCloseUp;
   end;
 
   with GlobalConfig do
@@ -236,6 +238,7 @@ begin
   ///fSortProc := MainFrm.TreeSortProc;
   TreeView.Images := MainFrm.ImageList;
   cbConnections.ItemIndex := MainConnectionIdx;
+  cbConnections.OnChange(Self);
 
   if Count > 1 then
   begin

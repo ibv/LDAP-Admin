@@ -147,6 +147,8 @@ Math;
 procedure DrawComboBtn(Canvas: TCanvas; Rect: TRect; BtnState: TBtnState);
 var
   uState: Cardinal;
+  PaintRect: TRect;
+  Details: TThemedElementDetails;
 begin
   {$IFDEF XPSTYLE}
   if ThemeServices.ThemesEnabled then begin
@@ -234,7 +236,7 @@ procedure TPopupList.CreateWnd;
 begin
   inherited CreateWnd;
   ///windows.SetParent(Handle, 0);
-  SetParent(self);
+  SetParent(self.parent);
   CallWindowProc(DefWndProc, Handle, WM_SETFOCUS, 0, 0);
 end;
 
@@ -258,8 +260,8 @@ begin
   FPickList:=TPopupList.Create(self);
   FPickList.OnMouseUp:=ListMouseUp;
   FPickList.Visible:=false;
+  FPickList.Parent:=TWinControl(Owner);
   ///FPickList.Parent:=self;
-  FPickList.Parent:=nil;
   FPickList.ItemHeight:=13;
   FPickList.Style:=lbOwnerDrawFixed;
   FItemIndex := -1;
@@ -284,8 +286,6 @@ end;
 procedure TLAComboBox.CreateWnd;
 begin
   inherited CreateWnd;
-
-
 end;
 
 procedure TLAComboBox.Invalidate;
@@ -432,9 +432,11 @@ begin
 
   p:=ScreenToClient(Mouse.CursorPos);
 
-  if Enabled then begin
+  if Enabled then
+  begin
     ABtnState:=bs_Normal;
-    if PtInRect(FBtnRect, P) then begin
+    if PtInRect(FBtnRect, P) then
+    begin
       if HiWord(GetKeyState(VK_LBUTTON))>0 then ABtnState:=bs_Push
       else ABtnState:=bs_Hot;
     end;
@@ -497,7 +499,7 @@ begin
 
   if GetCapture<>0 then SendMessage(GetCapture, WM_CANCELMODE, 0, 0);
   try
-    ///SetWindowPos(FPickList.Handle, 0,0,0,0,0, SWP_NOZORDER or SWP_NOMOVE or SWP_NOACTIVATE or SWP_HIDEWINDOW);
+    SetWindowPos(FPickList.Handle, 0,0,0,0,0, SWP_NOZORDER or SWP_NOMOVE or SWP_NOACTIVATE or SWP_HIDEWINDOW);
   except
   end;
   if Accept then ItemIndex:=Index;
@@ -546,9 +548,17 @@ end;
 
 procedure TLAComboBox.SetItemIndex(const Value: Integer);
 begin
-  FItemIndex:=Value;
-  FPickList.ItemIndex:=Value;
-  if FItemIndex>-1 then Text:=FPickList.Items[FItemIndex];
+  if Value = FItemIndex then
+    exit;
+  FItemIndex := Value;
+  FPickList.ItemIndex := Value;
+  if FItemIndex > -1 then
+  begin
+    if Text = FPickList.Items[FItemIndex] then
+      OnChange(Self)
+    else
+      Text := FPickList.Items[FItemIndex];
+  end;
 end;
 
 procedure TLAComboBox.SetStyle(const Value: TComboBoxStyle);
@@ -574,7 +584,8 @@ begin
 
 
   FEdCanvas.Font:=Font;
-  if Focused and not DroppedDown then begin
+  if Focused and not DroppedDown then
+  begin
     FEdCanvas.Font.Color:=clHighlightText;
     FEdCanvas.Brush.Color:=clHighlight;
     FEdCanvas.FillRect(ARect);
@@ -586,12 +597,14 @@ begin
     State := [];
   end;
 
-  if (Style<>csDropDownList) and assigned(FOnDrawItem) and (ItemIndex <> -1) then begin
+  if (Style<>csDropDownList) and assigned(FOnDrawItem) and (ItemIndex <> -1) then
+  begin
     FIsDraw:=true;
     FOnDrawItem(self, ItemIndex, ClientRect, [odComboBoxEdit] + State);
     FIsDraw:=false;
   end
-  else begin
+  else
+  begin
     DrawText(FEdCanvas.Handle, pchar(Text), -1, ARect, DT_EDITCONTROL);
   end;
 

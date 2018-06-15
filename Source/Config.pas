@@ -1965,6 +1965,7 @@ initialization
 
   GlobalConfig := TGlobalConfig.Create(TRegistryConfigStorage.Create(HKEY_CURRENT_USER, REG_KEY));
 
+
 finalization
 
   GlobalConfig.Free;

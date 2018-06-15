@@ -10,7 +10,7 @@ object CopyDlg: TCopyDlg
   OnResize = FormResize
   ParentFont = True
   Position = poMainFormCenter
-  LCLVersion = '1.6.0.4'
+  LCLVersion = '1.8.4.0'
   object Panel1: TPanel
     Left = 0
     Height = 41
@@ -84,7 +84,6 @@ object CopyDlg: TCopyDlg
       Height = 225
       Top = 56
       Width = 377
-      DefaultItemHeight = 18
       ExpandSignType = tvestPlusMinus
       Indent = 19
       ReadOnly = True

@@ -8,7 +8,7 @@ uses
 {$IFnDEF FPC}
 {$ELSE}
 cthreads,
-  //cmem,
+//cmem,
 Interfaces,
 DefaultTranslator,
 {$ENDIF}
