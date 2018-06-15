@@ -28,7 +28,7 @@ Disabled functions:
 
 
 ## Requirements
-- Lazarus 1.6.2+, developed on version 1.8
+- Lazarus 1.6.2+, developed on version 1.8.4
 - compiler FPC 3.0.0+, developed on version 3.0.4
 - library libssl.so, libcrypto.so, for usign SSL/TLS
 - Linux desktop
@@ -54,4 +54,4 @@ The recommended way to locate in linux is as follows,
 ## Further information
 
 For more information about it, please visit:
-> http://ivb.sweb.cz/en/ldap.html
+> http://ivb.sweb.cz/ldap-en.html
