@@ -1,3 +1,8 @@
+* Mon Jul 9 2018 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Fixed Startup Connection Session
+
+
 * Fri Jun 15 2018 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Fixed Targets cbConnections in Copy/Move LDAP Entry

@@ -1199,8 +1199,19 @@ end;
 function TConfigList.AccountByName(Name: string): TAccount;
 var
   i: integer;
+  folder: string;
 begin
   result:=nil;
+  folder:='';
+  i := Pos('\', Name);
+  if i>0 then
+  begin
+   folder:=Copy(Name, 1, i-1);
+   Name  :=Copy(Name, i+1, maxInt);
+  end;
+  if Folder <>'' then
+    result := FolderByName(Folder).FItems.AccountByName(Name)
+  else
   for i := 0 to FAccounts.Count - 1 do
     if AnsiCompareText(Accounts[i].Name, Name)=0 then begin
       Result := Accounts[i];

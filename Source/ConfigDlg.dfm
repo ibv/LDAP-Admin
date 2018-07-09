@@ -13,7 +13,7 @@ object ConfigDlg: TConfigDlg
   ParentFont = True
   Position = poMainFormCenter
   ShowHint = True
-  Visible = False
+  LCLVersion = '1.8.4.0'
   object PageControl1: TPageControl
     Left = 0
     Height = 378
@@ -169,7 +169,7 @@ object ConfigDlg: TConfigDlg
         Top = 8
         Width = 425
         Caption = '&Files'
-        ClientHeight = 170
+        ClientHeight = 184
         ClientWidth = 421
         TabOrder = 0
         object Label1: TLabel
@@ -217,7 +217,7 @@ object ConfigDlg: TConfigDlg
         Top = 224
         Width = 425
         Caption = '&Options'
-        ClientHeight = 74
+        ClientHeight = 88
         ClientWidth = 421
         TabOrder = 1
         object cbTemplateExtensions: TCheckBox

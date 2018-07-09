@@ -782,6 +782,7 @@ var
   ConnectionNode: TConnectionNode;
   Dummy: Boolean;
 begin
+  if not Assigned(Account) then exit;
   Application.ProcessMessages;
   if Account is TDBAccount then
   begin
@@ -2136,7 +2137,7 @@ end;
 procedure TMainFrm.FormShow(Sender: TObject);
 var
   aproto, auser, apassword, ahost, abase: string;
-  aport, aversion, i:     integer;
+  aport, aversion, i,j:     integer;
   auth: TLdapAuthMethod;
   SessionName, StorageName: string;
   AStorage: TConfigStorage;
@@ -2176,8 +2177,15 @@ begin
     if SessionName <> '' then
     begin
       i := Pos(':', SessionName);
+      j := Pos('|', SessionName);
       StorageName := Copy(SessionName, 1, i - 1);
-      SessionName := Copy(SessionName, i + 1, MaxInt);
+      SessionName := Copy(SessionName, i + 1, j-i-1{MaxInt});
+      i := Pos('\', StorageName);
+      if i>0 then
+      begin
+        SessionName := Copy(StorageName,i+1,MaxInt) + '\' + SessionName;
+        StorageName := Copy(StorageName, 1, i - 1);
+      end;
       AStorage := StorageByName(StorageName);
       if Assigned(AStorage) then
         ServerConnect(AStorage.RootFolder.Items.AccountByName(SessionName));

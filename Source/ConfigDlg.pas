@@ -30,12 +30,12 @@ interface
 
 uses
 {$IFnDEF FPC}
-  Windows,
+  Windows, LAControls,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, Dialogs, LDAPClasses, ComCtrls, LAControls, Grids;
+  Buttons, ExtCtrls, Dialogs, LDAPClasses, ComCtrls,  Grids, Connection ;
 
 type
   TConfigDlg = class(TForm)
@@ -93,7 +93,8 @@ type
     procedure ListMouseMove(Sender: TObject; Shift: TShiftState; X,Y: Integer);
     procedure btnEditLangClick(Sender: TObject);
   private
-    cbStartupConnection: TLAComboBox;
+    ///cbStartupConnection: TLAComboBox;
+    cbStartupConnection: TComboBox;
     procedure cbStartupConnectionDrawItem(Control: TWinControl;
               Index: Integer; Rect: TRect; State: TOwnerDrawState);
     procedure cbStartupConnectionCloseUp(var Index: integer; var CanCloseUp: boolean);
@@ -115,9 +116,25 @@ var
   i, j: Integer;
   s: string;
   names: TStrings;
+
+  procedure DoAddFolder(AFolder: TAccountFolder);
+  var
+    i: Integer;
+  begin
+    with cbStartupConnection.Items, AFolder.Items do begin
+      AddObject(AFolder.Name, AFolder);
+      for i := 0 to Accounts.Count - 1 do
+        AddObject(Accounts[i].Name, Accounts[i]);
+      for i := 0 to Folders.Count - 1 do
+        DoAddFolder(Folders[i]);
+    end;
+  end;
+
+
 begin
   inherited Create(AOwner);
-  cbStartupConnection := TLAComboBox.Create(Self);
+  ///cbStartupConnection := TLAComboBox.Create(Self);
+  cbStartupConnection := TComboBox.Create(Self);
   with cbStartupConnection do
   begin
     Parent := GroupBox3;
@@ -131,13 +148,15 @@ begin
     Enabled := False;
     TabOrder := 1;
     OnDrawItem := cbStartupConnectionDrawItem;
-    OnCanCloseUp := cbStartupConnectionCloseUp;
+    ///OnCanCloseUp := cbStartupConnectionCloseUp;
   end;
   for i:=0 to GlobalConfig.Storages.Count-1 do with GlobalConfig.Storages[i] do
   begin
     cbStartupConnection.Items.AddObject(Name, GlobalConfig.Storages[i]);
     for j:=0 to RootFolder.Items.Accounts.Count-1 do
       cbStartupConnection.Items.AddObject(RootFolder.Items.Accounts[j].Name, RootFolder.Items.Accounts[j]);
+    for j := 0 to RootFolder.Items.Folders.Count - 1 do
+        DoAddFolder(RootFolder.Items.Folders[j]);
   end;
   with GlobalConfig do begin
     LanguageList.Items.CommaText := ReadString(rLanguageDir);
@@ -151,14 +170,25 @@ begin
     cbDisplayEncoded.Checked := ReadBool(rEncodedLdapStrings, false);
 
     s := ReadString(rStartupSession);
-    with cbStartupConnection do
+    {with cbStartupConnection do
       for i := 0 to Items.Count - 1 do with TAccount(Items.Objects[i]) do
       if (Items.Objects[i] is TAccount) and (AnsiCompareText(Storage.Name + ':' + Name, s) = 0) then
       begin
         cbConnect.Checked := true;
         cbStartupConnection.ItemIndex := i;
         Break;
+      end;}
+    with cbStartupConnection do
+    begin
+      if s <> '' then
+      begin
+        i := Pos('|', s);
+        s := Copy(s, i + 1, MaxInt);
+        i:=StrToIntDef(s,-1);
+        cbConnect.Checked := true;
+        cbStartupConnection.ItemIndex := i;
       end;
+    end;
     cbIdObject.Checked := ReadBool(rMwLTIdentObject, true);
     cbEnforceContainer.Checked := ReadBool(rMwLTEnfContainer, true);
     edSearch.Text := ReadString(rSearchFilter, sDEFSRCH);
@@ -252,7 +282,12 @@ begin
         WriteString(rStartupSession, '')
       else begin
         Account := TAccount(Items.Objects[ItemIndex]);
-        WriteString(rStartupSession, Account.Storage.Name + ':' + Account.Name);
+        ///WriteString(rStartupSession, Account.Storage.Name + ':' + Account.Name);
+        s:=Account.Storage.Name + '\' + Account.Path + '|' + IntToStr(ItemIndex);
+        s:=StringReplace(s,'Accounts\','',[rfReplaceAll, rfIgnoreCase]);
+        s:=StringReplace(s,'{','',[rfReplaceAll, rfIgnoreCase]);
+        s:=StringReplace(s,'}\',':',[rfReplaceAll, rfIgnoreCase]);
+        WriteString(rStartupSession, s);
       end;
     end;
     WriteBool(rMwLTIdentObject, cbIdObject.Checked);
@@ -280,8 +315,9 @@ procedure TConfigDlg.cbStartupConnectionDrawItem(Control: TWinControl;
   Index: Integer; Rect: TRect; State: TOwnerDrawState);
 var
   s: string;
-  ImageIndex: Integer;
-begin
+  ///ImageIndex: Integer;
+  ImageIndex, Indent: Integer;
+{begin
   with cbStartupConnection do
   begin
     Canvas.FillRect(rect);
@@ -304,6 +340,38 @@ begin
     s := Items[Index];
     DrawText(Canvas.Handle, PChar(s), Length(s), Rect, DT_SINGLELINE or DT_VCENTER or DT_NOPREFIX);
   end;
+  }
+  function GetImageIndex(o: TObject): Integer;
+  begin
+    if o is TConfigStorage then
+    begin
+      if o is TRegistryConfigStorage then
+        Result := bmRegistry
+      else
+        Result := bmFileStorage;
+    end
+    else
+    if o is TAccountFolder then
+      Result := bmEntry
+    else
+      Result := bmHost;
+  end;
+
+begin
+  with cbStartupConnection do
+  begin
+    if Items.Objects[Index] is TConnection then
+      Indent := GetIndent(TConnection(Items.Objects[Index]).Account)
+    else
+      Indent := GetIndent(Items.Objects[Index]);
+    Inc(Rect.Left, Indent);
+    ImageIndex := GetImageIndex(Items.Objects[Index]);
+    MainFrm.ImageList.Draw(Canvas, Rect.Left, Rect.Top, ImageIndex);
+    Rect.Left := Rect.Left + 20;
+    s := Items[Index];
+    DrawText(Canvas.Handle, PChar(s), Length(s), Rect, DT_SINGLELINE or DT_VCENTER or DT_NOPREFIX);
+  end;
+
 end;
 
 procedure TConfigDlg.cbStartupConnectionCloseUp(var Index: integer; var CanCloseUp: boolean);
