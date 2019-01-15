@@ -1,0 +1,33 @@
+language: minimal
+dist: xenial
+
+addons:
+  apt:
+    packages:
+      - docker.io
+      # Travis uses --no-install-suggests and --no-install-recommends so all necessary packages must be explicitly installed
+      - lazarus
+      - lcl
+
+script:
+  # Without -q -q the build logs exceed the amount Travis will show in the web interface (10k lines)
+  - lazbuild -q -q --cpu=x86_64 Source/LdapAdmin.lpi
+  - tar -cvzf LdapAdmin-linux-64bit.tar.gz -C Source LdapAdmin
+  - |
+    docker build -t lazbuild -<<EOF
+    FROM i386/ubuntu:xenial
+    RUN apt update
+    RUN apt install -y --no-install-suggests --no-install-recommends lazarus lcl
+    EOF
+  - docker run -it --rm -v $(pwd)/Source:/Source lazbuild lazbuild -q -q --cpu=i386 /Source/LdapAdmin.lpi
+  - tar -cvzf LdapAdmin-linux-32bit.tar.gz -C Source LdapAdmin
+
+deploy:
+  provider: releases
+  api_key: $GITHUB_OAUTH_TOKEN
+  file:
+    - LdapAdmin-linux-32bit.tar.gz
+    - LdapAdmin-linux-64bit.tar.gz
+  skip_cleanup: true
+  on:
+    tags: true
