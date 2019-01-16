@@ -1,9 +1,9 @@
 {==============================================================================|
-| Project : Ararat Synapse                                       | 003.007.002 |
+| Project : Ararat Synapse                                       | 003.008.000 |
 |==============================================================================|
 | Content: SSL support by OpenSSL                                              |
 |==============================================================================|
-| Copyright (c)1999-2013, Lukas Gebauer                                        |
+| Copyright (c)1999-2017, Lukas Gebauer                                        |
 | All rights reserved.                                                         |
 |                                                                              |
 | Redistribution and use in source and binary forms, with or without           |
@@ -33,7 +33,7 @@
 | DAMAGE.                                                                      |
 |==============================================================================|
 | The Initial Developer of the Original Code is Lukas Gebauer (Czech Republic).|
-| Portions created by Lukas Gebauer are Copyright (c)2002-2013.                |
+| Portions created by Lukas Gebauer are Copyright (c)2002-2017.                |
 | Portions created by Petr Fejfar are Copyright (c)2011-2012.                  |
 | All Rights Reserved.                                                         |
 |==============================================================================|
@@ -86,6 +86,12 @@ uses
 {$ENDIF}
   Classes,
   synafpc,
+
+//SZ add Process
+{$IFDEF LINUX}
+  Process,
+{$ENDIF}
+
 {$IFNDEF MSWINDOWS}
   {$IFDEF FPC}
    {$IFDEF UNIX}
@@ -125,6 +131,10 @@ var
     DLLUtilName: string = 'crypto.dll';
       {$ENDIF OS2GCC}
      {$ELSE OS2}
+
+     //SZ 2017-04-17
+     // Note here that if used OpenSSL 1.1 will be added 1.1 later in the code!
+
     DLLSSLName: string = 'libssl.so';
     DLLUtilName: string = 'libcrypto.so';
      {$ENDIF OS2}
@@ -245,6 +255,13 @@ var
   SSLLibFile: string = '';
   SSLUtilFile: string = '';
 
+ //SZ If used OpenSSL by default on Linux
+{$IFDEF LINUX}
+  var
+    SZ_SSL_11_UseByDefault : Boolean;
+{$ENDIF}
+
+
 {$IFDEF CIL}
   [DllImport(DLLSSLName, CharSet = CharSet.Ansi,
     SetLastError = False, CallingConvention= CallingConvention.cdecl,
@@ -310,6 +327,11 @@ var
     SetLastError = False, CallingConvention= CallingConvention.cdecl,
     EntryPoint = 'SSLv23_method')]
     function SslMethodV23 : PSSL_METHOD; external;
+
+  [DllImport(DLLSSLName, CharSet = CharSet.Ansi,
+    SetLastError = False, CallingConvention= CallingConvention.cdecl,
+    EntryPoint = 'TLS_method')]
+    function SslMethodTLS : PSSL_METHOD; external;
 
   [DllImport(DLLSSLName, CharSet = CharSet.Ansi,
     SetLastError = False, CallingConvention= CallingConvention.cdecl,
@@ -719,6 +741,7 @@ var
   function SslMethodTLSV11:PSSL_METHOD;
   function SslMethodTLSV12:PSSL_METHOD;
   function SslMethodV23:PSSL_METHOD;
+  function SslMethodTLS:PSSL_METHOD;
   function SslCtxUsePrivateKey(ctx: PSSL_CTX; pkey: SslPtr):Integer;
   function SslCtxUsePrivateKeyASN1(pk: integer; ctx: PSSL_CTX; d: AnsiString; len: integer):Integer;
 //  function SslCtxUsePrivateKeyFile(ctx: PSSL_CTX; const _file: PChar; _type: Integer):Integer;
@@ -847,6 +870,7 @@ type
   TSslMethodTLSV11 = function:PSSL_METHOD; cdecl;
   TSslMethodTLSV12 = function:PSSL_METHOD; cdecl;
   TSslMethodV23 = function:PSSL_METHOD; cdecl;
+  TSslMethodTLS = function:PSSL_METHOD; cdecl;
   TSslCtxUsePrivateKey = function(ctx: PSSL_CTX; pkey: sslptr):Integer; cdecl;
   TSslCtxUsePrivateKeyASN1 = function(pk: integer; ctx: PSSL_CTX; d: sslptr; len: integer):Integer; cdecl;
   TSslCtxUsePrivateKeyFile = function(ctx: PSSL_CTX; const _file: PAnsiChar; _type: Integer):Integer; cdecl;
@@ -954,6 +978,7 @@ var
   _SslMethodTLSV11: TSslMethodTLSV11 = nil;
   _SslMethodTLSV12: TSslMethodTLSV12 = nil;
   _SslMethodV23: TSslMethodV23 = nil;
+  _SslMethodTLS: TSslMethodTLS = nil;
   _SslCtxUsePrivateKey: TSslCtxUsePrivateKey = nil;
   _SslCtxUsePrivateKeyASN1: TSslCtxUsePrivateKeyASN1 = nil;
   _SslCtxUsePrivateKeyFile: TSslCtxUsePrivateKeyFile = nil;
@@ -1150,6 +1175,14 @@ function SslMethodV23:PSSL_METHOD;
 begin
   if InitSSLInterface and Assigned(_SslMethodV23) then
     Result := _SslMethodV23
+  else
+    Result := nil;
+end;
+
+function SslMethodTLS:PSSL_METHOD;
+begin
+  if InitSSLInterface and Assigned(_SslMethodTLS) then
+    Result := _SslMethodTLS
   else
     Result := nil;
 end;
@@ -1842,10 +1875,42 @@ begin
 {$ENDIF}
 end;
 
+{$IFDEF LINUX}
+//SZ Simple code to execute CMD on linux
+function SZExecute(Command: String): ansistring;
+var
+  s : ansistring;
+  len: integer;
+begin
+
+  RunCommand('/bin/bash',['-c', Command ], s);
+
+  len := length(s);
+
+  while (len > 0) do
+  begin
+    if (s[len] = #10) or (s[len] = #13) then
+      len:=len-1
+    else
+      break;
+  end;
+
+  SetLength(s,len);
+
+  Result := s;
+
+end;
+
+{$ENDIF }
+
+
 function InitSSLInterface: Boolean;
 var
-  s: string;
-  x: integer;
+  s,lver: string;
+  x,lver1,lver2,lver3: integer;
+
+  //SZ Determinate OpenSSL 1.1 is used by default
+  SZ_SSL: string;
 begin
   {pf}
   if SSLLoaded then
@@ -1862,8 +1927,52 @@ begin
       SSLLibHandle := 1;
       SSLUtilHandle := 1;
 {$ELSE}
+
+  //SZ Check if OpenSSL 1.1 is used by default
+  {$IFDEF LINUX}
+
+    SZ_SSL_11_UseByDefault := false;
+
+    SZ_SSL := SZExecute('openssl version');
+
+    if LeftStr(SZ_SSL,11)='OpenSSL 1.1' then
+    begin
+
+      SZ_SSL_11_UseByDefault := true;
+      DLLSSLName  := 'libssl.so.1.1';
+      DLLUtilName := 'libcrypto.so.1.1';
+    end;
+
+  {$ENDIF}
+
+  //SZ end
+
       SSLUtilHandle := LoadLib(DLLUtilName);
       SSLLibHandle := LoadLib(DLLSSLName);
+
+
+      {$IFDEF Linux}
+         if SSLLibHandle=0 then begin    // try versioned library name
+           for lver1:=1 downto 0 do begin
+             lver:='.'+IntToStr(lver1);
+             SSLLibHandle := LoadLib(DLLSSLName+lver);
+             if SSLLibHandle<>0 then break;
+             for lver2:=9 downto 0 do begin
+               lver:='.'+IntToStr(lver1)+'.'+IntToStr(lver2);
+               SSLLibHandle := LoadLib(DLLSSLName+lver);
+               if SSLLibHandle<>0 then break;
+               for lver3:=9 downto 0 do begin
+                 lver:='.'+IntToStr(lver1)+'.'+IntToStr(lver2)+'.'+IntToStr(lver3);
+                 SSLLibHandle := LoadLib(DLLSSLName+lver);
+                 if SSLLibHandle<>0 then break;
+               end;
+               if SSLLibHandle<>0 then break;
+             end;
+             if SSLLibHandle<>0 then break;
+           end;
+           SSLUtilHandle := LoadLib(DLLUtilName+lver);
+         end;
+      {$ENDIF}
   {$IFDEF MSWINDOWS}
       if (SSLLibHandle = 0) then
         SSLLibHandle := LoadLib(DLLSSLName2);
@@ -1885,6 +1994,7 @@ begin
         _SslMethodTLSV11 := GetProcAddr(SSLLibHandle, 'TLSv1_1_method');
         _SslMethodTLSV12 := GetProcAddr(SSLLibHandle, 'TLSv1_2_method');
         _SslMethodV23 := GetProcAddr(SSLLibHandle, 'SSLv23_method');
+        _SslMethodTLS := GetProcAddr(SSLLibHandle, 'TLS_method');
         _SslCtxUsePrivateKey := GetProcAddr(SSLLibHandle, 'SSL_CTX_use_PrivateKey');
         _SslCtxUsePrivateKeyASN1 := GetProcAddr(SSLLibHandle, 'SSL_CTX_use_PrivateKey_ASN1');
         //use SSL_CTX_use_RSAPrivateKey_file instead SSL_CTX_use_PrivateKey_file,
@@ -2082,6 +2192,7 @@ begin
     _SslMethodTLSV11 := nil;
     _SslMethodTLSV12 := nil;
     _SslMethodV23 := nil;
+    _SslMethodTLS := nil;
     _SslCtxUsePrivateKey := nil;
     _SslCtxUsePrivateKeyASN1 := nil;
     _SslCtxUsePrivateKeyFile := nil;

@@ -1,3 +1,11 @@
+* Wed Jan 16 2019 Ivo <ivo.brhel at gmail.com>
+---------------------
++ Fixed Synapse code for OpenSSL 1.1, synalist-code r209 
+   https://sourceforge.net/p/synalist/code/HEAD/tree/trunk/ 
+   https://www.ap-i.net/mantis/view.php?id=1702&nbn=11
+   https://github.com/bmaupin/LDAP-Admin
+
+
 * Mon Jul 9 2018 Ivo <ivo.brhel at gmail.com>
 ---------------------
 + Fixed Startup Connection Session
