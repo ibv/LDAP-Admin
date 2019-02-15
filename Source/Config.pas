@@ -928,7 +928,7 @@ procedure TAccount.ReadCredentials;
   Password ..... 4 byte strlen*sizeof(char) + String }
 var
   Buffer: array of byte;
-  len: Integer;
+  len,lcver: Integer;
   Offset: integer;
   Flags: Integer;
   st: string;
@@ -958,8 +958,14 @@ begin
   if FStorage=nil then exit;
   FUser:='';
   FPassword:='';
+  try
+    st:= lcl_version;
+    st:=StringReplace(st,'.','',[rfReplaceAll]);
+    if st<>'' then
+      lcver:=StrToInt(st);
   // for Lazarus < 1.7
-  if (lcl_major >= 1)  and (lcl_minor < 7) then
+  ///if (lcl_major >= 1)  and (lcl_minor < 7) then
+  if lcver < 1800 then
   begin
     len:=GetDataSize(CONNECT_CREDIT);
     if len=0 then exit;
@@ -973,15 +979,17 @@ begin
   else
   begin
     st:=ReadString(CONNECT_CREDIT);
-    st:=DecodeStringBase64(st,true);
-    if pos('|',st) < 0 then  exit;
     List:=TStringList.Create;
-    ExtractStrings(['|'], [], PChar(st), list);
-    if list.Count < 2 then exit;
-    Flags := StrToInt(list[0]);
-    FUser := list[1] ;
-    FPassword := list[2];
-    List.Free;
+      st:=DecodeStringBase64(st,true);
+      if pos('|',st) < 0 then  exit;
+      ExtractStrings(['|'], [], PChar(st), list);
+      if list.Count < 2 then exit;
+      Flags := StrToInt(list[0]);
+      FUser := list[1] ;
+      FPassword := list[2];
+      List.Free;
+  end;
+  finally
   end;
 end;
 
@@ -993,7 +1001,7 @@ procedure TAccount.WriteCredentials;
   Password ..... 4 byte strlen*sizeof(char) + String   }
 var
   Buffer: array of byte;
-  len: Integer;
+  len,lcver: Integer;
   st : string;
 
   procedure WrInteger(i: Integer);
@@ -1018,7 +1026,12 @@ begin
   if FStorage=nil then exit;
   len:=0;
     // for Lazarus < 1.7
-  if (lcl_major >= 1)  and (lcl_minor < 7) then
+  //if (lcl_major >= 1)  and (lcl_minor < 7) then
+  st:= lcl_version;
+  st:=StringReplace(st,'.','',[rfReplaceAll]);
+  if st<>'' then
+    lcver:=StrToInt(st);
+  if lcver < 1800 then
   begin
     setlength(Buffer,0);
     WrInteger(cfUnicodeStrings);  // Write flags

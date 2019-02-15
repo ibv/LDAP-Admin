@@ -254,8 +254,6 @@ type
     procedure ValueListViewAdvancedCustomDrawSubItem(Sender: TCustomListView;
       Item: TListItem; SubItem: Integer; State: TCustomDrawState;
       Stage: TCustomDrawStage; var DefaultDraw: Boolean);
-    procedure ValueListViewCustomDrawItem(Sender: TCustomListView;
-      Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
     procedure ActConnectExecute(Sender: TObject);
     procedure ActExitExecute(Sender: TObject);
     procedure ActDisconnectExecute(Sender: TObject);
@@ -1606,7 +1604,6 @@ begin
 end;
 
 
-
 procedure TMainFrm.ValueListViewAdvancedCustomDrawItem(Sender: TCustomListView;
   Item: TListItem; State: TCustomDrawState; Stage: TCustomDrawStage;
   var DefaultDraw: Boolean);
@@ -1655,11 +1652,12 @@ procedure TMainFrm.ValueListViewAdvancedCustomDrawSubItem(
   State: TCustomDrawState; Stage: TCustomDrawStage; var DefaultDraw: Boolean);
 var mRect: TRect;
       i,j: Integer;
-      S: String;
+      lcver: Integer;
+      S,st: String;
 begin
     with Sender.Canvas do
     begin
-      with TLdapAttributeData(Item.Data), Font do
+      {with TLdapAttributeData(Item.Data), Font do
       begin
         Style := [];
         Font.Color := clWindowText;
@@ -1686,58 +1684,32 @@ begin
           end;
         except
         end;
-      end;
+      end;}
       mRect := Item.DisplayRect(drlabel);
-      s:=Item.SubItems[SubItem-1];
+      s := Item.SubItems[SubItem-1];
       j:=1;
       // for Lazarus > 1.7 index is 0
-      if (lcl_major >= 1)  and (lcl_minor > 7) then j:=0 ;
-      for i := j to SubItem-1 do mRect.Left := mRect.Left + Sender.Column[i].Width;
+      st:= lcl_version;
+      st:=StringReplace(st,'.','',[rfReplaceAll]);
+      if st<>'' then
+        lcver:=StrToInt(st);
+      if lcver >= 1800 then j:=0;
+      ///if (lcl_major >= 1)  and (lcl_minor > 7) then j:=0 ;
+      for i := j to SubItem-1 do
+      begin
+        mRect.Left := mRect.Left + Sender.Column[i].Width;
+        mRect.Right := mRect.Right + Sender.Column[i].Width + TextWidth(s);
+      end;
       if SubItem <> 3 then
         TextRect(mRect,mRect.Left + 3 , mRect.Top , s)
       else
-        TextRect(mRect,mRect.left + Sender.Column[i+1].Width - Canvas.TextWidth(s) - 12, mRect.Top, s);
+        TextRect(mRect,mRect.left + 120 - TextWidth(s) , mRect.Top, s);
+
     end;
     DefaultDraw := false;
 end;
 
 
-procedure TMainFrm.ValueListViewCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
-var
-  i: Integer;
-begin
-  with ValueListView.Canvas do
-  try
-    if odd(Item.Index) then Brush.Color:=$00f0f0f0;
-    with TLdapAttributeData(Item.Data), Font do
-    begin
-      if lowercase(Attribute.Name) = 'objectclass' then
-      begin
-        Style := [fsBold];
-        Color := clNavy
-      end
-      else
-      if Attribute.Entry.OperationalAttributes.AttributeOf(Item.Caption) = Attribute then
-        Color := clDkGray
-      else
-      if TabControl1.TabIndex > 0 then
-      with fConnections[TabControl1.TabIndex-1].Connection do
-        if Schema.Loaded then
-        begin
-         for i := 0 to Schema.ObjectClasses.Count - 1 do
-           if Schema.ObjectClasses[i].Must.ByName[Attribute.Name] <> nil then
-           begin
-             //Color := clOlive;
-             Style := [fsBold];
-             Break;
-           end;
-        end;
-    end;
-  except
-  { Ignore errors. Any errors here would be non-critical and in case of an eror
-    we would have to exit the app or otherwise never come out of the exception loop.}
-  end;
-end;
 
 procedure TMainFrm.NewClick(Sender: TObject);
 begin
@@ -2543,6 +2515,8 @@ begin
       Show;
     end;
 end;
+
+
 
 procedure TMainFrm.ValueListViewInfoTip(Sender: TObject; Item: TListItem; var InfoTip: String);
 const

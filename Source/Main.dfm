@@ -17,7 +17,7 @@ object MainFrm: TMainFrm
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   Position = poDefault
-  LCLVersion = '1.8.0.3'
+  LCLVersion = '2.0.0.4'
   object TreeSplitter: TSplitter
     Left = 257
     Height = 534
