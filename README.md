@@ -32,7 +32,7 @@ See [releases](../../releases)
 
 
 ## Requirements
-- Lazarus 1.6.2+, developed on version 1.8.4
+- Lazarus 1.6.2+, developed on version 2.0
 - compiler FPC 3.0.0+, developed on version 3.0.4
 - library libssl.so, libcrypto.so, for usign OpenSSL 1.0
 - library libssl.so.1.1, libcrypto.so.1.1, for usign OpenSSL 1.1
