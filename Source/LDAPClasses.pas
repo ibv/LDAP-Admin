@@ -1086,7 +1086,8 @@ end;
 
 procedure ValueModOp(AValue: TLdapAttributeData; ModOP: TLDAPModifyOp);
 begin
-  MakeAttrib(AttributeList[i][j]);
+  AValue.ModOp:=-1;
+  MakeAttrib(Avalue);
   if not(esNew in Entry.State) then LdapCheck(ldap_modify_s(pld, PChar(Entry.dn), ModOP, Attributes[0]));
 end;
 
