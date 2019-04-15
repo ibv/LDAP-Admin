@@ -374,9 +374,9 @@ var
 begin
   s := Value;
   if FIsbinary then
-    s := EncodeBase64(Value)
-  else
-    s :=UnquoteStr(s, '"');
+    s := EncodeBase64(Value);
+  ///else
+  ///  s :=UnquoteStr(s, '"');
   inherited Put(Index, s);
 end;
 
