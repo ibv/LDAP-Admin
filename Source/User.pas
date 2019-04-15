@@ -284,7 +284,7 @@ var
 begin
    ///DragQueryFile(Msg.Drop, 0, @buffer, sizeof(buffer)) ;
    Image1.Picture.LoadFromFile(buffer) ;
-   InetOrgPerson.JPegPhoto := Image1.Picture.Graphic as TJpegImage;
+   InetOrgPerson.Photo := Image1;
    DeleteJpegBtn.Enabled := true;
    ImagePanel.Caption := '';
 end;
@@ -872,7 +872,7 @@ begin
   begin
     if not Assigned(Image1.Picture.Graphic) then
     begin
-      Image1.Picture.Graphic := InetOrgPerson.JPegPhoto;
+      Image1.Picture := InetOrgPerson.Photo.Picture;
       if Assigned(Image1.Picture.Graphic) then
       begin
         DeleteJpegBtn.Enabled := true;
@@ -1326,7 +1326,7 @@ begin
   if OpenPictureDialog.Execute then
   begin
     Image1.Picture.LoadFromFile(OpenPictureDialog.fileName);
-    InetOrgPerson.JPegPhoto := Image1.Picture.Graphic as TJpegImage;
+    InetOrgPerson.Photo := Image1;
     DeleteJpegBtn.Enabled := true;
     ImagePanel.Caption := '';
   end;
@@ -1335,7 +1335,7 @@ end;
 procedure TUserDlg.DeleteJpegBtnClick(Sender: TObject);
 begin
   Image1.Picture.Bitmap.FreeImage;
-  InetOrgPerson.JPegPhoto := nil;
+  InetOrgPerson.Photo := nil;
   DeleteJpegBtn.Enabled := false;
 end;
 

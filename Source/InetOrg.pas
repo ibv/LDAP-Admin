@@ -31,7 +31,7 @@ uses
 {$IFnDEF FPC}
   Jpeg,
 {$ELSE}
-  graphics,
+  graphics,  ExtCtrls,
 {$ENDIF}
   PropertyObject, LDAPClasses;
 
@@ -41,7 +41,7 @@ const
      eHomePostalAddress             = 02;
      eHomePhone                     = 03;
      eIPPhone                       = 04;
-     eJPegPhoto                     = 05;
+     ePhoto                         = 05;
      eMobile                        = 06;
      eOrganization                  = 07;
      ePager                         = 08;
@@ -81,9 +81,9 @@ const
 type
   TInetOrgPerson = class(TPropertyObject)
   private
-    fJpegImage: TJpegImage;
-    function GetJPegImage: TJpegImage;
-    procedure SetJPegImage(const Image: TJpegImage);
+    fImage: TImage;
+    function GetImage: TImage;
+    procedure SetImage(const Image: TImage);
   public
     constructor Create(const Entry: TLdapEntry); override;
     procedure AddMailAddress(Address: string);
@@ -102,7 +102,7 @@ type
     property HomePostalAddress: string index eHomePostalAddress read GetString write SetString;
     property HomePhone: string index eHomePhone read GetString write SetString;
     property Mobile: string index eMobile read GetString write SetString;
-    property JPegPhoto: TJPegImage read GetJPegImage write SetJPegImage;
+    property Photo: TImage read GetImage write SetImage;
     property Mail: string index eMail read GetCommaText write SetCommaText;
     property DisplayName: string index eDisplayName read GetString write SetString;
     property Cn: string index eCn read GetString write SetString;
@@ -111,7 +111,9 @@ type
 
 implementation
 
-uses Misc;
+uses Misc,
+     Classes
+     ;
 
 { TInetOrgPerson }
 
@@ -130,32 +132,52 @@ begin
   RemoveFromMultiString(eMail, Address);
 end;
 
-function TInetOrgPerson.GetJPegImage: TJpegImage;
+function TInetOrgPerson.GetImage: TImage;
 var
   Value: TLdapAttributeData;
+  Stream: TMemoryStream;
+
 begin
-  Value := Attributes[eJpegPhoto].Values[0];
+  Value := Attributes[ePhoto].Values[0];
+  if not Assigned(fImage) then
+    fImage := TImage.Create(nil);
   if Assigned(Value) and (Value.DataSize > 0) then
   begin
-    if not Assigned(fJpegImage) then
-      fJpegImage := TJPEGImage.Create;
-    StreamCopy(Value.SaveToStream, fJpegImage.LoadFromStream);      
+    if not Assigned(fImage) then
+      fImage := TImage.Create(nil);
+    Stream := TMemoryStream.Create;
+    try
+      Value.SaveToStream(Stream);
+      Stream.Position := 0;
+      fImage.Picture.LoadFromStream(Stream);
+    finally
+      Stream.Free;
+    end;
   end;
-  Result := fJPegImage;
+  Result := fImage;
 end;
 
-procedure TInetOrgPerson.SetJPegImage(const Image: TJpegImage);
+procedure TInetOrgPerson.SetImage(const Image: TImage);
 var
   Attribute: TLdapAttribute;
+  Stream: TMemoryStream;
 begin
-  Attribute := Attributes[eJpegPhoto];
+  Attribute := Attributes[ePhoto];
   if not Assigned(Image) then
     Attribute.Delete
   else
   begin
     if Attribute.ValueCount = 0 then
       Attribute.AddValue;
-    StreamCopy(Image.SaveToStream, Attribute.Values[0].LoadFromStream);
+    Stream := TMemoryStream.Create;
+    try
+      Image.Picture.SaveToStream(Stream);
+      Stream.Position := 0;
+      Attribute.Values[0].LoadFromStream(Stream);
+    finally
+      Stream.Free;
+    end;
+
   end;
 end;
 
