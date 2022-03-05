@@ -1341,7 +1341,7 @@ const
   function ldap_add_s(ld: TLDAPsend; dn: PChar; attrs: TLDAPAttributeList): ULONG;
 
   //function ldap_modify_s(ld: TLDAPsend; dn: PChar; mods: PLDAPMod): ULONG;
-  function ldap_modify_s(ld: TLDAPsend; dn: PChar; ModOp: TLDAPModifyOp; Value: TLDAPAttribute): ULONG;
+  function ldap_modify_s(ld: TLDAPsend; dn: PChar; ModOp: TLDAPModifyOp; const Value: TLDAPAttribute): ULONG;
 
 
   function ldap_rename_ext_s(ld: TLDAPSend; dn, NewRDN, NewParent: PChar; DeleteOldRdn: Integer;
@@ -1645,7 +1645,7 @@ begin
 end;
 
 
-function ldap_modify_s(ld: TLDAPsend; dn: PChar; ModOp: TLDAPModifyOp ; Value: TLDAPAttribute): ULONG;
+function ldap_modify_s(ld: TLDAPsend; dn: PChar; ModOp: TLDAPModifyOp ; const Value: TLDAPAttribute): ULONG;
 begin
   ld.Modify(dn, ModOp, Value);
   result := ld.ResultCode;
