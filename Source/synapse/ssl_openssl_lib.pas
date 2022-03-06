@@ -1,5 +1,5 @@
 {==============================================================================|
-| Project : Ararat Synapse                                       | 003.008.000 |
+| Project : Ararat Synapse                                       | 003.009.000 |
 |==============================================================================|
 | Content: SSL support by OpenSSL                                              |
 |==============================================================================|
@@ -35,10 +35,12 @@
 | The Initial Developer of the Original Code is Lukas Gebauer (Czech Republic).|
 | Portions created by Lukas Gebauer are Copyright (c)2002-2017.                |
 | Portions created by Petr Fejfar are Copyright (c)2011-2012.                  |
+| Portions created by Pepak are Copyright (c)2018.                             |
 | All Rights Reserved.                                                         |
 |==============================================================================|
 | Contributor(s):                                                              |
 |   Tomas Hajny (OS2 support)                                                  |
+|   Pepak (multiversion support)                                               |
 |==============================================================================|
 | History: see HISTORY.HTM from distribution package                           |
 |          (Found at URL: http://www.ararat.cz/synapse/)                       |
@@ -86,12 +88,6 @@ uses
 {$ENDIF}
   Classes,
   synafpc,
-
-//SZ add Process
-{$IFDEF LINUX}
-  Process,
-{$ENDIF}
-
 {$IFNDEF MSWINDOWS}
   {$IFDEF FPC}
    {$IFDEF UNIX}
@@ -102,6 +98,7 @@ uses
   {$ENDIF}
   SysUtils;
 {$ELSE}
+  SysUtils,
   Windows;
 {$ENDIF}
 
@@ -131,10 +128,6 @@ var
     DLLUtilName: string = 'crypto.dll';
       {$ENDIF OS2GCC}
      {$ELSE OS2}
-
-     //SZ 2017-04-17
-     // Note here that if used OpenSSL 1.1 will be added 1.1 later in the code!
-
     DLLSSLName: string = 'libssl.so';
     DLLUtilName: string = 'libcrypto.so';
      {$ENDIF OS2}
@@ -144,6 +137,58 @@ var
   DLLSSLName2: string = 'libssl32.dll';
   DLLUtilName: string = 'libeay32.dll';
   {$ENDIF}
+{$IFDEF MSWINDOWS}
+const
+  LibCount = 5;
+  SSLLibNames: array[0..LibCount-1] of string = (
+    // OpenSSL v3.0
+    {$IFDEF WIN64}
+    'libssl-3-x64.dll',
+    {$ELSE}
+    'libssl-3.dll',
+    {$ENDIF}
+    // OpenSSL v1.1.x
+    {$IFDEF WIN64}
+    'libssl-1_1-x64.dll',
+    {$ELSE}
+    'libssl-1_1.dll',
+    {$ENDIF}
+    // OpenSSL v1.0.2 distinct names for x64 and x86
+    {$IFDEF WIN64}
+    'ssleay32-x64.dll',
+    {$ELSE}
+    'ssleay32-x86.dll',
+    {$ENDIF}
+    // OpenSSL v1.0.2
+    'ssleay32.dll',
+    // OpenSSL (ancient)
+    'libssl32.dll'
+  );
+  CryptoLibNames: array[0..LibCount-1] of string = (
+    // OpenSSL v3.0
+    {$IFDEF WIN64}
+    'libcrypto-3-x64.dll',
+    {$ELSE}
+    'libcrypto-3.dll',
+    {$ENDIF}
+    // OpenSSL v1.1.x
+    {$IFDEF WIN64}
+    'libcrypto-1_1-x64.dll',
+    {$ELSE}
+    'libcrypto-1_1.dll',
+    {$ENDIF}
+    // OpenSSL v1.0.2 distinct names for x64 and x86
+    {$IFDEF WIN64}
+    'libeay32-x64.dll',
+    {$ELSE}
+    'libeay32-x86.dll',
+    {$ENDIF}
+    // OpenSSL v1.0.2
+    'libeay32.dll',
+    // OpenSSL (ancient)
+    'libeay32.dll'
+  );
+{$ENDIF}
 {$ENDIF}
 
 type
@@ -254,13 +299,6 @@ var
   SSLUtilHandle: TLibHandle = 0;
   SSLLibFile: string = '';
   SSLUtilFile: string = '';
-
- //SZ If used OpenSSL by default on Linux
-{$IFDEF LINUX}
-  var
-    SZ_SSL_11_UseByDefault : Boolean;
-{$ENDIF}
-
 
 {$IFDEF CIL}
   [DllImport(DLLSSLName, CharSet = CharSet.Ansi,
@@ -1875,42 +1913,20 @@ begin
 {$ENDIF}
 end;
 
-{$IFDEF LINUX}
-//SZ Simple code to execute CMD on linux
-function SZExecute(Command: String): ansistring;
+function GetLibFileName(Handle: THandle): string;
 var
-  s : ansistring;
-  len: integer;
+  n: integer;
 begin
-
-  RunCommand('/bin/bash',['-c', Command ], s);
-
-  len := length(s);
-
-  while (len > 0) do
-  begin
-    if (s[len] = #10) or (s[len] = #13) then
-      len:=len-1
-    else
-      break;
-  end;
-
-  SetLength(s,len);
-
-  Result := s;
-
+  n := MAX_PATH + 1024;
+  SetLength(Result, n);
+  n := GetModuleFilename(Handle, PChar(Result), n);
+  SetLength(Result, n);
 end;
-
-{$ENDIF }
-
 
 function InitSSLInterface: Boolean;
 var
-  s,lver: string;
-  x,lver1,lver2,lver3: integer;
-
-  //SZ Determinate OpenSSL 1.1 is used by default
-  SZ_SSL: string;
+  s: string;
+  i: integer;
 begin
   {pf}
   if SSLLoaded then
@@ -1918,7 +1934,7 @@ begin
       Result := TRUE;
       exit;
     end;
-  {/pf}  
+  {/pf}
   SSLCS.Enter;
   try
     if not IsSSLloaded then
@@ -1927,56 +1943,24 @@ begin
       SSLLibHandle := 1;
       SSLUtilHandle := 1;
 {$ELSE}
-
-  //SZ Check if OpenSSL 1.1 is used by default
-  {$IFDEF LINUX}
-
-    SZ_SSL_11_UseByDefault := false;
-
-    SZ_SSL := SZExecute('openssl version');
-
-    if LeftStr(SZ_SSL,11)='OpenSSL 1.1' then
-    begin
-
-      SZ_SSL_11_UseByDefault := true;
-      DLLSSLName  := 'libssl.so.1.1';
-      DLLUtilName := 'libcrypto.so.1.1';
-    end;
-
-  {$ENDIF}
-
-  //SZ end
-
+      // Note: It's important to ensure that the libraries both come from the
+      // same directory, preferably the one of the executable. Otherwise a
+      // version mismatch could easily occur.
+      {$IFDEF MSWINDOWS}
+      for i := 0 to Pred(LibCount) do
+      begin
+        SSLUtilHandle := LoadLib(CryptoLibNames[i]);
+        if SSLUtilHandle <> 0 then
+        begin
+          s := ExtractFilePath(GetLibFileName(SSLUtilHandle));
+          SSLLibHandle := LoadLib(s + SSLLibNames[i]);
+          Break;
+        end;
+      end;
+      {$ELSE}
       SSLUtilHandle := LoadLib(DLLUtilName);
       SSLLibHandle := LoadLib(DLLSSLName);
-
-
-      {$IFDEF Linux}
-         if SSLLibHandle=0 then begin    // try versioned library name
-           for lver1:=1 downto 0 do begin
-             lver:='.'+IntToStr(lver1);
-             SSLLibHandle := LoadLib(DLLSSLName+lver);
-             if SSLLibHandle<>0 then break;
-             for lver2:=9 downto 0 do begin
-               lver:='.'+IntToStr(lver1)+'.'+IntToStr(lver2);
-               SSLLibHandle := LoadLib(DLLSSLName+lver);
-               if SSLLibHandle<>0 then break;
-               for lver3:=9 downto 0 do begin
-                 lver:='.'+IntToStr(lver1)+'.'+IntToStr(lver2)+'.'+IntToStr(lver3);
-                 SSLLibHandle := LoadLib(DLLSSLName+lver);
-                 if SSLLibHandle<>0 then break;
-               end;
-               if SSLLibHandle<>0 then break;
-             end;
-             if SSLLibHandle<>0 then break;
-           end;
-           SSLUtilHandle := LoadLib(DLLUtilName+lver);
-         end;
       {$ENDIF}
-  {$IFDEF MSWINDOWS}
-      if (SSLLibHandle = 0) then
-        SSLLibHandle := LoadLib(DLLSSLName2);
-  {$ENDIF}
 {$ENDIF}
       if (SSLLibHandle <> 0) and (SSLUtilHandle <> 0) then
       begin
@@ -2092,14 +2076,8 @@ begin
         OPENSSLaddallalgorithms;
         RandScreen;
 {$ELSE}
-        SetLength(s, 1024);
-        x := GetModuleFilename(SSLLibHandle,PChar(s),Length(s));
-        SetLength(s, x);
-        SSLLibFile := s;
-        SetLength(s, 1024);
-        x := GetModuleFilename(SSLUtilHandle,PChar(s),Length(s));
-        SetLength(s, x);
-        SSLUtilFile := s;
+        SSLLibFile := GetLibFileName(SSLLibHandle);
+        SSLUtilFile := GetLibFileName(SSLUtilHandle);
         //init library
         if assigned(_SslLibraryInit) then
           _SslLibraryInit;

@@ -86,6 +86,9 @@ uses
 {$IFDEF CIL}
   System.IO,
 {$ENDIF}
+{$IFDEF DELPHIX_SEATTLE_UP}
+  AnsiStrings,
+{$ENDIF}
   SysUtils, Classes, SynaFpc;
 
 {$IFDEF VER100}
@@ -1308,14 +1311,16 @@ var
   s: string;
   s1, s2: string;
 begin
-  Prot := 'http';
+  ///Prot := 'https';
+  Prot := '';
   User := '';
   Pass := '';
-  Port := '80';
+  ///Port := '443';
+  Port := '';
   Para := '';
 
   x := Pos('://', URL);
-  if x > 0 then
+  if (x > 0) and (x <=10) then
   begin
     Prot := SeparateLeft(URL, '://');
     sURL := SeparateRight(URL, '://');
@@ -1843,7 +1848,7 @@ begin
   if Dir = '' then
   begin
     Path := StringOfChar(#0, MAX_PATH);
-	  x := GetTempPath(Length(Path), PChar(Path));
+	  {x :=} GetTempPath(Length(Path), PChar(Path));
     Path := PChar(Path);
   end
   else
@@ -2021,12 +2026,12 @@ begin
   // Moving Aptr position forward until boundary will be reached
   while (APtr<AEtx) do
     begin
-      if strlcomp(APtr,#13#10'--',4)=0 then
+      if {$IFDEF DELPHIX_SEATTLE_UP} AnsiStrings. {$ENDIF} strlcomp(APtr,#13#10'--',4)=0 then
         begin
           eob  := MatchBoundary(APtr,AEtx,ABoundary);
           Step := 4;
         end
-      else if strlcomp(APtr,'--',2)=0 then
+      else if {$IFDEF DELPHIX_SEATTLE_UP} AnsiStrings. {$ENDIF} strlcomp(APtr,'--',2)=0 then
         begin
           eob  := MatchBoundary(APtr,AEtx,ABoundary);
           Step := 2;
@@ -2059,17 +2064,17 @@ begin
   Lng := length(ABoundary);
   if (MatchPos+2+Lng)>AETX then
     exit;
-  if strlcomp(MatchPos,#13#10,2)=0 then
+  if {$IFDEF DELPHIX_SEATTLE_UP} AnsiStrings. {$ENDIF} strlcomp(MatchPos,#13#10,2)=0 then
     inc(MatchPos,2);
   if (MatchPos+2+Lng)>AETX then
     exit;
-  if strlcomp(MatchPos,'--',2)<>0 then
+  if {$IFDEF DELPHIX_SEATTLE_UP} AnsiStrings. {$ENDIF} strlcomp(MatchPos,'--',2)<>0 then
     exit;
   inc(MatchPos,2);
-  if strlcomp(MatchPos,PANSIChar(ABoundary),Lng)<>0 then
+  if {$IFDEF DELPHIX_SEATTLE_UP} AnsiStrings. {$ENDIF} strlcomp(MatchPos,PANSIChar(ABoundary),Lng)<>0 then
     exit;
   inc(MatchPos,Lng);
-  if ((MatchPos+2)<=AEtx) and (strlcomp(MatchPos,#13#10,2)=0) then
+  if ((MatchPos+2)<=AEtx) and ({$IFDEF DELPHIX_SEATTLE_UP} AnsiStrings. {$ENDIF} strlcomp(MatchPos,#13#10,2)=0) then
     inc(MatchPos,2);
   Result := MatchPos;
 end;
@@ -2084,10 +2089,10 @@ begin
   MatchPos := MatchBoundary(ABOL,AETX,ABoundary);
   if not Assigned(MatchPos) then
     exit;
-  if strlcomp(MatchPos,'--',2)<>0 then
+  if {$IFDEF DELPHIX_SEATTLE_UP} AnsiStrings. {$ENDIF} strlcomp(MatchPos,'--',2)<>0 then
     exit;
   inc(MatchPos,2);
-  if (MatchPos+2<=AEtx) and (strlcomp(MatchPos,#13#10,2)=0) then
+  if (MatchPos+2<=AEtx) and ({$IFDEF DELPHIX_SEATTLE_UP} AnsiStrings. {$ENDIF} strlcomp(MatchPos,#13#10,2)=0) then
     inc(MatchPos,2);
   Result := MatchPos;
 end;
