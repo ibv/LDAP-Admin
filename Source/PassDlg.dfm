@@ -11,20 +11,20 @@ object PasswordDlg: TPasswordDlg
   OnCloseQuery = FormCloseQuery
   ParentFont = True
   Position = poScreenCenter
-  LCLVersion = '1.6.0.4'
+  LCLVersion = '2.2.2.0'
   object Label1: TLabel
     Left = 35
     Height = 15
-    Top = 12
-    Width = 95
+    Top = 14
+    Width = 91
     Caption = '&New password:'
     ParentColor = False
   end
   object Label2: TLabel
     Left = 12
     Height = 15
-    Top = 44
-    Width = 118
+    Top = 46
+    Width = 113
     Caption = '&Confirm password:'
     ParentColor = False
   end
@@ -32,13 +32,13 @@ object PasswordDlg: TPasswordDlg
     Left = 5
     Height = 15
     Top = 76
-    Width = 125
+    Width = 121
     Caption = 'Encryption method:'
     ParentColor = False
   end
   object Password: TEdit
     Left = 129
-    Height = 21
+    Height = 31
     Top = 8
     Width = 209
     EchoMode = emPassword
@@ -48,7 +48,7 @@ object PasswordDlg: TPasswordDlg
   object OKBtn: TButton
     Left = 339
     Height = 25
-    Top = 7
+    Top = 11
     Width = 75
     Caption = '&OK'
     Default = True
@@ -58,7 +58,7 @@ object PasswordDlg: TPasswordDlg
   object CancelBtn: TButton
     Left = 339
     Height = 25
-    Top = 39
+    Top = 43
     Width = 75
     Cancel = True
     Caption = '&Cancel'
@@ -67,7 +67,7 @@ object PasswordDlg: TPasswordDlg
   end
   object Password2: TEdit
     Left = 129
-    Height = 21
+    Height = 31
     Top = 40
     Width = 209
     EchoMode = emPassword
@@ -75,7 +75,7 @@ object PasswordDlg: TPasswordDlg
     TabOrder = 1
   end
   object cbMethod: TComboBox
-    Left = 133
+    Left = 129
     Height = 27
     Top = 72
     Width = 129
@@ -99,9 +99,9 @@ object PasswordDlg: TPasswordDlg
   end
   object cbSambaPassword: TCheckBox
     Left = 268
-    Height = 26
+    Height = 23
     Top = 96
-    Width = 138
+    Width = 129
     Caption = '&Samba password'
     Checked = True
     State = cbChecked
@@ -110,9 +110,9 @@ object PasswordDlg: TPasswordDlg
   end
   object cbPosixPassword: TCheckBox
     Left = 268
-    Height = 26
+    Height = 23
     Top = 72
-    Width = 125
+    Width = 117
     Caption = '&Posix password'
     Checked = True
     OnClick = cbPosixPasswordClick

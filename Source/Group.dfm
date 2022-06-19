@@ -14,26 +14,26 @@ object GroupDlg: TGroupDlg
   OnClose = FormClose
   OnDestroy = FormDestroy
   Position = poMainFormCenter
-  LCLVersion = '1.6.0.4'
+  LCLVersion = '2.2.2.0'
   object Label1: TLabel
     Left = 16
-    Height = 13
+    Height = 14
     Top = 16
-    Width = 75
+    Width = 73
     Caption = '&Group name:'
     ParentColor = False
   end
   object Label2: TLabel
     Left = 16
-    Height = 13
+    Height = 14
     Top = 64
-    Width = 68
+    Width = 67
     Caption = '&Description:'
     ParentColor = False
   end
   object edName: TEdit
     Left = 16
-    Height = 19
+    Height = 30
     Top = 32
     Width = 377
     OnChange = edNameChange
@@ -41,7 +41,7 @@ object GroupDlg: TGroupDlg
   end
   object edDescription: TEdit
     Left = 16
-    Height = 19
+    Height = 30
     Top = 80
     Width = 377
     OnChange = edDescriptionChange
@@ -78,8 +78,8 @@ object GroupDlg: TGroupDlg
     OnChange = PageControl1Change
     object TabSheet1: TTabSheet
       Caption = '&Members'
-      ClientHeight = 286
-      ClientWidth = 385
+      ClientHeight = 293
+      ClientWidth = 383
       object UserList: TListView
         Left = 8
         Height = 249
@@ -92,7 +92,7 @@ object GroupDlg: TGroupDlg
           end        
           item
             Caption = 'Path'
-            Width = 245
+            Width = 247
           end>
         HideSelection = False
         MultiSelect = True
@@ -126,22 +126,22 @@ object GroupDlg: TGroupDlg
     end
     object TabSheet2: TTabSheet
       Caption = '&Samba'
-      ClientHeight = 286
-      ClientWidth = 385
+      ClientHeight = 293
+      ClientWidth = 383
       ImageIndex = 2
       object Label3: TLabel
         Left = 24
-        Height = 13
+        Height = 14
         Top = 112
-        Width = 90
+        Width = 88
         Caption = 'Samba domain:'
         ParentColor = False
       end
       object Label4: TLabel
         Left = 272
-        Height = 13
+        Height = 14
         Top = 112
-        Width = 39
+        Width = 40
         Caption = 'NT-Rid:'
         ParentColor = False
       end
@@ -154,15 +154,15 @@ object GroupDlg: TGroupDlg
       end
       object Label5: TLabel
         Left = 24
-        Height = 13
+        Height = 14
         Top = 64
-        Width = 81
+        Width = 80
         Caption = 'Display name:'
         ParentColor = False
       end
       object cbSambaDomain: TComboBox
         Left = 24
-        Height = 27
+        Height = 29
         Top = 128
         Width = 233
         ItemHeight = 0
@@ -184,8 +184,8 @@ object GroupDlg: TGroupDlg
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 91
-        ClientWidth = 333
+        ClientHeight = 105
+        ClientWidth = 335
         ItemIndex = 0
         Items.Strings = (
           'Domain group'
@@ -214,7 +214,7 @@ object GroupDlg: TGroupDlg
       end
       object edRid: TEdit
         Left = 272
-        Height = 19
+        Height = 30
         Top = 128
         Width = 89
         OnChange = edRidChange
@@ -222,16 +222,16 @@ object GroupDlg: TGroupDlg
       end
       object cbSambaGroup: TCheckBox
         Left = 24
-        Height = 26
+        Height = 23
         Top = 24
-        Width = 186
+        Width = 162
         Caption = 'Samba domain mapping'
         OnClick = cbSambaGroupClick
         TabOrder = 0
       end
       object edDisplayName: TEdit
         Left = 24
-        Height = 19
+        Height = 30
         Top = 80
         Width = 337
         OnChange = edDisplayNameChange

@@ -13,16 +13,16 @@ object ADUserDlg: TADUserDlg
   OnDestroy = FormDestroy
   ParentFont = True
   Position = poMainFormCenter
-  LCLVersion = '1.6.2.0'
+  LCLVersion = '2.2.2.0'
   object PageControl: TPageControl
     Left = 0
     Height = 395
     Top = 0
     Width = 394
-    ActivePage = OptionsSheet
+    ActivePage = AccountSheet
     Align = alClient
     MultiLine = True
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     OnChange = PageControlChange
     OnChanging = PageControlChanging
@@ -30,13 +30,13 @@ object ADUserDlg: TADUserDlg
     Options = [nboMultiLine]
     object AccountSheet: TTabSheet
       Caption = '&Account'
-      ClientHeight = 358
-      ClientWidth = 386
+      ClientHeight = 368
+      ClientWidth = 384
       object Label1: TLabel
         Left = 16
         Height = 15
         Top = 16
-        Width = 71
+        Width = 67
         Caption = '&First name:'
         ParentColor = False
       end
@@ -44,7 +44,7 @@ object ADUserDlg: TADUserDlg
         Left = 224
         Height = 15
         Top = 16
-        Width = 93
+        Width = 87
         Caption = '&Second name:'
         ParentColor = False
       end
@@ -52,7 +52,7 @@ object ADUserDlg: TADUserDlg
         Left = 16
         Height = 15
         Top = 64
-        Width = 91
+        Width = 85
         Caption = '&Display name:'
         ParentColor = False
       end
@@ -60,7 +60,7 @@ object ADUserDlg: TADUserDlg
         Left = 16
         Height = 15
         Top = 208
-        Width = 254
+        Width = 240
         Caption = '&User logon name (user principal name):'
         ParentColor = False
       end
@@ -68,7 +68,7 @@ object ADUserDlg: TADUserDlg
         Left = 160
         Height = 15
         Top = 16
-        Width = 44
+        Width = 43
         Caption = '&Initials:'
         ParentColor = False
       end
@@ -76,7 +76,7 @@ object ADUserDlg: TADUserDlg
         Left = 16
         Height = 15
         Top = 112
-        Width = 76
+        Width = 72
         Caption = 'D&escription:'
         ParentColor = False
       end
@@ -84,7 +84,7 @@ object ADUserDlg: TADUserDlg
         Left = 16
         Height = 15
         Top = 256
-        Width = 105
+        Width = 98
         Caption = '&NT Logon name:'
         ParentColor = False
       end
@@ -92,7 +92,7 @@ object ADUserDlg: TADUserDlg
         Left = 16
         Height = 15
         Top = 160
-        Width = 71
+        Width = 65
         Caption = 'Username:'
         ParentColor = False
       end
@@ -100,7 +100,7 @@ object ADUserDlg: TADUserDlg
         Left = 16
         Height = 15
         Top = 304
-        Width = 63
+        Width = 60
         Caption = 'Pass&word:'
         ParentColor = False
         Visible = False
@@ -109,14 +109,14 @@ object ADUserDlg: TADUserDlg
         Left = 196
         Height = 15
         Top = 304
-        Width = 118
+        Width = 113
         Caption = 'Confirm password:'
         ParentColor = False
         Visible = False
       end
       object givenName: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 32
         Width = 137
         OnChange = EditChange
@@ -124,7 +124,7 @@ object ADUserDlg: TADUserDlg
       end
       object sn: TEdit
         Left = 224
-        Height = 21
+        Height = 26
         Top = 32
         Width = 145
         OnChange = EditChange
@@ -133,7 +133,7 @@ object ADUserDlg: TADUserDlg
       end
       object displayName: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 80
         Width = 353
         OnChange = EditChange
@@ -141,7 +141,7 @@ object ADUserDlg: TADUserDlg
       end
       object userPrincipalName: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 224
         Width = 174
         OnChange = userPrincipalNameChange
@@ -150,7 +150,7 @@ object ADUserDlg: TADUserDlg
       end
       object initials: TEdit
         Left = 160
-        Height = 21
+        Height = 26
         Top = 32
         Width = 57
         OnChange = EditChange
@@ -158,7 +158,7 @@ object ADUserDlg: TADUserDlg
       end
       object samAccountName: TEdit
         Left = 196
-        Height = 21
+        Height = 26
         Top = 272
         Width = 173
         OnChange = EditChange
@@ -166,7 +166,7 @@ object ADUserDlg: TADUserDlg
       end
       object description: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 128
         Width = 353
         OnChange = EditChange
@@ -174,7 +174,7 @@ object ADUserDlg: TADUserDlg
       end
       object cbUPNDomain: TComboBox
         Left = 196
-        Height = 21
+        Height = 27
         Top = 224
         Width = 173
         ItemHeight = 0
@@ -184,7 +184,7 @@ object ADUserDlg: TADUserDlg
       end
       object NTDomain: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 272
         Width = 174
         Enabled = False
@@ -192,7 +192,7 @@ object ADUserDlg: TADUserDlg
       end
       object cn: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 176
         Width = 353
         Enabled = False
@@ -201,7 +201,7 @@ object ADUserDlg: TADUserDlg
       end
       object edPassword1: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 320
         Width = 174
         EchoMode = emPassword
@@ -211,7 +211,7 @@ object ADUserDlg: TADUserDlg
       end
       object edPassword2: TEdit
         Left = 196
-        Height = 19
+        Height = 25
         Top = 320
         Width = 173
         EchoMode = emPassword
@@ -226,8 +226,8 @@ object ADUserDlg: TADUserDlg
     end
     object OptionsSheet: TTabSheet
       Caption = 'Account options'
-      ClientHeight = 358
-      ClientWidth = 386
+      ClientHeight = 368
+      ClientWidth = 384
       ImageIndex = 6
       object rgAccountExpires: TRadioGroup
         Left = 16
@@ -243,8 +243,8 @@ object ADUserDlg: TADUserDlg
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 58
-        ClientWidth = 349
+        ClientHeight = 73
+        ClientWidth = 351
         ItemIndex = 0
         Items.Strings = (
           'Never'
@@ -255,9 +255,9 @@ object ADUserDlg: TADUserDlg
       end
       object DatePicker: TDateTimePicker
         Left = 78
-        Height = 23
+        Height = 21
         Top = 294
-        Width = 97
+        Width = 95
         CenturyFrom = 1941
         MaxDate = 2958465
         MinDate = -53780
@@ -265,6 +265,7 @@ object ADUserDlg: TADUserDlg
         Enabled = False
         Color = clBtnFace
         TrailingSeparator = False
+        TextForNullDate = 'NULL'
         LeadingZeros = True
         Kind = dtkDate
         TimeFormat = tf24
@@ -295,7 +296,7 @@ object ADUserDlg: TADUserDlg
           'Do not require Kerberos preauthentication'
           'Password is not required'
         )
-        ItemHeight = 21
+        ItemHeight = 19
         OnClickCheck = clbxAccountOptionsClickCheck
         TabOrder = 1
         Data = {
@@ -313,9 +314,9 @@ object ADUserDlg: TADUserDlg
       end
       object cbAccountLockout: TCheckBox
         Left = 16
-        Height = 26
+        Height = 21
         Top = 20
-        Width = 164
+        Width = 154
         Caption = 'Account is locked out'
         Enabled = False
         OnClick = cbAccountLockoutClick
@@ -323,9 +324,9 @@ object ADUserDlg: TADUserDlg
       end
       object TimePicker: TDateTimePicker
         Left = 244
-        Height = 23
+        Height = 21
         Top = 294
-        Width = 107
+        Width = 93
         ShowCheckBox = True
         CenturyFrom = 1941
         MaxDate = 2958465
@@ -333,13 +334,13 @@ object ADUserDlg: TADUserDlg
         TabOrder = 5
         Enabled = False
         TrailingSeparator = False
+        TextForNullDate = 'NULL'
         LeadingZeros = True
         Kind = dtkTime
         TimeFormat = tf24
         TimeDisplay = tdHMS
         DateMode = dmComboBox
         Date = 42745
-        Time = 0
         UseDefaultSeparators = True
         HideDateTimeParts = []
         MonthNames = 'Long'
@@ -357,14 +358,14 @@ object ADUserDlg: TADUserDlg
     end
     object ProfileSheet: TTabSheet
       Caption = '&Profile'
-      ClientHeight = 358
-      ClientWidth = 386
+      ClientHeight = 368
+      ClientWidth = 384
       ImageIndex = 5
       object Label6: TLabel
         Left = 18
         Height = 15
         Top = 80
-        Width = 41
+        Width = 40
         Caption = 'S&cript:'
         ParentColor = False
       end
@@ -372,7 +373,7 @@ object ADUserDlg: TADUserDlg
         Left = 312
         Height = 15
         Top = 29
-        Width = 80
+        Width = 74
         Caption = 'H&ome Drive:'
         ParentColor = False
       end
@@ -380,7 +381,7 @@ object ADUserDlg: TADUserDlg
         Left = 18
         Height = 15
         Top = 131
-        Width = 76
+        Width = 73
         Caption = '&Profile path:'
         ParentColor = False
       end
@@ -388,13 +389,13 @@ object ADUserDlg: TADUserDlg
         Left = 17
         Height = 15
         Top = 29
-        Width = 104
+        Width = 97
         Caption = '&Home Directory:'
         ParentColor = False
       end
       object scriptPath: TEdit
         Left = 17
-        Height = 21
+        Height = 26
         Top = 96
         Width = 353
         OnChange = EditChange
@@ -439,7 +440,7 @@ object ADUserDlg: TADUserDlg
       end
       object profilePath: TEdit
         Left = 18
-        Height = 21
+        Height = 26
         Top = 147
         Width = 353
         OnChange = EditChange
@@ -447,7 +448,7 @@ object ADUserDlg: TADUserDlg
       end
       object homeDirectory: TEdit
         Left = 18
-        Height = 21
+        Height = 26
         Top = 45
         Width = 288
         OnChange = EditChange
@@ -456,14 +457,14 @@ object ADUserDlg: TADUserDlg
     end
     object OfficeSheet: TTabSheet
       Caption = '&Business'
-      ClientHeight = 358
-      ClientWidth = 386
+      ClientHeight = 368
+      ClientWidth = 384
       ImageIndex = 7
       object Label15: TLabel
         Left = 208
         Height = 15
         Top = 192
-        Width = 40
+        Width = 38
         Caption = 'P&ager:'
         ParentColor = False
       end
@@ -471,7 +472,7 @@ object ADUserDlg: TADUserDlg
         Left = 16
         Height = 15
         Top = 56
-        Width = 44
+        Width = 41
         Caption = '&Street:'
         ParentColor = False
       end
@@ -479,7 +480,7 @@ object ADUserDlg: TADUserDlg
         Left = 16
         Height = 15
         Top = 192
-        Width = 97
+        Width = 91
         Caption = 'State/&Province:'
         ParentColor = False
       end
@@ -487,7 +488,7 @@ object ADUserDlg: TADUserDlg
         Left = 208
         Height = 15
         Top = 98
-        Width = 44
+        Width = 41
         Caption = 'P&hone:'
         ParentColor = False
       end
@@ -495,7 +496,7 @@ object ADUserDlg: TADUserDlg
         Left = 112
         Height = 15
         Top = 192
-        Width = 62
+        Width = 57
         Caption = '&Zip Code:'
         ParentColor = False
       end
@@ -503,7 +504,7 @@ object ADUserDlg: TADUserDlg
         Left = 208
         Height = 15
         Top = 53
-        Width = 40
+        Width = 39
         Caption = '&Office:'
         ParentColor = False
       end
@@ -511,7 +512,7 @@ object ADUserDlg: TADUserDlg
         Left = 208
         Height = 15
         Top = 8
-        Width = 54
+        Width = 50
         Caption = 'P&osition:'
         ParentColor = False
       end
@@ -519,7 +520,7 @@ object ADUserDlg: TADUserDlg
         Left = 16
         Height = 15
         Top = 8
-        Width = 64
+        Width = 60
         Caption = 'C&ompany:'
         ParentColor = False
       end
@@ -527,7 +528,7 @@ object ADUserDlg: TADUserDlg
         Left = 208
         Height = 15
         Top = 144
-        Width = 25
+        Width = 24
         Caption = '&Fax:'
         ParentColor = False
       end
@@ -535,7 +536,7 @@ object ADUserDlg: TADUserDlg
         Left = 16
         Height = 15
         Top = 144
-        Width = 27
+        Width = 26
         Caption = '&City:'
         ParentColor = False
       end
@@ -543,7 +544,7 @@ object ADUserDlg: TADUserDlg
         Left = 16
         Height = 15
         Top = 242
-        Width = 98
+        Width = 91
         Caption = 'E-Mail Address:'
         ParentColor = False
       end
@@ -551,13 +552,13 @@ object ADUserDlg: TADUserDlg
         Left = 16
         Height = 15
         Top = 290
-        Width = 66
+        Width = 64
         Caption = 'Web page:'
         ParentColor = False
       end
       object pager: TEdit
         Left = 208
-        Height = 21
+        Height = 26
         Top = 208
         Width = 161
         OnChange = EditChange
@@ -565,7 +566,7 @@ object ADUserDlg: TADUserDlg
       end
       object streetAddress: TMemo
         Left = 16
-        Height = 64
+        Height = 69
         Top = 72
         Width = 186
         OnChange = EditChange
@@ -573,7 +574,7 @@ object ADUserDlg: TADUserDlg
       end
       object st: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 208
         Width = 89
         OnChange = EditChange
@@ -581,7 +582,7 @@ object ADUserDlg: TADUserDlg
       end
       object telephoneNumber: TEdit
         Left = 208
-        Height = 21
+        Height = 26
         Top = 115
         Width = 161
         OnChange = EditChange
@@ -589,7 +590,7 @@ object ADUserDlg: TADUserDlg
       end
       object postalCode: TEdit
         Left = 112
-        Height = 21
+        Height = 26
         Top = 208
         Width = 90
         OnChange = EditChange
@@ -597,7 +598,7 @@ object ADUserDlg: TADUserDlg
       end
       object physicalDeliveryOfficeName: TEdit
         Left = 208
-        Height = 21
+        Height = 26
         Top = 72
         Width = 161
         OnChange = EditChange
@@ -605,7 +606,7 @@ object ADUserDlg: TADUserDlg
       end
       object o: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 24
         Width = 186
         OnChange = EditChange
@@ -613,7 +614,7 @@ object ADUserDlg: TADUserDlg
       end
       object facsimileTelephoneNumber: TEdit
         Left = 208
-        Height = 21
+        Height = 26
         Top = 160
         Width = 161
         OnChange = EditChange
@@ -621,7 +622,7 @@ object ADUserDlg: TADUserDlg
       end
       object l: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 160
         Width = 186
         OnChange = EditChange
@@ -629,7 +630,7 @@ object ADUserDlg: TADUserDlg
       end
       object title: TEdit
         Left = 208
-        Height = 21
+        Height = 26
         Top = 24
         Width = 161
         OnChange = EditChange
@@ -637,7 +638,7 @@ object ADUserDlg: TADUserDlg
       end
       object mail: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 257
         Width = 186
         OnChange = EditChange
@@ -645,7 +646,7 @@ object ADUserDlg: TADUserDlg
       end
       object wWWHomePage: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 305
         Width = 353
         OnChange = EditChange
@@ -654,8 +655,8 @@ object ADUserDlg: TADUserDlg
     end
     object PrivateSheet: TTabSheet
       Caption = '&Personal'
-      ClientHeight = 358
-      ClientWidth = 386
+      ClientHeight = 368
+      ClientWidth = 384
       ImageIndex = 8
       object Label17: TLabel
         Left = 15
@@ -669,7 +670,7 @@ object ADUserDlg: TADUserDlg
         Left = 16
         Height = 15
         Top = 184
-        Width = 25
+        Width = 24
         Caption = '&Fax:'
         ParentColor = False
       end
@@ -677,7 +678,7 @@ object ADUserDlg: TADUserDlg
         Left = 16
         Height = 15
         Top = 136
-        Width = 44
+        Width = 41
         Caption = '&Phone:'
         ParentColor = False
       end
@@ -685,7 +686,7 @@ object ADUserDlg: TADUserDlg
         Left = 16
         Height = 15
         Top = 232
-        Width = 45
+        Width = 42
         Caption = '&Mobile:'
         ParentColor = False
       end
@@ -693,7 +694,7 @@ object ADUserDlg: TADUserDlg
         Left = 224
         Height = 15
         Top = 136
-        Width = 41
+        Width = 38
         Caption = 'Photo:'
         ParentColor = False
       end
@@ -707,7 +708,7 @@ object ADUserDlg: TADUserDlg
       end
       object otherFacsimiletelephoneNumber: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 200
         Width = 185
         Color = clBtnFace
@@ -717,7 +718,7 @@ object ADUserDlg: TADUserDlg
       end
       object homePhone: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 155
         Width = 185
         OnChange = EditChange
@@ -725,7 +726,7 @@ object ADUserDlg: TADUserDlg
       end
       object mobile: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 251
         Width = 185
         OnChange = EditChange
@@ -772,14 +773,14 @@ object ADUserDlg: TADUserDlg
     end
     object GroupSheet: TTabSheet
       Caption = '&Membership'
-      ClientHeight = 358
-      ClientWidth = 386
+      ClientHeight = 368
+      ClientWidth = 384
       ImageIndex = 9
       object Label34: TLabel
         Left = 16
         Height = 15
         Top = 56
-        Width = 57
+        Width = 53
         Caption = 'M&ember:'
         ParentColor = False
       end
@@ -787,7 +788,7 @@ object ADUserDlg: TADUserDlg
         Left = 16
         Height = 15
         Top = 8
-        Width = 94
+        Width = 90
         Caption = '&Primary group:'
         ParentColor = False
       end
@@ -803,7 +804,7 @@ object ADUserDlg: TADUserDlg
           end        
           item
             Caption = 'Path'
-            Width = 205
+            Width = 211
           end>
         HideSelection = False
         ScrollBars = ssAutoBoth
@@ -834,7 +835,7 @@ object ADUserDlg: TADUserDlg
       object PrimaryGroupBtn: TButton
         Left = 296
         Height = 25
-        Top = 22
+        Top = 24
         Width = 75
         Caption = '&Set...'
         OnClick = PrimaryGroupBtnClick
@@ -842,7 +843,7 @@ object ADUserDlg: TADUserDlg
       end
       object edPrimaryGroup: TEdit
         Left = 17
-        Height = 21
+        Height = 26
         Top = 24
         Width = 273
         Enabled = False
@@ -851,8 +852,8 @@ object ADUserDlg: TADUserDlg
     end
     object TemplateSheet: TTabSheet
       Caption = '&Templates'
-      ClientHeight = 358
-      ClientWidth = 386
+      ClientHeight = 368
+      ClientWidth = 384
       ImageIndex = 7
       object CheckListBox: TCheckListBox
         Left = 3
@@ -912,12 +913,12 @@ object ADUserDlg: TADUserDlg
   end
   object OpenPictureDialog: TOpenPictureDialog
     Filter = 'All image files(*.gif;*.jpg;*.jpeg;*.png;*.bmp;*.tif;*.tiff;*.emf;*.wmf)|*.gif;*.jpg;*.jpeg;*.png;*.bmp;*.tif;*.tiff;*.emf;*.wmf|All files (*.*)|*.*|GIF Image (*.gif)|*.gif|JPEG Image File (*.jpg)|*.jpg|JPEG Image File (*.jpeg)|*.jpeg|Portable Network Graphics (*.png)|*.png|Bitmaps (*.bmp)|*.bmp|TIFF Images (*.tif)|*.tif|TIFF Images (*.tiff)|*.tiff|Enhanced Metafiles (*.emf)|*.emf|Metafiles (*.wmf)|*.wmf'
-    left = 52
-    top = 400
+    Left = 52
+    Top = 400
   end
   object ApplicationEvents1: TApplicationProperties
     OnIdle = ApplicationEvents1Idle
-    left = 16
-    top = 403
+    Left = 16
+    Top = 403
   end
 end

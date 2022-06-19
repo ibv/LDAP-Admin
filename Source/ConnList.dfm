@@ -15,7 +15,7 @@ object ConnListFrm: TConnListFrm
   OnResize = FormResize
   ParentFont = True
   Position = poOwnerFormCenter
-  LCLVersion = '1.8.0.5'
+  LCLVersion = '2.0.0.4'
   object Panel1: TPanel
     Left = 0
     Height = 42

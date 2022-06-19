@@ -122,7 +122,7 @@ type
 
 implementation
 
-uses Graphics, Misc, LAControls;
+uses Graphics, Misc; ///, LAControls;
 
 { TInplaceAttribute }
 
@@ -364,7 +364,7 @@ begin
       Canvas.Font.Color := Control.Font.Color;
       Canvas.TextRect(Rect, Rect.Left + 2, Rect.Top + 2, Cells[ACol, ARow]);
       //DrawFrameControl(Canvas.Handle, R, DFC_SCROLL, DFCS_SCROLLCOMBOBOX);
-      DrawComboBtn(Canvas, R, bs_Normal);
+      ///DrawComboBtn(Canvas, R, bs_Normal);
     end;
   end;
 end;

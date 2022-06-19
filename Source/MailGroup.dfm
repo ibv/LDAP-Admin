@@ -14,28 +14,28 @@ object MailGroupDlg: TMailGroupDlg
   OnClose = FormClose
   OnDestroy = FormDestroy
   Position = poMainFormCenter
-  LCLVersion = '1.6.0.4'
+  LCLVersion = '2.2.2.0'
   object Label1: TLabel
     Left = 16
-    Height = 13
+    Height = 14
     Top = 16
-    Width = 75
+    Width = 73
     Caption = '&Group name:'
     FocusControl = edName
     ParentColor = False
   end
   object Label2: TLabel
     Left = 16
-    Height = 13
+    Height = 14
     Top = 64
-    Width = 68
+    Width = 67
     Caption = '&Description:'
     FocusControl = edDescription
     ParentColor = False
   end
   object edName: TEdit
     Left = 16
-    Height = 19
+    Height = 25
     Top = 32
     Width = 377
     OnChange = edNameChange
@@ -43,7 +43,7 @@ object MailGroupDlg: TMailGroupDlg
   end
   object edDescription: TEdit
     Left = 16
-    Height = 19
+    Height = 25
     Top = 80
     Width = 377
     OnChange = edDescriptionChange
@@ -79,8 +79,8 @@ object MailGroupDlg: TMailGroupDlg
     TabOrder = 2
     object TabSheet1: TTabSheet
       Caption = '&Members'
-      ClientHeight = 286
-      ClientWidth = 385
+      ClientHeight = 295
+      ClientWidth = 383
       object UserList: TListView
         Left = 8
         Height = 249
@@ -93,7 +93,7 @@ object MailGroupDlg: TMailGroupDlg
           end        
           item
             Caption = 'Path'
-            Width = 245
+            Width = 247
           end>
         ScrollBars = ssAutoBoth
         TabOrder = 0
@@ -124,14 +124,14 @@ object MailGroupDlg: TMailGroupDlg
     end
     object TabSheet2: TTabSheet
       Caption = 'E-Mail Addresses'
-      ClientHeight = 286
-      ClientWidth = 385
+      ClientHeight = 295
+      ClientWidth = 383
       ImageIndex = 1
       object Label3: TLabel
         Left = 8
-        Height = 13
+        Height = 14
         Top = 240
-        Width = 121
+        Width = 115
         Caption = 'Mail &routing address:'
         ParentColor = False
       end
@@ -178,7 +178,7 @@ object MailGroupDlg: TMailGroupDlg
       end
       object edMailRoutingAddress: TEdit
         Left = 7
-        Height = 19
+        Height = 25
         Top = 256
         Width = 369
         OnChange = edMailRoutingAddressChange

@@ -12,7 +12,7 @@ object ConnPropDlg: TConnPropDlg
   Color = clBtnFace
   ParentFont = True
   Position = poOwnerFormCenter
-  LCLVersion = '1.8.0.2'
+  LCLVersion = '2.2.2.0'
   object Panel1: TPanel
     Left = 8
     Height = 34
@@ -26,16 +26,16 @@ object ConnPropDlg: TConnPropDlg
     object Label1: TLabel
       Left = 0
       Height = 15
-      Top = 6
-      Width = 117
+      Top = 9
+      Width = 110
       Caption = 'Connection name:'
       ParentColor = False
     end
     object NameEd: TEdit
-      Left = 93
-      Height = 21
+      Left = 112
+      Height = 26
       Top = 2
-      Width = 323
+      Width = 304
       Anchors = [akTop, akLeft, akRight]
       TabOrder = 0
     end
@@ -61,49 +61,46 @@ object ConnPropDlg: TConnPropDlg
       TabOrder = 0
       object TabSheet1: TTabSheet
         Caption = 'General'
-        ClientHeight = 257
-        ClientWidth = 410
+        ClientHeight = 267
+        ClientWidth = 408
         object AccountBox: TGroupBox
           Left = 8
           Height = 99
           Top = 153
           Width = 409
           Caption = ' Account '
-          ClientHeight = 68
-          ClientWidth = 405
+          ClientHeight = 83
+          ClientWidth = 407
           TabOrder = 1
           object Label4: TLabel
             Left = 8
             Height = 15
-            Top = 2
-            Width = 71
+            Top = 5
+            Width = 65
             Caption = 'Username:'
             ParentColor = False
           end
           object Label5: TLabel
             Left = 8
-            Height = 13
-            Top = 30
+            Height = 15
+            Top = 33
             Width = 60
             Caption = 'Password:'
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
             ParentColor = False
             ParentFont = False
           end
           object UserEd: TEdit
             Left = 88
-            Height = 21
+            Height = 26
             Top = -2
             Width = 306
             TabOrder = 0
           end
           object PasswordEd: TEdit
             Left = 88
-            Height = 21
+            Height = 26
             Hint = 'This storage does not allow to keep the password'
-            Top = 26
+            Top = 28
             Width = 306
             EchoMode = emPassword
             ParentShowHint = False
@@ -113,9 +110,9 @@ object ConnPropDlg: TConnPropDlg
           end
           object cbAnonymous: TCheckBox
             Left = 8
-            Height = 26
-            Top = 48
-            Width = 178
+            Height = 21
+            Top = 58
+            Width = 166
             Caption = 'Anonymous connection'
             OnClick = cbAnonymousClick
             TabOrder = 2
@@ -127,22 +124,22 @@ object ConnPropDlg: TConnPropDlg
           Top = 8
           Width = 409
           Caption = ' Connection: '
-          ClientHeight = 107
-          ClientWidth = 405
+          ClientHeight = 122
+          ClientWidth = 407
           TabOrder = 0
           object Label2: TLabel
             Left = 8
             Height = 15
-            Top = 0
-            Width = 34
+            Top = 9
+            Width = 31
             Caption = 'Host:'
             ParentColor = False
           end
           object Label3: TLabel
-            Left = 211
+            Left = 205
             Height = 15
-            Top = 0
-            Width = 30
+            Top = 9
+            Width = 28
             Alignment = taRightJustify
             Caption = 'Port:'
             ParentColor = False
@@ -150,30 +147,30 @@ object ConnPropDlg: TConnPropDlg
           object Label7: TLabel
             Left = 286
             Height = 15
-            Top = 0
-            Width = 51
+            Top = 9
+            Width = 47
             Caption = 'Version:'
             ParentColor = False
           end
           object Label6: TLabel
             Left = 8
             Height = 15
-            Top = 33
-            Width = 36
+            Top = 38
+            Width = 32
             Caption = 'Base:'
             ParentColor = False
           end
           object ServerEd: TEdit
-            Left = 56
-            Height = 21
-            Top = -3
-            Width = 148
+            Left = 50
+            Height = 26
+            Top = 2
+            Width = 149
             TabOrder = 0
           end
           object PortEd: TEdit
-            Left = 240
-            Height = 21
-            Top = -3
+            Left = 236
+            Height = 26
+            Top = 1
             Width = 45
             OnExit = ValidateInput
             TabOrder = 1
@@ -182,7 +179,7 @@ object ConnPropDlg: TConnPropDlg
           object VersionCombo: TComboBox
             Left = 336
             Height = 27
-            Top = -4
+            Top = 1
             Width = 61
             ItemHeight = 0
             Items.Strings = (
@@ -195,27 +192,27 @@ object ConnPropDlg: TConnPropDlg
           end
           object FetchDnBtn: TBitBtn
             Left = 296
-            Height = 23
-            Top = 29
+            Height = 25
+            Top = 34
             Width = 101
             Caption = 'Fetch DNs'
             OnClick = FetchDnBtnClick
             TabOrder = 4
           end
           object BaseEd: TComboBox
-            Left = 56
-            Height = 21
-            Top = 29
+            Left = 50
+            Height = 27
+            Top = 34
             Width = 231
             ItemHeight = 0
             Style = csSimple
             TabOrder = 3
           end
           object rbSimpleAuth: TRadioButton
-            Left = 56
-            Height = 26
-            Top = 61
-            Width = 168
+            Left = 50
+            Height = 21
+            Top = 66
+            Width = 157
             Caption = 'Simple authentication'
             Checked = True
             OnClick = MethodChange
@@ -223,37 +220,37 @@ object ConnPropDlg: TConnPropDlg
             TabStop = True
           end
           object rbGssApi: TRadioButton
-            Left = 56
-            Height = 26
-            Top = 82
-            Width = 81
+            Left = 50
+            Height = 21
+            Top = 87
+            Width = 72
             Caption = 'GSS-API'
             OnClick = MethodChange
             TabOrder = 6
           end
           object cbSSL: TCheckBox
             Left = 224
-            Height = 26
-            Top = 61
-            Width = 53
+            Height = 21
+            Top = 66
+            Width = 47
             Caption = 'SSL'
             OnClick = cbSSLClick
             TabOrder = 7
           end
           object cbSASL: TCheckBox
             Left = 224
-            Height = 26
-            Top = 82
-            Width = 62
+            Height = 21
+            Top = 87
+            Width = 55
             Caption = 'SASL'
             OnClick = cbSASLClick
             TabOrder = 8
           end
           object cbTLS: TCheckBox
             Left = 286
-            Height = 26
-            Top = 61
-            Width = 51
+            Height = 21
+            Top = 66
+            Width = 46
             Caption = 'TLS'
             OnClick = cbTLSClick
             TabOrder = 9
@@ -262,8 +259,8 @@ object ConnPropDlg: TConnPropDlg
       end
       object TabSheet2: TTabSheet
         Caption = '&Options'
-        ClientHeight = 257
-        ClientWidth = 410
+        ClientHeight = 267
+        ClientWidth = 408
         ImageIndex = 1
         object GroupBox1: TGroupBox
           Left = 8
@@ -271,70 +268,70 @@ object ConnPropDlg: TConnPropDlg
           Top = 3
           Width = 198
           Caption = 'Search'
-          ClientHeight = 215
-          ClientWidth = 194
+          ClientHeight = 244
+          ClientWidth = 196
           TabOrder = 0
           object Label15: TLabel
             Left = 24
             Height = 15
-            Top = 109
-            Width = 64
+            Top = 116
+            Width = 59
             Caption = 'Page size:'
             ParentColor = False
           end
           object Label14: TLabel
             Left = 24
             Height = 15
-            Top = -3
-            Width = 66
+            Top = 0
+            Width = 63
             Caption = 'Time limit:'
             ParentColor = False
           end
           object Label13: TLabel
             Left = 24
             Height = 15
-            Top = 37
-            Width = 62
+            Top = 46
+            Width = 58
             Caption = 'Size limit:'
             ParentColor = False
           end
           object Label8: TLabel
             Left = 24
             Height = 15
-            Top = 167
-            Width = 131
+            Top = 172
+            Width = 120
             Caption = 'Dereference aliases:'
             ParentColor = False
           end
           object edTimeLimit: TEdit
             Left = 24
-            Height = 21
-            Top = 11
+            Height = 26
+            Top = 15
             Width = 81
             OnExit = ValidateInput
             TabOrder = 0
           end
           object edSizeLimit: TEdit
             Left = 24
-            Height = 21
-            Top = 51
+            Height = 26
+            Top = 62
             Width = 81
             OnExit = ValidateInput
             TabOrder = 1
           end
           object cbxPagedSearch: TCheckBox
             Left = 24
-            Height = 26
-            Top = 86
-            Width = 114
+            Height = 21
+            Top = 93
+            Width = 105
             Caption = 'Paged search'
             OnClick = cbxPagedSearchClick
             TabOrder = 2
           end
           object edPageSize: TEdit
             Left = 24
-            Height = 21
-            Top = 128
+            Height = 26
+            Top = 136
             Width = 81
             OnExit = ValidateInput
             TabOrder = 3
@@ -342,7 +339,7 @@ object ConnPropDlg: TConnPropDlg
           object cbDerefAliases: TComboBox
             Left = 24
             Height = 27
-            Top = 181
+            Top = 186
             Width = 161
             ItemHeight = 0
             Items.Strings = (
@@ -361,14 +358,14 @@ object ConnPropDlg: TConnPropDlg
           Top = 3
           Width = 198
           Caption = 'Referrals'
-          ClientHeight = 118
-          ClientWidth = 194
+          ClientHeight = 147
+          ClientWidth = 196
           TabOrder = 1
           object Label10: TLabel
             Left = 16
             Height = 15
-            Top = -3
-            Width = 101
+            Top = 0
+            Width = 93
             Caption = 'Chase referrals:'
             ParentColor = False
           end
@@ -376,14 +373,14 @@ object ConnPropDlg: TConnPropDlg
             Left = 16
             Height = 15
             Top = 58
-            Width = 87
+            Width = 83
             Caption = 'Referral hops:'
             ParentColor = False
           end
           object cbReferrals: TComboBox
             Left = 16
             Height = 27
-            Top = 11
+            Top = 14
             Width = 137
             ItemHeight = 0
             Items.Strings = (
@@ -396,7 +393,7 @@ object ConnPropDlg: TConnPropDlg
           end
           object edReferralHops: TEdit
             Left = 16
-            Height = 21
+            Height = 26
             Top = 73
             Width = 81
             OnExit = ValidateInput
@@ -409,14 +406,14 @@ object ConnPropDlg: TConnPropDlg
           Top = 160
           Width = 198
           Caption = 'Directory'
-          ClientHeight = 57
-          ClientWidth = 194
+          ClientHeight = 86
+          ClientWidth = 196
           TabOrder = 2
           object Label9: TLabel
             Left = 21
             Height = 15
-            Top = 9
-            Width = 94
+            Top = 14
+            Width = 90
             Alignment = taRightJustify
             Caption = 'Directory type:'
             ParentColor = False
@@ -424,7 +421,7 @@ object ConnPropDlg: TConnPropDlg
           object cbDirectoryType: TComboBox
             Left = 16
             Height = 27
-            Top = 24
+            Top = 29
             Width = 169
             ItemHeight = 0
             Items.Strings = (
@@ -441,14 +438,14 @@ object ConnPropDlg: TConnPropDlg
       end
       object TabSheet3: TTabSheet
         Caption = '&Attributes'
-        ClientHeight = 257
-        ClientWidth = 410
+        ClientHeight = 267
+        ClientWidth = 408
         ImageIndex = 2
         object cbxShowAttrs: TCheckBox
           Left = 16
-          Height = 26
+          Height = 21
           Top = 3
-          Width = 208
+          Width = 195
           Caption = '&Show operational attributes:'
           OnClick = cbxShowAttrsClick
           TabOrder = 0
@@ -466,7 +463,7 @@ object ConnPropDlg: TConnPropDlg
           TopIndex = -1
         end
         object btnAdd: TButton
-          Left = 336
+          Left = 328
           Height = 25
           Top = 27
           Width = 75
@@ -476,7 +473,7 @@ object ConnPropDlg: TConnPropDlg
           TabOrder = 2
         end
         object btnRemove: TButton
-          Left = 336
+          Left = 328
           Height = 25
           Top = 59
           Width = 75

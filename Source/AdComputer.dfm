@@ -12,7 +12,7 @@ object AdComputerDlg: TAdComputerDlg
   OnDestroy = FormDestroy
   ParentFont = True
   Position = poMainFormCenter
-  LCLVersion = '1.6.2.0'
+  LCLVersion = '2.2.2.0'
   object OkBtn: TButton
     Left = 167
     Height = 25
@@ -38,21 +38,21 @@ object AdComputerDlg: TAdComputerDlg
     Height = 337
     Top = 0
     Width = 411
-    ActivePage = MembershipSheet
+    ActivePage = GeneralSheet
     Align = alTop
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 2
     OnChange = PageControlChange
     object GeneralSheet: TTabSheet
       Caption = '&General'
-      ClientHeight = 300
-      ClientWidth = 403
+      ClientHeight = 310
+      ClientWidth = 401
       ImageIndex = 2
       object Label5: TLabel
         Left = 16
         Height = 15
         Top = 112
-        Width = 62
+        Width = 58
         Caption = 'NT name:'
         ParentColor = False
       end
@@ -60,7 +60,7 @@ object AdComputerDlg: TAdComputerDlg
         Left = 16
         Height = 15
         Top = 160
-        Width = 58
+        Width = 54
         Caption = 'Location:'
         ParentColor = False
       end
@@ -68,7 +68,7 @@ object AdComputerDlg: TAdComputerDlg
         Left = 16
         Height = 15
         Top = 16
-        Width = 109
+        Width = 102
         Caption = 'Computer &name:'
         ParentColor = False
       end
@@ -76,13 +76,13 @@ object AdComputerDlg: TAdComputerDlg
         Left = 16
         Height = 15
         Top = 64
-        Width = 76
+        Width = 72
         Caption = 'D&escription:'
         ParentColor = False
       end
       object samAccountName: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 128
         Width = 374
         MaxLength = 15
@@ -91,7 +91,7 @@ object AdComputerDlg: TAdComputerDlg
       end
       object location: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 176
         Width = 374
         OnChange = EditChange
@@ -99,23 +99,23 @@ object AdComputerDlg: TAdComputerDlg
       end
       object cbxServerTrustAccount: TCheckBox
         Left = 16
-        Height = 26
+        Height = 21
         Top = 224
-        Width = 403
+        Width = 381
         Caption = 'Assign this computer account as backup domain controller'
         TabOrder = 4
       end
       object cbxNTAccount: TCheckBox
         Left = 16
-        Height = 26
+        Height = 21
         Top = 256
-        Width = 437
+        Width = 416
         Caption = 'Assign this computer account as a pre–Windows 2000 computer'
         TabOrder = 5
       end
       object cn: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 32
         Width = 374
         MaxLength = 63
@@ -124,7 +124,7 @@ object AdComputerDlg: TAdComputerDlg
       end
       object description: TEdit
         Left = 16
-        Height = 21
+        Height = 26
         Top = 80
         Width = 374
         OnChange = EditChange
@@ -133,25 +133,25 @@ object AdComputerDlg: TAdComputerDlg
       object Panel1: TPanel
         Left = 0
         Height = 103
-        Top = 197
-        Width = 403
+        Top = 207
+        Width = 401
         Align = alBottom
         BevelOuter = bvNone
         ClientHeight = 103
-        ClientWidth = 403
+        ClientWidth = 401
         TabOrder = 6
         Visible = False
         object Label4: TLabel
           Left = 16
           Height = 15
           Top = 4
-          Width = 57
+          Width = 56
           Caption = 'Function:'
           ParentColor = False
         end
         object edFunction: TEdit
           Left = 16
-          Height = 21
+          Height = 26
           Top = 23
           Width = 374
           Enabled = False
@@ -159,9 +159,9 @@ object AdComputerDlg: TAdComputerDlg
         end
         object cbxTrustForDelegation: TCheckBox
           Left = 16
-          Height = 26
+          Height = 21
           Top = 64
-          Width = 247
+          Width = 234
           Caption = 'Trust this computer for delegation '
           OnClick = cbxTrustForDelegationClick
           TabOrder = 1
@@ -170,14 +170,14 @@ object AdComputerDlg: TAdComputerDlg
     end
     object MembershipSheet: TTabSheet
       Caption = 'Membership'
-      ClientHeight = 300
-      ClientWidth = 403
+      ClientHeight = 310
+      ClientWidth = 401
       ImageIndex = 2
       object Label34: TLabel
         Left = 8
         Height = 15
         Top = 51
-        Width = 73
+        Width = 68
         Caption = 'Member of:'
         ParentColor = False
       end
@@ -185,7 +185,7 @@ object AdComputerDlg: TAdComputerDlg
         Left = 8
         Height = 15
         Top = 8
-        Width = 94
+        Width = 90
         Caption = '&Primary group:'
         ParentColor = False
       end
@@ -201,7 +201,7 @@ object AdComputerDlg: TAdComputerDlg
           end        
           item
             Caption = 'Path'
-            Width = 224
+            Width = 243
           end>
         HideSelection = False
         ScrollBars = ssAutoBoth
@@ -230,7 +230,7 @@ object AdComputerDlg: TAdComputerDlg
       object PrimaryGroupBtn: TButton
         Left = 312
         Height = 25
-        Top = 22
+        Top = 24
         Width = 81
         Caption = '&Set...'
         OnClick = PrimaryGroupBtnClick
@@ -238,7 +238,7 @@ object AdComputerDlg: TAdComputerDlg
       end
       object edPrimaryGroup: TEdit
         Left = 8
-        Height = 21
+        Height = 26
         Top = 24
         Width = 298
         Enabled = False
@@ -258,7 +258,7 @@ object AdComputerDlg: TAdComputerDlg
   end
   object ApplicationEvents1: TApplicationProperties
     OnIdle = ApplicationEvents1Idle
-    left = 24
-    top = 336
+    Left = 24
+    Top = 336
   end
 end

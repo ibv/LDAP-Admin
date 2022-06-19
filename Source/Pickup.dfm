@@ -3,6 +3,14 @@ inherited PickupDlg: TPickupDlg
   OnCreate = FormCreate
   inherited Panel1: TPanel
     inherited ListView: TListView
+      Height = 231
+      Columns = <      
+        item
+          Width = 160
+        end      
+        item
+          Width = 326
+        end>
       OwnerData = True
       OnData = ListViewData
     end
@@ -10,7 +18,7 @@ inherited PickupDlg: TPickupDlg
       Left = 9
       Height = 15
       Top = 250
-      Width = 34
+      Width = 33
       Anchors = [akLeft, akBottom]
       Caption = '&Filter:'
       FocusControl = FilterEdit
@@ -18,8 +26,8 @@ inherited PickupDlg: TPickupDlg
     end
     object FilterEdit: TEdit[4]
       Left = 46
-      Height = 21
-      Top = 249
+      Height = 31
+      Top = 239
       Width = 217
       Anchors = [akLeft, akRight, akBottom]
       OnChange = FilterEditChange

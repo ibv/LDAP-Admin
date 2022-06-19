@@ -114,6 +114,7 @@ ADObjects in 'ADObjects.pas';
 {$R *.res}
 
 begin
+  Application.Scaled:=True;
   Application.Initialize;
   Application.CreateForm(TMainFrm, MainFrm);
   Application.Run;
