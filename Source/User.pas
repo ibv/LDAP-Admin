@@ -298,15 +298,15 @@ var
     p: PChar;
     rg: string;
   begin
-    p := CharNext(p1);
+    p := p1 + 1;
     if p^ = '[' then
     begin
-      p := CharNext(p);
+      p := p + 1;
       p1 := p;
       while p1^ <> ']' do begin
         if p1 = #0 then
           raise Exception.Create(stUnclosedParam);
-        p1 := CharNext(p1);
+        p1 := p1 + 1;
       end;
       SetString(rg, p, p1 - p);
       Result := Copy(src, 1, StrToInt(rg));
@@ -319,7 +319,7 @@ begin
   Result := '';
   p := PChar(Src);
   while p^ <> #0 do begin
-    p1 := CharNext(p);
+    p1 := p + 1;
     if (p^ = '%') then
     begin
       case p1^ of
@@ -332,7 +332,7 @@ begin
       else
         Result := Result + p^ + p1^;
       end;
-      p1 := CharNext(p1);
+      p1 := p1 + 1;
     end
     else
       Result := Result + p^;
@@ -404,7 +404,7 @@ var
       if i = -1 then
       begin
         Result := Result + p^;
-        p := CharNext(p);
+        p := p + 1;
       end;
     end;
   end;

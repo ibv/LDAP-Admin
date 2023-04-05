@@ -100,6 +100,7 @@ msgid "Copy selection to..."
 msgstr ""
 
 #: constant.ccopyto
+#, object-pascal-format
 msgid "Copy %s to..."
 msgstr "Kopiere %s nach..."
 
@@ -243,6 +244,7 @@ msgid "More..."
 msgstr "Weitere..."
 
 #: constant.cmoveto
+#, object-pascal-format
 msgid "Move %s to..."
 msgstr "Verschiebe %s nach..."
 
@@ -292,9 +294,10 @@ msgid "Objectclass"
 msgstr "Objektklasse"
 
 #: constant.cok
+#, fuzzy
 msgctxt "constant.cok"
 msgid "&OK"
-msgstr ""
+msgstr "&OK"
 
 #: constant.coldvalue
 msgid "Old value"
@@ -322,6 +325,7 @@ msgid "Password:"
 msgstr "Passwort:"
 
 #: constant.cpath
+#, object-pascal-format
 msgid "Path: %s"
 msgstr "Pfad: %s"
 
@@ -350,6 +354,7 @@ msgid "Progress:"
 msgstr "Fortschritt:"
 
 #: constant.cpropertiesof
+#, object-pascal-format
 msgid "Properties of %s"
 msgstr "Eigenschaften von %s"
 
@@ -410,6 +415,7 @@ msgid "Select entry"
 msgstr "Eintrag auswählen"
 
 #: constant.cserver
+#, object-pascal-format
 msgid "Server: %s"
 msgstr ""
 
@@ -446,6 +452,7 @@ msgid "Unknown"
 msgstr "Unbekannt"
 
 #: constant.cuser
+#, object-pascal-format
 msgid "User: %s"
 msgstr "Benutzer: %s"
 
@@ -476,6 +483,7 @@ msgid "Warning"
 msgstr "Warnung"
 
 #: constant.lac_notlac
+#, object-pascal-format
 msgid "The file \"%s\" is not an Ldap Admin accounts file"
 msgstr ""
 
@@ -549,6 +557,7 @@ msgid "Do you want to abort the script?"
 msgstr ""
 
 #: constant.staccntexist
+#, object-pascal-format
 msgid "Account with name \"%s\" already exists!"
 msgstr ""
 
@@ -561,18 +570,22 @@ msgid "All files (*.*)|*.*"
 msgstr ""
 
 #: constant.stargdecnum
+#, object-pascal-format
 msgid "Argument must be a decimal number: %s!"
 msgstr "Argument muss ein Dezimalnummer sein: %s!"
 
 #: constant.stasktreecopy
+#, object-pascal-format
 msgid "Copy %s to %s?"
 msgstr ""
 
 #: constant.stasktreemove
+#, object-pascal-format
 msgid "Move %s to %s?"
 msgstr ""
 
 #: constant.stassertdecnum
+#, object-pascal-format
 msgid "Assertion value %s must be decimal number!"
 msgstr "Assertion Wert %s muss ein Dezimalnummer sein!"
 
@@ -589,11 +602,12 @@ msgid "This storage can not store passwords"
 msgstr "In diesem Speicher können keine Passwörter aufbewahrt werden!"
 
 #: constant.stcertconfirmconn
+#, object-pascal-format
 msgid ""
 "The server you are trying to connect to is using a certificate which could not be verified!\n"
 "\n"
 "%s\n"
-"Do you want to proceed?\n"
+"Do you want to proceed?"
 msgstr ""
 
 #: constant.stcertinvalidname
@@ -613,6 +627,7 @@ msgid "Issuer certificate not found"
 msgstr "Das Herausgeberzertifikat ist nicht vorhanden, bzw. nicht vertraunswürdig!"
 
 #: constant.stcertopenstoreerr
+#, object-pascal-format
 msgid "Error opening certificate system store %s: %s!"
 msgstr "Fehler beim öffnen der Fehler beim öffnen der Zertifikatsspeicher %s: %s!"
 
@@ -629,26 +644,32 @@ msgid "An attempt to set user change password priviledge failed: "
 msgstr ""
 
 #: constant.stclassnotfound
+#, object-pascal-format
 msgid "Class %s not found!"
 msgstr "Klasse %s könnte nicht gefunden werden!"
 
 #: constant.stcntobjects
+#, object-pascal-format
 msgid "%d object(s) retrieved."
 msgstr ""
 
 #: constant.stcntsubentries
+#, object-pascal-format
 msgid "%d subentries"
 msgstr "%d Unterverzeichnisse"
 
 #: constant.stconfirmdel
+#, object-pascal-format
 msgid "Delete entry \"%s\"?"
 msgstr ""
 
 #: constant.stconfirmdelaccnt
+#, object-pascal-format
 msgid "Delete account \"%s\"?"
 msgstr ""
 
 #: constant.stconfirmmultidel
+#, object-pascal-format
 msgid "Delete %d entries?"
 msgstr ""
 
@@ -665,12 +686,14 @@ msgid "date format"
 msgstr "Datumsformat"
 
 #: constant.stdeleteall
+#, object-pascal-format
 msgid ""
 "\"%s\"\n"
-"This directory entry is not empty (it contains further leaves). Delete all recursively?\n"
+"This directory entry is not empty (it contains further leaves). Delete all recursively?"
 msgstr ""
 
 #: constant.stdeletefolder
+#, object-pascal-format
 msgid "Delete folder \"%s\"?"
 msgstr ""
 
@@ -687,21 +710,25 @@ msgid "Delete this submenu?"
 msgstr ""
 
 #: constant.stdelnamingattr
+#, object-pascal-format
 msgid "Attribute %s is the naming value of this entry! Do you want to delete it?"
 msgstr ""
 
 #: constant.stdirnotexists
+#, object-pascal-format
 msgid "Directory does not exist: %s!"
 msgstr "Verzeichniss exsistiert nicht: %s!"
 
 #: constant.stdisplaying
+#, object-pascal-format
 msgid "Displaying first %d results."
 msgstr ""
 
 #: constant.stdonotcheckagain
+#, fuzzy
 msgctxt "constant.stdonotcheckagain"
 msgid "Do not perform this check in the future."
-msgstr ""
+msgstr "In zukunft nicht mehr nachfragen."
 
 #: constant.stdonotshowagain
 msgid "Do not show this message in the future."
@@ -712,6 +739,7 @@ msgid "EntryList does not allow duplicates"
 msgstr ""
 
 #: constant.stduplicatesc
+#, object-pascal-format
 msgid "Shortcut '%s' is already assigned to '%s' menu item!"
 msgstr "Tastaturkürzel '%s' ist bereits dem Menüeintrag '%s' zugewiesen!"
 
@@ -720,6 +748,7 @@ msgid "Empty argument!"
 msgstr "Parameter ist leer!"
 
 #: constant.stemptyfile
+#, object-pascal-format
 msgid "File %s is empty!"
 msgstr "Datei %s ist leer!"
 
@@ -728,14 +757,17 @@ msgid "Error extracting method name!"
 msgstr "Fehler beim extrahieren von Methodennamen! !"
 
 #: constant.sterrunaryop
+#, object-pascal-format
 msgid "Unary operator \"%s\" can not be applied to multiple operands: %s!"
 msgstr ""
 
 #: constant.stevtypeevtypeerr
+#, object-pascal-format
 msgid "Error setting %s event: %s event type is not supported!"
 msgstr "Fehler beim setzen von Ereigniss %s: %s Ereignisstyp ist nicht unterstützt!"
 
 #: constant.stexpectedat
+#, object-pascal-format
 msgid "Expected %s at %s!"
 msgstr "%s bei %s erwartet!"
 
@@ -744,6 +776,7 @@ msgid "Expected \"=\" but recieved \""
 msgstr ""
 
 #: constant.stexpectedendofstr
+#, object-pascal-format
 msgid "Expected end of string but found \"%s\" at %s!"
 msgstr ""
 
@@ -756,20 +789,23 @@ msgid "Select items to export:"
 msgstr ""
 
 #: constant.stexportsuccess
+#, object-pascal-format
 msgid "Success: %d Object(s) succesfully exported!"
 msgstr ""
 
 #: constant.stextconfirmassoc
 msgid ""
 "LDAPAdmin is currently not your default LDAP browser.\n"
-"Would you like to make it your default LDAP browser?\n"
+"Would you like to make it your default LDAP browser?"
 msgstr ""
 
 #: constant.stfilemodified
+#, object-pascal-format
 msgid "File %s was modifed. Save changes?"
 msgstr ""
 
 #: constant.stfileoverwrite
+#, object-pascal-format
 msgid "File '%s' exists, overwrite?"
 msgstr ""
 
@@ -778,10 +814,12 @@ msgid "File opened in read only mode!"
 msgstr ""
 
 #: constant.stfolderexists
+#, object-pascal-format
 msgid "Folder with name \"%s\" already exists."
 msgstr ""
 
 #: constant.stfoldermerge
+#, object-pascal-format
 msgid "Folder with name \"%s\" already exists. Merge or save with different name?"
 msgstr ""
 
@@ -790,10 +828,12 @@ msgid "You have to enter a name for this folder!"
 msgstr ""
 
 #: constant.stfoldernotempty
+#, object-pascal-format
 msgid "The folder \"%s\" is not empty. Delete anyway?"
 msgstr ""
 
 #: constant.stgetprocaddrerr
+#, object-pascal-format
 msgid "Cannot GetProcAddress of %s."
 msgstr "GetProcAddress für %s fehlgeschlagen."
 
@@ -810,6 +850,7 @@ msgid "You have to enter a name for this group!"
 msgstr "Sie müssen ein Name für diese Gruppe eingeben!"
 
 #: constant.stidentisnotvalid
+#, object-pascal-format
 msgid "\"%s\" is not a valid %s!"
 msgstr ""
 
@@ -830,6 +871,7 @@ msgid "Import to:"
 msgstr ""
 
 #: constant.stinserting
+#, object-pascal-format
 msgid "Inserting, %d of %d. Press ESC to abort..."
 msgstr ""
 
@@ -838,28 +880,34 @@ msgid "integer number"
 msgstr "Ganzzahl"
 
 #: constant.stinvalidargindex
+#, object-pascal-format
 msgid "Invalid Argument Index: %d"
 msgstr "Ungültiger Parameter-Index: %d"
 
 #: constant.stinvalidchar
+#, object-pascal-format
 msgid "%s may not contain the character \"%s\""
 msgstr ""
 
 #: constant.stinvalidchars
+#, object-pascal-format
 msgid ""
 "%s may not contain any of the following characters:\n"
-"%s\n"
+"%s"
 msgstr ""
 
 #: constant.stinvalidchr
+#, object-pascal-format
 msgid "Invalid character: \"%s\" in \"%s\"!"
 msgstr ""
 
 #: constant.stinvalidcmdver
+#, object-pascal-format
 msgid "Invalid LDAP version in command line: %s"
 msgstr "Ungültige LDAP-version in Befehlszeile: %s"
 
 #: constant.stinvalidfilter
+#, object-pascal-format, fuzzy, badformat
 msgid "Invalid or unsupported filter type: %s!"
 msgstr "Üngultiger oder nicht unterstützter Filtertyp!"
 
@@ -868,23 +916,27 @@ msgid "Invalid Ldap operation!"
 msgstr ""
 
 #: constant.stinvalidoperator
+#, object-pascal-format
 msgid "Invalid operator \"%s\"!"
 msgstr ""
 
 #: constant.stinvalidsid
+#, object-pascal-format
 msgid ""
 "Could not set \"User cannot change password\" flag.\n"
 "\n"
 "Error message: %s\n"
 "\n"
-"Probable reason: the computer %s is not a member of the domain %s or a trusted domain.\n"
+"Probable reason: the computer %s is not a member of the domain %s or a trusted domain."
 msgstr ""
 
 #: constant.stinvalidtagvalue
+#, object-pascal-format
 msgid "Invalid value %s for <%s>!"
 msgstr "Ungültiges %s für <%s>!"
 
 #: constant.stinvalidtimefmt
+#, object-pascal-format, fuzzy, badformat
 msgid "Invalid time format: %s!"
 msgstr "Ungültiges Zeitformat!"
 
@@ -893,14 +945,17 @@ msgid "Invalid URL format!"
 msgstr "Ungültiges URL-Format!"
 
 #: constant.stldaperror
+#, object-pascal-format
 msgid "LDAP error: %s!"
 msgstr "LDAP Fehler: %s!"
 
 #: constant.stldaperrorex
+#, object-pascal-format
 msgid "LDAP error! %s: %s."
 msgstr "LDAP Fehler! %s: %s."
 
 #: constant.stldifefold
+#, object-pascal-format
 msgid "Line %d: Empty line may not be folded!"
 msgstr "Zeile %d ist leer, Zeilenumbruch nicht möglich!"
 
@@ -909,10 +964,12 @@ msgid "Internal error: Invalid LDIF mode!"
 msgstr "Interner Fehler: Ungültige LDIF-Mode!"
 
 #: constant.stldifenocol
+#, object-pascal-format
 msgid "Line %d: Missing \":\"."
 msgstr ""
 
 #: constant.stldifenodn
+#, object-pascal-format
 msgid "Line %d: dn expected but %s found!"
 msgstr "Zeile %d: dn erwartet aber %s gefunden!"
 
@@ -921,10 +978,12 @@ msgid "End of file reached!"
 msgstr "Dateiende erreicht!"
 
 #: constant.stldifever
+#, object-pascal-format
 msgid "Invalid version value: %s!"
 msgstr "Ungültiger Versionswert: %s!"
 
 #: constant.stldiffailure
+#, object-pascal-format
 msgid "%d Object(s) could not be imported!"
 msgstr ""
 
@@ -933,22 +992,27 @@ msgid "Invalid URL!"
 msgstr "Ungültige URL!"
 
 #: constant.stldifinvattrname
+#, object-pascal-format
 msgid "Line %d: Invalid attribute name, expected \"%s\" but found \"%s\"!"
 msgstr ""
 
 #: constant.stldifinvchtype
+#, object-pascal-format
 msgid "Line %d: Invalid changetype \"%s\"!"
 msgstr ""
 
 #: constant.stldifinvop
+#, object-pascal-format
 msgid "Line %d: Invalid operation \"%s\"!"
 msgstr ""
 
 #: constant.stldifnotexpected
+#, object-pascal-format
 msgid "Line %d: Expected \"%s\" but found \"%s\"!"
 msgstr ""
 
 #: constant.stldifsuccess
+#, object-pascal-format
 msgid "%d Object(s) succesfully imported!"
 msgstr ""
 
@@ -961,10 +1025,12 @@ msgid "A template name must not be empty!"
 msgstr "Templatename muss eingegeben werden!"
 
 #: constant.stmenulocatetempl
+#, object-pascal-format
 msgid "The template \"%s\" which is assigned to this action could not be located!"
 msgstr ""
 
 #: constant.stmissingin
+#, object-pascal-format
 msgid "Missing %s in %s!"
 msgstr "Es wurde kein %s in %s gefunden!"
 
@@ -977,6 +1043,7 @@ msgid "Source and destination paths overlap!"
 msgstr "Verschieben nicht möglich. Der Zielordner ist dem Quellordner untergeordnet!"
 
 #: constant.stmutuallyexclusive
+#, object-pascal-format
 msgid "The options \"%s\" and \"%s\" can not be selected simultaneously!"
 msgstr ""
 
@@ -1002,6 +1069,7 @@ msgid "Do not perform this check in the future."
 msgstr "In zukunft nicht mehr nachfragen."
 
 #: constant.stnomorenums
+#, object-pascal-format
 msgid "Pool depleted! No more available free id's for %s!"
 msgstr "Pool ausgeschopft! Für %s! stehen keine freie ID's zu Verfügung!"
 
@@ -1026,6 +1094,7 @@ msgid "Not enough arguments!"
 msgstr "Nicht genügend Parameter!"
 
 #: constant.stnotlabatchfile
+#, object-pascal-format
 msgid "%s is not LDAPAdmin batch file!"
 msgstr "%s ist keine LDAPAdmin batch Datei!"
 
@@ -1034,10 +1103,12 @@ msgid "number"
 msgstr "Zahl"
 
 #: constant.stnumobjects
+#, object-pascal-format
 msgid "%d objects"
 msgstr "%d Objekte"
 
 #: constant.stobjectnotfound
+#, object-pascal-format
 msgid "Object not found: %s!"
 msgstr "Objekt nicht gefunden: %s!"
 
@@ -1058,10 +1129,12 @@ msgid "Passwords do not match!"
 msgstr "Die eingegebenen Kennwörter stimmen nicht überein!"
 
 #: constant.stpassfor
+#, object-pascal-format
 msgid "Password for : %s"
 msgstr "Passwort für %s:"
 
 #: constant.stpathnotfound
+#, object-pascal-format
 msgid "Path not found:%s!"
 msgstr "Pfad nicht gefunden:%s!"
 
@@ -1082,10 +1155,11 @@ msgid "Warning: exported passwords will not be encrypted!"
 msgstr ""
 
 #: constant.strefupdateerror
+#, object-pascal-format
 msgid ""
 "An error is occured while updating references:\n"
 "%s\n"
-"Not all references could be updated.\n"
+"Not all references could be updated."
 msgstr ""
 
 #: constant.stregaccnterr
@@ -1097,13 +1171,15 @@ msgid "Applying regular expression..."
 msgstr "Regulären Ausdrück anwenden..."
 
 #: constant.stregcntmatching
+#, object-pascal-format
 msgid "%s %d object(s) match regular expression."
 msgstr ""
 
 #: constant.stregexerror
+#, object-pascal-format
 msgid ""
 "Error in regex filter: %s\n"
-"%s\n"
+"%s"
 msgstr ""
 
 #: constant.stregexfailed
@@ -1111,6 +1187,7 @@ msgid "Regexp validation failed!"
 msgstr "Regexp: Gültigkeitsprüfung fehlgeschlagen!"
 
 #: constant.strenameentry
+#, object-pascal-format
 msgid "Rename entry to %s?"
 msgstr ""
 
@@ -1119,6 +1196,7 @@ msgid "Repeat for all"
 msgstr ""
 
 #: constant.streqattr
+#, object-pascal-format
 msgid "Attribute %s may not be empty!"
 msgstr ""
 
@@ -1127,10 +1205,12 @@ msgid "At least one E-Mail address must be defined!"
 msgstr "Es muss mindestens eine E-Mail Adresse eingegeben werden!"
 
 #: constant.streqnoempty
+#, object-pascal-format
 msgid "%s must have a value!"
 msgstr "%s muss ein Wert haben!"
 
 #: constant.strequired
+#, object-pascal-format
 msgid "%s is required!"
 msgstr "%s ist erforderlich!"
 
@@ -1143,14 +1223,16 @@ msgid "Reset to default settings?"
 msgstr ""
 
 #: constant.stretrieving
+#, object-pascal-format
 msgid "Reading: %d objects retrieved. Press ESC to abort..."
 msgstr "Lesen: %d Objekte gelesen. Drücken Sie Escape-Taste zu beenden..."
 
 #: constant.stretrywithtrust
+#, object-pascal-format
 msgid ""
 "To continue, LdapAdmin can try to create a temporary trust connection to %s by creating a \\\\%0:s\\IPC$ share connection.\n"
 "\n"
-"Would you like to create a temporary trust connection to %0:s and retry the operation?\n"
+"Would you like to create a temporary trust connection to %0:s and retry the operation?"
 msgstr ""
 
 #: constant.stsaslssl
@@ -1162,14 +1244,17 @@ msgid "Can't find SubschemaSubentry"
 msgstr "Kann SubschemaSubentry nicht finden!"
 
 #: constant.stscriptnoproc
+#, object-pascal-format
 msgid "Procedure \"%s\" could not be located."
 msgstr ""
 
 #: constant.stscriptnotevent
+#, object-pascal-format
 msgid "Property '%s' is not an event!"
 msgstr "Eigenschaft '%s' ist kein Ereigniss!"
 
 #: constant.stscriptnotsupp
+#, object-pascal-format
 msgid "'%s' does not support '%s' event!"
 msgstr "'%s' unterstützt den Ereigniss '%s' nicht!"
 
@@ -1186,9 +1271,10 @@ msgid "Activating this option could cause a significant network traffic with lar
 msgstr ""
 
 #: constant.stskiprecord
+#, object-pascal-format
 msgid ""
 "%s\n"
-"Skip this record?\n"
+"Skip this record?"
 msgstr ""
 
 #: constant.stsmbdomainreq
@@ -1212,13 +1298,15 @@ msgid "Too many arguments!"
 msgstr "Zu viele Parameter!"
 
 #: constant.sttrustconnfailed
+#, object-pascal-format
 msgid ""
 "Could not establish trust connection to %s.\n"
 "\n"
-"%s\n"
+"%s"
 msgstr ""
 
 #: constant.sttrustconnmanual
+#, object-pascal-format
 msgid "Please create a manual connection to \\\\%s\\IPC$ and retry the operation."
 msgstr ""
 
@@ -1227,6 +1315,7 @@ msgid "Invalid (Unclosed) parameter!"
 msgstr ""
 
 #: constant.stunclosedreference
+#, object-pascal-format
 msgid "Invalid (unclosed) reference: %s"
 msgstr ""
 
@@ -1235,25 +1324,30 @@ msgid "Unclosed string!"
 msgstr "Nicht abgeschlossener String!"
 
 #: constant.stunexpectedeofstr
+#, object-pascal-format
 msgid "Unexpected end of string: %s!"
 msgstr "Nicht gültig abgeschloßene Zeichenkette: %s!"
 
 #: constant.stunknownvaluetype
+#, object-pascal-format
 msgid ""
 "Unknown value type.\n"
 "key:%s\n"
-"value:%s\"\n"
+"value:%s\""
 msgstr ""
 
 #: constant.stunsuppoperation
+#, object-pascal-format
 msgid "Unsupported operation: %s!"
 msgstr "Vorgang nicht unterstützt: %s!"
 
 #: constant.stunsupportedauth
+#, object-pascal-format
 msgid "Unsupported authentication method: %s!"
 msgstr "Nicht unterstütze Authentifizierungsmethode: %s!"
 
 #: constant.stunsupportedrule
+#, object-pascal-format
 msgid "Unsupported matching rule %s!"
 msgstr "Suchfilter wird nicht unterstützt %s!"
 
@@ -1274,6 +1368,7 @@ msgid "Can not write to read only property!"
 msgstr "Einer Nur-Lesen Eigenschaft kann kein Wert zugewiesen werden !"
 
 #: constant.xml_bad_close_tag
+#, object-pascal-format
 msgid "The \"%s\" is expected, but the \"%s\" is received"
 msgstr ""
 
@@ -1282,962 +1377,7 @@ msgid "No opening tag!"
 msgstr "Kein Starttag gefunden!"
 
 #: constant.xml_unexpected_close_tag
+#, object-pascal-format
 msgid "Unexpected closing tag \"%s\""
 msgstr ""
 
-#: tadpassdlg.cancelbtn.caption
-msgctxt "tadpassdlg.cancelbtn.caption"
-msgid "&Cancel"
-msgstr "&Abbrechen"
-
-#: tadpassdlg.cbxpwdmustchange.caption
-msgid "User must change password on next login"
-msgstr ""
-
-#: tadpassdlg.cbxpwdneverexpires.caption
-msgid "Password never expires"
-msgstr ""
-
-#: tadpassdlg.label1.caption
-msgid "&New password:"
-msgstr "Neues Passwort:"
-
-#: tadpassdlg.label2.caption
-msgid "&Confirm password:"
-msgstr "Bestätigen:"
-
-#: tadpassdlg.okbtn.caption
-msgctxt "tadpassdlg.okbtn.caption"
-msgid "&OK"
-msgstr "&OK"
-
-#: tconfigdlg.btnadd.caption
-msgctxt "tconfigdlg.btnadd.caption"
-msgid "&Add..."
-msgstr "Hinzufügen..."
-
-#: tconfigdlg.btnaddlang.caption
-msgctxt "TCONFIGDLG.BTNADDLANG.CAPTION"
-msgid "&Add..."
-msgstr "Hinzufügen..."
-
-#: tconfigdlg.btndel.caption
-msgctxt "tconfigdlg.btndel.caption"
-msgid "&Remove"
-msgstr "Entfernen"
-
-#: tconfigdlg.btndellang.caption
-msgctxt "TCONFIGDLG.BTNDELLANG.CAPTION"
-msgid "&Remove"
-msgstr "Entfernen"
-
-#: tconfigdlg.btneditlang.caption
-msgctxt "tconfigdlg.btneditlang.caption"
-msgid "&Edit"
-msgstr "&Bearbeiten"
-
-#: tconfigdlg.cancelbtn.caption
-msgid "Cancel"
-msgstr "Abbrechen"
-
-#: tconfigdlg.cbconnect.caption
-msgid "&Connect on start:"
-msgstr "Beim Start verbinden mit:"
-
-#: tconfigdlg.cbdisplayencoded.caption
-msgid "Do not decode LDAP strings"
-msgstr "Keine dekodierung der LDAP Zeichenketten"
-
-#: tconfigdlg.cbenforcecontainer.caption
-msgid "&Enforce container objects"
-msgstr "Nur Containerobjekte sind erweiterbar"
-
-#: tconfigdlg.cbidobject.caption
-msgid "&Identify objects"
-msgstr "Objekte erkennen"
-
-#: tconfigdlg.cbsmartdelete.caption
-msgid "Smart &delete"
-msgstr "Beim löschen Verweise entfernen"
-
-#: tconfigdlg.cbtemplateautoload.caption
-msgid "&Autoload templates when editing"
-msgstr "Beim Bearbeiten von Einträgen Templates automatisch laden"
-
-#: tconfigdlg.cbtemplateextensions.caption
-msgid "Allow templates to e&xtend property dialogs"
-msgstr "Templates dürfen Eigenschaftsdialoge erweitern"
-
-#: tconfigdlg.cbtemplateicons.caption
-msgid "&Template icons"
-msgstr "Template icons"
-
-#: tconfigdlg.cbtemplateproperties.caption
-msgid "Use templates as property objects"
-msgstr "Templates als Eigenschaftsobjekte verwenden"
-
-#: tconfigdlg.checkassoccbk.caption
-msgid "Always &check associations"
-msgstr "Beim start immer überprüfen"
-
-#: tconfigdlg.groupbox1.caption
-msgid "&LDAP tree"
-msgstr "LDAP Verzeichnis"
-
-#: tconfigdlg.groupbox2.caption
-msgid "&Files"
-msgstr "Dateien"
-
-#: tconfigdlg.groupbox3.caption
-msgid "&Startup"
-msgstr "Start"
-
-#: tconfigdlg.groupbox4.caption
-msgid "Sea&rch"
-msgstr "Suche"
-
-#: tconfigdlg.groupbox5.caption
-msgctxt "tconfigdlg.groupbox5.caption"
-msgid "&Options"
-msgstr "Optionen"
-
-#: tconfigdlg.groupbox6.caption
-msgid "&Languages"
-msgstr "Sprachen"
-
-#: tconfigdlg.groupbox7.caption
-msgid "&Transcoding"
-msgstr "Transcodierung"
-
-#: tconfigdlg.label1.caption
-msgid "&Template directories:"
-msgstr "Templateverzeichnisse:"
-
-#: tconfigdlg.label2.caption
-msgid "&Quick search filter:"
-msgstr "Schnellsuche:"
-
-#: tconfigdlg.label3.caption
-msgid "Character transcoding table:"
-msgstr "Zeichentabelle:"
-
-#: tconfigdlg.label4.caption
-msgid "&Filter:"
-msgstr "Suchfilter:"
-
-#: tconfigdlg.label5.caption
-msgid "&File directories:"
-msgstr "Verzeichnisse:"
-
-#: tconfigdlg.okbtn.caption
-msgctxt "tconfigdlg.okbtn.caption"
-msgid "OK"
-msgstr ""
-
-#: tconfigdlg.setdefbtn.caption
-msgid "&Set as default LDAP browser"
-msgstr "Als standard LDAP-Browser festlegen"
-
-#: tconfigdlg.tabsheet1.caption
-msgid "&Application"
-msgstr "Applikation"
-
-#: tconfigdlg.tabsheet2.caption
-msgid "&Templates"
-msgstr "Templates"
-
-#: tconfigdlg.tabsheet3.caption
-msgid "&Localization"
-msgstr "Lokalisierung"
-
-#: tconnlistfrm.accountsview.columns[0].caption
-msgctxt "tconnlistfrm.accountsview.columns[0].caption"
-msgid "Name"
-msgstr ""
-
-#: tconnlistfrm.accountsview.columns[1].caption
-msgid "Host"
-msgstr ""
-
-#: tconnlistfrm.accountsview.columns[2].caption
-msgid "Base"
-msgstr ""
-
-#: tconnlistfrm.accountsview.columns[3].caption
-msgid "User"
-msgstr ""
-
-#: tconnlistfrm.actcopyaccount.caption
-msgctxt "tconnlistfrm.actcopyaccount.caption"
-msgid "&Copy..."
-msgstr "Kopieren..."
-
-#: tconnlistfrm.actcopyaccount.hint
-msgid "Copy account"
-msgstr "Konto kopieren"
-
-#: tconnlistfrm.actdeleteaccount.caption
-msgctxt "tconnlistfrm.actdeleteaccount.caption"
-msgid "&Delete"
-msgstr "Löschen"
-
-#: tconnlistfrm.actdeleteaccount.hint
-msgid "Delete account"
-msgstr "Verbindung löschen"
-
-#: tconnlistfrm.actdeletefolder.caption
-msgctxt "tconnlistfrm.actdeletefolder.caption"
-msgid "Delete folder"
-msgstr ""
-
-#: tconnlistfrm.actdeletefolder.hint
-msgctxt "TCONNLISTFRM.ACTDELETEFOLDER.HINT"
-msgid "Delete folder"
-msgstr ""
-
-#: tconnlistfrm.actdeletestorage.caption
-msgid "Delete storage"
-msgstr ""
-
-#: tconnlistfrm.actdeletestorage.hint
-msgid "Delete file storage"
-msgstr "Dateispeicher löschen"
-
-#: tconnlistfrm.actexport.caption
-msgid "Export..."
-msgstr ""
-
-#: tconnlistfrm.actexport.hint
-msgid "Export to file"
-msgstr ""
-
-#: tconnlistfrm.actimport.caption
-msgid "Import..."
-msgstr ""
-
-#: tconnlistfrm.actimport.hint
-msgid "Import from file"
-msgstr ""
-
-#: tconnlistfrm.actnewaccount.caption
-msgctxt "tconnlistfrm.actnewaccount.caption"
-msgid "&New..."
-msgstr "Neu..."
-
-#: tconnlistfrm.actnewaccount.hint
-msgid "Create new account"
-msgstr "Neue Verbindung einrichten"
-
-#: tconnlistfrm.actnewfolder.caption
-msgid "New folder..."
-msgstr ""
-
-#: tconnlistfrm.actnewfolder.hint
-msgid "Create new folder"
-msgstr ""
-
-#: tconnlistfrm.actnewstorage.hint
-msgid "Create new file storage"
-msgstr "Speicher einrichten"
-
-#: tconnlistfrm.actopenstorage.hint
-msgid "Open existing file storage"
-msgstr "Speicher öffnen"
-
-#: tconnlistfrm.actpropertiesaccount.caption
-msgctxt "tconnlistfrm.actpropertiesaccount.caption"
-msgid "&Properties..."
-msgstr "Eigenschaften..."
-
-#: tconnlistfrm.actrenameaccount.caption
-msgid "&Rename"
-msgstr "Umbenennen"
-
-#: tconnlistfrm.actrenameaccount.hint
-msgid "Rename account"
-msgstr "Verbindung umbenennen"
-
-#: tconnlistfrm.actrenamefolder.caption
-msgctxt "tconnlistfrm.actrenamefolder.caption"
-msgid "Rename folder"
-msgstr ""
-
-#: tconnlistfrm.actrenamefolder.hint
-msgctxt "TCONNLISTFRM.ACTRENAMEFOLDER.HINT"
-msgid "Rename folder"
-msgstr ""
-
-#: tconnlistfrm.cancelbtn.caption
-msgctxt "TCONNLISTFRM.CANCELBTN.CAPTION"
-msgid "&Cancel"
-msgstr "Abbrechen"
-
-#: tconnlistfrm.label1.caption
-msgid " "
-msgstr ""
-
-#: tconnlistfrm.n1.caption
-msgctxt "TCONNLISTFRM.N1.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tconnlistfrm.n2.caption
-msgctxt "tconnlistfrm.n2.caption"
-msgid "-"
-msgstr ""
-
-#: tconnlistfrm.n3.caption
-msgctxt "TCONNLISTFRM.N3.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tconnlistfrm.okbtn.caption
-msgctxt "TCONNLISTFRM.OKBTN.CAPTION"
-msgid "&OK"
-msgstr ""
-
-#: tconnlistfrm.viewbtn.hint
-msgid "Change view style"
-msgstr "Ansicht ändern"
-
-#: tconnlistfrm.vmlarge.caption
-msgid "Large icons"
-msgstr "Kacheln"
-
-#: tconnlistfrm.vmlist.caption
-msgid "List"
-msgstr "Liste"
-
-#: tconnlistfrm.vmsmall.caption
-msgid "Small icons"
-msgstr "Symbole"
-
-#: tconnlistfrm.vmtable.caption
-msgid "Table"
-msgstr "Details"
-
-#: tconnpropdlg.accountbox.caption
-msgid " Account "
-msgstr "Verbindung"
-
-#: tconnpropdlg.btnadd.caption
-msgctxt "tconnpropdlg.btnadd.caption"
-msgid "&Add"
-msgstr "Hinzufügen"
-
-#: tconnpropdlg.btnremove.caption
-msgctxt "TCONNPROPDLG.BTNREMOVE.CAPTION"
-msgid "&Remove"
-msgstr "Entfernen"
-
-#: tconnpropdlg.cancelbtn.caption
-msgctxt "TCONNPROPDLG.CANCELBTN.CAPTION"
-msgid "&Cancel"
-msgstr "Abbrechen"
-
-#: tconnpropdlg.cbanonymous.caption
-msgctxt "tconnpropdlg.cbanonymous.caption"
-msgid "Anonymous connection"
-msgstr "Anonyme Verbindung"
-
-#: tconnpropdlg.cbsasl.caption
-msgid "SASL"
-msgstr ""
-
-#: tconnpropdlg.cbssl.caption
-msgid "SSL"
-msgstr ""
-
-#: tconnpropdlg.cbtls.caption
-msgid "TLS"
-msgstr ""
-
-#: tconnpropdlg.cbxpagedsearch.caption
-msgid "Paged search"
-msgstr "Paged-Suche"
-
-#: tconnpropdlg.cbxshowattrs.caption
-msgid "&Show operational attributes:"
-msgstr "Operationsattribute anzeigen:"
-
-#: tconnpropdlg.connectionbox.caption
-msgid " Connection: "
-msgstr "Verbindung:"
-
-#: tconnpropdlg.fetchdnbtn.caption
-msgid "Fetch DNs"
-msgstr "DNs abrufen"
-
-#: tconnpropdlg.groupbox1.caption
-msgctxt "tconnpropdlg.groupbox1.caption"
-msgid "Search"
-msgstr "Suche"
-
-#: tconnpropdlg.groupbox2.caption
-msgid "Referrals"
-msgstr "Weiterleitungen"
-
-#: tconnpropdlg.groupbox3.caption
-msgid "Directory"
-msgstr ""
-
-#: tconnpropdlg.label1.caption
-msgid "Connection name:"
-msgstr "Verbindungsname:"
-
-#: tconnpropdlg.label10.caption
-msgid "Chase referrals:"
-msgstr "Weiterleitungen verfolgen:"
-
-#: tconnpropdlg.label11.caption
-msgid "Referral hops:"
-msgstr "Anzahl Knoten:"
-
-#: tconnpropdlg.label13.caption
-msgid "Size limit:"
-msgstr "Größenlimit:"
-
-#: tconnpropdlg.label14.caption
-msgid "Time limit:"
-msgstr "Zeitlimit:"
-
-#: tconnpropdlg.label15.caption
-msgid "Page size:"
-msgstr "Seitengröße:"
-
-#: tconnpropdlg.label2.caption
-msgid "Host:"
-msgstr ""
-
-#: tconnpropdlg.label3.caption
-msgid "Port:"
-msgstr ""
-
-#: tconnpropdlg.label4.caption
-msgid "Username:"
-msgstr "Benutzername:"
-
-#: tconnpropdlg.label5.caption
-msgctxt "tconnpropdlg.label5.caption"
-msgid "Password:"
-msgstr "Passwort:"
-
-#: tconnpropdlg.label6.caption
-msgid "Base:"
-msgstr ""
-
-#: tconnpropdlg.label7.caption
-msgid "Version:"
-msgstr ""
-
-#: tconnpropdlg.label8.caption
-msgid "Dereference aliases:"
-msgstr "Aliase dereferenzieren:"
-
-#: tconnpropdlg.label9.caption
-msgid "Directory type:"
-msgstr ""
-
-#: tconnpropdlg.okbtn.caption
-msgctxt "TCONNPROPDLG.OKBTN.CAPTION"
-msgid "OK"
-msgstr ""
-
-#: tconnpropdlg.passworded.hint
-msgid "This storage does not allow to keep the password"
-msgstr "Sie können kein Passwort in dieses Speicher ablegen!"
-
-#: tconnpropdlg.ported.text
-msgid "389"
-msgstr ""
-
-#: tconnpropdlg.rbgssapi.caption
-msgid "GSS-API"
-msgstr ""
-
-#: tconnpropdlg.rbsimpleauth.caption
-msgid "Simple authentication"
-msgstr "Einfache Authentifizierung"
-
-#: tconnpropdlg.tabsheet1.caption
-msgid "General"
-msgstr "Allgemein"
-
-#: tconnpropdlg.tabsheet2.caption
-msgctxt "TCONNPROPDLG.TABSHEET2.CAPTION"
-msgid "&Options"
-msgstr "Optionen"
-
-#: tconnpropdlg.tabsheet3.caption
-msgid "&Attributes"
-msgstr "Attribute"
-
-#: tconnpropdlg.testbtn.caption
-msgid "Test connection"
-msgstr "Verbinung überprüfen"
-
-#: tmainfrm.actabout.caption
-msgid "&About..."
-msgstr "About..."
-
-#: tmainfrm.actalias.caption
-msgid "Create &alias..."
-msgstr "Alias erstellen..."
-
-#: tmainfrm.actbookmark.caption
-msgid "Bookmarks..."
-msgstr "Favoriten..."
-
-#: tmainfrm.actconnect.caption
-msgid "Connect..."
-msgstr "Verbinden..."
-
-#: tmainfrm.actconnect.hint
-msgid "Connect"
-msgstr "Verbindung herstellen"
-
-#: tmainfrm.actcopy.caption
-msgid "Copy"
-msgstr "Kopieren"
-
-#: tmainfrm.actcopydn.caption
-msgid "Copy &dn to clipboard"
-msgstr "DN Kopieren"
-
-#: tmainfrm.actcopyentry.caption
-msgctxt "TMAINFRM.ACTCOPYENTRY.CAPTION"
-msgid "&Copy..."
-msgstr "Kopieren..."
-
-#: tmainfrm.actcopyname.caption
-msgid "Copy Attribute name"
-msgstr "Attributsname kopieren"
-
-#: tmainfrm.actcopyvalue.caption
-msgid "Copy Value"
-msgstr "Attributswert kopieren"
-
-#: tmainfrm.actcustomizemenu.caption
-msgid "&Customize menu..."
-msgstr "Menu anpassen..."
-
-#: tmainfrm.actdeleteentry.caption
-msgctxt "TMAINFRM.ACTDELETEENTRY.CAPTION"
-msgid "&Delete"
-msgstr "Löschen"
-
-#: tmainfrm.actdeleteentry.hint
-msgid "Delete entry"
-msgstr "Eintrag löschen"
-
-#: tmainfrm.actdisconnect.caption
-msgid "Disconnect..."
-msgstr "Trennen..."
-
-#: tmainfrm.actdisconnect.hint
-msgid "Disconnect"
-msgstr "Verbindung trennen"
-
-#: tmainfrm.acteditentry.caption
-msgid "&Edit Entry..."
-msgstr "Eintrag bearbeiten..."
-
-#: tmainfrm.acteditentry.hint
-msgctxt "tmainfrm.acteditentry.hint"
-msgid "Edit entry"
-msgstr "Eintrag bearbeiten"
-
-#: tmainfrm.acteditvalue.caption
-msgid "Edit value..."
-msgstr "Wert ändern..."
-
-#: tmainfrm.actentries.caption
-msgid "Show &Entries"
-msgstr "Einträge anzeigen"
-
-#: tmainfrm.actexit.caption
-msgid "&Exit"
-msgstr "Beenden"
-
-#: tmainfrm.actexit.hint
-msgid "Exit"
-msgstr "LdapAdmin verlassen"
-
-#: tmainfrm.actexport.caption
-msgid "&Export..."
-msgstr "Exportieren..."
-
-#: tmainfrm.actfindinschema.caption
-msgid "&Find in schema..."
-msgstr "In Schema finden..."
-
-#: tmainfrm.actgoto.caption
-msgid "&Go to..."
-msgstr "&Zum Eintrag..."
-
-#: tmainfrm.acthelp.caption
-msgid "&Help..."
-msgstr "&Hilfe..."
-
-#: tmainfrm.acticonview.caption
-msgid "&Icons"
-msgstr "Symbole"
-
-#: tmainfrm.actimport.caption
-msgid "&Import..."
-msgstr "Importieren..."
-
-#: tmainfrm.actlistview.caption
-msgid "&List"
-msgstr "Liste"
-
-#: tmainfrm.actlocateentry.caption
-msgid "&Locate entry (Quick Search)..."
-msgstr ""
-
-#: tmainfrm.actmodifyset.caption
-msgid "&Modify set..."
-msgstr "Batchbearbeitung..."
-
-#: tmainfrm.actmodifyset.hint
-msgid "Modify attribute values on multiple objects"
-msgstr "Batchbearbeitung"
-
-#: tmainfrm.actmoveentry.caption
-msgid "&Move..."
-msgstr "Verschieben..."
-
-#: tmainfrm.actopenfile.caption
-msgid "Open..."
-msgstr "Öffnen..."
-
-#: tmainfrm.actoptions.caption
-msgid "&Options..."
-msgstr "Optionen..."
-
-#: tmainfrm.actpassword.caption
-msgid "&Set Password..."
-msgstr "Passwort setzen..."
-
-#: tmainfrm.actpreferences.caption
-msgid "Session &preferences..."
-msgstr "Verbindungseinstellungen..."
-
-#: tmainfrm.actproperties.caption
-msgctxt "TMAINFRM.ACTPROPERTIES.CAPTION"
-msgid "&Properties..."
-msgstr "Eigenschaften..."
-
-#: tmainfrm.actproperties.hint
-msgid "Edit properties"
-msgstr "Objekteigenschaften anzeigen"
-
-#: tmainfrm.actrefresh.caption
-msgid "&Refresh"
-msgstr "Aktualisieren"
-
-#: tmainfrm.actrefresh.hint
-msgid "Refresh"
-msgstr "Ansicht aktualisieren"
-
-#: tmainfrm.actrenameentry.caption
-msgid "&Rename..."
-msgstr "Umbenennen..."
-
-#: tmainfrm.actschema.caption
-msgid "Schema..."
-msgstr ""
-
-#: tmainfrm.actschema.hint
-msgid "Schema Viewer"
-msgstr "Schema anzeigen"
-
-#: tmainfrm.actsearch.caption
-msgid "Search..."
-msgstr "Suchen..."
-
-#: tmainfrm.actsearch.hint
-msgctxt "TMAINFRM.ACTSEARCH.HINT"
-msgid "Search"
-msgstr "Suchen"
-
-#: tmainfrm.actsmallview.caption
-msgid "&Small Icons"
-msgstr "&Kleine Symbole"
-
-#: tmainfrm.actvalues.caption
-msgid "Show V&alues"
-msgstr "Attributswerte anzeigen"
-
-#: tmainfrm.actviewbinary.caption
-msgid "&View binary..."
-msgstr "Binäransicht..."
-
-#: tmainfrm.label1.caption
-msgid "Search for:"
-msgstr "Finde:"
-
-#: tmainfrm.mbedit.caption
-msgctxt "TMAINFRM.MBEDIT.CAPTION"
-msgid "&Edit"
-msgstr "Bearbeiten"
-
-#: tmainfrm.mbgettemplates.caption
-msgid "Get templates..."
-msgstr "Templates herunterladen..."
-
-#: tmainfrm.mbinfo.caption
-msgid "Inf&o..."
-msgstr ""
-
-#: tmainfrm.mblanguage.caption
-msgid "&Language"
-msgstr "Sprache"
-
-#: tmainfrm.mbnew.caption
-msgctxt "tmainfrm.mbnew.caption"
-msgid "&New"
-msgstr "Neu"
-
-#: tmainfrm.mbstart.caption
-msgid "&Start"
-msgstr ""
-
-#: tmainfrm.mbtools.caption
-msgid "&Tools"
-msgstr "Extras"
-
-#: tmainfrm.mbview.caption
-msgctxt "tmainfrm.mbview.caption"
-msgid "&View"
-msgstr "Ansicht"
-
-#: tmainfrm.mbviewstyle.caption
-msgid "&View Style"
-msgstr "&Ansicht"
-
-#: tmainfrm.n1.caption
-msgctxt "TMAINFRM.N1.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n10.caption
-msgctxt "TMAINFRM.N10.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n11.caption
-msgctxt "TMAINFRM.N11.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n12.caption
-msgctxt "TMAINFRM.N12.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n13.caption
-msgctxt "TMAINFRM.N13.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n14.caption
-msgctxt "TMAINFRM.N14.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n15.caption
-msgctxt "TMAINFRM.N15.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n16.caption
-msgctxt "TMAINFRM.N16.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n17.caption
-msgctxt "TMAINFRM.N17.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n18.caption
-msgctxt "TMAINFRM.N18.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n19.caption
-msgctxt "TMAINFRM.N19.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n2.caption
-msgctxt "TMAINFRM.N2.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n20.caption
-msgctxt "TMAINFRM.N20.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n21.caption
-msgctxt "TMAINFRM.N21.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n22.caption
-msgctxt "TMAINFRM.N22.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n23.caption
-msgctxt "TMAINFRM.N23.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n24.caption
-msgctxt "TMAINFRM.N24.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n25.caption
-msgctxt "TMAINFRM.N25.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n3.caption
-msgctxt "TMAINFRM.N3.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n4.caption
-msgctxt "TMAINFRM.N4.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n5.caption
-msgctxt "TMAINFRM.N5.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n6.caption
-msgctxt "TMAINFRM.N6.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n7.caption
-msgctxt "TMAINFRM.N7.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.n8.caption
-msgid "&?"
-msgstr ""
-
-#: tmainfrm.n9.caption
-msgctxt "TMAINFRM.N9.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tmainfrm.pbnew.caption
-msgctxt "TMAINFRM.PBNEW.CAPTION"
-msgid "&New"
-msgstr "Neu"
-
-#: tmainfrm.pbviewcert.caption
-msgid "View &certificate..."
-msgstr "Zertifikat anzeigen..."
-
-#: tmainfrm.pbviewpicture.caption
-msgid "View &picture..."
-msgstr "Bild anzeigen..."
-
-#: tmainfrm.redobtn.hint
-msgctxt "tmainfrm.redobtn.hint"
-msgid "Forward"
-msgstr "Wiederrufen"
-
-#: tmainfrm.toolbar.caption
-msgid "LagerToolBar"
-msgstr ""
-
-#: tmainfrm.toolbutton1.caption
-msgid "ToolButton1"
-msgstr ""
-
-#: tmainfrm.toolbutton2.caption
-msgid "ToolButton2"
-msgstr ""
-
-#: tmainfrm.toolbutton6.caption
-msgid "ToolButton6"
-msgstr ""
-
-#: tmainfrm.undobtn.hint
-msgid "Backward"
-msgstr "Rückgängig"
-
-#: tmainfrm.valuelistview.columns[0].caption
-msgctxt "tmainfrm.valuelistview.columns[0].caption"
-msgid "Attribute"
-msgstr ""
-
-#: tmainfrm.valuelistview.columns[1].caption
-msgctxt "tmainfrm.valuelistview.columns[1].caption"
-msgid "Value"
-msgstr ""
-
-#: tmainfrm.valuelistview.columns[2].caption
-msgid "Type"
-msgstr ""
-
-#: tmainfrm.valuelistview.columns[3].caption
-msgid "Size"
-msgstr ""
-
-#: tschemadlg.btnclose.hint
-msgid "Close"
-msgstr "Schließen"
-
-#: tschemadlg.btnsave.hint
-msgid "Export Schema"
-msgstr "Schema exportieren"
-
-#: tschemadlg.label1.caption
-msgid "     Search: "
-msgstr "Suche:"
-
-#: tschemadlg.n1.caption
-msgctxt "TSCHEMADLG.N1.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tschemadlg.pmcopy.caption
-msgid "&Copy"
-msgstr "Kopieren..."
-
-#: tschemadlg.pmopen.caption
-msgid "Open"
-msgstr "Öffnen"
-
-#: tschemadlg.pmopennewtab.caption
-msgid "Open in new Tab"
-msgstr "In neuem Tab öffnen"
-
-#: tschemadlg.pmundo.caption
-msgid "Undo"
-msgstr "Wiederherstellen"
-
-#: tschemadlg.redobtn.hint
-msgctxt "TSCHEMADLG.REDOBTN.HINT"
-msgid "Forward"
-msgstr "Vorwärts"
-
-#: tschemadlg.undobtn.hint
-msgid "Back"
-msgstr "Zurück"
-
-#: tschemadlg.wholewordscbx.caption
-msgid "Whole words only"
-msgstr "Nur ganze Wörter"

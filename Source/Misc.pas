@@ -28,11 +28,8 @@ unit Misc;
 interface
 
 uses
-{$IFnDEF FPC}
   Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, Unix, lazutf8, strutils, types,
-{$ENDIF}
+  LCLIntf, LCLType, LMessages {$ifdef UNIX}, Unix {$endif} , lazutf8, strutils, types,
   LDAPClasses, Classes, SysUtils, Forms, Dialogs, Controls,
      ExtCtrls, ComCtrls, Graphics;
 
@@ -97,7 +94,7 @@ implementation
 {$I LdapAdmin.inc}
 
 uses StdCtrls, Messages, Constant, Config {$IFDEF VARIANTS} ,variants {$ENDIF},
-     WinBase64, DateUtils, Math, Buttons;
+     WinBase64, DateUtils, Math, Buttons, HtmlMisc;
 
 {$ifdef mswindows}
 function TreeSortProc(Node1, Node2: TTreeNode; Data: Integer): Integer; stdcall;
@@ -466,7 +463,6 @@ begin
       inc(Bias, tzi.DayLightBias);
     Result := DateTime + Bias * 60 / 86400;
   end;
-end;
   {$ELSE}
   d := (DateTime - UnixDateDelta) * 86400;
   TV.tv_sec := trunc(d);
@@ -902,10 +898,10 @@ var
   msg: TMsg;
 begin
   {$IFDEF MSWINDOWS}
-  PeekMessage(msg, 0, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE);
-  if msg.Message = WM_KEYDOWN then
-    Result := msg.WParam
-  else
+  //PeekMessage(msg, 0, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE);
+  //if msg.Message = WM_KEYDOWN then
+  //  Result := msg.WParam
+  //else
     Result := 0;
   {$ELSE}
   PeekMessage(msg, 0, LM_KEYFIRST, LM_KEYLAST, PM_REMOVE);
@@ -1117,8 +1113,8 @@ begin
             TextRect := Rect(0,0,0,0);
             {$IFDEF MSWINDOWS}
             windows.DrawText( canvas.handle, PChar(Captions[ci]), -1, TextRect,
-                              DT_CALCRECT or DT_LEFT or DT_SINGLELINE or
-                              DrawTextBiDiModeFlagsReadingOnly);
+                              DT_CALCRECT or DT_LEFT or DT_SINGLELINE);
+            //or  DrawTextBiDiModeFlagsReadingOnly);
             {$ELSE}
             DrawText( canvas.handle, PChar(Captions[ci]), -1, TextRect,
                               DT_CALCRECT or DT_LEFT or DT_SINGLELINE );

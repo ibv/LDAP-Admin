@@ -90,7 +90,7 @@ begin
              pe := p
            else begin
              while not (p^ in [',', #0]) do
-               p := CharNext(p);
+               p := p + 1;
              continue;
            end;
       ',',
@@ -116,7 +116,7 @@ begin
              pe := nil;
            end;
     end;
-    p := CharNext(p);
+    p := p + 1;
   end;
 end;
 

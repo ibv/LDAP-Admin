@@ -25,7 +25,7 @@ interface
 
 uses
   {$ifdef mswindows}
-  Windows, WinLDAP, UITypes, jpeg,
+  Windows, WinLDAP, UITypes,
   {$else}
   LinLDAP, forms, graphics, types, Process, Controls,
   {$endif}
@@ -59,8 +59,8 @@ resourcestring
   stWkstOrServer = 'Workstation or server';
 
 const
-  ///SECURITY_WORLD_SID_AUTHORITY: TSidIdentifierAuthority = (Value: (0, 0, 0, 0, 0, 1));
-  ///SECURITY_NT_AUTHORITY : TSidIdentifierAuthority = (Value: (0, 0, 0, 0, 0, 5));
+  SECURITY_WORLD_SID_AUTHORITY: TSidIdentifierAuthority = (Value: (0, 0, 0, 0, 0, 1));
+  SECURITY_NT_AUTHORITY : TSidIdentifierAuthority = (Value: (0, 0, 0, 0, 0, 5));
   SECURITY_BUILTIN_DOMAIN_RID = ($00000020);
   DOMAIN_ALIAS_RID_ADMINS = ($00000220);
   SECURITY_WORLD_RID =($00000000);
@@ -182,8 +182,8 @@ type
     function  GetAccountExpires: TDateTime;
     procedure SetAccountExpires(Value: TDateTime);
     function  GetPrimaryGroup: string;
-    function  GetJPegImage: TJpegImage;
-    procedure SetJPegImage(const Image: TJpegImage);
+    //function  GetJPegImage: TJpegImage;
+    //procedure SetJPegImage(const Image: TJpegImage);
     function  GetRid: Cardinal;
   public
     procedure AdSetPassword(Pwd: string);
@@ -191,7 +191,7 @@ type
     property  AdDomainSid: string read GetDomainSid;
     property  AdPrimaryGroup: string read GetPrimaryGroup;
     property  AdAccountExpires: TDateTime read GetAccountExpires write SetAccountExpires;
-    property  JPegPhoto: TJPegImage read GetJPegImage write SetJPegImage;
+    //property  JPegPhoto: TJPegImage read GetJPegImage write SetJPegImage;
     property  Adrid: Cardinal read GetRid;
   end;
 
@@ -207,11 +207,7 @@ function  DateTimeToWinapiTime(Value: TDateTime): TFileTime;
 function  WinapiTimeToDateTime(Value: TFileTime): TDateTime;
 function  ObjectSIDToString(sid: PSidRec): string;
 function  GetUACstring(Uac: string): string;
-{$ifdef mswindows}
-function  GetUserCannotChangePassword(Entry: TLdapEntry): Boolean;
-procedure SetUserCannotChangePassword(Entry: TLdapEntry; Value: Boolean);
-{$endif}
-function  WrapGetComputerNameEx(ANameFormat: COMPUTER_NAME_FORMAT): string;
+function  WrapGetComputerNameEx(ANameFormat: Windows.COMPUTER_NAME_FORMAT): string;
 function  GetNetBiosDomain: string;
 
 implementation
@@ -220,7 +216,7 @@ implementation
 
 uses
   {$IFDEF VARIANTS} variants, {$ENDIF} md4Samba, smbdes, Sysutils, Misc, Config,
-  Pickup, Dialogs {$ifdef mswindows},ActiveX, ComObj, ActiveDs_TLB, adsie,AclApi, AccCtrl{$endif};
+  Pickup, Dialogs, process, Forms, Controls;// {$ifdef mswindows},ActiveX, ComObj, ActiveDs_TLB, adsie,AclApi, AccCtrl{$endif};
 
 type
   TSidIdent = (siEveryone, siSelf);
@@ -288,14 +284,14 @@ begin
 
 end;
 
-function WrapGetComputerNameEx(ANameFormat: COMPUTER_NAME_FORMAT): string;
+function WrapGetComputerNameEx(ANameFormat: Windows.COMPUTER_NAME_FORMAT): string;
 var
   nSize: DWORD;
 begin
   nSize := 1024;
   SetLength(Result, nSize);
   {$ifdef mswindows}
-  if GetComputerNameEx(ANameFormat, PWideChar(Result), nSize) then
+  if GetComputerNameEx(ANameFormat, PChar(Result), @nSize) then
     SetLength(Result, nSize)
   else
     Result := '';
@@ -308,283 +304,26 @@ function GetNetBiosDomain: string;
 var
   dwDomainSize, dwSidSize, dwComputerSize: DWord;
   ComputerName: Array [0..MAX_PATH] of Char;
-  SidNameUse: SID_NAME_USE;
+  SidNameUse: Windows.SID_NAME_USE;
   sid: array[0..512] of Byte;
 begin
    dwSidSize := 512;
    dwComputerSize := MAX_PATH;
    dwDomainSize := MAX_PATH;
    {$ifdef mswindows}
-   GetComputerName (ComputerName, dwComputerSize);
+   Windows.GetComputerName (ComputerName, dwComputerSize);
    {$else}
    ComputerName := GetComputerName;
    {$endif}
    SetLength(Result, dwDomainSize);
    {$ifdef mswindows}
-   if not LookupAccountNameW(nil, @ComputerName, @Sid, dwSidSize, PChar(Result), dwDomainSize, SidNameUse) then
+   if not LookupAccountName(nil, @ComputerName, @Sid, dwSidSize, PChar(Result), dwDomainSize, SidNameUse) then
      RaiseLastOSError;
    {$else}
     Result:='NONE';
    {$endif}
    SetLength(Result, dwDomainSize);
 end;
-
-{$ifdef mswindows}
-function GetSidAccountName(ptrSid: PSID): string; overload;
-var
-  wszAccountName: array[0..MAX_PATH] of Char;
-  dwAccountName: DWORD;
-  wszDomainName: array[0..MAX_PATH] of Char;
-  dwDomainName: DWORD ;
-  SidNameUse: SID_NAME_USE;
-begin
-  dwAccountName := MAX_PATH;
-  dwDomainName := MAX_PATH;
-
-
-  if LookupAccountSid(nil, ptrSid, PChar(@wszAccountName),
-        dwAccountName, PChar(@wszDomainName), dwDomainName, SidNameUse) then
-  begin
-    if StrLen(wszDomainName) > 0 then
-    begin
-      Result := '\';
-      Result := wszDomainName + Result + wszAccountName;
-    end
-    else
-      Result := wszAccountName;
-  end
-    else
-      RaiseLastOSError;
-
-end;
-
-
-function GetSidAccountName(SidIdent: TSidIdent): string; overload;
-var
-  pSidAlloc: PSID;
-  SidAuth: SID_IDENTIFIER_AUTHORITY;
-  SubAuthority: DWORD;
-begin
-  case SidIdent of
-    siEveryone: begin
-                  SidAuth := SECURITY_WORLD_SID_AUTHORITY;
-                  SubAuthority := SECURITY_WORLD_RID;
-                end;
-    siSelf:     begin
-                  SidAuth := SECURITY_NT_AUTHORITY;
-                  SubAuthority := SECURITY_PRINCIPAL_SELF_RID;
-                end;
-  else
-    raise Exception.Create('Invalid identity flag!');
-  end;
-
-  if not AllocateAndInitializeSid(SidAuth, 1, SubAuthority, 0, 0, 0, 0, 0, 0, 0, pSidAlloc) then
-    RaiseLastOSError;
-  Result := GetSidAccountName(psidAlloc);
-  LocalFree(NativeUINT(psidAlloc));
-end;
-
-
-
-function GetObjectACE(iAcl: IADsAccessControlList; pwszObject: string;
-                      pwszTrustee: string; var piACE: IADsAccessControlEntry ): HRESULT;
-var
-  iEnum: IEnumVARIANT;
-  ulFetched: ULONG;
-  svarACE: OleVariant;
-  iACE: IADsAccessControlEntry;
-  sbStrTrustee, sbStrObjectType: string;
-begin
-  if not Assigned(iAcl) and (pwszObject = '') then
-  begin
-    Result := E_INVALIDARG;
-    exit;
-  end;
-
-  piACE := nil;
-
-  Result := IDispatch(iAcl._NewEnum).QueryInterface(IEnumVariant, iEnum);
-
-  while Result = 0 do
-  begin
-    Result := iEnum.Next(1, sVarACE, ulFetched);
-    if (ulFetched <= 0) then
-      Break;
-    if (TVariantArg(sVarACE).vt = VT_DISPATCH) then
-    begin
-      Result := IDispatch(sVarACE).QueryInterface(IADsAccessControlEntry, iACE);
-      if SUCCEEDED(Result) then
-        begin
-          sbStrObjectType := iACE.ObjectType;
-          if AnsiSameText(pwszObject, sbstrObjectType) then
-          begin
-            sbstrTrustee := iACE.Trustee;
-            if AnsiSametext(sbstrTrustee, pwszTrustee) then
-              piACE := iACE;
-          end;
-        end;
-    end;
-  end;
-end;
-
-function GetUserCannotChangePassword(Entry: TLdapEntry): Boolean;
-var
-  ADsObject: IADs;
-  iSecDesc: IADsSecurityDescriptor;
-  iACL: IADsAccessControlList;
-  iACEEveryone, iACESelf: IADsAccessControlEntry;
-  fLdapPath, fUsername, fPassword: string;
-  fEveryoneName, fSelfName: string;
-begin
-
-  with Entry.Session do
-  begin
-    fLdapPath := 'LDAP://' + Server + '/' + Entry.dn;
-    fUserName := User;
-    fPassword := Password;
-  end;
-
-  ADOpenObject(fLdapPath, ExtractUsername(fUserName), fPassword, IID_IADs, AdsObject);
-  OleCheck(IDispatch(ADsObject.Get('nTSecurityDescriptor')).QueryInterface(IADsSecurityDescriptor, iSecDesc));
-  OleCheck(IDispatch(iSecDesc.DiscretionaryAcl).QueryInterface(IADsAccessControlList, iACL));
-
-  fEveryoneName := GetSidAccountName(siEveryone);
-  Result := false;
-  OleCheck(GetObjectACE(iACL, CHANGE_PASSWORD_GUID, fEveryoneName, iACEEveryone));
-  if Assigned(iACEEveryone) and (iACEEveryone.AceType = ADS_ACETYPE_ACCESS_DENIED_OBJECT) then
-  begin
-    fSelfName := GetSidAccountName(siSelf);
-    OleCheck(GetObjectACE(iACL, CHANGE_PASSWORD_GUID, fSelfName, iACESelf));
-    if Assigned(iACESelf) and (iACESelf.AceType = ADS_ACETYPE_ACCESS_DENIED_OBJECT) then
-      Result := true;
-  end;
-end;
-
-function CreateACE(bstrTrustee, bstrObjectType: string; lAccessMask, lACEType,
-                   lACEFlags, lFlags: Integer): IDispatch;
-var
-  iDisp: IDispatch;
-  iACE: IADsAccessControlEntry;
-begin
-  iDisp := nil;
-  iACE := nil;
-
-  OleCheck(CoCreateInstance(CLASS_AccessControlEntry, nil, CLSCTX_INPROC_SERVER,
-                            IID_IADsAccessControlEntry, iACE));
-  iACE.Trustee := bstrTrustee;
-  iACE.ObjectType := bstrObjectType;
-  iACE.AccessMask := lAccessMask;
-  iACE.AceType := lACEType;
-  iACE.AceFlags := lACEFlags;
-  iACE.Flags := lFlags;
-  iACE.QueryInterface(IDispatch, iDisp);
-  Result := iDisp;
-end;
-
-function ReorderACEs(pwszDN: string): HRESULT;
-var
-  dwResult: DWORD;
-  pdacl: ACL;
-  psd: PSECURITY_DESCRIPTOR;
-
-begin
-  Result := E_FAIL;
-  dwResult := GetNamedSecurityInfo(PChar(pwszDN), SE_DS_OBJECT_ALL, DACL_SECURITY_INFORMATION,
-                                   nil, nil, @pdAcl, nil, psd);
-  if dwResult = ERROR_SUCCESS then
-  begin
-    dwResult := SetNamedSecurityInfo(PChar(pwszDN), SE_DS_OBJECT_ALL, DACL_SECURITY_INFORMATION,
-                                     nil, nil, @pdAcl, nil);
-    LocalFree(NativeUInt(psd));
-    if dwResult = ERROR_SUCCESS then
-      Result := S_OK;
-  end;
-end;
-
-
-procedure SetUserCannotChangePassword(Entry: TLdapEntry; Value: Boolean);
-var
-  ADsObject: IADs;
-  iSecurityDescriptor: IADsSecurityDescriptor;
-  iACL: IADsAccessControlList;
-  iACESelf, iACEEveryone: IADsAccessControlEntry;
-  iDispSelf, iDispEveryone: IDispatch;
-  sVar: OleVariant;
-  fLdapPath, fUsername, fPassword: string;
-  fEveryoneName, fSelfName: string;
-  fMustReorder: Boolean;
-
-  function GetAcl: Integer;
-  begin
-    if Value then
-      Result := ADS_ACETYPE_ACCESS_DENIED_OBJECT
-    else
-      Result := ADS_ACETYPE_ACCESS_ALLOWED_OBJECT
-  end;
-
-begin
-  with Entry.Session do
-  begin
-    fLdapPath := 'LDAP://' + Server + '/' + Entry.dn;
-    fUserName := User;
-    fPassword := Password;
-  end;
-
-  fEveryoneName := GetSidAccountName(siEveryone);
-  fSelfName := GetSidAccountName(siSelf);
-
-  ADOpenObject(fLdapPath, ExtractUsername(fUserName), fPassword, IID_IADs, AdsObject);
-  sVar := ADsObject.Get('ntSecurityDescriptor');
-  OleCheck(IDispatch(sVar).QueryInterface(IADsSecurityDescriptor, iSecurityDescriptor));
-  OleCheck(IDispatch(iSecurityDescriptor.DiscretionaryAcl).QueryInterface(IADsAccessControlList, iACL));
-
-  fMustReorder := false;
-
-  iACEEveryone := nil;
-  OleCheck(GetObjectACE(iACL, CHANGE_PASSWORD_GUID, fEveryoneName, iACEEveryone));
-  if Assigned(iACEEveryone) then
-    iACEEveryone.AceType := GetAcl
-  else
-  begin
-    iDispEveryone := nil;
-    iDispEveryone := CreateACE(fEveryoneName, CHANGE_PASSWORD_GUID,
-                               ADS_RIGHT_DS_CONTROL_ACCESS, GetAcl, 0,
-                               ADS_FLAG_OBJECT_TYPE_PRESENT);
-
-    if Assigned(iDispEveryone) then
-    begin
-      iACL.AddAce(iDispEveryone); //add the new ACE for everyone
-      fMustReorder := true;
-    end;
-  end;
-
-  { Get the existing ACE for the change password permission for Self. If it
-    exists, just modify the existing ACE. If it does not exist, create a new
-    one and add it to the ACL.}
-  iACESelf := nil;
-  OleCheck(GetObjectACE(iACL, CHANGE_PASSWORD_GUID, fSelfName, iACESelf));
-  if Assigned(iACESelf) then
-    iACESelf.AceType := GetAcl
-  else begin
-    iDispSelf := nil;
-    iDispSelf := CreateACE(fSelfName, CHANGE_PASSWORD_GUID, ADS_RIGHT_DS_CONTROL_ACCESS,
-                           GetAcl, 0, ADS_FLAG_OBJECT_TYPE_PRESENT);
-    if Assigned(iDispSelf) then
-    begin
-      iACL.AddAce(iDispSelf); //add the new ACE for self
-      fMustReorder := TRUE;
-    end;
-  end;
-
-  AdsObject.Put('ntSecurityDescriptor', sVar); //update the security descriptor property
-  AdsObject.SetInfo;                           //commit the changes
-
-  if fMustReorder then
-    ReorderACEs(fLdapPath);
-end;
-
-
-{$endif}
 
 
 function ExtractUsername(adn: string): string;
@@ -981,33 +720,33 @@ begin
   Result := Session.GetDN(Format('(&(objectclass=group)(ObjectSID=%s-%s))', [AdDomainSid, AttributesByName['primaryGroupId'].AsString]));
 end;
 
-function TADObjectHelper.GetJPegImage: TJpegImage;
-var
-  Value: TLdapAttributeData;
-begin
-  Result := nil;
-  Value := AttributesByName['jpegPhoto'].Values[0];
-  if Assigned(Value) and (Value.DataSize > 0) then
-  begin
-    Result := TJPEGImage.Create;
-    StreamCopy(Value.SaveToStream, Result.LoadFromStream);
-  end;
-end;
-
-procedure TADObjectHelper.SetJPegImage(const Image: TJpegImage);
-var
-  Attribute: TLdapAttribute;
-begin
-  Attribute := AttributesByName['jpegPhoto'];
-  if not Assigned(Image) then
-    Attribute.Delete
-  else
-  begin
-    if Attribute.ValueCount = 0 then
-      Attribute.AddValue;
-    StreamCopy(Image.SaveToStream, Attribute.Values[0].LoadFromStream);
-  end;
-end;
+//function TADObjectHelper.GetJPegImage: TJpegImage;
+//var
+//  Value: TLdapAttributeData;
+//begin
+//  Result := nil;
+//  Value := AttributesByName['jpegPhoto'].Values[0];
+//  if Assigned(Value) and (Value.DataSize > 0) then
+//  begin
+//    Result := TJPEGImage.Create;
+//    StreamCopy(Value.SaveToStream, Result.LoadFromStream);
+//  end;
+//end;
+//
+//procedure TADObjectHelper.SetJPegImage(const Image: TJpegImage);
+//var
+//  Attribute: TLdapAttribute;
+//begin
+//  Attribute := AttributesByName['jpegPhoto'];
+//  if not Assigned(Image) then
+//    Attribute.Delete
+//  else
+//  begin
+//    if Attribute.ValueCount = 0 then
+//      Attribute.AddValue;
+//    StreamCopy(Image.SaveToStream, Attribute.Values[0].LoadFromStream);
+//  end;
+//end;
 
 function TADObjectHelper.GetRid: Cardinal;
 begin

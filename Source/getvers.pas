@@ -90,9 +90,9 @@ begin
    With V do
      try
        FileName:=ParamStr(0);
-       Version:=V.getVersionSetting('ProductVersion');
-       if (Version='') then
-         Version:=V.GetVersionSetting('FileVersion');
+       //Version:=V.getVersionSetting('ProductVersion');
+       //if (Version='') then
+       //  Version:=V.GetVersionSetting('FileVersion');
        Result:=(Version<>'');
      Finally
        Free;

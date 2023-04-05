@@ -670,59 +670,6 @@ begin
 
 end;
 
-{$ifdef mswindows}
-function TMainFrm.LocateEntry(const dn: string; const Select: Boolean): TTreeNode;
-var
-  sdn: string;
-  comp: PPChar;
-  i: Integer;
-  Parent: TTreeNode;
-begin
-  Parent := Root;
-  Result := Parent;
-  Parent.Expand(false);
-  sdn := System.Copy(dn, 1, Length(dn) - Length(FConnection.Base));
-  comp := ldap_explode_dn(PChar(sdn), 0);
-  try
-    if Assigned(comp) then
-    begin
-      i := 0;
-      while PCharArray(comp)[i] <> nil do inc(i);
-      while (i > 0) do
-      begin
-        dec(i);
-        Result := Parent.GetFirstChild;
-        while Assigned(Result) do
-        begin
-          if AnsiCompareText(Result.Text, DecodeLdapString(PCharArray(comp)[i])) = 0 then
-          begin
-            Parent := Result;
-            if Select then
-              Result.Expand(false);
-            break;
-          end;
-          Result := Result.GetNextChild(Result);
-        end;
-      end;
-    end;
-    if Select then
-    begin
-      if Assigned(Result) then
-      begin
-        Result.Selected := true;
-        Result.MakeVisible;
-      end
-      else begin
-        Parent.Selected := true;
-        Parent.MakeVisible;
-      end;
-    end;
-  finally
-    ldap_value_free(comp);
-  end;
-end;
-{$else}
-
 function TMainFrm.LocateEntry(const dn: string; const Select: Boolean): TTreeNode;
 var
   sdn: string;
@@ -772,7 +719,6 @@ begin
     comp.free;
   end;
 end;
-{$endif}
 
 procedure TMainFrm.ServerConnect(Account: TAccount);
 var
@@ -1848,9 +1794,6 @@ procedure TMainFrm.ActPreferencesExecute(Sender: TObject);
 begin
   case FConnection.DirectoryType of
     dtPosix: TPrefDlg.Create(Self, FConnection).ShowModal;
-    {$ifdef mswindows}
-    dtActiveDirectory: TAdPrefDlg.Create(Self, FConnection).ShowModal;
-    {$endif}
   end;
 end;
 
@@ -2211,11 +2154,11 @@ procedure TMainFrm.edSearchKeyPress(Sender: TObject; var Key: Char);
     Result := '';
     p := PChar(Param);
     while p^ <> #0 do begin
-      p1 := CharNext(p);
+      p1 := p + 1;
       if (p^ = '%') and ((p1^ = 's') or (p1^ = 'S')) then
       begin
         Result := Result + Val;
-        p1 := CharNext(p1);
+        p1 := p1 + 1;
       end
       else
         Result := Result + p^;

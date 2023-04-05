@@ -23,10 +23,7 @@ unit Validator;
 
 interface
 
-uses StdCtrls, Controls, Classes
-  {$ifndef mswindows}
-  , extctrls
-  {$endif}
+uses StdCtrls, Controls, Classes, extctrls, LCL
   ;
 
 type
@@ -41,7 +38,7 @@ type
   private
     FControl:  TCustomEdit;
     FOnChange: TNotifyEvent;
-    FBalloonHint: TBalloonHint;
+    //FBalloonHint: TBalloonHint;
     FInvalidChars: string;
     FCaption: string;
     //FOldValue: string;
@@ -147,8 +144,8 @@ begin
       exit;
   end;
 
-  if Assigned(FBalloonHint) and FBalloonHint.ShowingHint then
-    FBalloonHint.HideHint;
+  //if Assigned(FBalloonHint) and FBalloonHint.ShowingHint then
+  //  FBalloonHint.HideHint;
 end;
 
 procedure TValidateInput.SetCaption(Value: string);
@@ -164,19 +161,19 @@ var
 begin
   if not Assigned(FControl.Parent) then
     exit;
-  if not Assigned(FBalloonHint) then
-  begin
-    FBalloonHint := TBalloonHint.Create(FControl);
-    FBalloonHint.HideAfter := 5000;
-    FBalloonHint.Delay := 0;
-  end;
-  FBalloonHint.Description := Msg;
+  //if not Assigned(FBalloonHint) then
+  //begin
+  //  FBalloonHint := TBalloonHint.Create(FControl);
+  //  FBalloonHint.HideAfter := 5000;
+  //  FBalloonHint.Delay := 0;
+  //end;
+  //FBalloonHint.Description := Msg;
   R := FControl.BoundsRect;
   Inc(R.Left, GetTextExtent(Copy(FControl.Text, 1, FControl.SelStart), TFontControl(FControl).Font).cx);
   R.Width := 4;
   R.TopLeft := FControl.Parent.ClientToScreen(R.TopLeft);
   R.BottomRight := FControl.Parent.ClientToScreen(R.BottomRight);
-  FBalloonHint.ShowHint(R);
+  //FBalloonHint.ShowHint(R);
 end;
 
 procedure TValidateInput.SetControlOnChange(Value: TNotifyEvent);
@@ -218,8 +215,8 @@ end;
 
 procedure TValidateInput.HideHint;
 begin
-  if Assigned(FBalloonHint) and FBalloonHint.ShowingHint then
-    FBalloonHint.HideHint;
+  //if Assigned(FBalloonHint) and FBalloonHint.ShowingHint then
+  //  FBalloonHint.HideHint;
 end;
 
 end.

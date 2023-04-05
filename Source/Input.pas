@@ -28,11 +28,8 @@ unit Input;
 interface
 
 uses
-{$IFnDEF FPC}
   Windows,Validator,
-{$ELSE}
   LCLIntf, LCLType, LMessages, strutils,
-{$ENDIF}
   Messages,SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls;
 

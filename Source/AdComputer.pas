@@ -25,7 +25,7 @@ interface
 
 uses
   SysUtils, Controls, Forms, LDAPClasses, Constant, Connection, AdObjects,
-  ComCtrls, StdCtrls, Classes {$ifdef mswindows},Vcl.AppEvnts, Vcl.ExtCtrls{$else}, ExtCtrls{$endif};
+  ComCtrls, StdCtrls, Classes, ExtCtrls;
 
 type
   TAdComputerDlg = class(TForm)

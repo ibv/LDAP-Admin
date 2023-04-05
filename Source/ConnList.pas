@@ -871,11 +871,7 @@ end;
 procedure TConnListFrm.SetSelPath(TreeView: TTreeView; APath: string);
 var
   i: Integer;
-  {$ifdef mswindows}
-  Splitted: TArray<String>;
-  {$else}
   Splitted: TStringList;
-  {$endif}
   Node, Parent: TTreeNode;
 
   function GetNextRootNode(ANode: TTreeNode): TTreeNode;
@@ -893,15 +889,11 @@ var
   end;
 
 begin
-  {$ifdef mswindows}
-  Splitted := APath.Split(['\']);
-  {$else}
   Splitted:=TStringList.Create;
   //ExtractStrings(['/'], [], PChar(APath), Splitted);
   Splitted.Delimiter := '\';
   Splitted.DelimitedText := APath;
   //split(APath, Splitted, '/');
-  {$endif}
   if not Assigned(Splitted) then
     exit;
   Node := TreeView.Items.GetFirstNode;

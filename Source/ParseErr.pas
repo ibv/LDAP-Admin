@@ -58,11 +58,8 @@ procedure ParseError(AType: TMsgDlgType; AOwner: TComponent; const FileName, Err
 implementation
 
 uses
-{$IFnDEF FPC}
-  MMSystem,
-{$ELSE}
-{$ENDIF}
-  Misc, Constant;
+  MMSystem, Windows,
+  Misc, Constant, HtmlMisc;
 
 {$R *.dfm}
 
@@ -155,24 +152,12 @@ begin
     case AType of
       mtError: begin
                  typeMsg := cError;
-                 {$ifdef windows}
-                 Handle := LoadIcon(0, IDI_ERROR);
-                 {$else}
-                 {$endif}
                end;
       mtWarning: begin
                    typeMsg := cWarning;
-                   {$ifdef windows}
-                   Handle := LoadIcon(0, IDI_WARNING);
-                   {$else}
-                   {$endif}
                  end;
       mtInformation: begin
                        typeMsg := cInformation;
-                       {$ifdef windows}
-                       Handle := LoadIcon(0, IDI_INFORMATION);
-                       {$else}
-                       {$endif}
                      end;
     else
       typeMsg := '';

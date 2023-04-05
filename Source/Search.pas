@@ -1342,32 +1342,32 @@ begin
   p := Content;
   Compound := false;
 
-  while p^ in [' ', #13, #10] do p := CharNext(p);
+  while p^ in [' ', #13, #10] do p := p + 1;
   if p^ = '(' then
   begin
     Compound := true;
-    p := CharNext(p);
+    p := p + 1;
   end;
 
-  while p^ in [' ', #13, #10] do p := CharNext(p);
+  while p^ in [' ', #13, #10] do p := p + 1;
 
   while not (p^ in [#0, #13, #10, '(', ')']) do
   begin
     if p^ = '\' then
     begin
-      p1 := CharNext(p);
+      p1 := p + 1;
       if p1^ in ['(', ')'] then
         p := p1;
     end;
     Expression := Expression + p^;
-    p := CharNext(p);
+    p := p + 1;
   end;
 
   if p^ = ')' then
   begin
     if not Compound then
       raise Exception.CreateFmt(stRegexError, [Expression + p^, stNoOpeningParenthesis]);
-    p := CharNext(p);
+    p := p + 1;
   end
   else if Compound then
     raise Exception.CreateFmt(stRegexError, ['(' + Expression, stNoClosingParenthesis]);
@@ -1392,7 +1392,7 @@ begin
       '!': begin
              RegStatement.Negate := true;
              Cut := Tail;
-             Tail := CharNext(Tail);
+             Tail := Tail + 1;
              if Tail^ <> '=' then
                raise Exception.CreateFmt(stRegexError, [Head^, stExpectedButReceived + Tail^ + '"']);
              Continue;
@@ -1403,30 +1403,30 @@ begin
              if Cut = Head then
                raise Exception.CreateFmt(stRegexError, [Head, stEmptyArg]);
              { Right trim }
-             Cut := CharPrev(Head, Cut);
-             if Cut <> Head then
-               while Cut^ = ' ' do Cut := CharPrev(Head, Cut);
+             //Cut := CharPrev(Head, Cut);
+             //if Cut <> Head then
+             //  while Cut^ = ' ' do Cut := CharPrev(Head, Cut);
              SetString(RegStatement.fArgument, Head, Cut - Head + 1);
-             Tail := CharNext(Tail);
+             Tail := Tail + 1;
              break;
            end;
       ' ': begin
-             Tail := CharNext(Tail);
-             while Tail^ = ' ' do Tail := CharNext(Tail);
+             Tail := Tail + 1;
+             while Tail^ = ' ' do Tail := Tail + 1;
              if (Tail^ <> '!') and (Tail^ <> '=') then
                raise Exception.CreateFmt(stInvalidOperator, [Tail^]);
              Continue;
            end;
     end;
-    Tail := CharNext(Tail);
+    Tail := Tail + 1;
   end;
 
   if Tail^ = #0 then
     raise Exception.CreateFmt(stRegexError, [Head, stMissingOperator]);
 
-  while Tail^ in [' ', #13, #10, '('] do Tail := CharNext(Tail);
+  while Tail^ in [' ', #13, #10, '('] do Tail := Tail + 1;
   Head := Tail;
-  while not (Tail^ in [#0, #13, #10]) do Tail := CharNext(Tail);
+  while not (Tail^ in [#0, #13, #10]) do Tail := Tail + 1;
   
   SetString(s, Head, Tail - Head);
   RegStatement.Regex.Expression := s;
@@ -1835,13 +1835,13 @@ var
         Result := Result + p^;
         while p^ = '*' do
         begin
-          p := CharNext(p);
+          p := p + 1;
           if p^ = #0 then
             exit;
         end;
       end;
       Result := Result + p^;
-      p := CharNext(p);
+      p := p + 1;
     end;
   end;
 

@@ -67,29 +67,7 @@ var
   lang: string;
 begin
   result:='n/a';
-  {$ifdef mswindows}
-  len := GetFileVersionInfoSize(PChar(Application.ExeName), dummy);
-  if len = 0 then
-    RaiseLastOSError;
-  GetMem(buf, len);
-  try
-    if not GetFileVersionInfo(PChar(Application.ExeName), 0, len, buf) then
-      RaiseLastOSError;
-
-    if not VerQueryValue(buf, '\VarFileInfo\Translation\', pntr, len) then
-      RaiseLastOSError;
-
-    lang := Format('%.4x%.4x', [PLandCodepage(pntr)^.wLanguage, PLandCodepage(pntr)^.wCodePage]);
-
-    if VerQueryValue(buf, PChar('\StringFileInfo\' + lang + '\FileVersion'), pntr, len){ and (@len <> nil)} then
-      result := PChar(pntr);
-  finally
-    FreeMem(buf);
-  end;
-  {$else}
   GetProgramVersion (Result);
-  {$endif}
-
 end;
 
 procedure TAboutDlg.FormClose(Sender: TObject; var Action: TCloseAction);

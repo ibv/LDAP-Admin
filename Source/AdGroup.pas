@@ -24,11 +24,7 @@ unit AdGroup;
 interface
 
 uses
-  {$ifdef mswindows}
-  Windows, , Vcl.AppEvnts
-  {$else}
-
-  {$endif}
+  Windows,
   Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls, ExtCtrls, LDAPClasses, Core, TemplateCtrl, Constant,
   Connection, AdObjects;

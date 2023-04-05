@@ -406,7 +406,7 @@ uses
   ComObj,
 {$ELSE}
 {$ENDIF}
-  Constant, {$ifdef mswindows}WinLDAP,{$else} LinLDAP, base64,{$endif}Dialogs, Forms, StdCtrls, Controls, WinBase64,
+  Constant, LinLDAP, base64, Dialogs, Forms, StdCtrls, Controls, WinBase64,
   Math {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 

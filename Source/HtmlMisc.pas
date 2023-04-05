@@ -135,7 +135,7 @@ type
   tagXFORM = XFORM;
   TXForm = tagXFORM;
 
-  TGCPResultsW = GCP_RESULTS;
+  //TGCPResultsW = GCP_RESULTS;
 
   OSVERSIONINFO = _OSVERSIONINFO;
 
@@ -1159,7 +1159,7 @@ begin
 end;
 
 
-initialization
-  ExpectsUTF8 := WidgetSet.LCLPlatform in [lpCarbon, lpQt, lpGTK2, lpWin32];
+//initialization
+//  ExpectsUTF8 := WidgetSet.LCLPlatform in [lpCarbon, lpQt, lpGTK2, lpWin32];
 
 end.

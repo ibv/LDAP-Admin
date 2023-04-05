@@ -93,11 +93,7 @@ type
     cbShift: TCheckBox;
     cbAlt: TCheckBox;
     btnReset: TButton;
-    {$ifdef mswindows}
-    ApplicationEvents1: TApplicationEvents;
-    {$else}
     ApplicationEvents1: TApplicationProperties;
-    {$endif}
     procedure TreeViewChange(Sender: TObject; Node: TTreeNode);
     procedure rbClick(Sender: TObject);
     procedure edCaptionChange(Sender: TObject);

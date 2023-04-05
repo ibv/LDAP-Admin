@@ -44,11 +44,7 @@ const
   LANG_EXT      = 'llf';
 
 type
-  {$ifdef mswindows}
-  TMyReader = class(TReader);
-  {$else}
   TMyReader = class(TDelphiReader);
-  {$endif}
 
 
 type
@@ -330,11 +326,7 @@ begin
         begin
           nj := Nodes[j];
           PropInfo := GetPropInfo(ct, nj.Name);
-          {$ifdef mswindows}
-          if Assigned(PropInfo) and (PropInfo^.PropType^^.Kind = tkClass) then
-          {$else}
           if Assigned(PropInfo) and (PropInfo^.PropType^.Kind = tkClass) then
-          {$endif}
           begin
             obj := TObject(Integer(GetPropValue(ct, nj.Name)));
             if obj is TStrings then
@@ -359,11 +351,7 @@ procedure TTranslator.RestoreForm(Form: TCustomForm);
 var
   rs: TResourceStream;
   Node: TXmlNode;
-  {$ifdef mswindows}
-  Reader: TReader;
-  {$else}
   Reader: TDelphiReader;
-  {$endif}
   Flags: TFilerFlags;
   Pos: Integer;
   ComponentName: string;

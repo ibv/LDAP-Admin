@@ -39,11 +39,8 @@ unit ActiveDs_TLB;
 interface
 
 uses
-{$IFnDEF FPC}
-  ActiveX, OleServer, OleCtrls, StdVCL, Windows,
-{$ELSE}
+  ActiveX, OleServer, Windows,
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
   Classes, Graphics;
 
 // *********************************************************************//
@@ -211,16 +208,16 @@ const
   ADS_AUTH_RESERVED = $80000000;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0000_0019
-///type
-///  __MIDL___MIDL_itf_ads_0000_0019 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0000_0019 = TOleEnum;
 const
   ADS_STATUS_S_OK = $00000000;
   ADS_STATUS_INVALID_SEARCHPREF = $00000001;
   ADS_STATUS_INVALID_SEARCHPREFVALUE = $00000002;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0000_0020
-///type
-///  __MIDL___MIDL_itf_ads_0000_0020 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0000_0020 = TOleEnum;
 const
   ADS_DEREF_NEVER = $00000000;
   ADS_DEREF_SEARCHING = $00000001;
@@ -228,16 +225,16 @@ const
   ADS_DEREF_ALWAYS = $00000003;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0000_0021
-///type
-///  __MIDL___MIDL_itf_ads_0000_0021 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0000_0021 = TOleEnum;
 const
   ADS_SCOPE_BASE = $00000000;
   ADS_SCOPE_ONELEVEL = $00000001;
   ADS_SCOPE_SUBTREE = $00000002;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0000_0022
-///type
-///  __MIDL___MIDL_itf_ads_0000_0022 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0000_0022 = TOleEnum;
 const
   ADSIPROP_ASYNCHRONOUS = $00000000;
   ADSIPROP_DEREF_ALIASES = $00000001;
@@ -254,15 +251,15 @@ const
   ADSIPROP_ADSIFLAG = $0000000C;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0000_0023
-///type
-///  __MIDL___MIDL_itf_ads_0000_0023 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0000_0023 = TOleEnum;
 const
   ADSI_DIALECT_LDAP = $00000000;
   ADSI_DIALECT_SQL = $00000001;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0000_0024
-///type
-///  __MIDL___MIDL_itf_ads_0000_0024 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0000_0024 = TOleEnum;
 const
   ADS_CHASE_REFERRALS_NEVER = $00000000;
   ADS_CHASE_REFERRALS_SUBORDINATE = $00000020;
@@ -270,8 +267,8 @@ const
   ADS_CHASE_REFERRALS_ALWAYS = $00000060;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0000_0025
-///type
-///  __MIDL___MIDL_itf_ads_0000_0025 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0000_0025 = TOleEnum;
 const
   ADS_SEARCHPREF_ASYNCHRONOUS = $00000000;
   ADS_SEARCHPREF_DEREF_ALIASES = $00000001;
@@ -292,8 +289,8 @@ const
   ADS_SEARCHPREF_SECURITY_MASK = $00000010;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0000_0026
-///type
-///  __MIDL___MIDL_itf_ads_0000_0026 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0000_0026 = TOleEnum;
 const
   ADS_PROPERTY_CLEAR = $00000001;
   ADS_PROPERTY_UPDATE = $00000002;
@@ -301,8 +298,8 @@ const
   ADS_PROPERTY_DELETE = $00000004;
 
 // Konstanten für enum tagTYPEKIND
-///type
-///  tagTYPEKIND = TOleEnum;
+type
+  tagTYPEKIND = TOleEnum;
 const
   TKIND_ENUM = $00000000;
   TKIND_RECORD = $00000001;
@@ -315,8 +312,8 @@ const
   TKIND_MAX = $00000008;
 
 // Konstanten für enum tagDESCKIND
-///type
-///  tagDESCKIND = TOleEnum;
+type
+  tagDESCKIND = TOleEnum;
 const
   DESCKIND_NONE = $00000000;
   DESCKIND_FUNCDESC = $00000001;
@@ -326,8 +323,8 @@ const
   DESCKIND_MAX = $00000005;
 
 // Konstanten für enum tagFUNCKIND
-///type
-///  tagFUNCKIND = TOleEnum;
+type
+  tagFUNCKIND = TOleEnum;
 const
   FUNC_VIRTUAL = $00000000;
   FUNC_PUREVIRTUAL = $00000001;
@@ -336,8 +333,8 @@ const
   FUNC_DISPATCH = $00000004;
 
 // Konstanten für enum tagINVOKEKIND
-///type
-///  tagINVOKEKIND = TOleEnum;
+type
+  tagINVOKEKIND = TOleEnum;
 const
   INVOKE_FUNC = $00000001;
   INVOKE_PROPERTYGET = $00000002;
@@ -345,8 +342,8 @@ const
   INVOKE_PROPERTYPUTREF = $00000008;
 
 // Konstanten für enum tagCALLCONV
-///type
-///  tagCALLCONV = TOleEnum;
+type
+  tagCALLCONV = TOleEnum;
 const
   CC_FASTCALL = $00000000;
   CC_CDECL = $00000001;
@@ -361,8 +358,8 @@ const
   CC_MAX = $00000009;
 
 // Konstanten für enum tagVARKIND
-///type
-///  tagVARKIND = TOleEnum;
+type
+  tagVARKIND = TOleEnum;
 const
   VAR_PERINSTANCE = $00000000;
   VAR_STATIC = $00000001;
@@ -370,8 +367,8 @@ const
   VAR_DISPATCH = $00000003;
 
 // Konstanten für enum tagSYSKIND
-///type
-///  tagSYSKIND = TOleEnum;
+type
+  tagSYSKIND = TOleEnum;
 const
   SYS_WIN16 = $00000000;
   SYS_WIN32 = $00000001;
@@ -379,8 +376,8 @@ const
   SYS_WIN64 = $00000003;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0125_0001
-///type
-///  __MIDL___MIDL_itf_ads_0125_0001 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0125_0001 = TOleEnum;
 const
   ADS_SYSTEMFLAG_DISALLOW_DELETE = $80000000;
   ADS_SYSTEMFLAG_CONFIG_ALLOW_RENAME = $40000000;
@@ -394,8 +391,8 @@ const
   ADS_SYSTEMFLAG_ATTR_IS_CONSTRUCTED = $00000004;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0131_0001
-///type
-///  __MIDL___MIDL_itf_ads_0131_0001 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0131_0001 = TOleEnum;
 const
   ADS_GROUP_TYPE_GLOBAL_GROUP = $00000002;
   ADS_GROUP_TYPE_DOMAIN_LOCAL_GROUP = $00000004;
@@ -430,8 +427,8 @@ const
   ADS_UF_TRUSTED_TO_AUTHENTICATE_FOR_DELEGATION = $01000000;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0153_0001
-///type
-///  __MIDL___MIDL_itf_ads_0153_0001 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0153_0001 = TOleEnum;
 const
   ADS_RIGHT_DELETE = $00010000;
   ADS_RIGHT_READ_CONTROL = $00020000;
@@ -454,8 +451,8 @@ const
   ADS_RIGHT_DS_CONTROL_ACCESS = $00000100;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0153_0002
-///type
-///  __MIDL___MIDL_itf_ads_0153_0002 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0153_0002 = TOleEnum;
 const
   ADS_ACETYPE_ACCESS_ALLOWED = $00000000;
   ADS_ACETYPE_ACCESS_DENIED = $00000001;
@@ -474,8 +471,8 @@ const
   ADS_ACETYPE_SYSTEM_ALARM_CALLBACK_OBJECT = $00000010;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0153_0003
-///type
-///  __MIDL___MIDL_itf_ads_0153_0003 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0153_0003 = TOleEnum;
 const
   ADS_ACEFLAG_INHERIT_ACE = $00000002;
   ADS_ACEFLAG_NO_PROPAGATE_INHERIT_ACE = $00000004;
@@ -486,15 +483,15 @@ const
   ADS_ACEFLAG_FAILED_ACCESS = $00000080;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0153_0004
-///type
-///  __MIDL___MIDL_itf_ads_0153_0004 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0153_0004 = TOleEnum;
 const
   ADS_FLAG_OBJECT_TYPE_PRESENT = $00000001;
   ADS_FLAG_INHERITED_OBJECT_TYPE_PRESENT = $00000002;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0153_0005
-///type
- /// __MIDL___MIDL_itf_ads_0153_0005 = TOleEnum;
+type
+ __MIDL___MIDL_itf_ads_0153_0005 = TOleEnum;
 const
   ADS_SD_CONTROL_SE_OWNER_DEFAULTED = $00000001;
   ADS_SD_CONTROL_SE_GROUP_DEFAULTED = $00000002;
@@ -511,14 +508,14 @@ const
   ADS_SD_CONTROL_SE_SELF_RELATIVE = $00008000;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0153_0006
-///type
-///  __MIDL___MIDL_itf_ads_0153_0006 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0153_0006 = TOleEnum;
 const
   ADS_SD_REVISION_DS = $00000004;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0154_0001
-///type
-///  __MIDL___MIDL_itf_ads_0154_0001 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0154_0001 = TOleEnum;
 const
   ADS_NAME_TYPE_1779 = $00000001;
   ADS_NAME_TYPE_CANONICAL = $00000002;
@@ -534,16 +531,16 @@ const
   ADS_NAME_TYPE_SID_OR_SID_HISTORY_NAME = $0000000C;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0154_0002
-///type
-///  __MIDL___MIDL_itf_ads_0154_0002 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0154_0002 = TOleEnum;
 const
   ADS_NAME_INITTYPE_DOMAIN = $00000001;
   ADS_NAME_INITTYPE_SERVER = $00000002;
   ADS_NAME_INITTYPE_GC = $00000003;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0168_0001
-///type
-///  __MIDL___MIDL_itf_ads_0168_0001 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0168_0001 = TOleEnum;
 const
   ADS_OPTION_SERVERNAME = $00000000;
   ADS_OPTION_REFERRALS = $00000001;
@@ -552,8 +549,8 @@ const
   ADS_OPTION_MUTUAL_AUTH_STATUS = $00000004;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0168_0002
-///type
-///  __MIDL___MIDL_itf_ads_0168_0002 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0168_0002 = TOleEnum;
 const
   ADS_SECURITY_INFO_OWNER = $00000001;
   ADS_SECURITY_INFO_GROUP = $00000002;
@@ -561,8 +558,8 @@ const
   ADS_SECURITY_INFO_SACL = $00000008;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0169_0001
-///type
-///  __MIDL___MIDL_itf_ads_0169_0001 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0169_0001 = TOleEnum;
 const
   ADS_SETTYPE_FULL = $00000001;
   ADS_SETTYPE_PROVIDER = $00000002;
@@ -570,8 +567,8 @@ const
   ADS_SETTYPE_DN = $00000004;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0169_0002
-///type
-///  __MIDL___MIDL_itf_ads_0169_0002 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0169_0002 = TOleEnum;
 const
   ADS_FORMAT_WINDOWS = $00000001;
   ADS_FORMAT_WINDOWS_NO_SERVER = $00000002;
@@ -586,15 +583,15 @@ const
   ADS_FORMAT_LEAF = $0000000B;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0169_0003
-///type
-///  __MIDL___MIDL_itf_ads_0169_0003 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0169_0003 = TOleEnum;
 const
   ADS_DISPLAY_FULL = $00000001;
   ADS_DISPLAY_VALUE_ONLY = $00000002;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0169_0004
-///type
-///  __MIDL___MIDL_itf_ads_0169_0004 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0169_0004 = TOleEnum;
 const
   ADS_ESCAPEDMODE_DEFAULT = $00000001;
   ADS_ESCAPEDMODE_ON = $00000002;
@@ -602,16 +599,16 @@ const
   ADS_ESCAPEDMODE_OFF_EX = $00000004;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0174_0001
-///type
-///  __MIDL___MIDL_itf_ads_0174_0001 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0174_0001 = TOleEnum;
 const
   ADS_PATH_FILE = $00000001;
   ADS_PATH_FILESHARE = $00000002;
   ADS_PATH_REGISTRY = $00000003;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0174_0002
-///type
-///  __MIDL___MIDL_itf_ads_0174_0002 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0174_0002 = TOleEnum;
 const
   ADS_SD_FORMAT_IID = $00000001;
   ADS_SD_FORMAT_RAW = $00000002;
@@ -790,7 +787,8 @@ const
 
 // *********************************************************************// 
 // Deklaration von  Strukturen, Unions und Aliasen.                        
-// *********************************************************************// 
+// *********************************************************************//
+type
   PUserType1 = ^_ADS_CASEIGNORE_LIST; {*}
   PUserType2 = ^_ADS_OCTET_LIST; {*}
   PPWideChar1 = ^PWideChar; {*}
@@ -814,7 +812,8 @@ const
   PUserType16 = ^_ads_class_def; {*}
   PPUserType2 = ^PUserType16; {*}
 
-  ADSTYPEENUM = __MIDL___MIDL_itf_ads_0000_0001; 
+
+  ADSTYPEENUM = LongWord;// __MIDL___MIDL_itf_ads_0000_0001;
 
   __MIDL___MIDL_itf_ads_0000_0002 = packed record
     dwLength: LongWord;
@@ -985,7 +984,7 @@ const
       26: (pDNWithString: ^__MIDL___MIDL_itf_ads_0000_0016);
   end;
 
-  ADS_AUTHENTICATION_ENUM = __MIDL___MIDL_itf_ads_0000_0018; 
+  //ADS_AUTHENTICATION_ENUM = __MIDL___MIDL_itf_ads_0000_0018; 
 
   _ads_object_info = packed record
     pszRDN: PWideChar;
@@ -995,13 +994,14 @@ const
     pszClassName: PWideChar;
   end;
 
-  ADS_STATUSENUM = __MIDL___MIDL_itf_ads_0000_0019; 
-  ADS_DEREFENUM = __MIDL___MIDL_itf_ads_0000_0020; 
-  ADS_SCOPEENUM = __MIDL___MIDL_itf_ads_0000_0021; 
-  ADS_PREFERENCES_ENUM = __MIDL___MIDL_itf_ads_0000_0022; 
-  ADSI_DIALECT_ENUM = __MIDL___MIDL_itf_ads_0000_0023; 
-  ADS_CHASE_REFERRALS_ENUM = __MIDL___MIDL_itf_ads_0000_0024; 
-  ADS_SEARCHPREF_ENUM = __MIDL___MIDL_itf_ads_0000_0025; 
+  ADS_STATUSENUM = __MIDL___MIDL_itf_ads_0000_0019;
+  ADS_DEREFENUM = __MIDL___MIDL_itf_ads_0000_0020;
+  ADS_SCOPEENUM = __MIDL___MIDL_itf_ads_0000_0021;
+  ADS_PREFERENCES_ENUM = __MIDL___MIDL_itf_ads_0000_0022;
+  ADSI_DIALECT_ENUM = __MIDL___MIDL_itf_ads_0000_0023;
+  ADS_CHASE_REFERRALS_ENUM = __MIDL___MIDL_itf_ads_0000_0024;
+  ADS_SEARCHPREF_ENUM = __MIDL___MIDL_itf_ads_0000_0025;
+
 
   _adsvalue = packed record
     dwType: ADSTYPEENUM;
@@ -1041,7 +1041,7 @@ const
     lpContextID: ^Byte;
   end;
 
-  ADS_PROPERTY_OPERATION_ENUM = __MIDL___MIDL_itf_ads_0000_0026; 
+  ADS_PROPERTY_OPERATION_ENUM = LongWord; //__MIDL___MIDL_itf_ads_0000_0026;
 
   __MIDL_IOleAutomationTypes_0005 = record
     case Integer of
@@ -1196,6 +1196,8 @@ const
     cDims: Word;
     rgbounds: ^tagSAFEARRAYBOUND;
   end;
+
+
 
 
 // *********************************************************************//

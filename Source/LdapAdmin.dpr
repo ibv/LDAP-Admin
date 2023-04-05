@@ -7,7 +7,9 @@ program LdapAdmin;
 uses
 {$IFnDEF FPC}
 {$ELSE}
+{$ifdef UNIX}
 cthreads,
+{$endif}
 //cmem,
 Interfaces,
 DefaultTranslator,

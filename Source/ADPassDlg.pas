@@ -142,8 +142,7 @@ begin
       fEntry.Write;
     except
       on E: ERRLdap do
-        if (E.ErrorCode = LDAP_UNWILLING_TO_PERFORM) {$ifdef mswindows} and
-           (E.ExtErrorCode = ERROR_GEN_FAILURE) {$endif} then with fEntry do
+        if (E.ErrorCode = LDAP_UNWILLING_TO_PERFORM) then with fEntry do
         begin
           if not (Session.SSL or Session.TLS or (Session.AuthMethod = AUTH_GSS_SASL)) then
             raise Exception.Create(stPwdNoEncryption)

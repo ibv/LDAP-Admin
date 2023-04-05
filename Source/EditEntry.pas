@@ -1226,11 +1226,7 @@ procedure TEditEntryFrm.StringGridMouseDown(Sender: TObject; Button: TMouseButto
 var
   p: Tpoint;
   ACol, ARow: Integer;
-  {$ifdef mswindows}
-  sc: TSelectCellEvent;
-  {$else}
   sc: TOnSelectCellEvent;
-  {$endif}
 begin
   with Sender as TStringGrid do
   begin
@@ -1257,12 +1253,8 @@ begin
     if not Focused and (X >= (CellRect(ACol, ARow).Right - FButtonWidth)) then
     begin
       ActiveControl.Repaint;
-      {$ifdef mswindows}
-      mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-      {$else}
       //--MouseInput.Click(mbLeft,[],0,0);
       LCLSendMouseDownMsg((sender as TControl),0,0, mbLeft);
-      {$endif}
     end;
   end;
 end;
@@ -1443,11 +1435,7 @@ begin
       if Assigned(Item) and (Hint <> Item.Description) then
       begin
         Hint := Item.Description;
-        {$ifdef mswindows}
-        mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);  // provoke hint to show again
-        {$else}
         LCLSendMouseUpMsg((Sender as TControl),0,0, mbLeft);
-        {$endif}
       end;
     end
     else

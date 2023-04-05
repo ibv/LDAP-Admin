@@ -24,11 +24,8 @@ unit AdAdv;
 interface
 
 uses
-  {$ifdef mswindows}
-  Windows, Vcl.Grids, System.UITypes,
-  {$else}
+  Windows, System.UITypes,
   LCLIntf, LCLType,
-  {$endif}
   Grids,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, ComCtrls, LdapClasses, ImgList ;

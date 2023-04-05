@@ -669,12 +669,13 @@ var
 implementation
 
 uses
-  {$IFDEF VARIANTS} variants, {$ENDIF}
+   variants,
 {$IFnDEF FPC}
   commctrl,
 {$ELSE}
 {$ENDIF}
-  WinBase64, {SysUtils,} Misc, Params, Config, PassDlg, Constant, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}
+  Windows,
+  WinBase64, {SysUtils,} Misc, Params, Config, PassDlg, Constant,  LinLDAP,
   Connection,Pickup, ParseErr {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
 const
@@ -2387,11 +2388,7 @@ end;
 
 function TTemplateCtrlDate.GetDisplayFormat: string;
 begin
-  {$ifdef mswindows}
-  Result := TDateTimePickerFixed(fControl).Format;
-  {$else}
-  result:='';
-  {$endif}
+  //Result := TDateTimePickerFixed(fControl).Format;
 end;
 
 procedure TTemplateCtrlDate.SetDisplayFormat(Value: string);
@@ -2448,7 +2445,7 @@ begin
       begin
         case Kind of
           dtkDate: Result := IntToStr(DateTimeToUnixTime(Trunc(DateTime) + Frac(ldapTime)));
-          dtkTime: Result := IntToStr(DateTimeToUnixTime(Frac(DateTime) + Max(Trunc(ldapTime), 25569.0)));
+          dtkTime: Result := IntToStr(DateTimeToUnixTime(Frac(DateTime) + Max(Trunc(ldapTime), 25569)));
         end;
       end
       else
@@ -3581,7 +3578,7 @@ constructor TTemplate.Create(const AFileName: string);
 var
   i: integer;
 
-  procedure LoadIcon(var Icon: TBitmap; Node: TXmlNode);
+  procedure LoadIcon(var Icon: Graphics.TBitmap; Node: TXmlNode);
   var
     Stream: TMemoryStream;
     Buffer: Pointer;
@@ -3601,7 +3598,7 @@ var
 
     if (Bitmap = '') and (FileName = '') then Exit;
 
-    Icon := TBitmap.Create;
+    Icon := Graphics.TBitmap.Create;
     Icon.Transparent := true;
 
     if Bitmap <> '' then

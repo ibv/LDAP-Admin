@@ -35,9 +35,9 @@ uses
 {$IFnDEF FPC}
   Windows,  WinLDAP,
 {$ELSE}
-  LCLIntf, LCLType, LazUtils, LinLDAP, lDapSend, lazutf8, LazFileUtils,
+  LCLIntf, LCLType, LazUtils, LinLDAP, lazutf8, LazFileUtils,
 {$ENDIF}
-  Sysutils,  Classes, Events, Constant;
+  Sysutils,  Classes, Events, Constant, mormot.net.ldap;
 
 const
   LdapOpRead            = $FFFFFFFF;
@@ -191,11 +191,7 @@ type
 
   TLDAPSession = class
   private
-    {$ifdef mswindows}
-    ldappld: PLDAP;
-    {$else}
-    ldappld: TLDAPsend;
-    {$endif}
+    ldappld: TLdapClient;
     ldapServer: string;
     ldapUser, ldapPassword: string;
     ldapPort: Integer;
@@ -231,13 +227,8 @@ type
     procedure SetReferralHops(const Value: Integer);
     function  GetOperationalAttrs: string;
     procedure SetOperationalAttrs(const Value: string);
-    {$ifdef mswindows}
-    procedure ProcessSearchEntry(const plmEntry: PLDAPMessage; Attributes: TLdapAttributeList);
-    procedure ProcessSearchMessage(const plmSearch: PLDAPMessage; const NoValues: LongBool; Result: TLdapEntryList);
-    {$else}
     procedure ProcessSearchEntry(const plmEntry: TLDAPResult; Attributes: TLdapAttributeList);
-    procedure ProcessSearchMessage(const plmSearch: TLDAPsend; const NoValues: LongBool; Result: TLdapEntryList);
-    {$endif}
+    procedure ProcessSearchMessage(const plmSearch: TLdapClient; const NoValues: LongBool; Result: TLdapEntryList);
   protected
     function  ISConnected: Boolean; virtual;
   public
@@ -245,11 +236,7 @@ type
     destructor Destroy; override;
     procedure Connect; virtual;
     procedure Disconnect; virtual;
-    {$ifdef mswindows}
-    property pld: PLDAP read ldappld;
-    {$else}
-    property pld: TLDAPsend read ldappld;
-    {$endif}
+    property pld: TLdapClient read ldappld;
     property Server: string read ldapServer write SetServer;
     property User: string read ldapUser write SetUser;
     property Password: string read ldapPassword write SetPassword;
@@ -385,7 +372,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses Misc, Input, Dialogs, Cert, Gss{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+uses Misc, Input, Dialogs, Cert, Gss, System.UITypes, HtmlMisc;
 
 { Name handling routines }
 
@@ -446,42 +433,6 @@ begin
 end;
 
 
-{$ifdef mswindows}
-function IsValidDn(Value: string): Boolean;
-var
-  i: Integer;
-  comp: PPChar;
-begin
-  i := 0;
-  comp := ldap_explode_dn(PChar(Value), 0);
-  if Assigned(comp) then
-  while PCharArray(comp)[i] <> nil do
-  begin
-    if StrScan(PCharArray(comp)[i], '=') = nil then
-      break;
-    inc(i);
-  end;
-  Result := PCharArray(comp)[i] = nil;
-  ldap_value_free(comp);
-end;
-
-function CanonicalName(dn: string): string;
-var
-  comp: PPChar;
-  i: Integer;
-begin
-  Result := '';
-  comp := ldap_explode_dn(PChar(dn), 1);
-  i := 0;
-  if Assigned(comp) then
-  while PCharArray(comp)[i] <> nil do
-  begin
-    Result := Result + PCharArray(comp)[i] + '/';
-    inc(i);
-  end;
-  ldap_value_free(comp);
-end;
-{$else}
 function IsValidDn(Value: string): Boolean;
 var
   i: Integer;
@@ -515,19 +466,18 @@ begin
     end;
   comp.Free;
 end;
-{$endif}
 
 function SkipEscaped(p: PChar): PChar; inline;
 begin
-  Result := CharNext(p);
+  Result := p + 1;
   if Result^ = #0 then
     exit;
   if not (Result^ in LdapEscapableChars) then
   begin
-    Result := CharNext(p);  // skip the two-byte hex code
+    Result := p + 1;  // skip the two-byte hex code
     if Result^ = #0 then
       exit;
-    Result := CharNext(p);
+    Result := p + 1;
   end;
 end;
 
@@ -538,9 +488,9 @@ begin
   p := PChar(dn);
   p0 := p;
   while (p^ <> #0) and (p^ <> '=') do
-    p := CharNext(p);
+    p := p + 1;
   SetString(attrib, p0, p - p0);
-  p := CharNext(p);
+  p := p + 1;
   p1 := p;
   while (p1^ <> #0) and (p1^ <> ',') do
   begin
@@ -550,7 +500,7 @@ begin
       if p1^ = #0 then
         break;
     end;
-    p1 := CharNext(p1);
+    p1 := p1 + 1;
   end;
   SetString(value, P, P1 - P);
 end;
@@ -562,7 +512,7 @@ begin
   p := PChar(dn);
   p1 := p;
   while (p1^ <> #0) and (p1^ <> '=') do
-    p1 := CharNext(p1);
+    p1 := p1 + 1;
   SetString(Result, P, P1 - P);
 end;
 
@@ -572,8 +522,8 @@ var
 begin
   p := PChar(dn);
   while (p^ <> #0) and (p^ <> '=') do
-    p := CharNext(p);
-  p := CharNext(p);
+    p := p + 1;
+  p := p + 1;
   p1 := p;
   while (p1^ <> #0) and (p1^ <> ',') do
   begin
@@ -583,7 +533,7 @@ begin
       if p1^ = #0 then
         break;
     end;
-    p1 := CharNext(p1);
+    p1 := p1 + 1;
   end;
   SetString(Result, P, P1 - P);
 end;
@@ -602,7 +552,7 @@ begin
       if p1^ = #0 then
         break;
     end;
-    p1 := CharNext(p1);
+    p1 := p1 + 1;
   end;
   SetString(Result, P, P1 - P);
 end;
@@ -623,10 +573,10 @@ begin
     else
     if (p^ = ',') then
     begin
-      p := CharNext(p);
+      p := p + 1;
       break;
     end;
-    p := CharNext(p);
+    p := p + 1;
   end;
   Result := p;
 end;
@@ -687,11 +637,7 @@ begin
   MessageDlg(msg, mtError, [mbOk], 0);
 end;
 
-{$ifdef mswidnows}
-procedure TLdapSession.ProcessSearchEntry(const plmEntry: PLDAPMessage; Attributes: TLdapAttributeList);
-{$else}
 procedure TLdapSession.ProcessSearchEntry(const plmEntry: TLDAPResult; Attributes: TLdapAttributeList);
-{$endif}
 var
   Attr: TLdapAttribute;
   i,j: Integer;
@@ -702,102 +648,45 @@ var
   data: TLDAPAttributeData;
 begin
   // loop thru attributes
-  {$ifdef mswindows}
-  pszAttr := ldap_first_attribute(pld, plmEntry, pbe);
-  while Assigned(pszAttr) do
-  begin
-    Attr := Attributes.Add(pszattr);
-    Attr.fState := Attr.fState + [asBrowse];
-    // get value
-    ppBer := ldap_get_values_len(pld, plmEntry, pszAttr);
-    if Assigned(ppBer) then
-    try
-      i := 0;
-      while Assigned(PPLdapBervalA(ppBer)[i]) do
-      begin
-        Attr.AddValue(PPLdapBervalA(ppBer)[i]^.bv_val, PPLdapBervalA(ppBer)[i]^.bv_len);
-        Inc(I);
-      end;
-    finally
-      LDAPCheck(ldap_value_free_len(ppBer), false);
-    end;
-    ber_free(pbe, 0);
-    pszAttr := ldap_next_attribute(pld, plmEntry, pbe);
-  end;
-  {$else}
   for i := 0 to plmEntry.Attributes.Count - 1 do
   begin
-        pszAttr := plmEntry.Attributes[i].AttributeName;
+        pszAttr := plmEntry.Attributes.Items[i].AttributeName;
         Attr := Attributes.Add(pszAttr);
         Attr.fState := Attr.fState + [asBrowse];
-        for j:=0 to plmEntry.Attributes[i].Count-1 do
+        for j:=0 to plmEntry.Attributes.Items[i].Count-1 do
         begin
-          pszdn:= plmEntry.Attributes[i][j];
+          pszdn:= plmEntry.Attributes.Items[i].GetReadable(j);
           ///data:=TLdapAttributeData.Create(Attr);
           Attr.AddValue(PAnsiChar(pszdn),length(pszdn));
         end;
   end;
-  {$endif}
 end;
 
-{$ifdef mswindows}
-procedure TLDAPSession.ProcessSearchMessage(const plmSearch: PLDAPMessage; const NoValues: LongBool; Result: TLdapEntryList);
-{$else}
-procedure TLDAPSession.ProcessSearchMessage(const plmSearch: TLDAPsend; const NoValues: LongBool; Result: TLdapEntryList);
-{$endif}
+procedure TLDAPSession.ProcessSearchMessage(const plmSearch: TLdapClient; const NoValues: LongBool; Result: TLdapEntryList);
 var
-  {$ifdef mswindows}
-  plmEntry: PLDAPMessage;
-  pszdn: PChar;
-  {$else}
   plmEntry: TLDAPResult;
   pszdn: string;
-  {$endif}
   Entry: TLdapEntry;
   i,j : integer;
 begin
   try
-    {$ifdef mswindows}
-    // loop thru entries
-    plmEntry := ldap_first_entry(pld, plmSearch);
-    while Assigned(plmEntry) do
-    begin
-      pszdn := ldap_get_dn(pld, plmEntry);
-      Entry := TLdapEntry.Create(Self, pszdn);
-      Result.Add(Entry);
-      if not NoValues then
-      begin
-        Entry.fState := [esReading];
-        try
-          ProcessSearchEntry(plmEntry, Entry.Attributes);
-          Entry.fState := Entry.fState + [esBrowse]; 
-        finally
-          Entry.fState := Entry.fState - [esReading];
-        end;
-      end;
-      if Assigned(pszdn) then
-        ldap_memfree(pszdn);
-      plmEntry := ldap_next_entry(pld, plmEntry);
-    end;
-    {$else}
     if plmSearch=nil then exit;
     for i:=0 to plmSearch.SearchResult.Count -1 do
     begin
-      pszdn:= plmSearch.SearchResult[i].ObjectName;
+      pszdn:= plmSearch.SearchResult.Items[i].ObjectName;
       Entry := TLdapEntry.Create(Self, pszdn);
       Result.Add(Entry);
       if not NoValues then
       begin
         Entry.fState := [esReading];
         try
-          ProcessSearchEntry(plmSearch.SearchResult[i], Entry.Attributes);
+          ProcessSearchEntry(plmSearch.SearchResult.Items[i], Entry.Attributes);
           Entry.fState := Entry.fState + [esBrowse];
         finally
           Entry.fState := Entry.fState - [esReading];
         end;
       end;
     end;
-    {$endif}
   finally
     // free search results
     {$ifdef mswindows}
@@ -808,11 +697,7 @@ end;
 
 procedure TLDAPSession.Search(const Filter, Base: string; const Scope: Cardinal; attrs: PCharArray; const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback = nil);
 var
-  {$ifdef mswindows}
-  plmSearch: PLDAPMessage;
-  {$else}
-  plmSearch: TLDAPsend;
-  {$endif}
+  plmSearch: TLdapClient;
   Err: Integer;
   ServerControls: PLDAPControl;
   ClientControls: PLDAPControl;
@@ -967,105 +852,12 @@ begin
   end;
 end;
 
-{$ifdef mswindows}
-procedure TLDAPSession.WriteEntry(Entry: TLdapEntry);
-var
-  i, j, acnt, addidx, delidx, repidx: Integer;
-  attrs: PPLDapMod;
-  AttributeList: TLdapAttributeList;
-
-  procedure ValueModOp(AValue: TLdapAttributeData; var idx: Integer);
-  var
-    pix: Integer;
-  begin
-    if idx < 0 then  // new entry
-    begin
-      if acnt = High(attrs) then            // we need trailing NULL
-        SetLength(attrs, acnt + 10);        // expand array if neccessary
-      idx := acnt;
-      GetMem(attrs[acnt], SizeOf(LDAPMod));
-      with attrs[acnt]^ do
-      begin
-        mod_op := AValue.ModOp or LDAP_MOD_BVALUES;
-        mod_type := PChar(AValue.fAttribute.Name);
-        modv_bvals := nil;        // MUST be nil before call to SetLength!
-        SetLength(PPLdapBervalA(modv_bvals), 2);
-        PPLdapBervalA(modv_bvals)[0] := AValue.BerVal;
-        PPLdapBervalA(modv_bvals)[1] := nil;   // trailing NULL
-      end;
-      Inc(acnt);
-    end
-    else
-    begin
-      with attrs[idx]^ do
-      begin
-        pix := Length(PPLdapBervalA(modv_bvals));
-        PPLdapBervalA(modv_bvals)[pix - 1] := AValue.BerVal;
-        Setlength(PPLdapBervalA(modv_bvals), pix + 1);
-        PPLdapBervalA(modv_bvals)[pix] := nil;  // trailing NULL
-      end;
-    end;
-  end;
-
-  procedure DeleteAll(const AttributeName: string);
-  begin
-    if acnt = High(attrs) then            // we need trailing NULL
-      SetLength(attrs, acnt + 10);        // expand array if neccessary
-    GetMem(attrs[acnt], SizeOf(LDAPMod));
-    with attrs[acnt]^ do
-    begin
-      mod_op := LDAP_MOD_DELETE;
-      mod_type := PChar(AttributeName);
-      modv_bvals := nil;
-    end;
-    Inc(acnt);
-  end;
-
-begin
-  AttributeList := Entry.Attributes; // for faster access
-  SetLength(attrs, 10); // TODO ModopCount, acnt -> ModopCount
-  acnt := 0;
-  try
-    for i := 0 to AttributeList.Count - 1 do
-    begin
-      if asDeleted in AttributeList[i].State then
-        DeleteAll(AttributeList[i].Name)
-      else
-      if asModified in AttributeList[i].State then
-      begin
-        addidx := -1;
-        delidx := -1;
-        repidx := -1;
-        for j := 0 to AttributeList[i].ValueCount - 1 do
-          case AttributeList[i][j].ModOp of
-            LDAP_MOD_ADD:     ValueModop(AttributeList[i][j], addidx);
-            LDAP_MOD_DELETE:  ValueModop(AttributeList[i][j], delidx);
-            LDAP_MOD_REPLACE: ValueModop(AttributeList[i][j], repidx);
-          end;
-      end;
-    end;
-    attrs[acnt] := nil;  // trailing NULL
-    if acnt > 0 then
-    begin
-      if esNew in Entry.State then
-        ///LdapCheck(ldap_add_s(pld, PChar(Entry.dn), PLDAPMod(attrs)))
-        LdapCheck(ldap_add_s(pld, PChar(Entry.dn), attrs))
-      else
-        LdapCheck(ldap_modify_s(pld, PChar(Entry.dn), PLDAPMod(attrs)));
-    end;
-  finally
-    for i := 0 to acnt - 1 do
-      FreeMem(attrs[i]);
-  end;
-end;
-
-{$else}
 procedure TLDAPSession.WriteEntry(Entry: TLdapEntry);
 var
   i,j          : integer;
   AttributeList: TLdapAttributeList;
-  Attributes   : LDAPSend.TLDAPAttributeList;
-  data         : LDAPSend.TLDAPAttribute;
+  Attributes   : mormot.net.ldap.TLdapAttributeList;
+  data         : mormot.net.ldap.TLDAPAttribute;
 
 
 procedure MakeAttrib(AValue: TLdapAttributeData);
@@ -1077,8 +869,7 @@ begin
   end
   else
   begin
-    data:=Attributes.Add;
-    data.AttributeName:=AValue.fAttribute.Name;
+    data:=Attributes.Add(AValue.fAttribute.Name);
     if not(asDeleted in AttributeList[i].State) then
        data.add(AValue.AsString);
   end;
@@ -1089,12 +880,12 @@ begin
   AValue.ModOp:=-1;
   Attributes.Clear;
   MakeAttrib(Avalue);
-  if not(esNew in Entry.State) then LdapCheck(ldap_modify_s(pld, PChar(Entry.dn), ModOP, Attributes[0]));
+  if not(esNew in Entry.State) then LdapCheck(ldap_modify_s(pld, PChar(Entry.dn), ModOP, Attributes.Items[0]));
 end;
 
 
 begin
-  Attributes:=LDAPSend.TLDAPAttributeList.Create;
+  Attributes:=mormot.net.ldap.TLDAPAttributeList.Create;
   AttributeList := Entry.Attributes;
   try
     for i := 0 to AttributeList.Count - 1 do
@@ -1113,9 +904,9 @@ begin
       begin
         for j := 0 to AttributeList[i].ValueCount - 1 do
           case AttributeList[i][j].ModOp of
-            LDAP_MOD_ADD:     ValueModOp(AttributeList[i][j],MO_Add);
-            LDAP_MOD_DELETE:  ValueModOp(AttributeList[i][j],MO_Delete);
-            LDAP_MOD_REPLACE: ValueModOp(AttributeList[i][j],MO_Replace);
+            LDAP_MOD_ADD:     ValueModOp(AttributeList[i][j], lmoAdd);
+            LDAP_MOD_DELETE:  ValueModOp(AttributeList[i][j], lmoDelete);
+            LDAP_MOD_REPLACE: ValueModOp(AttributeList[i][j],lmoReplace);
           end;
       end;
     end;
@@ -1126,23 +917,18 @@ begin
   end;
 
 end;
-{$endif}
 
 
 procedure TLDAPSession.ReadEntry(Entry: TLdapEntry);
 var
-  {$ifdef mswindows}
-  plmEntry: PLDAPMessage;
-  {$else}
-  plmEntry: TLDAPsend;
-  {$endif}  
+  plmEntry: TLdapClient;
 
   procedure DoRead(attrs: PCharArray; AttributeList: TLdapAttributeList);
   begin
     LdapCheck(ldap_search_s(pld, PChar(Entry.dn), LDAP_SCOPE_BASE, sANYCLASS, PChar(attrs), 0, plmEntry));
     try
       if Assigned(plmEntry) then
-         ProcessSearchEntry(plmEntry.SearchResult[0], AttributeList);
+         ProcessSearchEntry(plmEntry.SearchResult.Items[0], AttributeList);
     finally
       // free search results
       ///LDAPCheck(ldap_msgfree(plmEntry), false);
@@ -1157,11 +943,7 @@ end;
 
 procedure TLDAPSession.ReadEntry(Entry: TLdapEntry; Attributes: array of string);
 var
-  {$ifdef mswindows}
-  plmEntry: PLDAPMessage;
-  {$else}
-  plmEntry: TLDAPsend;
-  {$endif}    
+  plmEntry: TLdapClient;
   attrs: PCharArray;
   len: Integer;
 begin
@@ -1181,7 +963,7 @@ begin
     try
       if Assigned(plmEntry) then
          //ProcessSearchEntry(plmEntry.SearchResult[0], AttributeList);
-         ProcessSearchEntry(plmEntry.SearchResult[0], Entry.Attributes);
+         ProcessSearchEntry(plmEntry.SearchResult.Items[0], Entry.Attributes);
     finally
       // free search results
       ///LDAPCheck(ldap_msgfree(plmEntry), false);
@@ -1224,12 +1006,8 @@ end;
 
 function TLDAPSession.Lookup(sBase, sFilter, sResult: string; Scope: ULONG): string;
 var
-  {$ifdef mswindows}
-  plmSearch, plmEntry: PLDAPMessage;
-  {$else}
-  plmSearch: TLDAPsend;
+  plmSearch: TLdapClient;
   plmEntry:  TLDAPResult;
-  {$endif}
   attrs: PCharArray;
   ppcVals: PPCHAR;
 begin
@@ -1260,12 +1038,8 @@ end;
 
 function TLDAPSession.GetDn(sFilter: string): string;
 var
-  {$ifdef mswindows}
-  plmSearch, plmEntry: PLDAPMessage;
-  {$else}
-  plmSearch: TLDAPsend;
+  plmSearch: TLdapClient;
   plmEntry: TLDAPResult;
-  {$endif}
   attrs: PCharArray;
 begin
     // set result to dn only
@@ -1454,11 +1228,9 @@ end;
 constructor TLDAPSession.Create;
 begin
   inherited Create;
-  {$ifndef mswindows}
-  ldappld:= TLDAPsend.Create;
-  {$endif}
+  ldappld:= TLdapClient.Create;
   ldapAuthMethod := AUTH_SIMPLE;
-  ldapPort := LDAP_PORT;
+  ldapPort := LDAP_PORT.ToInteger;
   ldapVersion := LDAP_VERSION3;
   ldapSSL := false;
   fTimeLimit := SESS_TIMEOUT;
@@ -1496,17 +1268,10 @@ var
 begin
   if (ldapUser<>'') and (ldapPassword='') then
     if not InputDlg(cEnterPasswd, Format(stPassFor, [ldapUser]), ldapPassword, '*', true) then Abort;
-  {$ifdef mswindows}
-  if ldapSSL then
-    ldappld := ldap_sslinit(PChar(ldapServer), ldapPort,1)
-  else
-    ldappld := ldap_init(PChar(ldapServer), ldapPort);
-  {$else}
   if ldapSSL then
     ldap_sslinit(ldappld, ldapServer, ldapPort,1)
   else
     ldap_init(ldappld,ldapServer, ldapPort);
-  {$endif}
   if Assigned(pld) then
   try
     LdapCheck(ldap_set_option(ldappld,LDAP_OPT_PROTOCOL_VERSION,@ldapVersion));
@@ -1588,7 +1353,7 @@ begin
   begin
     fOnDisconnect.Execute(self);
     //LdapCheck(ldap_unbind_s(pld), false);
-    ldappld.Logout;
+    ldappld.Close;
     //ldappld := nil;
   end;
 end;
@@ -1740,7 +1505,6 @@ begin
   fEntry := Attribute.fEntry;
   //fType := dtUnknown;
   {$ifdef mswindows}
-  end;
   if not (Assigned(fEntry) and Assigned(fEntry.Session) and (fEntry.Session.Version < LDAP_VERSION3)) then
     fUtf8 := true;
   {$else}
