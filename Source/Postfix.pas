@@ -82,7 +82,7 @@ type
 
 implementation
 
-uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}Sysutils;
+uses LinLDAP,Sysutils;
 
 { TMailUser }
 

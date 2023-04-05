@@ -27,7 +27,7 @@ unit Samba;
 
 interface
 
-uses Classes, PropertyObject, Posix, LDAPClasses, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}Constant, Connection, Variants ;
+uses Classes, PropertyObject, Posix, LDAPClasses, LinLDAP, Constant, Connection, Variants ;
 
 const
   WKRids: array[0..4] of Integer  = (

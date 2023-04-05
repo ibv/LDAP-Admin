@@ -117,7 +117,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses Pickup, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}PrefWiz, Main, Config
+uses Pickup, LinLDAP,PrefWiz, Main, Config
      {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
 {$R *.dfm}

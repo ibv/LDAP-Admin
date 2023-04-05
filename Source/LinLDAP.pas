@@ -1290,7 +1290,7 @@ const
 
   function ldap_get_option(ld: TLdapClient; option: integer; outvalue: pointer): ULONG;
 
-  function ldap_err2string(err: ULONG): PChar;
+  function ldap_err2string(err: ULONG): String;
 
   procedure ldap_memfree(Block: PChar);
 
@@ -1409,9 +1409,9 @@ begin
 end;
 
 
-function ldap_err2string(err: ULONG): PChar;
+function ldap_err2string(err: ULONG): String;
 begin
-  result:=PChar(RawLdapErrorString(err));
+  result:=RawLdapErrorString(err);
 end;
 
 
@@ -1741,8 +1741,8 @@ begin
   begin
     ld.Settings.UserName:=PSEC_WINNT_AUTH_IDENTITY(cred)^.User;
     ld.Settings.Password:=PSEC_WINNT_AUTH_IDENTITY(cred)^.Password;
-    ld.Settings.KerberosDN := PSEC_WINNT_AUTH_IDENTITY(cred)^.Domain;
   end;
+  ld.Settings.KerberosDN := 'ad.tranquil.it';
   ld.BindSaslKerberos;
   result:=ld.ResultCode;
 end;

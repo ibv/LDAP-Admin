@@ -68,7 +68,7 @@ var
 
 implementation
 
-uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Misc;
+uses LinLDAP, Misc;
 
 {$R *.dfm}
 

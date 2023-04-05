@@ -47,9 +47,7 @@ type
     procedure WMActivateApp(var AMessage: TMessage); message WM_ACTIVATE;
     {$endif}
   private
-    {$ifdef mswindows}
     FValidator: TValidateInput;
-    {$endif}
   public
     { Public declarations }
   end;
@@ -71,17 +69,11 @@ begin
       Edit.OnChange := nil
     else
       OKBtn.Enabled := false;
-    {$ifdef mswindows}
     FValidator.Attach(Edit);
     FValidator.InvalidChars := InvalidChars;
     FValidator.Caption := APrompt;
-    {$endif}
     Caption := ACaption;
-    {$ifdef mswindows}
     if not APrompt.EndsWith(':') then
-    {$else}
-    if AnsiEndsStr(':', APrompt) then
-    {$endif}
       APrompt := APrompt + ':';
     Prompt.Caption := APrompt;
     Edit.PasswordChar := PasswordChar;
@@ -97,16 +89,12 @@ end;
 
 procedure TInputDlg.WMActivateApp(var AMessage: TMessage);
 begin
-  {$ifdef mswindows}
   FValidator.HideHint;
-  {$endif}
   inherited;
 end;
 procedure TInputDlg.WMWindowPosChanged(var AMessage: TMessage);
 begin
-  {$ifdef mswindows}
   FValidator.HideHint;
-  {$endif}
   inherited;
 end;
 

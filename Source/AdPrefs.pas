@@ -24,8 +24,7 @@ unit AdPrefs;
 interface
 
 uses
-  {$ifdef mswindows}  Windows, {$endif}
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls, ExtCtrls, Constant, LDAPClasses, Connection;
 
 const
@@ -81,11 +80,7 @@ implementation
 {$I LdapAdmin.inc}
 
 uses
-  {$ifdef mswindows}
-   WinLdap,
-  {$else}
    LinLDAP,
-  {$endif}
   ADObjects,
   Pickup, Main,  Config {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 

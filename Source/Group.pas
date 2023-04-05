@@ -106,7 +106,7 @@ var
 
 implementation
 
-uses Pickup, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Input, Main, Templates, Misc, Config;
+uses Pickup, LinLDAP, Input, Main, Templates, Misc, Config;
 
 {$R *.dfm}
 

@@ -196,7 +196,7 @@ var
 
 implementation
 
-uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Math, Dialogs, Misc;
+uses LinLDAP, Math, Dialogs, Misc;
 
 {$R *.dfm}
 

@@ -127,7 +127,7 @@ function Parse(Filter: string): TASTNode;
 
 implementation
 
-uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Constant;
+uses LinLDAP, Constant;
 
 procedure Split(const Separator: Char; const Value: string; var attrib, assertion: string);
 var

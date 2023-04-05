@@ -124,11 +124,7 @@ begin
       uacFlags := UF_DONT_EXPIRE_PASSWORD;
       if uacValue <> '' then
         uacFlags := uacFlags or StrToInt(uacValue);
-      {$ifdef mswindows}
-      fEntry.AttributesByName['userAccountControl'].AsString := UIntToStr(uacFlags);
-  		{$else}
       fEntry.AttributesByName['userAccountControl'].AsString := IntToStr(uacFlags);
- 			{$endif}
     end;
 
     if cbxPwdMustChange.Checked then with fEntry.AttributesByName['pwdLastSet'] do

@@ -2175,11 +2175,7 @@ initialization
   try
     FileExtension := LANG_EXT;
     Paths := GlobalConfig.ReadString('LanguageDir');
-    {$ifdef mswindows}
-    AddPath(ExtractFileDir(application.ExeName) + '\*.' + LANG_EXT);
-    {$else}
-    AddPath(ExtractFileDir(application.ExeName) + '/*.' + LANG_EXT);
-    {$endif}
+    AddPath(ExtractFileDir(application.ExeName) + PathDelim + '*.' + LANG_EXT);
   except
     on E: Exception do
       MessageDlg(E.Message, mtError, [mbOK], 0);

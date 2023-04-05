@@ -429,22 +429,13 @@ end;
 function ConfigIsFolder(AName: string): Boolean; inline;
 begin
   result:=true;
-  {$ifdef mswindows}
   Result := AName.StartsWith(L_FOLDER_CHR) and AName.EndsWith(R_FOLDER_CHR);
-  {$else}
-  Result := AnsiStartsStr(L_FOLDER_CHR,AName) and AnsiEndsStr(R_FOLDER_CHR,AName);
-  {$endif}
 end;
 
 function ConfigUnpackFolder(AName: string): string; inline;
 begin
-  {$ifdef mswindows}
-  Result := AName.Substring(1, AName.Length - 2);
-  {$else}
-   //Result:=copy(AName,2,length(AName)-2);
    Result:=ReplaceStr(Aname, L_FOLDER_CHR, '');
    Result:=ReplaceStr(Result,R_FOLDER_CHR,'');
-  {$endif}
 end;
 
 function ConfigPackFolder(AName: string): string; inline;
@@ -1149,11 +1140,7 @@ procedure TAccountFolder.ValidateName(const Value: string);
 begin
   if Value = '' then
     raise Exception.Create(stAccntNameReq);
-  {$ifdef mswindows}
   if Value.Contains('\') then
-  {$else}
-  if AnsiContainsStr(Value,'\') then
-  {$endif}
     raise Exception.CreateFmt(stInvalidChr, ['\', Value]);
 end;
 
@@ -1346,11 +1333,7 @@ end;
 function TConfigStorage.ByPath(APath: string; Relative: Boolean = false): TConfig;
 var
   i, l, h: Integer;
-  {$ifdef mswindows}
-  Splitted: TArray<String>;
-  {$else}
-  Splitted: TStringList;
-  {$endif}
+  Splitted: array of String;
   AFolder: TAccountFolder;
 begin
   Result := nil;
@@ -1360,16 +1343,9 @@ begin
     System.Delete(APath, 1, 1);
   if APath = '' then
     exit;
-  {$ifdef mswindows}
   Splitted := APath.Split(['\']);
   h := High(Splitted);
   l := Low(Splitted);
-  {$else}
-  SPlitted := TStringlist.Create;
-  ExtractStrings(['\'], [], PChar(APath), Splitted);
-  h := Splitted.count-1;
-  l := 0;
-  {$endif}
   AFolder := RootFolder;
   if Relative then
     dec(l)
@@ -1388,9 +1364,6 @@ begin
   end;
   if ConfigIsFolder(Splitted[h]) then
     Result := AFolder.Items.FolderByName(ConfigUnpackFolder(Splitted[h]));
-  {$ifndef mswindows}
-  Splitted.Free;
-  {$endif}
 end;
 
 { TRegistryConfigStorage }
@@ -1848,30 +1821,16 @@ end;
 
 procedure TXmlConfigStorage.New(Parent, Name: string);
 var
-  {$ifdef mswindows}
-  Splitted: TArray<String>;
-  {$else}
-  Splitted: TStringList;
-  {$endif}
-
+  Splitted: array of String;
   i: Integer;
   ParentNode, Node: TXmlNode;
 begin
   if Parent[1] = '\' then
     System.Delete(Parent, 1, 1);
-  {$ifdef mswindows}
   Splitted := Parent.Split(['\']);
-  {$else}
-  Splitted:=TStringList.Create;
-  ExtractStrings(['\'], [], PChar(PArent), Splitted);
-  {$endif}
   ParentNode := FXml.Root;
   Node := ParentNode;
-  {$ifdef mswindows}
   for i := Low(Splitted) to High(Splitted) do
-  {$else}
-  for i:=0 to Splitted.count -1 do
-  {$endif}
   begin
     Node := ParentNode.NodeByName(Splitted[i]);
     if not Assigned(Node) then
@@ -1879,9 +1838,6 @@ begin
     ParentNode := Node;
   end;
   Node.Add(Name);
-  {$ifndef mswindows}
-  Splitted.free;
-  {$endif}
 end;
 
 procedure TXmlConfigStorage.Rename(Path, NewName: string);

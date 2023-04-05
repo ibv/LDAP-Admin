@@ -27,7 +27,7 @@ unit Posix;
 
 interface
 
-uses PropertyObject, LDAPClasses, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Classes;
+uses PropertyObject, LDAPClasses, LinLDAP, Classes;
 
 const
     eUidNumber           = 0;

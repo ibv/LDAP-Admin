@@ -610,23 +610,12 @@ begin
 
   if ((ldap_get_option(pld, LDAP_OPT_SERVER_ERROR, @ErrorEx)=LDAP_SUCCESS) and Assigned(ErrorEx)) then
   begin
-    {$ifdef mswindows}
     msg := Format(stLdapErrorEx, [ldap_err2string(err), ErrorEx]);
-    {$else}
-    msg := Format(stLdapErrorEx, [ldap_err2string(pld,err), ErrorEx]);
-    {$endif}
     ldap_memfree(ErrorEx);
   end
   else
-  
-  {$ifdef mswindows}
     msg := Format(stLdapError, [ldap_err2string(err)]);
-
-  
-  {$else}
-    msg := Format(stLdapError, [ldap_err2string(pld,err)]);
-  {$endif}
-  c := 0;
+    c := 0;
     // TODO check with OpenLdap
     if (ldap_get_option(pld, LDAP_OPT_SERVER_EXT_ERROR, @c) = LDAP_SUCCESS) then
       msg := msg + #10 + SysErrorMessage(c);
@@ -669,29 +658,23 @@ var
   Entry: TLdapEntry;
   i,j : integer;
 begin
-  try
-    if plmSearch=nil then exit;
-    for i:=0 to plmSearch.SearchResult.Count -1 do
+  if plmSearch=nil then
+    exit;
+  for i:=0 to plmSearch.SearchResult.Count -1 do
+  begin
+    pszdn:= plmSearch.SearchResult.Items[i].ObjectName;
+    Entry := TLdapEntry.Create(Self, pszdn);
+    Result.Add(Entry);
+    if not NoValues then
     begin
-      pszdn:= plmSearch.SearchResult.Items[i].ObjectName;
-      Entry := TLdapEntry.Create(Self, pszdn);
-      Result.Add(Entry);
-      if not NoValues then
-      begin
-        Entry.fState := [esReading];
-        try
-          ProcessSearchEntry(plmSearch.SearchResult.Items[i], Entry.Attributes);
-          Entry.fState := Entry.fState + [esBrowse];
-        finally
-          Entry.fState := Entry.fState - [esReading];
-        end;
+      Entry.fState := [esReading];
+      try
+        ProcessSearchEntry(plmSearch.SearchResult.Items[i], Entry.Attributes);
+        Entry.fState := Entry.fState + [esBrowse];
+      finally
+        Entry.fState := Entry.fState - [esReading];
       end;
     end;
-  finally
-    // free search results
-    {$ifdef mswindows}
-    LDAPCheck(ldap_msgfree(plmSearch), false);
-    {$endif}
   end;
 end;
 
@@ -708,15 +691,11 @@ var
   AbortSearch: Boolean;
 begin
 
-  if not fPagedSearch then
+  if True then// not fPagedSearch then
   begin
     Err := ldap_search_s(pld, PChar(Base), Scope, PChar(Filter), PChar(attrs), Ord(NoValues), plmSearch);
     if Err = LDAP_SIZELIMIT_EXCEEDED then
-    {$ifdef mswindows}
       MessageDlg(ldap_err2string(err), mtWarning, [mbOk], 0)
-    {$else}
-      MessageDlg(ldap_err2string(pld,err), mtWarning, [mbOk], 0)
-    {$endif}
     else
       LdapCheck(Err);
     ProcessSearchMessage(pld, NoValues, Result);
@@ -758,11 +737,7 @@ begin
           if Err = LDAP_SIZELIMIT_EXCEEDED then
           begin
             ProcessSearchMessage(pld, NoValues, Result);
-            {$ifdef mswindows}
             MessageDlg(ldap_err2string(err), mtWarning, [mbOk], 0)
-            {$else}
-            MessageDlg(ldap_err2string(pld,err), mtWarning, [mbOk], 0);
-            {$endif}
           end;
           LdapCheck(ldap_search_abandon_page(hsrch));
           break;
@@ -1251,9 +1226,7 @@ begin
   except
     on E: exception do MessageDlg(E.Message, mtError, [mbOk], 0);
   end;
-  {$ifndef mswindows}
   ldappld.free;
-  {$endif}
   fOnConnect.Free;
   fOnDisconnect.Free;
   OperationalAttrs := ''; // dispose string array
@@ -1298,8 +1271,8 @@ begin
                        begin
                          ident.User := PChar(ldapUser);
                          ident.UserLength := Length(ldapUser);
-                         ident.Domain := '';
-                         ident.DomainLength := 0;
+                         ident.Domain := PChar(ldapServer);
+                         ident.DomainLength := Length(ldapServer);
                          ident.Password := PChar(ldapPassword);
                          ident.PasswordLength := Length(ldapPassword);
                          {$IFDEF UNICODE}

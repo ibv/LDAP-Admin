@@ -392,7 +392,8 @@ uses
   ADObjects,
   EditEntry, ConnList, Search, LdapOp, Constant, Export, Import, Prefs, Misc,
   LdapCopy, BinView, Input, ConfigDlg, Templates, TemplateCtrl,
-  Cert, PicView, About, Alias, SizeGrip, CustMenuDlg, Lang, Bookmarks, DBLoad
+  Cert, PicView, About, Alias, SizeGrip, CustMenuDlg, Lang, Bookmarks, DBLoad,
+  mormot.core.os
   {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
 
@@ -818,11 +819,7 @@ begin
   if idx >= 0 then
   begin
     FConnection.Disconnect;
-    {$ifdef mswindows}
     fConnections.Delete(idx);
-    {$else}
-    fConnections.Delete(idx-1);
-    {$endif}
     FConnection := nil;
     TabControl1.Tabs.Delete(idx);
     dec(idx);
@@ -1083,9 +1080,8 @@ var
   end;
 
 begin
-  {$ifndef mswindows}
-  if Node = nil then exit;
-  {$endif}
+  if Node = nil then
+    exit;
   with TObjectInfo(Node.Data).Entry do
   begin
     Read;
@@ -1242,10 +1238,8 @@ begin
     if List.Objects[i] <> LDAP_OP_SUCCESS then
       Continue;
     Node := LocateEntry(List[i], false);
-    {$ifndef mswindows}
     // for treeview event onchange
     Node.Parent.Selected:=true;
-    {$endif}
     if Assigned(Node) and (TObjectInfo(Node.Data).dn = List[i]) then
     begin
       if EntryListView.Visible then
@@ -2496,11 +2490,7 @@ begin
   try
     Value := Item.SubItems[0];
     s := lowercase(Item.Caption);
-    {$ifdef mswindows}
     if s.Contains('guid') then
-    {$else}
-    if AnsiContainsStr(S,'guid') then
-    {$endif}
     begin
       InfoTip := GuidToString(PGUID(TLdapAttributeData(Item.Data).Data)^);
       exit;
@@ -2509,7 +2499,7 @@ begin
     begin
       if s = 'objectsid' then
       begin
-        InfoTip := ObjectSidToString(PSidRec(TLdapAttributeData(Item.Data).Data));
+        InfoTip := SidToText(PSid(TLdapAttributeData(Item.Data).Data));
         exit;
       end;
       if s ='useraccountcontrol' then

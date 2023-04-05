@@ -28,7 +28,7 @@ unit Schema;
 
 interface
 
-uses Classes, LDAPClasses, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}SysUtils, Contnrs;
+uses Classes, LDAPClasses, LinLDAP, SysUtils, Contnrs;
 
 type
   TAttributeUsage=(au_userApplications, au_directoryOperation, au_distributedOperation, au_dSAOperation);

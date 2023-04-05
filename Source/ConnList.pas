@@ -1085,6 +1085,8 @@ procedure TConnListFrm.RefreshAccountsView;
 var
   i: integer;
   SelData: pointer;
+  items: TConfigList;
+  folder: TAccountFolder;
 begin
   AccountsView.Items.BeginUpdate;
 
@@ -1104,21 +1106,28 @@ begin
       ImageIndex := imNewAccount;
     end;
 
-    with GetCurrentFolder.Items do
-    for i := 0 to Accounts.Count - 1 do
-      with AccountsView.Items.Add do
+    folder := GetCurrentFolder;
+    if Assigned(folder) then
+    begin
+      items := folder.Items;
+      if Assigned(items) and Assigned(items.Accounts) then
       begin
-        Caption := Accounts[i].Name;
-        Data := Accounts[i];
-        SubItems.Add(Accounts[i].Server);
-        SubItems.Add(Accounts[i].Base);
-        if Accounts[i].User = '' then
-          SubItems.Add('anonymous')
-        else
-          SubItems.Add(Accounts[i].User);
-        ImageIndex := imComputer;
-        Selected := (Data = SelData);
+        for i := 0 to items.Accounts.Count - 1 do
+          with AccountsView.Items.Add do
+          begin
+            Caption := items.Accounts[i].Name;
+            Data := items.Accounts[i];
+            SubItems.Add(items.Accounts[i].Server);
+            SubItems.Add(items.Accounts[i].Base);
+            if items.Accounts[i].User = '' then
+              SubItems.Add('anonymous')
+            else
+              SubItems.Add(items.Accounts[i].User);
+            ImageIndex := imComputer;
+            Selected := (Data = SelData);
+          end;
       end;
+    end;
 
   end;
   AccountsView.Items.EndUpdate;
@@ -1483,7 +1492,7 @@ begin
       Account.LdapVersion        := LdapVersion;
       Account.User               := User;
       Account.Server             := Server;
-      Account.Password           := Password;
+      Account.Password           := Password + #0;
       Account.TimeLimit          := Timelimit;
       Account.SizeLimit          := SizeLimit;
       Account.PagedSearch        := PagedSearch;

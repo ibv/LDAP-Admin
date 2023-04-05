@@ -72,7 +72,7 @@ var
 
 implementation
 
-uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Input;
+uses LinLDAP, Input;
 
 {$R *.dfm}
 

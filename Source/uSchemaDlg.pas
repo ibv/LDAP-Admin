@@ -134,7 +134,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses Math, Export,{$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Constant, Misc{$IFDEF VER_XEH}, System.Types{$ENDIF};
+uses Math, Export,LinLDAP, Constant, Misc{$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 const
   FOLDER_IMG          = 0;

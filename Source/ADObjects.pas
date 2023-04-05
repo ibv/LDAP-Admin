@@ -24,11 +24,8 @@ unit ADObjects;
 interface
 
 uses
-  {$ifdef mswindows}
-  Windows, WinLDAP, UITypes,
-  {$else}
+  Windows, UITypes,
   LinLDAP, forms, graphics, types, Process, Controls,
-  {$endif}
   Classes, LDAPClasses, Constant, Connection, ComCtrls;
 
 resourcestring
@@ -66,7 +63,7 @@ const
   SECURITY_WORLD_RID =($00000000);
   SECURITY_PRINCIPAL_SELF_RID = ($0000000A);
   CHANGE_PASSWORD_GUID = '{AB721A53-1E2F-11D0-9819-00AA0040529B}';
-  ADS_ACETYPE_ACCESS_DENIED_OBJECT = 6;
+  ADS_ACETYPE_ACCESS_DENIED_OBJECT =  6;
 
 
   { User Account Control flags }
@@ -165,7 +162,7 @@ type
   public
     constructor Create(Entry: TLdapEntry; List: TListView);
     destructor  Destroy; override;
-    procedure   Add(dn: string); overload;
+    procedure   Add(dn:  string); overload;
     procedure   Add; overload;
     procedure   Delete;
     function    QueryPrimaryGroup: TModalResult;
@@ -180,7 +177,7 @@ type
     function  GetSid: string;
     function  GetDomainSid: string;
     function  GetAccountExpires: TDateTime;
-    procedure SetAccountExpires(Value: TDateTime);
+    procedure SetAccountExpires(Value:  TDateTime);
     function  GetPrimaryGroup: string;
     //function  GetJPegImage: TJpegImage;
     //procedure SetJPegImage(const Image: TJpegImage);
@@ -205,7 +202,6 @@ type
 
 function  DateTimeToWinapiTime(Value: TDateTime): TFileTime;
 function  WinapiTimeToDateTime(Value: TFileTime): TDateTime;
-function  ObjectSIDToString(sid: PSidRec): string;
 function  GetUACstring(Uac: string): string;
 function  WrapGetComputerNameEx(ANameFormat: Windows.COMPUTER_NAME_FORMAT): string;
 function  GetNetBiosDomain: string;
@@ -216,7 +212,7 @@ implementation
 
 uses
   {$IFDEF VARIANTS} variants, {$ENDIF} md4Samba, smbdes, Sysutils, Misc, Config,
-  Pickup, Dialogs, process, Forms, Controls;// {$ifdef mswindows},ActiveX, ComObj, ActiveDs_TLB, adsie,AclApi, AccCtrl{$endif};
+  Pickup, Dialogs, mormot.core.os;// {$ifdef mswindows},ActiveX, ComObj, ActiveDs_TLB, adsie,AclApi, AccCtrl{$endif};
 
 type
   TSidIdent = (siEveryone, siSelf);
@@ -340,32 +336,6 @@ end;
 function GetRidFromObjectSid(sid: PSidRec): Cardinal; inline;
 begin
   Result := sid.SubAuthority[sid.SubAuthorityCount - 1];
-end;
-
-function ObjectSIDToString(sid: PSidRec): string;
-var
-  i: Cardinal;
-begin
-  {$ifdef mswindows}
-  Result := 'S-' + UIntToStr(sid.Revision) + '-' + UIntToStr(sid.IdentifierAuthority[5]);
-  for i := 0 to sid.SubAuthorityCount - 1 do
-    Result := Result + '-' + UIntToStr(sid.SubAuthority[i]);
-  {$else}
-  result:='';
-  {$endif}
-end;
-
-function GetDomainFromObjectSID(sid: PSidRec): string;
-var
-  i: Cardinal;
-begin
-  {$ifdef mswindows}
-  Result := 'S-' + UIntToStr(sid.Revision) + '-' + UIntToStr(sid.IdentifierAuthority[5]);
-  for i := 0 to sid.SubAuthorityCount - 2 do
-    Result := Result + '-' + UIntToStr(sid.SubAuthority[i]);
-  {$else}
-  result:='';
-  {$endif}
 end;
 
 function DateTimeToWinapiTime(Value: TDateTime): TFileTime;
@@ -686,11 +656,7 @@ begin
     if Value = 0 then
       AsString := WT_AccountNeverExpires1
     else
-      {$ifdef mswindows}
-      AsString := UIntToStr(UInt64(DateTimeToWinApiTime(Value)));
-      {$else}
       AsString := IntToStr(UInt64(DateTimeToWinApiTime(LocalDateTimeToUTC(Value))));
-      {$endif}
 end;
 
 function TADObjectHelper.GetSid: string;
@@ -699,7 +665,7 @@ var
 begin
   val := AttributesByName['objectSid'].Values[0];
   if Assigned(val) then
-    Result := ObjectSIDToString(Pointer(val.Data))
+    Result := SidToText(Pointer(val.Data))
   else
     Result := '';
 end;
@@ -710,7 +676,7 @@ var
 begin
   val := AttributesByName['objectSid'].Values[0];
   if Assigned(val) then
-    Result := GetDomainFromObjectSID(Pointer(val.Data))
+    Result := SidToText(Pointer(val.Data))
   else
     Result := '';
 end;

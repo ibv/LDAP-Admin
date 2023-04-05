@@ -34,11 +34,8 @@ interface
 
 uses 
   SysUtils,
-  {$IFDEF MSWINDOWS}
    Windows,
-  {$ELSE}
    Types, Printers,
-  {$ENDIF}
   LclIntf, LMessages, LclType, LclProc, InterfaceBase,
   GraphType, Graphics, Controls;
    {Important: Be sure to list LclType after SysUtils and Classes 

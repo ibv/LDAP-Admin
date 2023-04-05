@@ -102,7 +102,7 @@ var
 
 implementation
 
-uses Pickup, {$ifdef mswindows} WinLDAP, {$else} LinLDAP, {$endif} Input, Main, Templates, Misc, Config;
+uses Pickup, LinLDAP, Input, Main, Templates, Misc, Config;
 
 {$R *.dfm}
 
@@ -331,11 +331,7 @@ begin
     Entry.dn := 'CN=' + EncodeLdapString(cn.Text) + ',' + ParentDn;
 
   Entry.AttributesByName['name'].AsString := cn.Text;
-  {$ifdef mswindows}
-  Entry.AttributesByName['groupType'].AsString := UIntToStr(GetGroupType);
-  {$else}
   Entry.AttributesByName['groupType'].AsString := IntToStr(GetGroupType);
-  {$endif}
 
   if Assigned(FMembershipHelper) then
     FMembershipHelper.Write

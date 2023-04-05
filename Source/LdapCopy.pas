@@ -34,7 +34,7 @@ uses
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, ComCtrls, LDAPClasses, {$ifdef mswindows}WinLDAP,LAControls,{$else} LinLDAP,{$endif}
+  Buttons, ExtCtrls, ComCtrls, LDAPClasses, LAControls,LinLDAP,
   ImgList, Connection;
 
 type

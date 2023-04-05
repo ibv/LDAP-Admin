@@ -210,7 +210,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses Pickup, Input, Misc {$ifdef mswindows}, ComObj, ActiveX {$endif}, Main, Templates, Config, adsie,
+uses Pickup, Input, Misc, Main, Templates, Config, adsie,
      AdPrefs, AdAdv  {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
 {$R *.dfm}
@@ -521,11 +521,7 @@ begin
    if Checked[afDoNotRequireKerb] then Flags := Flags or UF_DONT_REQ_PREAUTH;
    if Checked[afPasswordNotRequired] then Flags := Flags or UF_PASSWD_NOTREQD;
   end;
-  {$ifdef mswindows}
-  Attr.AsString := UIntToStr(Flags);
-  {$else}
   Attr.AsString := IntToStr(Flags);
-  {$endif}
 end;
 
 procedure TADUserDlg.Save;

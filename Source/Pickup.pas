@@ -84,7 +84,7 @@ implementation
 
 {$R *.dfm}
 
-uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Constant, Main, Connection, SizeGrip;
+uses LinLDAP, Constant, Main, Connection, SizeGrip;
 
 constructor TPickupDlg.Create(AOwner: TComponent);
 begin

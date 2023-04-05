@@ -28,8 +28,7 @@ unit Connection;
 interface
 
 uses Config, Sorter, Schema, LdapClasses, CustomMenus, Controls, Templates,
-     {$ifdef mswindows}WinLDAP, {$else} LinLDAP, {$endif}
-     Constant, TextFile, Bookmarks;
+     LinLDAP, Constant, TextFile, Bookmarks;
 
 const
   { Posix objects }

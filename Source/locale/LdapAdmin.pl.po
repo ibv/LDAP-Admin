@@ -1380,3 +1380,161 @@ msgstr "Nie otwarto tag!"
 msgid "Unexpected closing tag \"%s\""
 msgstr ""
 
+#: tconnlistfrm.accountsview.columns[0].caption
+#, fuzzy
+msgctxt "tconnlistfrm.accountsview.columns[0].caption"
+msgid "Name"
+msgstr "Nazwa"
+
+#: tconnlistfrm.accountsview.columns[1].caption
+msgid "Host"
+msgstr ""
+
+#: tconnlistfrm.accountsview.columns[2].caption
+msgid "Base"
+msgstr ""
+
+#: tconnlistfrm.accountsview.columns[3].caption
+msgid "User"
+msgstr ""
+
+#: tconnlistfrm.actcopyaccount.caption
+msgid "&Copy..."
+msgstr ""
+
+#: tconnlistfrm.actcopyaccount.hint
+msgid "Copy account"
+msgstr ""
+
+#: tconnlistfrm.actdeleteaccount.caption
+#, fuzzy
+msgctxt "tconnlistfrm.actdeleteaccount.caption"
+msgid "&Delete"
+msgstr "Usuń"
+
+#: tconnlistfrm.actdeleteaccount.hint
+msgid "Delete account"
+msgstr ""
+
+#: tconnlistfrm.actdeletefolder.caption
+msgctxt "tconnlistfrm.actdeletefolder.caption"
+msgid "Delete folder"
+msgstr ""
+
+#: tconnlistfrm.actdeletefolder.hint
+msgctxt "tconnlistfrm.actdeletefolder.hint"
+msgid "Delete folder"
+msgstr ""
+
+#: tconnlistfrm.actdeletestorage.caption
+msgid "Delete storage"
+msgstr ""
+
+#: tconnlistfrm.actdeletestorage.hint
+msgid "Delete file storage"
+msgstr ""
+
+#: tconnlistfrm.actexport.caption
+msgid "Export..."
+msgstr ""
+
+#: tconnlistfrm.actexport.hint
+msgid "Export to file"
+msgstr ""
+
+#: tconnlistfrm.actimport.caption
+msgid "Import..."
+msgstr ""
+
+#: tconnlistfrm.actimport.hint
+msgid "Import from file"
+msgstr ""
+
+#: tconnlistfrm.actnewaccount.caption
+#, fuzzy
+msgctxt "tconnlistfrm.actnewaccount.caption"
+msgid "&New..."
+msgstr "Nowy..."
+
+#: tconnlistfrm.actnewaccount.hint
+msgid "Create new account"
+msgstr ""
+
+#: tconnlistfrm.actnewfolder.caption
+msgid "New folder..."
+msgstr ""
+
+#: tconnlistfrm.actnewfolder.hint
+msgid "Create new folder"
+msgstr ""
+
+#: tconnlistfrm.actnewstorage.hint
+msgid "Create new file storage"
+msgstr ""
+
+#: tconnlistfrm.actopenstorage.hint
+msgid "Open existing file storage"
+msgstr ""
+
+#: tconnlistfrm.actpropertiesaccount.caption
+msgid "&Properties..."
+msgstr ""
+
+#: tconnlistfrm.actrenameaccount.caption
+msgid "&Rename"
+msgstr ""
+
+#: tconnlistfrm.actrenameaccount.hint
+msgid "Rename account"
+msgstr ""
+
+#: tconnlistfrm.actrenamefolder.caption
+msgctxt "tconnlistfrm.actrenamefolder.caption"
+msgid "Rename folder"
+msgstr ""
+
+#: tconnlistfrm.actrenamefolder.hint
+msgctxt "tconnlistfrm.actrenamefolder.hint"
+msgid "Rename folder"
+msgstr ""
+
+#: tconnlistfrm.cancelbtn.caption
+#, fuzzy
+msgctxt "tconnlistfrm.cancelbtn.caption"
+msgid "&Cancel"
+msgstr "Anuluj"
+
+#: tconnlistfrm.caption
+msgid "Connections"
+msgstr ""
+
+#: tconnlistfrm.label1.caption
+msgid " "
+msgstr ""
+
+#: tconnlistfrm.okbtn.caption
+#, fuzzy
+msgctxt "tconnlistfrm.okbtn.caption"
+msgid "&OK"
+msgstr "OK"
+
+#: tconnlistfrm.viewbtn.hint
+msgid "Change view style"
+msgstr ""
+
+#: tconnlistfrm.vmlarge.caption
+msgid "Large icons"
+msgstr ""
+
+#: tconnlistfrm.vmlist.caption
+msgid "List"
+msgstr ""
+
+#: tconnlistfrm.vmsmall.caption
+msgid "Small icons"
+msgstr ""
+
+#: tconnlistfrm.vmtable.caption
+msgid "Table"
+msgstr ""
+
