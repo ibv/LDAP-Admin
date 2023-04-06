@@ -113,11 +113,7 @@ begin
   {$endif}
   if FindFirst(Path,faArchive,sr) { *Converted from FindFirst* } = 0 then
   begin
-    {$ifdef mswindows}
-    Dir := ExtractFileDir(Path) + '\';
-    {$else}
-    Dir := ExtractFileDir(Path) + '/';
-    {$endif}
+    Dir := ExtractFileDir(Path) + PathDelim;
     with fFiles do
     try
       AddFile(Dir + sr.Name);

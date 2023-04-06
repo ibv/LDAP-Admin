@@ -691,7 +691,7 @@ var
   AbortSearch: Boolean;
 begin
 
-  if True then// not fPagedSearch then
+  if not fPagedSearch then
   begin
     Err := ldap_search_s(pld, PChar(Base), Scope, PChar(Filter), PChar(attrs), Ord(NoValues), plmSearch);
     if Err = LDAP_SIZELIMIT_EXCEEDED then
@@ -852,7 +852,7 @@ end;
 
 procedure ValueModOp(AValue: TLdapAttributeData; ModOP: TLDAPModifyOp);
 begin
-  AValue.ModOp:=-1;
+  AValue.ModOp:=0;//-1;
   Attributes.Clear;
   MakeAttrib(Avalue);
   if not(esNew in Entry.State) then LdapCheck(ldap_modify_s(pld, PChar(Entry.dn), ModOP, Attributes.Items[0]));
@@ -1487,31 +1487,31 @@ begin
   inherited Create;
 end;
 
-{$IFDEF CPUX64}
+//{$IFDEF CPUX64}
 function TLDapAttributeData.CompareData(P: Pointer; Length: Integer): Boolean;
 begin
   Result := (DataSize = Length) and CompareMem(P, Data, Length);
 end;
-{$ELSE}
-function TLDapAttributeData.CompareData(P: Pointer; Length: Integer): Boolean; assembler;
-asm
-        PUSH    ESI
-        MOV     ESI,P
-        MOV     EDX,EAX
-        XOR     EAX,EAX
-        CMP     ECX,[edx + fBerval.Bv_Len]
-        JNE     @@3
-        PUSH    EDI
-        MOV     EDI,[edx + fBerval.Bv_Val]
-        CMP     ESI,EDI
-        JE      @@1
-        REPE    CMPSB
-        JNE     @@2
-@@1:    INC     EAX
-@@2:    POP     EDI
-@@3:    POP     ESI
-end;
-{$ENDIF}
+//{$ELSE}
+//function TLDapAttributeData.CompareData(P: Pointer; Length: Integer): Boolean; assembler;
+//asm
+//        PUSH    ESI
+//        MOV     ESI,P
+//        MOV     EDX,EAX
+//        XOR     EAX,EAX
+//        CMP     ECX,[edx + fBerval.Bv_Len]
+//        JNE     @@3
+//        PUSH    EDI
+//        MOV     EDI,[edx + fBerval.Bv_Val]
+//        CMP     ESI,EDI
+//        JE      @@1
+//        REPE    CMPSB
+//        JNE     @@2
+//@@1:    INC     EAX
+//@@2:    POP     EDI
+//@@3:    POP     ESI
+//end;
+//{$ENDIF}
 
 procedure TLdapAttributeData.SetData(AData: Pointer; ADataSize: Cardinal);
 var

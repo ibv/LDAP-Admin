@@ -84,7 +84,7 @@ var
 begin
   inherited;
   with GlobalConfig do
-  for i := 0 to Storages.Count - 1 do with Storages[i] do
+  for i := 0 to Length(Storages) - 1 do with Storages[i] do
   begin
     StorageCbx.Items.AddObject(Name, Storages[i]);
     for j := 0 to RootFolder.Items.Folders.Count - 1 do

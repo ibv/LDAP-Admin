@@ -84,7 +84,7 @@ var
         fmt := stInvalidChar;
       Message := Format(fmt, [FCaption, FInvalidChars]);
     end;
-    BallonHint(CenterWithSpaces(TFontControl(FControl).Font, Message, 5));
+    //BallonHint(CenterWithSpaces(TFontControl(FControl).Font, Message, 5));
     PlaySound('SYSTEMQUESTION', 0, SND_ASYNC);
   end;
 
@@ -169,7 +169,7 @@ begin
   //end;
   //FBalloonHint.Description := Msg;
   R := FControl.BoundsRect;
-  Inc(R.Left, GetTextExtent(Copy(FControl.Text, 1, FControl.SelStart), TFontControl(FControl).Font).cx);
+  //Inc(R.Left, GetTextExtent(Copy(FControl.Text, 1, FControl.SelStart), TFontControl(FControl).Font).cx);
   R.Width := 4;
   R.TopLeft := FControl.Parent.ClientToScreen(R.TopLeft);
   R.BottomRight := FControl.Parent.ClientToScreen(R.BottomRight);

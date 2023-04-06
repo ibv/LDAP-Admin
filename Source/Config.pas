@@ -54,7 +54,7 @@ type
   TAccount = class;
   TGlobalConfig = class;
   TConfigList = class;
-  TStorageList = TFPGObjectList<TConfigStorage>;
+  TStorageList = array of TConfigStorage;
 
   TCustomConfig = class
   public
@@ -407,6 +407,7 @@ uses
 {$ELSE}
 {$ENDIF}
   Constant, LinLDAP, base64, Dialogs, Forms, StdCtrls, Controls, WinBase64,
+  mormot.core.data,
   Math {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 
@@ -666,12 +667,11 @@ var
   i: integer;
 begin
   strs:=TStringList.Create;
-  for i:=1 to FStorages.Count-1 do begin
+  for i:=1 to Length(FStorages) - 1 do begin
     if Storages[i] is TXmlConfigStorage then strs.Add(TXmlConfigStorage(Storages[i]).FileName);
   end;
   WriteString(rAccountFiles, strs.CommaText);
   strs.Free;
-  FStorages.Free;
   inherited;
 end;
 
@@ -729,19 +729,19 @@ end;
 
 function TGlobalConfig.AddStorage(AStorage: TConfigStorage): integer;
 begin
-  result:=FStorages.Add(AStorage);
+  Result := DynArrayAdd(TypeInfo(TStorageList), FStorages, AStorage);
 end;
 
 procedure TGlobalConfig.DeleteStorage(Index: integer);
 begin
-  FStorages.Delete(Index);
+  DynArrayDelete(TypeInfo(TStorageList), FStorages, Index);
 end;
 
 function TGlobalConfig.StorageByName(const Name: string): TConfigStorage;
 var
   i: Integer;
 begin
-  for i := FStorages.Count - 1 downto 0 do
+  for i := Length(FStorages) - 1 downto 0 do
     if AnsiCompareText(Name, TConfigStorage(FStorages[i]).Name) = 0 then
     begin
       Result := TConfigStorage(FStorages[i]);

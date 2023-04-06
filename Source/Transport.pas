@@ -62,7 +62,7 @@ implementation
 
 {$R *.dfm}
 
-uses {$ifdef mswindows}WinLDAP{$else} LinLDAP{$endif};
+uses LinLDAP;
 
 constructor TTransportDlg.Create(AOwner: TComponent; dn: string; Session: TLDAPSession; Mode: TEditMode);
 begin

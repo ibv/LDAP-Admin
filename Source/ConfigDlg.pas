@@ -150,7 +150,7 @@ begin
     OnDrawItem := cbStartupConnectionDrawItem;
     ///OnCanCloseUp := cbStartupConnectionCloseUp;
   end;
-  for i:=0 to GlobalConfig.Storages.Count-1 do with GlobalConfig.Storages[i] do
+  for i:=0 to Length(GlobalConfig.Storages) - 1 do with GlobalConfig.Storages[i] do
   begin
     cbStartupConnection.Items.AddObject(Name, GlobalConfig.Storages[i]);
     for j:=0 to RootFolder.Items.Accounts.Count-1 do

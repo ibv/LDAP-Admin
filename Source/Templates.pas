@@ -2350,11 +2350,7 @@ function TTemplateCtrlDate.GetTime(Value: string): TDateTime;
     aValue: string;
   begin
     try
-      {$ifdef mswindows}
-      Result := VarToDateTime(Value);
-      {$else}
       Result := StrToDateTime(Value);
-      {$endif}
     except
       on E: EVariantError do
         { try some common variants }
@@ -2363,11 +2359,7 @@ function TTemplateCtrlDate.GetTime(Value: string): TDateTime;
           aValue := Value;
           Insert('-', AValue, 7);
           Insert('-', AValue, 5);
-          {$ifdef mswindows}
-          Result := VarToDateTime(aValue);
-          {$else}
           Result := StrToDateTime(Value);
-          {$endif}
         end
         else raise;
     end;

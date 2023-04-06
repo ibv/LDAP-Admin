@@ -193,7 +193,8 @@ implementation
 {$R *.dfm}
 {$I LdapAdmin.inc}
 
-uses ConnProp, Constant, Math, uAccountCopyDlg, SizeGrip, Input, Misc, Connection
+uses ConnProp, Constant, Math, uAccountCopyDlg, SizeGrip, Input, Misc, Connection,
+  mormot.core.data
      {$IFDEF VER_XEH}, System.Types, System.UITypes{$ENDIF};
 
 const
@@ -1069,15 +1070,14 @@ var
 begin
   if AFileName = '' then
     exit;
-  StorageList := TStorageList.Create;
+  StorageList := nil;
   try
     Screen.Cursor := crHourGlass;
-    StorageList.Add(TXmlConfigStorage.Create(AFileName));
+    DynArrayAdd(TypeInfo(TStorageList), StorageList, TXmlConfigStorage.Create(AFileName));
     if ImportSelection(StorageList, GetCurrentFolder) then
       RefreshStorageTree(GlobalConfig.Storages, TreeView, FImageOffset, GetSelPath(TreeView));
   finally
     Screen.Cursor := crDefault;
-    StorageList.Free;
   end;
 end;
 
@@ -1163,7 +1163,7 @@ begin
   TreeView.Items.BeginUpdate;
   TreeView.Items.Clear;
 
-  for i := 0 to AStorages.Count - 1 do
+  for i := 0 to Length(AStorages) - 1 do
   begin
     Node := TreeView.Items.AddObject(nil, AStorages[i].Name, AStorages[i]);
     if Astorages[i] is TRegistryConfigStorage then
@@ -1180,6 +1180,8 @@ begin
   TreeView.Items.EndUpdate;
   Sleep(1);
   Application.ProcessMessages;
+  if not Assigned(FStorage) then
+    FStorage := TConfigStorage(TreeView.Items.GetFirstNode.Data);
   RefreshAccountsView;
 end;
 
@@ -1514,7 +1516,7 @@ var
   i: integer;
 begin
   if SaveDialog.Execute then begin
-    for i:=1 to GlobalConfig.Storages.Count-1 do begin
+    for i:=1 to Length(GlobalConfig.Storages) - 1 do begin
       if (GlobalConfig.Storages[i] is TXmlConfigStorage) and
          (TXmlConfigStorage(GlobalConfig.Storages[i]).FileName=SaveDialog.FileName) then
       begin
@@ -1538,7 +1540,7 @@ var
   i: integer;
 begin
   if OpenDialog.Execute then begin
-    for i:=1 to GlobalConfig.Storages.Count-1 do begin
+    for i:=1 to Length(GlobalConfig.Storages) - 1 do begin
       if (GlobalConfig.Storages[i] is TXmlConfigStorage) and
          (TXmlConfigStorage(GlobalConfig.Storages[i]).FileName=OpenDialog.FileName) then begin
         FStorage:=GlobalConfig.Storages[i];
@@ -1558,7 +1560,7 @@ var
 begin
   if FStorage is TXmlConfigStorage then
   begin
-  for i := 0 to GlobalConfig.Storages.Count - 1 do
+  for i := 0 to Length(GlobalConfig.Storages) - 1 do
     if GlobalConfig.Storages[i] = FStorage then begin
       GlobalConfig.DeleteStorage(i);
       break;
