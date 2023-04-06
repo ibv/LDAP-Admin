@@ -192,8 +192,7 @@ object MainFrm: TMainFrm
       SortType = stText
       TabOrder = 0
       ViewStyle = vsReport
-      OnAdvancedCustomDrawItem = ValueListViewAdvancedCustomDrawItem
-      OnAdvancedCustomDrawSubItem = ValueListViewAdvancedCustomDrawSubItem
+      OnCustomDrawItem = ValueListViewCustomDrawItem
     end
     object EntryListView: TListView
       Left = 0
