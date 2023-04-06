@@ -631,7 +631,7 @@ var
   Attr: TLdapAttribute;
   i,j: Integer;
   pszAttr:string;
-  pszdn: string;
+  attrData: RawByteString;
   pbe: PBerElement;
   ppBer: PPLdapBerVal;
   data: TLDAPAttributeData;
@@ -644,9 +644,9 @@ begin
         Attr.fState := Attr.fState + [asBrowse];
         for j:=0 to plmEntry.Attributes.Items[i].Count-1 do
         begin
-          pszdn:= plmEntry.Attributes.Items[i].GetReadable(j);
+          attrData:= plmEntry.Attributes.Items[i].GetRaw(j);
           ///data:=TLdapAttributeData.Create(Attr);
-          Attr.AddValue(PAnsiChar(pszdn),length(pszdn));
+          Attr.AddValue(@attrData[1],length(attrData));
         end;
   end;
 end;
@@ -1337,7 +1337,6 @@ function TLDapAttributeData.GetType: TDataType;
 var
   w: Word;
 
-  {$IFDEF CPUX64}
   function LengthAsStr(P: Pointer; Length: Integer): Cardinal;
   var
     c: Integer;
@@ -1352,19 +1351,6 @@ var
     end;
     Result := Length - c;
   end;
-  {$ELSE}
-  function LengthAsStr(P: Pointer; Length: Integer): Cardinal; assembler;
-  asm
-        PUSH    EDI
-        MOV     EDI,EAX
-        MOV     ECX,EDX
-        SUB     EAX,EAX
-        REPNE   SCASB
-        MOV     EAX,EDX
-        SUB     EAX,ECX
-        POP     EDI
-  end;
-  {$ENDIF}
 
 
   function IsText2(p:  PAnsiChar; size:integer): boolean;
@@ -1398,13 +1384,8 @@ begin
   if (Attribute.fDataType = dtUnknown) and (DataSize > 0) then
   begin
     if (LengthAsStr(Data, DataSize) >= DataSize) then
-    {$IFDEF WINDOWS}
-    //if (LengthAsStr(Data, DataSize) >= DataSize) and
-      if (MultiByteToWideChar( CP_UTF8, 8{MB_ERR_INVALID_CHARS}, PAnsiChar(Data), DataSize, nil, 0) <> 0) then
-       Attribute.fDataType := dtText
-    {$ELSE}
-       if IsText(PChar(Data),DataSize) then Attribute.fDataType := dtText
-    {$ENDIF}
+       if IsText(PChar(Data),DataSize) then
+         Attribute.fDataType := dtText
     else
     begin
       w := PWord(Data)^;
