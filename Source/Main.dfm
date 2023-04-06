@@ -193,6 +193,7 @@ object MainFrm: TMainFrm
       TabOrder = 0
       ViewStyle = vsReport
       OnCustomDrawItem = ValueListViewCustomDrawItem
+      OnShowHint = ValueListViewShowHint
     end
     object EntryListView: TListView
       Left = 0

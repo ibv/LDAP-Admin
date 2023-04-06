@@ -305,6 +305,7 @@ type
     procedure TabControl1Change(Sender: TObject);
     procedure TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
     procedure ActOpenFileExecute(Sender: TObject);
+    procedure ValueListViewShowHint(Sender: TObject; HintInfo: PHintInfo);
   private
     Root: TTreeNode;
     fCmdLineAccount: TFakeAccount;
@@ -2001,6 +2002,17 @@ begin
     Account.FileName := OpenFile.FileName;
     ServerConnect(Account);
   end;
+end;
+
+procedure TMainFrm.ValueListViewShowHint(Sender: TObject; HintInfo: PHintInfo);
+var
+  item: TListItem;
+  ControlPoint: TPoint;
+begin
+  ControlPoint := ValueListView.ScreenToClient(Mouse.CursorPos);
+  item := (Sender as TListView).GetItemAt(ControlPoint.X, ControlPoint.Y);
+  if Assigned(item) then
+    HintInfo^.HintStr :=  TLdapAttributeData(item.Data).AsString ;
 end;
 
 procedure TMainFrm.ActOptionsExecute(Sender: TObject);

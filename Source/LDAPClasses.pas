@@ -372,7 +372,8 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses Misc, Input, Dialogs, Cert, Gss, System.UITypes, HtmlMisc;
+uses Misc, Input, Dialogs, Cert, Gss, System.UITypes, HtmlMisc,
+  mormot.core.base;
 
 { Name handling routines }
 
@@ -1402,16 +1403,12 @@ begin
 end;
 
 function TLDapAttributeData.GetString: string;
+var
+  tempBuffer: RawUtf8;
 begin
-  if Assigned(Self) and (ModOp <> LdapOpNoop) and (ModOp <> LdapOpDelete) then
-  begin
-    if fUtf8 then
-      Result := UTF8ToStringLen(PAnsiChar(Data), DataSize)
-    else
-      System.SetString(Result, PAnsiChar(Data), DataSize);
-  end
-  else
-    Result := '';
+  FastSetString(tempBuffer, Data, DataSize);
+  AttributeValueMakeReadable(tempBuffer, AttributeNameType(Attribute.Name));
+  Result := tempBuffer;
 end;
 
 procedure TLDapAttributeData.SetString(AValue: string);
