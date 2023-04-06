@@ -2389,8 +2389,12 @@ begin
         mRect := item.DisplayRectSubItem(SubItem, drLabel);
       end;
 
+      if State * [cdsFocused] <> [] then
+      begin
+        sender.Canvas.Brush.Color := clHighlight;
+        sender.Canvas.Font.Color := clHighlightText;
+      end;
       Sender.Canvas.FillRect(mRect);
-    //FCanvas.TextOut(ARect.Left + 2, ARect.Top, AItem.Caption);
       Sender.Canvas.TextRect(mRect, mRect.Left + 2, mRect.Top, Content);
     end;
   end;
