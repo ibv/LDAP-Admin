@@ -1385,6 +1385,8 @@ const
 
 implementation
 
+uses
+  mormot.net.dns;
 
 
 function ldap_explode_dn(dn: string; notypes: ULONG; list: TStringList): boolean;
@@ -1742,7 +1744,7 @@ begin
     ld.Settings.UserName:=PSEC_WINNT_AUTH_IDENTITY(cred)^.User;
     ld.Settings.Password:=PSEC_WINNT_AUTH_IDENTITY(cred)^.Password;
   end;
-  ld.Settings.KerberosDN := 'ad.tranquil.it';
+  DnsLdapControlers(dn, false, @ld.Settings.KerberosDN);
   ld.BindSaslKerberos;
   result:=ld.ResultCode;
 end;

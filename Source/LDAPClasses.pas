@@ -1287,7 +1287,7 @@ begin
                          v := nil;
                        if ldapAuthMethod = AUTH_GSS_SASL then
                          LdapCheck(ldap_set_option(ldappld,LDAP_OPT_ENCRYPT, LDAP_OPT_ON));
-                       res := ldap_bind_s(ldappld, nil, v, LDAP_AUTH_NEGOTIATE);
+                       res := ldap_bind_s(ldappld, PChar(ldapServer), v, LDAP_AUTH_NEGOTIATE);
                      end;
     else
       raise Exception.CreateFmt(stUnsupportedAuth, [IntToStr(ldapAuthMethod)]);
