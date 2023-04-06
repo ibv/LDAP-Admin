@@ -77,7 +77,7 @@ var
     i: Integer;
   begin
     StorageCbx.Items.AddObject(AFolder.Name, AFolder);
-    for i := 0 to AFolder.Items.Folders.Count - 1 do
+    for i := 0 to Length(AFolder.Items.Folders) - 1 do
       AddFolder(AFolder.Items.Folders[i]);
   end;
 
@@ -87,7 +87,7 @@ begin
   for i := 0 to Length(Storages) - 1 do with Storages[i] do
   begin
     StorageCbx.Items.AddObject(Name, Storages[i]);
-    for j := 0 to RootFolder.Items.Folders.Count - 1 do
+    for j := 0 to Length(RootFolder.Items.Folders) - 1 do
       AddFolder(RootFolder.Items.Folders[j]);
   end;
 end;

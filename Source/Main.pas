@@ -64,7 +64,7 @@ type
     property    RootNode: TTreeNode read GetRootNode write SetRootNode;
   end;
 
-  TConnectionList = TFPGObjectList<TConnectionNode>;
+  TConnectionObjArray = array of TConnectionNode;
 
   { TMainFrm }
 
@@ -312,7 +312,7 @@ type
   private
     Root: TTreeNode;
     fCmdLineAccount: TFakeAccount;
-    fConnections: TConnectionList;
+    fConnections: TConnectionObjArray;
     FConnection: TConnection;
     fViewSplitterPos: Integer;
     fLdapTreeWidth: Integer;
@@ -393,7 +393,7 @@ uses
   EditEntry, ConnList, Search, LdapOp, Constant, Export, Import, Prefs, Misc,
   LdapCopy, BinView, Input, ConfigDlg, Templates, TemplateCtrl,
   Cert, PicView, About, Alias, SizeGrip, CustMenuDlg, Lang, Bookmarks, DBLoad,
-  mormot.core.os
+  mormot.core.os, mormot.core.base
   {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
 
@@ -761,7 +761,7 @@ begin
     ConnectionNode := TConnectionNode.Create(NewConnection);
     if fCacheTreeViews then
       fTreeHistory := ConnectionNode.History;
-    fConnections.Add(ConnectionNode);
+    ObjArrayAdd(FConnections, ConnectionNode);
     ActionMenu.TemplateMenu := fTemplateMenu;
     ActionMenu.OnClick := NewClick;
     TabControl1.Tabs.Add(ExtractFileName(Account.Name));
@@ -778,7 +778,7 @@ begin
 
   LDAPTree.PopupMenu := EditPopup;
 
-  if fConnections.Count > 1 then Exit;
+  if Length(fConnections) > 1 then Exit;
 
   EntryListView.PopupMenu := EditPopup;
   ListPopup.AutoPopup := true;
@@ -819,7 +819,7 @@ begin
   if idx >= 0 then
   begin
     FConnection.Disconnect;
-    fConnections.Delete(idx);
+    ObjArrayDelete(fConnections, idx);
     FConnection := nil;
     TabControl1.Tabs.Delete(idx);
     dec(idx);
@@ -827,7 +827,7 @@ begin
     { force onchange event }
     TabControl1Change(nil);
   end;
-  if fConnections.Count = 0 then
+  if Length(fConnections) = 0 then
   begin
     LDAPTree.PopupMenu := nil;
     ListPopup.AutoPopup := false;
@@ -1132,7 +1132,7 @@ begin
   fDisabledImages := TBetaDisabledImageList.Create(self);
   fDisabledImages.MasterImages := ImageList;
   ToolBar.DisabledImages := fDisabledImages;
-  fConnections := TConnectionList.Create;
+  fConnections := nil;
   fSearchList := TLdapEntryList.Create(false);
   fLocateList := TLdapEntryList.Create;
   if not fCacheTreeViews then
@@ -1152,7 +1152,7 @@ begin
   GlobalConfig.WriteInteger(rMwViewSplit, ViewSplitter.Top);
   GlobalConfig.WriteInteger(rEvViewStyle, Ord(EntryListView.ViewStyle));
   fDisabledImages.Free;
-  fConnections.Free;
+  ObjArrayClear(fConnections);
   fSearchList.Free;
   fLocateList.Free;
   if not fCacheTreeViews then
@@ -1565,10 +1565,8 @@ begin
     if Attribute.Entry.OperationalAttributes.AttributeOf(Item.Caption) = Attribute then
       Sender.Canvas.Font.Color := clDkGray
     else
-    ///if TabControl1.TabIndex <> -1 then
-    ///with TConnection(fConnections[TabControl1.TabIndex]) do
-    if TabControl1.TabIndex > 0 then
-    with fConnections[TabControl1.TabIndex-1].Connection do
+    if TabControl1.TabIndex <> -1 then
+    with fConnections[TabControl1.TabIndex].Connection do
     try
       if Schema.Loaded then
       begin
@@ -1873,7 +1871,7 @@ begin
   end;
 end;
 
-function TMainFrm.IsActPropertiesEnable: boolean;
+function TMainFrm.IsActPropertiesEnable: Boolean;
 var
   Node: TTreeNode;
 begin
@@ -2270,10 +2268,9 @@ procedure TMainFrm.TabControl1Change(Sender: TObject);
 var
   ConnectionNode: TConnectionNode;
 begin
-  ///if TabControl1.TabIndex = -1 then exit;
-  if TabControl1.TabIndex < 1 then exit;
+  if TabControl1.TabIndex = -1 then exit;
 
-  ConnectionNode := fConnections[TabControl1.TabIndex-1];
+  ConnectionNode := fConnections[TabControl1.TabIndex];
   FConnection := ConnectionNode.Connection;
   if fCacheTreeViews then
     fTreeHistory := ConnectionNode.History
@@ -2339,7 +2336,7 @@ end;
 
 procedure TMainFrm.TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
 begin
-  if TabControl1.TabIndex > 0 then with fConnections[TabControl1.TabIndex-1] do
+  if TabControl1.TabIndex <> -1 then with fConnections[TabControl1.TabIndex] do
   begin    
     Selected := TObjectInfo(LDAPTree.Selected.Data).dn;
     LVSorter.ListView := nil;
@@ -2629,7 +2626,7 @@ end;
 
 function  TMainFrm.GetConnectionCount: Integer;
 begin
-  Result := fConnections.Count;
+  Result := Length(fConnections);
 end;
 
 end.

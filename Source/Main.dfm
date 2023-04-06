@@ -293,10 +293,6 @@ object MainFrm: TMainFrm
     OnChange = TabControl1Change
     OnChanging = TabControl1Changing
     TabPosition = tpBottom
-    TabIndex = 0
-    Tabs.Strings = (
-      ''
-    )
     Align = alBottom
     TabOrder = 4
   end

@@ -167,9 +167,9 @@ var
   begin
     with cbConnections.Items, AFolder.Items do begin
       AddObject(AFolder.Name, AFolder);
-      for i := 0 to Accounts.Count - 1 do
+      for i := 0 to Length(Accounts) - 1 do
         AddObject(Accounts[i].Name, Accounts[i]);
-      for i := 0 to Folders.Count - 1 do
+      for i := 0 to Length(Folders) - 1 do
         DoAddFolder(Folders[i]);
     end;
   end;
@@ -213,9 +213,9 @@ begin
   for i := 0 to Length(Storages) - 1 do with Storages[i] do
   begin
     cbConnections.Items.AddObject(Name, Storages[i]);
-    for j := 0 to RootFolder.Items.Accounts.Count -1 do
+    for j := 0 to Length(RootFolder.Items.Accounts) -1 do
       cbConnections.Items.AddObject(RootFolder.Items.Accounts[j].Name, RootFolder.Items.Accounts[j]);
-    for j := 0 to RootFolder.Items.Folders.Count - 1 do
+    for j := 0 to Length(RootFolder.Items.Folders) - 1 do
       DoAddFolder(RootFolder.Items.Folders[j]);
   end;
 

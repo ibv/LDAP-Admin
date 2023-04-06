@@ -123,9 +123,9 @@ var
   begin
     with cbStartupConnection.Items, AFolder.Items do begin
       AddObject(AFolder.Name, AFolder);
-      for i := 0 to Accounts.Count - 1 do
+      for i := 0 to Length(Accounts) - 1 do
         AddObject(Accounts[i].Name, Accounts[i]);
-      for i := 0 to Folders.Count - 1 do
+      for i := 0 to Length(Folders) - 1 do
         DoAddFolder(Folders[i]);
     end;
   end;
@@ -153,9 +153,9 @@ begin
   for i:=0 to Length(GlobalConfig.Storages) - 1 do with GlobalConfig.Storages[i] do
   begin
     cbStartupConnection.Items.AddObject(Name, GlobalConfig.Storages[i]);
-    for j:=0 to RootFolder.Items.Accounts.Count-1 do
+    for j:=0 to Length(RootFolder.Items.Accounts) - 1 do
       cbStartupConnection.Items.AddObject(RootFolder.Items.Accounts[j].Name, RootFolder.Items.Accounts[j]);
-    for j := 0 to RootFolder.Items.Folders.Count - 1 do
+    for j := 0 to Length(RootFolder.Items.Folders) - 1 do
         DoAddFolder(RootFolder.Items.Folders[j]);
   end;
   with GlobalConfig do begin

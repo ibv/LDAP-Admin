@@ -69,9 +69,6 @@ end;
 
 destructor TXmlLoader.Destroy;
 begin
-  {$ifdef mswindows}
-  Clear;
-  {$endif}
   fFiles.Free;
   inherited;
 end;

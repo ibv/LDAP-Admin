@@ -49,12 +49,15 @@ type
   TDirectoryType = (dtAutodetect, dtPosix, dtActiveDirectory);
   TEnumObjects = (eoAccounts, eoFolders, eoAll);
 
+  TAccountFolder = class;
   TConfigStorage = class;
   TConfig = class;
   TAccount = class;
   TGlobalConfig = class;
   TConfigList = class;
-  TStorageList = array of TConfigStorage;
+  TConfigStorageObjArray = array of TConfigStorage;
+  TAccountFolderObjArray = array of TAccountFolder;
+  TAccountObjArray = array of TAccount;
 
   TCustomConfig = class
   public
@@ -200,7 +203,7 @@ type
 
   TGlobalConfig=class(TConfig)
   private
-    FStorages:    TStorageList;
+    FStorages:    TConfigStorageObjArray;
   public
     constructor   Create(const AStorage: TConfigStorage); reintroduce;
     destructor    Destroy; override;
@@ -208,7 +211,7 @@ type
     function      AddStorage(AStorage: TConfigStorage): integer;
     procedure     DeleteStorage(Index: integer);
     function      StorageByName(const Name: string): TConfigStorage;
-    property      Storages: TStorageList read FStorages;
+    property      Storages: TConfigStorageObjArray read FStorages;
   end;
 
   TAccountFolder = class(TConfig)
@@ -229,8 +232,8 @@ type
   private
     FParent:      TObject;
     FStorage:     TConfigStorage;
-    FFolders:     TFPGObjectList<TAccountFolder>;
-    FAccounts:    TFPGObjectList<TAccount>;
+    FFolders:     TAccountFolderObjArray;
+    FAccounts:    TAccountObjArray;
   public
     constructor   Create(AParent: TObject);
     destructor    Destroy; override;
@@ -240,8 +243,8 @@ type
     function      AccountByName(Name: string): TAccount;
     function      FolderByName(Name: string): TAccountFolder;
     function      ByName(Name: string; Enum: TEnumObjects): TConfig;
-    property      Accounts: TFPGObjectList<TAccount> read FAccounts;
-    property      Folders: TFPGObjectList<TAccountFolder> read FFolders;
+    property      Accounts: TAccountObjArray read FAccounts;
+    property      Folders: TAccountFolderObjArray read FFolders;
     property      Storage: TConfigStorage read FStorage;
   end;
 
@@ -407,7 +410,7 @@ uses
 {$ELSE}
 {$ENDIF}
   Constant, LinLDAP, base64, Dialogs, Forms, StdCtrls, Controls, WinBase64,
-  mormot.core.data,
+  mormot.core.base,
   Math {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 
@@ -638,7 +641,7 @@ var
   stor: TXmlConfigStorage;
 begin
   inherited Create(AStorage, CONFIG_PREFIX);
-  FStorages := TStorageList.Create;
+  FStorages := nil;
   AddStorage(AStorage);
 
   strs:=TStringList.Create;
@@ -729,12 +732,12 @@ end;
 
 function TGlobalConfig.AddStorage(AStorage: TConfigStorage): integer;
 begin
-  Result := DynArrayAdd(TypeInfo(TStorageList), FStorages, AStorage);
+  Result := ObjArrayAdd(FStorages, AStorage);
 end;
 
 procedure TGlobalConfig.DeleteStorage(Index: integer);
 begin
-  DynArrayDelete(TypeInfo(TStorageList), FStorages, Index);
+  ObjArrayDelete(FStorages, Index);
 end;
 
 function TGlobalConfig.StorageByName(const Name: string): TConfigStorage;
@@ -1168,7 +1171,7 @@ begin
     Result.Storage.New(TAccountFolder(FParent).Path, Name);
     FStorage.FChanged := true;
   end;
-  FAccounts.Add(Result);
+  ObjArrayAdd(FAccounts, Result);
 end;
 
 { CreateNew - creates a database entry as well (a key) }
@@ -1180,19 +1183,20 @@ begin
     Result.Storage.New(TAccountFolder(FParent).Path, ConfigPackFolder(Name));
     FStorage.FChanged := true;
   end;
-  FFolders.Add(Result);
+  ObjArrayAdd(FFolders, Result);
 end;
 
 procedure TConfigList.DeleteItem(Item: TConfig);
 var
   AFolder: TAccountFolder;
 begin
+
   FStorage.Delete(Item.Path);
   AFolder := ConfigGetFolder(Item.Parent);
   if Item is TAccount then
-    AFolder.Items.Accounts.Remove(TAccount(Item))
+    ObjArrayDelete(AFolder.Items.fAccounts, TAccount(Item))
   else
-    AFolder.Items.Folders.Remove(TAccountFolder(Item));
+    ObjArrayDelete(AFolder.Items.fFolders, TAccountFolder(Item));
   FStorage.FChanged:=true;
 end;
 
@@ -1212,7 +1216,7 @@ begin
   if Folder <>'' then
     result := FolderByName(Folder).FItems.AccountByName(Name)
   else
-  for i := 0 to FAccounts.Count - 1 do
+  for i := 0 to Length(FAccounts) - 1 do
     if AnsiCompareText(Accounts[i].Name, Name)=0 then begin
       Result := Accounts[i];
       exit;
@@ -1224,7 +1228,7 @@ var
   i: integer;
 begin
   Result := nil;
-  for i := 0 to Folders.Count - 1 do
+  for i := 0 to Length(Folders) - 1 do
     if AnsiSameText(Folders[i].Name, Name) then
     begin
       Result := Folders[i];
@@ -1246,16 +1250,16 @@ end;
 
 constructor TConfigList.Create(AParent: TObject);
 begin
-  FFolders := TFPGObjectList<TAccountFolder>.Create;
-  FAccounts := TFPGObjectList<TAccount>.Create;
+  FFolders := nil;
+  FAccounts := nil;
   FParent := AParent;
   FStorage := TConfig(FParent).Storage;
 end;
 
 destructor TConfigList.Destroy;
 begin
-  FFolders.Free;
-  FAccounts.Free;
+  ObjArrayClear(FFolders);
+  ObjArrayClear(FAccounts);
   inherited;
 end;
 
@@ -1315,13 +1319,13 @@ begin
     exit;
   with RootFolder.Items do
   begin
-    for i := 0 to Accounts.Count - 1 do
+    for i := 0 to Length(Accounts) - 1 do
       if Accounts[i].Changed then
       begin
         Result := true;
         exit;
       end;
-    for i := 0 to Folders.Count - 1 do
+    for i := 0 to Length(Folders) - 1 do
       if Folders[i].Changed then
       begin
         Result := true;
