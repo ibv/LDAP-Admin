@@ -40,7 +40,7 @@ uses
     Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
     ComCtrls, StdCtrls, LDAPClasses, Menus, ExtCtrls, Sorter,
     ImgList, ActnList, Buttons, Schema, Contnrs, Connection, Xml,
-    DlgWrap, TextFile, EncodedDn, mormot.core.base
+    DlgWrap, TextFile, EncodedDn, mormot.core.base, mormot.net.ldap
     {$IFDEF REGEXPR}
     { Note: If you want to compile templates with regex support you'll need }
     { Regexpr.pas unit from TRegeExpr library (http://www.regexpstudio.com) }
@@ -82,7 +82,9 @@ type
     procedure     SearchCallback(Sender: TLdapEntryList; var AbortSearch: Boolean);
   protected
   public
-    constructor   Create(Session: TLdapSession; ABase, AFilter, AAttributes: RawUtf8; ASearchLevel, ADerefAliases: Integer; AStatusBar: TStatusBar);
+    constructor Create(Session: TLdapSession; ABase, AFilter, AAttributes: RawUtf8;
+      ASearchLevel: TLdapsearchScope; ADerefAliases: Integer;
+  AStatusBar: TStatusBar);
     destructor    Destroy; override;
     property      Attributes: TStringList read FAttributes;
     property      Entries: TLdapEntryList read FEntries;
@@ -402,7 +404,7 @@ end;
 
 { TSearch }
 
-constructor TSearchList.Create(Session: TLdapSession; ABase, AFilter, AAttributes: RawUtf8; ASearchLevel, ADerefAliases: Integer; AStatusBar: TStatusBar);
+constructor TSearchList.Create(Session: TLdapSession; ABase, AFilter, AAttributes: RawUtf8; ASearchLevel: TLdapsearchScope; ADerefAliases: Integer; AStatusBar: TStatusBar);
 var
   i: integer;
   attrs: array of RawUtf8;
@@ -1468,7 +1470,7 @@ begin
                                      fEncodedBasePath.Encoded,
                                      Filter,
                                      Attributes,
-                                     cbSearchLevel.ItemIndex,
+                                     TLdapSearchScope(cbSearchLevel.ItemIndex),
                                      cbDerefAliases.ItemIndex,
                                      StatusBar);
     {$IFDEF REGEXPR}
@@ -1524,7 +1526,7 @@ begin
                                                fEncodedBasePath.Encoded,
                                                Filter,
                                                attrs,
-                                               cbSearchLevel.ItemIndex,
+                                               TLdapSearchScope(cbSearchLevel.ItemIndex),
                                                cbDerefAliases.ItemIndex,
                                                StatusBar);
     {$IFDEF REGEXPR}
@@ -1547,7 +1549,7 @@ var
   function RegMatch(Entry: TLdapEntry): Boolean;
   var
     i, j: Integer;
-    Attr: TLdapAttribute;
+    Attr: LdapClasses.TLdapAttribute;
     t: Boolean;
   begin
     Result := true;

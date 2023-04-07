@@ -117,7 +117,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses Pickup, LinLDAP,PrefWiz, Main, Config, mormot.core.base
+uses Pickup, LinLDAP,PrefWiz, Main, Config, mormot.core.base, mormot.net.ldap
      {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
 {$R *.dfm}
@@ -177,7 +177,7 @@ begin
     WriteString (rinetDisplayName,    edDisplayName.Text);
     WriteString (rposixHomeDir,       edHomeDir.Text);
     WriteString (rposixLoginShell,    edLoginShell.Text);
-    WriteInteger(rposixGroup,         StrToIntDef(Connection.Lookup(edGroup.Text, sANYCLASS, 'gidNumber', LDAP_SCOPE_BASE), NO_GROUP));
+    WriteInteger(rposixGroup,         StrToIntDef(Connection.Lookup(edGroup.Text, sANYCLASS, 'gidNumber', lssBaseObject), NO_GROUP));
     WriteString (rsambaNetbiosName,   edNetbios.Text);
     WriteString (rsambaDomainName,    cbDomain.Text);
     WriteString (rsambaHomeShare,     edHomeShare.Text);

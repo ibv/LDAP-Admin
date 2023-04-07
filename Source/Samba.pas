@@ -216,7 +216,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses {$IFDEF VARIANTS} variants, {$ENDIF} md4Samba, smbdes, Sysutils, Misc, Config;
+uses {$IFDEF VARIANTS} variants, {$ENDIF} md4Samba, smbdes, Sysutils, Misc, Config, mormot.net.ldap;
 
 const
   CT_ALGORITHMIC_RID   = 0;
@@ -320,24 +320,19 @@ end;
 { TDomainList}
 
 constructor TDomainList.Create(Session: TLDAPSession);
+const
+  Attrs: array [0..2] of RawByteString = ('sambaDomainName', 'sambaAlgorithmicRIDBase', 'sambaSID');
 var
   tDom: TDomainRec;
-  attrs: PCharArray;
   EntryList: TLdapEntryList;
   i: Integer;
 begin
   inherited Create;
   fSession := Session;
-  // set result fields
-  SetLength(attrs, 4);
-  attrs[0] := 'sambaDomainName';
-  attrs[1] := 'sambaAlgorithmicRIDBase';
-  attrs[2] := 'sambaSID';
-  attrs[3] := nil;
   EntryList := TLdapEntryList.Create;
   try
-    Session.Search('(objectclass=sambadomain)', Session.Base, LDAP_SCOPE_SUBTREE,
-                   attrs, false, EntryList);
+    Session.Search('(objectclass=sambadomain)', Session.Base, lssWholeSubtree,
+                   Attrs, false, EntryList);
     for i := 0 to EntryList.Count - 1 do with EntryList[i] do
     begin
       tDom := TDomainRec.Create(Session as TConnection);
@@ -345,15 +340,15 @@ begin
       with tDom do
       begin
         DomainDn := dn;
-        DomainName := AttributesByName[attrs[0]].AsString;
+        DomainName := AttributesByName[Attrs[0]].AsString;
         try
-          AlgorithmicRidBase := StrToInt(AttributesByName[attrs[1]].AsString);
+          AlgorithmicRidBase := StrToInt(AttributesByName[Attrs[1]].AsString);
         except
           on E:EConvertError do
             AlgorithmicRidBase := 1000;
           else raise;
         end;
-        SID := AttributesByName[attrs[2]].AsString;
+        SID := AttributesByName[Attrs[2]].AsString;
       end;
     end;
   finally
@@ -413,7 +408,7 @@ end;
 procedure TSamba3Account.SetGidNumber(Value: Integer);
 begin
   if Assigned(fDomainData) then
-     SetString(eSambaPrimaryGroupSID, fEntry.Session.Lookup(fEntry.Session.Base, Format(sGROUPBYGID, [Value]), 'sambasid', LDAP_SCOPE_SUBTREE))
+     SetString(eSambaPrimaryGroupSID, fEntry.Session.Lookup(fEntry.Session.Base, Format(sGROUPBYGID, [Value]), 'sambasid', lssWholeSubtree))
   else
     SetString(eSambaPrimaryGroupSID, '');
   fPosixAccount.GidNumber := Value;

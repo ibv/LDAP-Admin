@@ -71,7 +71,7 @@ uses
   {$IFnDEF FPC}
   WinLdap
   {$ENDIF}
-  LinLDAP,
+  LinLDAP, mormot.net.ldap,
 {$ENDIF}
   Constant {$IFNDEF UNICODE}, Misc{$ENDIF};
 
@@ -120,7 +120,7 @@ begin
 
     if cbxPwdNeverExpires.Checked then
     begin
-      uacValue := fEntry.Session.Lookup(fEntry.dn, 'objectclass=user', 'userAccountControl', LDAP_SCOPE_BASE);
+      uacValue := fEntry.Session.Lookup(fEntry.dn, 'objectclass=user', 'userAccountControl', lssBaseObject);
       uacFlags := UF_DONT_EXPIRE_PASSWORD;
       if uacValue <> '' then
         uacFlags := uacFlags or StrToInt(uacValue);

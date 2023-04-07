@@ -36,7 +36,7 @@ uses
   MaskEdit, LCLIntf, LCLType, LMessages, DateTimePicker,
 {$ENDIF}
   SysUtils, Script,
-  ComCtrls, LDAPClasses, Classes, Contnrs, Controls, StdCtrls, ExtCtrls, Xml,
+  ComCtrls, mormot.net.ldap, LDAPClasses, Classes, Contnrs, Controls, StdCtrls, ExtCtrls, Xml,
      Forms, Graphics, Grids, Messages, Dialogs,  Math, XmlLoader, mormot.core.base
     {$IFDEF REGEXPR}
     { Note: If you want to compile templates with regex support you'll need }
@@ -213,7 +213,7 @@ type
 
   TTemplateCtrlComboLookupList = class(TTemplateCtrlComboList)
   private
-    fScope:       Integer;
+    fScope:       TLdapsearchScope;
     fSearchFilter: RawUtf8;
     fDisplayAttribute: RawUtf8;
     fValueAttribute: RawUtf8;
@@ -1613,7 +1613,7 @@ end;
 constructor TTemplateCtrlComboLookupList.Create(Attribute: TTemplateAttribute);
 begin
   inherited;
-  fScope := LDAP_SCOPE_SUBTREE;
+  fScope := lssWholeSubtree;
 end;
 
 procedure TTemplateCtrlComboLookupList.LoadProc(XmlNode: TXmlNode);
@@ -1636,13 +1636,13 @@ begin
     if Name = 'scope' then
     begin
       if Content = 'base' then
-        fScope := LDAP_SCOPE_BASE
+        fScope := lssBaseObject
       else
       if Content = 'one' then
-        fScope := LDAP_SCOPE_ONELEVEL
+        fScope := lssSingleLevel
       else
       if Content = 'sub' then
-        fScope := LDAP_SCOPE_SUBTREE
+        fScope := lssWholeSubtree;
     end
     else
     if Name = 'sorted' then

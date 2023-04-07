@@ -28,7 +28,7 @@ unit Schema;
 
 interface
 
-uses Classes, LDAPClasses, LinLDAP, SysUtils, Contnrs, mormot.core.base;
+uses Classes, LDAPClasses, LinLDAP, SysUtils, Contnrs, mormot.core.base, mormot.net.ldap;
 
 type
   TAttributeUsage=(au_userApplications, au_directoryOperation, au_distributedOperation, au_dSAOperation);
@@ -64,7 +64,7 @@ type
     function      GetItems(Index: integer): TLdapSchemaItem;
   protected
     function      GetItemClass: TLdapSchemaItemClass; virtual; abstract;
-    procedure     Load(const Attribute: TLdapAttribute);
+    procedure     Load(const Attribute: LDAPClasses.TLdapAttribute);
     procedure     SliceByName(const Str: RawUtf8; result: TLdapSchemaItems);
   public
     constructor   Create(const ASchema: TLdapSchema; AOwnsObjects: Boolean=true); reintroduce;
@@ -607,7 +607,7 @@ begin
   SearchResult:=TLdapEntryList.Create;
   try
     // Search path to schema ///////////////////////////////////////////////////
-    FSession.Search('(objectclass=*)','',LDAP_SCOPE_BASE,['subschemaSubentry'],false,SearchResult);
+    FSession.Search('(objectclass=*)','',lssBaseObject,['subschemaSubentry'],false,SearchResult);
     if SearchResult.Count = 0 then Abort;   // Added, 23.06.2016, T.Karlovic
     FDn:=SearchResult[0].AttributesByName['subschemaSubentry'].AsString;
     if FDn='' then raise Exception.Create(stSchemaNoSubentry);
@@ -615,7 +615,7 @@ begin
 
     // Get schema values ///////////////////////////////////////////////////////
     SearchResult.Clear;
-    FSession.Search('(objectClass=*)', FDn, LDAP_SCOPE_BASE,
+    FSession.Search('(objectClass=*)', FDn, lssBaseObject,
                     ['ldapSyntaxes', 'attributeTypes', 'objectclasses', 'matchingRules', 'matchingRuleUse'],
                     false, SearchResult);
 
@@ -674,7 +674,7 @@ begin
 end;
 
 
-procedure TLdapSchemaItems.Load(const Attribute: TLdapAttribute);
+procedure TLdapSchemaItems.Load(const Attribute: LDAPClasses.TLdapAttribute);
 var
   i: integer;
   AClass: TLdapSchemaItemClass;

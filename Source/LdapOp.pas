@@ -80,7 +80,7 @@ implementation
 {$R *.dfm}
 {$I LdapAdmin.inc}
 
-uses Misc, Dialogs, Config, Constant{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+uses Misc, Dialogs, Config, Constant, mormot.net.ldap{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
 function TLdapOpDlg.CheckPathOverlap(const SourceDn, DestDn: RawUtf8): Boolean;
 begin
@@ -118,7 +118,7 @@ begin
   EntryList := TLdapEntryList.Create;
   try
     Screen.Cursor := crAppStart;
-    SourceSession.Search(sANYCLASS, dn, LDAP_SCOPE_SUBTREE, ['objectclass'], false, EntryList{, SearchCallback});
+    SourceSession.Search(sANYCLASS, dn, lssWholeSubtree, ['objectclass'], false, EntryList{, SearchCallback});
     if ModalResult = mrCancel then
       Abort;
     ProgressBar.Max := EntryList.Count;
@@ -143,7 +143,7 @@ begin
     c := 0;
     for i := 0 to List.Count - 1 do
     begin
-      SourceSession.Search(sANYCLASS, List[i], LDAP_SCOPE_SUBTREE, ['objectclass'], false, EntryList{, SearchCallback});
+      SourceSession.Search(sANYCLASS, List[i], lssWholeSubtree, ['objectclass'], false, EntryList{, SearchCallback});
       if ModalResult = mrCancel then
         Abort;
       inc(c, EntryList.Count);
@@ -163,7 +163,7 @@ var
   EntryList: TLdapEntryList;
   srcEntry, dstEntry: TLDAPEntry;
   i, j: Integer;
-  Attr: TLdapAttribute;
+  Attr: LDAPClasses.TLdapAttribute;
 begin
 
   { Copy base entry }
@@ -198,7 +198,7 @@ begin
     if SourceSession = DestSession then
       { Adjust group references to new dn }
       SourceSession.ModifySet( Format(sMY_DN_GROUPS,[SourceDn]),
-                               SourceSession.Base, LDAP_SCOPE_SUBTREE,
+                               SourceSession.Base, lssWholeSubtree,
                                ['member', 'uniqueMember'],
                                [SourceDn, SourceDn],
                                [TargetDn, TargetDn],
@@ -206,7 +206,7 @@ begin
     else
       { Remove group references }
       SourceSession.ModifySet( Format(sMY_DN_GROUPS,[SourceDn]),
-                               SourceSession.Base, LDAP_SCOPE_SUBTREE,
+                               SourceSession.Base, lssWholeSubtree,
                                ['member', 'uniqueMember'],
                                [SourceDn, SourceDn],
                                [TargetDn, TargetDn],
@@ -219,7 +219,7 @@ begin
   { Copy subentries }
   EntryList := TLdapEntryList.Create;
   try
-    SourceSession.Search(sANYCLASS, SourceDn, LDAP_SCOPE_ONELEVEL, nil, false, EntryList);
+    SourceSession.Search(sANYCLASS, SourceDn, lssSingleLevel, nil, false, EntryList);
 
     if not Visible and  (EntryList.Count > 0) then
       Show;
@@ -250,7 +250,7 @@ procedure TLdapOpDlg.DeleteLeaf(const Entry: TLdapEntry);
 var
   i: Cardinal;
   uid: RawUtf8;
-  oc: TLdapAttribute;
+  oc: LDAPClasses.TLdapAttribute;
 begin
   Entry.Delete;
   if fSmartDelete then
@@ -263,7 +263,7 @@ begin
         { Remove any references to uid from groups before deleting user itself; }
         //TODO: Entry := TPosixAccount.Create(SourceSession, dn);
         uid := GetNameFromDN(Entry.dn);
-        ModifySet(Format(sMY_GROUPS,[uid, Entry.dn]), Base, LDAP_SCOPE_SUBTREE,
+        ModifySet(Format(sMY_GROUPS,[uid, Entry.dn]), Base, lssWholeSubtree,
                   ['memberUid', 'uniqueMember', 'member'],
                   [uid, Entry.dn, Entry.dn], [], LdapOpDelete);
         break;
@@ -284,7 +284,7 @@ var
 begin
   EntryList := TLdapEntryList.Create;
   try
-    SourceSession.Search(sANYCLASS, dn, LDAP_SCOPE_ONELEVEL, ['objectclass'], false, EntryList);
+    SourceSession.Search(sANYCLASS, dn, lssSingleLevel, ['objectclass'], false, EntryList);
     if not fDeleteAll and (EntryList.Count > 0) then
     begin
       if CheckedMessageDlg(PChar(Format(stDeleteAll, [dn])), mtWarning, [mbYes, mbNo], cSmartDelete, fSmartDelete) <> mrYes then
@@ -344,7 +344,7 @@ begin
     SourceSession.DeleteEntry(dn);
     if rdn <> '' then // base entry renamed, adjust posix group references
       with SourceSession do try
-      ModifySet(Format(sMY_POSIX_GROUPS,[GetNameFromDn(dn)]), Base, LDAP_SCOPE_SUBTREE,
+      ModifySet(Format(sMY_POSIX_GROUPS,[GetNameFromDn(dn)]), Base, lssWholeSubtree,
                 ['memberUid'],
                 [GetNameFromDn(dn)],
                 [GetNameFromDn(rdn)], LdapOpReplace);

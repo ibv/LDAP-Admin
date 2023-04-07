@@ -28,7 +28,7 @@ unit Connection;
 interface
 
 uses Config, Sorter, Schema, LdapClasses, CustomMenus, Controls, Templates,
-     LinLDAP, Constant, TextFile, Bookmarks, mormot.core.base;
+     LinLDAP, Constant, TextFile, Bookmarks, mormot.core.base, mormot.net.ldap;
 
 const
   { Posix objects }
@@ -152,6 +152,8 @@ type
 
   TLoadCallback = procedure(BytesRead: Integer; var Abort: Boolean) of object;
 
+  { TDBConnection }
+
   TDBConnection = class(TConnection)
   private
     Root:       TEntryNode;
@@ -164,8 +166,8 @@ type
   public
     constructor Create(Account: TDBAccount; CallbackProc: TLoadCallback = nil);
     destructor  Destroy; override;
-    procedure   Search(const Filter, Base: RawUtf8; const Scope: Cardinal; attrs: PCharArray; const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback = nil); overload; override;
-    function    Lookup(sBase, sFilter, sResult: RawUtf8; Scope: Cardinal): RawUtf8; override;
+    procedure   Search(const Filter, Base: RawUtf8; const Scope: TLdapSearchScope; attrs: TRawByteStringDynArray; const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback = nil); overload; override;
+    function    Lookup(sBase, sFilter, sResult: RawUtf8; Scope: TLdapSearchScope): RawUtf8; override;
     function    GetDn(sFilter: RawUtf8): RawUtf8; override;
     procedure   WriteEntry(Entry: TLdapEntry); override;
     procedure   ReadEntry(Entry: TLdapEntry); override;
@@ -233,7 +235,7 @@ begin
   Result := Account.DirectoryType;
   if (Result = dtAutodetect) and Connected then
   begin
-    if Lookup('', sAnyClass,'isGlobalCatalogReady', LDAP_SCOPE_BASE) <> '' then
+    if Lookup('', sAnyClass,'isGlobalCatalogReady', lssBaseObject) <> '' then
       Result := dtActiveDirectory
     else
       Result := dtPosix;
@@ -330,7 +332,7 @@ begin
   begin
     r := Random(N);
     Result := Min + uidpool[r];
-    if Lookup(Base, Format('(&(objectclass=%s)(%s=%d))', [Objectclass, id, Result]), 'objectclass', LDAP_SCOPE_SUBTREE) = '' then
+    if Lookup(Base, Format('(&(objectclass=%s)(%s=%d))', [Objectclass, id, Result]), 'objectclass', lssWholeSubtree) = '' then
       exit;
     uidpool[r] := uidpool[N - 1];
     dec(N);
@@ -342,18 +344,13 @@ end;
   no more free numbers are available }
 function TConnection.GetSequentialNumber(const Min, Max: Integer; const Objectclass, id: RawUtf8): Integer;
 var
-  attrs: PCharArray;
   i, n: Integer;
   SearchList: TLdapEntryList;
 begin
   Result := Min;
-  SetLength(attrs, 2);
-  attrs[0] := PChar(id);
-  attrs[1] := nil;
-
   SearchList := TLdapEntryList.Create;
   try
-    Search(Format('(objectclass=%s)', [Objectclass]), Base, LDAP_SCOPE_ONELEVEL, attrs, false, SearchList);
+    Search(Format('(objectclass=%s)', [Objectclass]), Base, lssSingleLevel, [id], false, SearchList);
     for i := 0 to SearchList.Count - 1 do
     begin
       n := StrToInt(SearchList[i].Attributes[0].AsString);
@@ -427,7 +424,7 @@ end;
 
 function TPosixDirectoryIdentity.ClassifyLdapEntry(Entry: TLdapEntry): Integer;
 var
-  Attr: TLdapAttribute;
+  Attr: LdapClasses.TLdapAttribute;
   i: integer;
   s: RawUtf8;
 
@@ -557,7 +554,7 @@ end;
 
 function TADDirectoryIdentity.ClassifyLdapEntry(Entry: TLdapEntry): Integer;
 var
-  Attr: TLdapAttribute;
+  Attr: LdapClasses.TLdapAttribute;
   i: integer;
   s: RawUtf8;
 begin
@@ -741,7 +738,10 @@ end;
 
 { Note: NoValue and attrs are ignored, for the time being all attributes and values are returned }
 { Also: Implement FirstOnly to stop traversing of the tree tree when only one result is expected (usefull for Lookup and GetDn functions }
-procedure TDBConnection.Search(const Filter, Base: RawUtf8; const Scope: Cardinal; attrs: PCharArray; const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback = nil);
+procedure TDBConnection.Search(const Filter, Base: RawUtf8;
+  const Scope: TLdapSearchScope; attrs: TRawByteStringDynArray;
+  const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback
+  );
 var
   BaseNode: TEntryNode;
   FilterNode :TAstNode;
@@ -883,7 +883,8 @@ begin
   Result := Assigned(Root);
 end;
 
-function TDBConnection.Lookup(sBase, sFilter, sResult: RawUtf8; Scope: Cardinal): RawUtf8;
+function TDBConnection.Lookup(sBase, sFilter, sResult: RawUtf8;
+  Scope: TLdapSearchScope): RawUtf8;
 var
   l: TLdapEntryList;
 
@@ -907,7 +908,7 @@ var
 begin
   l := TLdapEntryList.Create;
   try
-    Search(sFilter, Base, LDAP_SCOPE_SUBTREE, nil, true, l);
+    Search(sFilter, Base, lssWholeSubtree, nil, true, l);
     if l.Count > 0 then
       Result := l[0].dn
     else

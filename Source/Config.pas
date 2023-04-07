@@ -116,7 +116,7 @@ type
     FPassword:    RawUtf8;
     procedure     SetBase(const Value: RawUtf8); virtual;
     procedure     SetPassword(const Value: RawUtf8); virtual;
-    procedure     SetPort(const Value: integer); virtual;
+    procedure     SetPort(const Value: RawUtf8); virtual;
     procedure     SetServer(const Value: RawUtf8); virtual;
     procedure     SetUser(const Value: RawUtf8); virtual;
     procedure     SetSSL(const Value: boolean); virtual;
@@ -125,7 +125,7 @@ type
     function      GetBase: RawUtf8; virtual;
     function      GetLdapVersion: integer; virtual;
     function      GetPassword: RawUtf8; virtual;
-    function      GetPort: integer; virtual;
+    function      GetPort: RawUtf8; virtual;
     function      GetServer: RawUtf8; virtual;
     function      GetUser: RawUtf8; virtual;
     function      GetSSL: boolean; virtual;
@@ -157,7 +157,7 @@ type
     procedure     Assign(const Source: TAccount);
     property      SSL: boolean read GetSSL write SetSSL;
     property      TLS: boolean read GetTLS write SetTLS;
-    property      Port: integer read GetPort write SetPort;
+    property      Port: RawUtf8 read GetPort write SetPort;
     property      LdapVersion: integer read GetLdapVersion write SetLdapVersion;
     property      User: RawUtf8 read GetUser write SetUser;
     property      Server: RawUtf8 read GetServer write SetServer;
@@ -178,7 +178,7 @@ type
   TFakeAccount=class(TAccount)
   private
     FBase:        RawUtf8;
-    FPort:        integer;
+    FPort:        RawUtf8;
     FServer:      RawUtf8;
     FUser:        RawUtf8;
     FSSL:         boolean;
@@ -186,7 +186,7 @@ type
     FAuthMethod:  TLdapAuthMethod;
   protected
     procedure     SetBase(const Value: RawUtf8); override;
-    procedure     SetPort(const Value: integer); override;
+    procedure     SetPort(const Value: RawUtf8); override;
     procedure     SetServer(const Value: RawUtf8); override;
     procedure     SetUser(const Value: RawUtf8); override;
     procedure     SetSSL(const Value: boolean); override;
@@ -195,7 +195,7 @@ type
     function      GetAuthMethod: TLdapAuthMethod; override;
     function      GetBase: RawUtf8; override;
     function      GetLdapVersion: integer; override;
-    function      GetPort: integer; override;
+    function      GetPort: RawUtf8; override;
     function      GetServer: RawUtf8; override;
     function      GetUser: RawUtf8; override;
     function      GetSSL: boolean; override;
@@ -782,14 +782,14 @@ begin
   WriteString(CONNECT_SERVER, Value);
 end;
 
-function TAccount.GetPort: integer;
+function TAccount.GetPort: RawUtf8;
 begin
-  result:=ReadInteger(CONNECT_PORT, LDAP_PORT);
+  result:=ReadString(CONNECT_PORT, LDAP_PORT);
 end;
 
-procedure TAccount.SetPort(const Value: integer);
+procedure TAccount.SetPort(const Value: RawUtf8);
 begin
-  WriteInteger(CONNECT_PORT, Value);
+  WriteString(CONNECT_PORT, Value);
 end;
 
 function TAccount.GetLdapVersion: integer;
@@ -1903,12 +1903,12 @@ begin
   REsult := FAuthMethod;
 end;
 
-function TFakeAccount.GetPort: integer;
+function TFakeAccount.GetPort: RawUtf8;
 begin
   result:=FPort;
 end;
 
-procedure TFakeAccount.SetPort(const Value: integer);
+procedure TFakeAccount.SetPort(const Value: RawUtf8);
 begin
   FPort:=Value;
 end;

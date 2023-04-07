@@ -263,7 +263,7 @@ uses
   Jpeg,
 {$ELSE}
 {$ENDIF}
-  AdvSamba, Pickup, Input, Misc, Main, Templates, Config;
+  AdvSamba, Pickup, Input, Misc, Main, Templates, Config, mormot.net.ldap;
 
 
 {$R *.dfm}
@@ -670,7 +670,7 @@ end;
 constructor TUserDlg.Create(AOwner: TComponent; adn: RawUtf8; AConnection: TConnection; Mode: TEditMode);
 var
   i: Integer;
-  Oc: TLdapAttribute;
+  Oc: LDAPClasses.TLdapAttribute;
   TemplateList: TTemplateList;
 begin
   inherited Create(AOwner);
@@ -832,7 +832,7 @@ begin
   try
     GroupList.Items.BeginUpdate;
     GroupList.Items.Clear;
-    Connection.Search(GetGroupQuery, Connection.Base, LDAP_SCOPE_SUBTREE,
+    Connection.Search(GetGroupQuery, Connection.Base, lssWholeSubtree,
                       ['cn', 'description', 'objectclass'], false, EntryList);
     for i := 0 to EntryList.Count - 1 do with EntryList[i] do
     begin
@@ -1030,7 +1030,7 @@ procedure TUserDlg.SaveGroups;
 var
   i, modop: Integer;
   GroupEntry: TLdapEntry;
-  MemberAttr: TLdapAttribute;
+  MemberAttr: LdapClasses.TLdapAttribute;
   MemberValue: RawUtf8;
 begin
   if Assigned(origGroups) then with origGroups do
@@ -1102,10 +1102,10 @@ begin
     ShowModal;
 
     if (SelCount>0) and (AnsiCompareStr(edGidNumber.Text, Selected[0].Dn) <> 0) then begin
-      gidnr := StrToInt(Connection.Lookup(Selected[0].Dn, sANYCLASS, 'gidNumber', LDAP_SCOPE_BASE));
+      gidnr := StrToInt(Connection.Lookup(Selected[0].Dn, sANYCLASS, 'gidNumber', lssBaseObject));
       if SambaAccount.Activated then
       begin
-        gsid := Connection.Lookup(Selected[0].Dn, sANYCLASS, 'sambasid', LDAP_SCOPE_BASE);
+        gsid := Connection.Lookup(Selected[0].Dn, sANYCLASS, 'sambasid', lssBaseObject);
         if (Copy(gsid, 1, LastDelimiter('-', gsid) - 1) <> SambaAccount.DomainSID) and
            (MessageDlg(stGidNotSamba, mtWarning, [mbYes, mbNo], 0) = mrNo) then Abort;
         SambaAccount.GidNumber := gidnr;

@@ -24,7 +24,7 @@ unit ADUser;
 interface
 
 uses
-  Windows,WinLDAP, ShellApi,
+  Windows, ShellApi,
   LinLDAP,DateTimePicker, Graphics, LCLIntf, LCLType, LMessages,
   Messages, SysUtils, Classes, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, ComCtrls, LDAPClasses,  ImgList, Constant,

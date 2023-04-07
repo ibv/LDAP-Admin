@@ -136,8 +136,8 @@ type
     procedure     SetUser(const Value: RawUtf8);
     function      GetPassword: RawUtf8;
     procedure     SetPassword(const Value: RawUtf8);
-    function      GetPort: integer;
-    procedure     SetPort(const Value: integer);
+    function      GetPort: RawUtf8;
+    procedure     SetPort(const Value: RawUtf8);
     function      GetServer: RawUtf8;
     procedure     SetServer(const Value: RawUtf8);
     function      GetSSL: boolean;
@@ -173,7 +173,7 @@ type
     property      Name: RawUtf8 read GetName write SetConnectionName;
     property      SSL: boolean read GetSSL write SetSSL;
     property      TLS: boolean read GetTLS write SetTLS;
-    property      Port: integer read GetPort write SetPort;
+    property      Port: RawUtf8 read GetPort write SetPort;
     property      LdapVersion: integer read GetLdapVersion write SetLdapVersion;
     property      AuthMethod: TLdapAuthMethod read GetAuthMethod write SetAuthMethod;
     property      User: RawUtf8 read GetUser write SetUser;
@@ -197,7 +197,7 @@ var
 
 implementation
 
-uses LinLDAP, Math, Dialogs, Misc;
+uses LinLDAP, Math, Dialogs, Misc, mormot.net.ldap;
 
 {$R *.dfm}
 
@@ -338,14 +338,14 @@ begin
   MethodChange(nil);
 end;
 
-function TConnPropDlg.GetPort: integer;
+function TConnPropDlg.GetPort: RawUtf8;
 begin
-  result:=StrToInt(PortEd.Text);
+  result:=PortEd.Text;
 end;
 
-procedure TConnPropDlg.SetPort(const Value: integer);
+procedure TConnPropDlg.SetPort(const Value: RawUtf8);
 begin
-  PortEd.Text:=IntToStr(Value);
+  PortEd.Text:=Value;
 end;
 
 function TConnPropDlg.GetSSL: boolean;
@@ -533,7 +533,7 @@ begin
 
   try
     ASession.Connect;
-    ASession.Search('objectClass=*','',LDAP_SCOPE_BASE,['namingContexts'],false,AList);
+    ASession.Search('objectClass=*','',lssBaseObject,['namingContexts'],false,AList);
     for i:=0 to AList.Count-1 do
       for j:=0 to AList[i].AttributesByName['namingContexts'].ValueCount-1 do
         BaseEd.Items.Add(AList[i].AttributesByName['namingContexts'].Values[j].AsString);
@@ -718,7 +718,7 @@ begin
     cbTLS.Checked := false;
   end
   else
-    PortEd.Text := IntToStr(LDAP_PORT);
+    PortEd.Text := LDAP_PORT;
 end;
 
 procedure TConnPropDlg.cbSASLClick(Sender: TObject);

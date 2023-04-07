@@ -390,7 +390,7 @@ uses
   EditEntry, ConnList, Search, LdapOp, Constant, Export, Import, Prefs, Misc,
   LdapCopy, BinView, Input, ConfigDlg, Templates, TemplateCtrl,
   Cert, PicView, About, Alias, SizeGrip, CustMenuDlg, Lang, Bookmarks, DBLoad,
-  mormot.core.os
+  mormot.core.os, mormot.net.ldap
   {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
 
@@ -971,16 +971,12 @@ procedure TMainFrm.ExpandNode(Node: TTreeNode; Session: TLDAPSession; TView: TTr
 var
   CNode: TTreeNode;
   i: Integer;
-  attrs: PCharArray;
   Entry: TLDapEntry;
   ObjectInfo: TObjectInfo;
 begin
   FTickCount := GetTickCount64 + 500;
   try
-    SetLength(attrs, 2);
-    attrs[0] := 'objectclass';
-    attrs[1] := nil;
-    Session.Search(sAnyClass, TObjectInfo(Node.Data).dn, LDAP_SCOPE_ONELEVEL, attrs, false, fSearchList, SearchCallback);
+    Session.Search(sAnyClass, TObjectInfo(Node.Data).dn, lssSingleLevel, ['objectClass'], false, fSearchList, SearchCallback);
     for i := 0 to fSearchList.Count - 1 do
     begin
       Entry := fSearchList[i];
@@ -1041,7 +1037,7 @@ procedure TMainFrm.RefreshValueListView(Node: TTreeNode);
 var
   ListItem: TListItem;
 
-  procedure ShowAttrs(Attributes: TLdapAttributeList);
+  procedure ShowAttrs(Attributes: LDAPClasses.TLdapAttributeList);
   var
     i, j, k: Integer;
 
@@ -1956,7 +1952,7 @@ begin
   if ParamCount <> 0 then
   begin
     aproto:='ldap';
-    aport:=LDAP_PORT;
+    aport:=StrToInt(LDAP_PORT);
     auser:='';
     apassword:='';
     auth:=AUTH_SIMPLE;
@@ -1966,7 +1962,7 @@ begin
     with fCmdLineAccount do
     begin
       Server := ahost;
-      Port := aport;
+      Port := IntToStr(aport);
       Base := abase;
       User := auser;
       Password := apassword;
@@ -2082,7 +2078,7 @@ begin
     end;
     if fLocatedEntry = -1 then
     begin
-      FConnection.Search(Parse(fQuickSearchFilter, edSearch.Text), PChar(FConnection.Base), LDAP_SCOPE_SUBTREE, ['objectclass'], false, fLocateList, SearchCallback);
+      FConnection.Search(Parse(fQuickSearchFilter, edSearch.Text), PChar(FConnection.Base), lssWholeSubtree, ['objectclass'], false, fLocateList, SearchCallback);
       fLocateList.Sort(EntrySortProc, true);
     end;
     if fLocateList.Count > 0 then
@@ -2316,7 +2312,7 @@ procedure TMainFrm.ListPopupPopup(Sender: TObject);
 var
   Value: TLdapAttributeData;
 
-  function IsReadOnly(Attribute: TLdapAttribute): Boolean;
+  function IsReadOnly(Attribute: LDAPClasses.TLdapAttribute): Boolean;
   const
     OID_STRUCTIRAL_OBJECTCLASS = '2.5.21.9';
   begin

@@ -212,7 +212,7 @@ implementation
 
 uses
   {$IFDEF VARIANTS} variants, {$ENDIF} md4Samba, smbdes, Sysutils, Misc, Config,
-  Pickup, Dialogs, mormot.core.os;// {$ifdef mswindows},ActiveX, ComObj, ActiveDs_TLB, adsie,AclApi, AccCtrl{$endif};
+  Pickup, Dialogs, mormot.core.os, mormot.net.ldap;// {$ifdef mswindows},ActiveX, ComObj, ActiveDs_TLB, adsie,AclApi, AccCtrl{$endif};
 
 type
   TSidIdent = (siEveryone, siSelf);
@@ -359,14 +359,14 @@ end;
 function TADHelper.DefaultNamingContext: string;
 begin
   if FDefaultNamingContext = '' then
-    FDefaultNamingContext := Connection.Lookup('', sAnyClass,'defaultNamingContext', LDAP_SCOPE_BASE);
+    FDefaultNamingContext := Connection.Lookup('', sAnyClass,'defaultNamingContext', lssBaseObject);
   Result := FDefaultNamingContext;
 end;
 
 function TADHelper.ConfigurationNamingContext: string;
 begin
   if FConfigurationNamingContext = '' then
-    FConfigurationNamingContext := Connection.Lookup('', sAnyClass,'configurationNamingContext', LDAP_SCOPE_BASE);
+    FConfigurationNamingContext := Connection.Lookup('', sAnyClass,'configurationNamingContext', lssBaseObject);
   result := FConfigurationNamingContext;
 end;
 
@@ -374,7 +374,7 @@ function TADHelper.NTDomain: string;
 begin
   if FNTDomain = '' then
   begin
-    FNTDomain := Connection.Lookup('CN=Partitions,' + ConfigurationNamingContext, '(&(objectcategory=Crossref)(ncName=' + DefaultNamingContext + ')(netBIOSName=*))', 'netBIOSName', LDAP_SCOPE_SUBTREE);
+    FNTDomain := Connection.Lookup('CN=Partitions,' + ConfigurationNamingContext, '(&(objectcategory=Crossref)(ncName=' + DefaultNamingContext + ')(netBIOSName=*))', 'netBIOSName', lssWholeSubtree);
   end;
   Result := FNTDomain;
 end;
@@ -388,7 +388,7 @@ begin
   begin
     FDNSRoot := TStringList.Create;
     EL := TLdapEntryList.Create;
-    Connection.Search('(&(objectcategory=Crossref)(ncName='+ DefaultNamingContext  + ')(dnsRoot=*))', 'CN=Partitions,' + ConfigurationNamingContext, LDAP_SCOPE_SUBTREE, ['dnsRoot'], false, EL);
+    Connection.Search('(&(objectcategory=Crossref)(ncName='+ DefaultNamingContext  + ')(dnsRoot=*))', 'CN=Partitions,' + ConfigurationNamingContext, lssWholeSubtree, ['dnsRoot'], false, EL);
     for i := 0 to EL.Count - 1 do with EL[i].AttributesByName['dnsRoot'] do
     for j := 0 to ValueCount - 1 do
       FDNSRoot.Add(Values[j].AsString);
@@ -559,7 +559,7 @@ var
   procedure WriteMember(dn: string; modop: Integer);
   var
     GroupEntry: TLdapEntry;
-    MemberAttr: TLdapAttribute;
+    MemberAttr: LDapClasses.TLdapAttribute;
     MemberValue: string;  
   begin
     GroupEntry := TLdapEntry.Create(FEntry.Session, dn);

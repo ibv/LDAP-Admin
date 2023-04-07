@@ -226,7 +226,7 @@ begin
       Remove(j);
 end;
 
-procedure TEventHandler.HandleEvent(Attribute: TLdapAttribute; Event: TEMPLATES.TEventType);
+procedure TEventHandler.HandleEvent(Attribute: LDapClasses.TLdapAttribute; Event: TEMPLATES.TEventType);
 ///procedure TEventHandler.HandleEvent(Attribute: TLdapAttribute; Event: TEventType);
 var
   idx, i: Integer;

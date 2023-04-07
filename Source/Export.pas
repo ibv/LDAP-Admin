@@ -35,7 +35,7 @@ uses
 {$ENDIF}
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, Dialogs, LDAPClasses, ComCtrls, Xml, DlgWrap,
-  TextFile, mormot.core.base;
+  TextFile, mormot.core.base, mormot.net.ldap;
 
 type
   TExportDlg = class(TForm)
@@ -73,7 +73,7 @@ type
     fdnList:      TStringList;
     fCount:       Integer;
     FAttributes:  array of RawUtf8;
-    FScope:       Cardinal;
+    FScope:       TLdapSearchScope;
     Session:      TLDAPSession;
     fTickCount:   Cardinal;
     fTickStep:    Cardinal;
@@ -292,9 +292,9 @@ end;
 procedure TExportDlg.SubDirsCbkClick(Sender: TObject);
 begin
   if SubDirsCbk.Checked then
-    FScope := LDAP_SCOPE_SUBTREE
+    FScope := lssWholeSubtree
   else
-    FScope := LDAP_SCOPE_BASE;
+    FScope := lssBaseObject;
 end;
 
 procedure TExportDlg.FormDestroy(Sender: TObject);

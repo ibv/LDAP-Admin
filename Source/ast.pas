@@ -27,7 +27,7 @@ unit Ast;
 interface
 
 uses
-  Classes, SysUtils, Contnrs, Connection, LdapClasses;
+  Classes, SysUtils, Contnrs, Connection, LdapClasses, mormot.net.ldap;
 
 
 const
@@ -44,7 +44,7 @@ type
 
   TASTNode = class
   public
-    procedure ExecuteFilter(Session: TLdapSession; BaseNode: TEntryNode; const Scope: Cardinal; Result: TLdapEntryList); virtual; abstract;
+    procedure ExecuteFilter(Session: TLdapSession; BaseNode: TEntryNode; const Scope: TLdapsearchScope; Result: TLdapEntryList); virtual; abstract;
   end;
 
   TAstNodeFactor = class(TAstNode)
@@ -58,18 +58,20 @@ type
 
   TASTNodeOr = class(TASTNodeFactor)
   public
-    procedure ExecuteFilter(Session: TLdapSession; BaseNode: TEntryNode; const Scope: Cardinal; Result: TLdapEntryList); override;
+    procedure ExecuteFilter(Session: TLdapSession; BaseNode: TEntryNode; const Scope: TLdapsearchScope; Result: TLdapEntryList); override;
   end;
 
   TASTNodeAnd = class(TASTNodeFactor)
     public
-      procedure ExecuteFilter(Session: TLdapSession; BaseNode: TEntryNode; const Scope: Cardinal; Result: TLdapEntryList); override;
+      procedure ExecuteFilter(Session: TLdapSession; BaseNode: TEntryNode; const Scope: TLdapsearchScope; Result: TLdapEntryList); override;
   end;
+
+  { TASTNodeNot }
 
   TASTNodeNot = class(TASTNodeFactor)
     public
       constructor Create(s: string); override;
-      procedure ExecuteFilter(Session: TLdapSession; BaseNode: TEntryNode; const Scope: Cardinal; Result: TLdapEntryList); override;
+      procedure ExecuteFilter(Session: TLdapSession; BaseNode: TEntryNode; const Scope: TLdapsearchScope; Result: TLdapEntryList); override;
   end;
 
   TASTNodeItem = class(TAstNode)
@@ -77,14 +79,14 @@ type
     procedure AddEntry(ANode: TEntryNode);
   protected
     fSession: TLdapSession;
-    fScope: Cardinal;
+    fScope: TLdapsearchScope;
     fResult: TLdapentryList;
     fAttribute, fAssertionValue: string;
     procedure DoCompare(ANode: TEntryNode); virtual; abstract;
     procedure Traverse(ANode: TEntryNode);
   public
     constructor Create(Attribute, AssertionValue: string); reintroduce; virtual;
-    procedure ExecuteFilter(Session: TLdapSession; BaseNode: TEntryNode; const Scope: Cardinal; Result: TLdapEntryList); override;
+    procedure ExecuteFilter(Session: TLdapSession; BaseNode: TEntryNode; const Scope: TLdapsearchScope; Result: TLdapEntryList); override;
   end;
 
   TASTNodeItemEquality = class(TAstNodeItem)
@@ -292,7 +294,7 @@ begin
   inherited;
 end;
 
-procedure TASTNodeOR.ExecuteFilter(Session: TLdapSession; BaseNode: TEntryNode; const Scope: Cardinal; Result: TLdapEntryList);
+procedure TASTNodeOR.ExecuteFilter(Session: TLdapSession; BaseNode: TEntryNode; const Scope: TLdapsearchScope; Result: TLdapEntryList);
 var
   i, j: Integer;
   l: TLdapEntryList;
@@ -316,7 +318,7 @@ begin
   end;
 end;
 
-procedure TASTNodeAND.ExecuteFilter(Session: TLdapSession; BaseNode: TEntryNode; const Scope: Cardinal; Result: TLdapEntryList);
+procedure TASTNodeAND.ExecuteFilter(Session: TLdapSession; BaseNode: TEntryNode; const Scope: TLdapsearchScope; Result: TLdapEntryList);
 var
   i, j: Integer;
   l: TLdapEntryList;
@@ -341,14 +343,15 @@ end;
 
 { TAstNodeNOT }
 
-constructor TASTNodeNOT.Create(s: string);
+constructor TASTNodeNot.Create(s: string);
 begin
   inherited;
   if fFactors.Count > 1 then
     raise Exception.CreateFmt(StErrUnaryOp, ['!', s]);
 end;
 
-procedure TASTNodeNOT.ExecuteFilter(Session: TLdapSession; BaseNode: TEntryNode; const Scope: Cardinal; Result: TLdapEntryList);
+procedure TASTNodeNot.ExecuteFilter(Session: TLdapSession;
+  BaseNode: TEntryNode; const Scope: TLdapsearchScope; Result: TLdapEntryList);
 var
   l: TLdapEntryList;
   Entry: TLdapEntry;
@@ -410,12 +413,12 @@ var
   i: Integer;
 begin
   case fScope of
-    LDAP_SCOPE_BASE:
+    lssBaseObject:
       begin
         DoCompare(ANode);
         exit;
       end;
-    LDAP_SCOPE_ONELEVEL:
+    lssSingleLevel:
       begin
         for i := 0 to ANode.Children.Count - 1 do
           DoCompare(ANode.Children[i] as TEntryNode);
@@ -434,7 +437,7 @@ begin
   fAssertionValue := AssertionValue;
 end;
 
-procedure TAstNodeItem.ExecuteFilter(Session: TLdapSession; BaseNode: TEntryNode; const Scope: Cardinal; Result: TLdapEntryList);
+procedure TAstNodeItem.ExecuteFilter(Session: TLdapSession; BaseNode: TEntryNode; const Scope: TLdapsearchScope; Result: TLdapEntryList);
 begin
   fSession := Session;
   fScope := Scope;

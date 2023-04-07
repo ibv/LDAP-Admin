@@ -71,7 +71,8 @@ type
   public
     constructor       Create(AOwner: TComponent); override;
     destructor        Destroy; override;
-    procedure         Populate(const Session: TLDAPSession; const Filter: RawUtf8; const Attributes: array of RawUtf8; const Base: RawUtf8 = '');
+    procedure Populate(const Session: TLDAPSession; const Filter: RawUtf8;
+      const Attributes: TRawByteStringDynArray; const Base: RawUtf8='');
 
     property          Entries:  TLdapEntryList read FEntries;
     property          ImageIndex: integer read FImageIndex write FImageIndex;
@@ -84,7 +85,7 @@ implementation
 
 {$R *.dfm}
 
-uses LinLDAP, Constant, Main, Connection, SizeGrip;
+uses LinLDAP, Constant, Main, Connection, SizeGrip, mormot.net.ldap;
 
 constructor TPickupDlg.Create(AOwner: TComponent);
 begin
@@ -112,12 +113,11 @@ begin
   FSorter.OnSort:=DoSort;
 end;
 
-procedure TPickupDlg.Populate(const Session: TLDAPSession; const Filter: RawUtf8; const Attributes: array of RawUtf8; const Base: RawUtf8 = '');
+procedure TPickupDlg.Populate(const Session: TLDAPSession; const Filter: RawUtf8; const Attributes: TRawByteStringDynArray; const Base: RawUtf8 = '');
 var
   i: integer;
   popIdx: integer;
-  attrs: PCharArray;
-  len: Integer;
+  attrs: TRawByteStringDynArray;
   aBase: RawUtf8;
 begin
   popIdx:=length(FPopulates);
@@ -141,29 +141,17 @@ begin
     EndUpdate;
   end;
 
-  attrs := nil;
-  len := Length(Attributes);
+  attrs := Attributes;
   if ImageIndex = -1 then
-    inc(len);
-  if Len > 0 then
   begin
-    SetLength(attrs, len + 1);
-    attrs[len] := nil;
-    if ImageIndex = -1 then
-    begin
-      dec(len);
-      attrs[len] := 'objectclass';
-    end;
-    repeat
-      dec(len);
-      attrs[len] := PChar(Attributes[len]);
-    until len = 0;
+    SetLength(Attrs, Length(attrs) + 1);
+    attrs[Length(attrs) - 1] := 'objectclass';
   end;
   if Base = '' then
     aBase := Session.Base
   else
     aBase := Base;
-  Session.Search(Filter, aBase, LDAP_SCOPE_SUBTREE, attrs, false, FEntries);
+  Session.Search(Filter, aBase, lssWholeSubtree, attrs, false, FEntries);
 end;
 
 procedure TPickupDlg.FilterEditChange(Sender: TObject);
