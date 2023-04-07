@@ -167,7 +167,6 @@
           <Other>
             <Verbosity>
               <ShoLineNum Value="True"/>
-              <ShowDebugInfo Value="True"/>
             </Verbosity>
             <CustomOptions Value="-dBorland
 -dVer150

@@ -405,8 +405,9 @@ uses
   ComObj,
 {$ELSE}
 {$ENDIF}
-  Constant, LinLDAP, base64, Dialogs, Forms, StdCtrls, Controls, WinBase64,
-  mormot.core.text {$IFDEF VER_XEH}, System.Types{$ENDIF};
+base64,
+  Constant, LinLDAP, Dialogs, Forms, StdCtrls, Controls,
+  mormot.core.text, mormot.core.buffers {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 
 function GetIndent(o: TObject): Integer;
@@ -920,6 +921,7 @@ var
   Offset: integer;
   Flags: Integer;
   st: RawUtf8;
+  stBin: RawByteString;
   list: TStringList;
 
 
@@ -968,14 +970,16 @@ begin
   begin
     st:=ReadString(CONNECT_CREDIT);
     List:=TStringList.Create;
-      st:=DecodeStringBase64(st,true);
-      if pos('|',st) < 0 then  exit;
-      ExtractStrings(['|'], [], PChar(st), list);
-      if list.Count < 2 then exit;
-      Flags := StrToInt(list[0]);
-      FUser := list[1] ;
-      FPassword := list[2];
-      List.Free;
+    stBin := Base64ToBin(st);
+    if pos('|',stBin) < 0 then
+      exit;
+    ExtractStrings(['|'], [], PChar(stBin), list);
+    if list.Count < 2 then
+      exit;
+    Flags := StrToInt(list[0]);
+    FUser := list[1] ;
+    FPassword := list[2];
+    List.Free;
   end;
   finally
   end;
@@ -1489,7 +1493,7 @@ end;
 ////////////////////////////////////////////////////////////////////////////////
 function TRegistryConfigStorage.GetDataSize(Ident: RawUtf8): Integer;
 var
-  ValName: RawUtf8;
+  ValName, B64Val: RawUtf8;
 begin
   result:=0;
   if not FRegistry.OpenKey(FRootPath+GetKeyName(Ident), false) then exit;
@@ -1497,7 +1501,11 @@ begin
   ValName:=GetValName(Ident);
   case FRegistry.GetDataType(ValName) of
     rdString,
-    rdExpandString: result:=Base64DecSize(FRegistry.ReadString(ValName));
+    rdExpandString:
+      begin
+        B64Val := FRegistry.ReadString(ValName);
+        result := Base64ToBinLength(@B64Val[1], Length(B64Val));
+      end;
     rdInteger:      result:=sizeof(integer);
     rdBinary:       result:=FRegistry.GetDataSize(ValName);
   end;
@@ -1517,8 +1525,8 @@ begin
     rdString,
     rdExpandString: begin
                       s:=FRegistry.ReadString(ValName);
-                      result:=Base64DecSize(s);
-                      Base64Decode(s, Buffer);
+                      result:= Base64ToBinLength(@s[1], length(s));
+                      Base64ToBin(s, PChar(Buffer), BufSize);
                     end;
     rdInteger:      begin
                       result:=sizeof(integer);
@@ -1632,7 +1640,7 @@ begin
                       GetMem(Buffer, BufLen);
                       try
                         FRegistry.ReadBinaryData(ValName, Buffer^, BufLen);
-                        result:=Base64Encode(Buffer^, BufLen);
+                        result := BinToBase64(PChar(Buffer), BufLen);
                       finally
                         FreeMem(buffer, BufLen);
                       end;
@@ -1722,9 +1730,14 @@ begin
 end;
 
 function TXmlConfigStorage.GetDataSize(Ident: RawUtf8): Integer;
+var
+  b64: RawUtf8;
 begin
-  if FXml.Exist(Norm(Ident)) then result:=Base64decSize(FXml.ByPath(Norm(Ident)).Content)
-  else result:=0;
+  b64 := FXml.ByPath(Norm(Ident)).Content;
+  if FXml.Exist(Norm(Ident)) then
+    result:=Base64ToBinLength(@b64[1], length(b64))
+  else
+    result:=0;
 end;
 
 function TXmlConfigStorage.ReadBinaryData(Ident: RawUtf8; var Buffer; BufSize: Integer): Integer;
@@ -1734,13 +1747,13 @@ begin
   result:=0;
   if FXml.Exist(Norm(Ident)) then begin
     s:=FXml.ByPath(Norm(Ident)).Content;
-    result:=Base64Decode(s, Buffer);
+    result:= Ord(Base64ToBin(s, PChar(Buffer), BufSize));
   end;
 end;
 
 procedure TXmlConfigStorage.WriteBinaryData(Ident: RawUtf8; var Buffer; BufSize: Integer);
 begin
-  FXml.ByPath(Norm(Ident)).Content:=Base64Encode(Buffer, BufSize);
+  FXml.ByPath(Norm(Ident)).Content:=BinToBase64(PChar(Buffer), BufSize);
 end;
 
 
