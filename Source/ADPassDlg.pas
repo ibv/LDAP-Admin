@@ -28,11 +28,7 @@ unit ADPassDlg;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls, Buttons,
   LDAPClasses, mormot.core.base;
 
@@ -64,16 +60,9 @@ implementation
 
 
 uses
-{$IFDEF USE_ADSIE}
-  ActiveDs_TLB, adsie,
-{$ELSE}
   AdObjects,
-  {$IFnDEF FPC}
-  WinLdap
-  {$ENDIF}
   LinLDAP, mormot.net.ldap,
-{$ENDIF}
-  Constant {$IFNDEF UNICODE}, Misc{$ENDIF};
+  Constant;
 
 constructor TADPassDlg.Create(AOwner: TComponent; Entry: TLdapEntry);
 begin

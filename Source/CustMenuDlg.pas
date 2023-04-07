@@ -28,14 +28,9 @@ unit CustMenuDlg;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, LCLProc,
-{$ENDIF}
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  LCLIntf, LCLType, LCLProc, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ComCtrls, Menus, ImgList, ActnList, ExtCtrls, StdCtrls, CustomMenus,
-  ToolWin, Connection, mormot.core.base;
+  Connection, mormot.core.base;
 
 const
   CB_ICON_INDENT =  4;

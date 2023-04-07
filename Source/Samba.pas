@@ -27,7 +27,7 @@ unit Samba;
 
 interface
 
-uses Classes, PropertyObject, Posix, LDAPClasses, LinLDAP, Constant, Connection, Variants,
+uses Classes, PropertyObject, Posix, LDAPClasses, Constant, Connection, Variants,
    mormot.core.base;
 
 const

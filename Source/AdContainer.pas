@@ -24,9 +24,8 @@ unit AdContainer;
 interface
 
 uses
-  Windows, Variants,
-  LCLIntf, LCLType,
-  Messages, SysUtils, Classes, Graphics,
+  Variants,
+  LCLIntf, LCLType, SysUtils, Classes, Graphics,
   Controls, Forms, Dialogs, StdCtrls, Connection, LdapClasses, Constant;
 
 type

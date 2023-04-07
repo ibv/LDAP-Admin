@@ -28,11 +28,7 @@ unit Pickup;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, ComCtrls, LDAPClasses, ImgList, Sorter, Math,
   ListViewDlg, mormot.core.base;
@@ -85,7 +81,7 @@ implementation
 
 {$R *.dfm}
 
-uses LinLDAP, Constant, Main, Connection, SizeGrip, mormot.net.ldap;
+uses Main, Connection, mormot.net.ldap;
 
 constructor TPickupDlg.Create(AOwner: TComponent);
 begin

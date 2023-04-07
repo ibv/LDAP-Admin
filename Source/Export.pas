@@ -28,11 +28,7 @@ unit Export;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows, WinLDAP,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, LinLDAP,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, Dialogs, LDAPClasses, ComCtrls, Xml, DlgWrap,
   TextFile, mormot.core.base, mormot.net.ldap;

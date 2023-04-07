@@ -149,7 +149,6 @@ uses Misc, Cp, Constant {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 const
   TAB  = '   ';//#9;
-  CRLF = #13#10;
 
 { EXmlException }
 

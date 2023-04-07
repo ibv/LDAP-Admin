@@ -24,8 +24,8 @@ unit AdPrefs;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ComCtrls, ExtCtrls, Constant, LDAPClasses, Connection;
+  SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, ComCtrls, ExtCtrls, Constant, Connection;
 
 const
   psCN          = '%f %l';
@@ -80,9 +80,7 @@ implementation
 {$I LdapAdmin.inc}
 
 uses
-   LinLDAP,
-  ADObjects,
-  Pickup, Main,  Config {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+  ADObjects, Config;
 
 {$R *.dfm}
 

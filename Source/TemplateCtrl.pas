@@ -166,8 +166,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses SysUtils, Misc, Config, Grids, ParseErr, Dialogs
-     {$IFDEF VER_XEH}, System.Types{$ENDIF};
+uses SysUtils, Misc, Config, Grids, Dialogs;
 
 { TEventHandler }
 

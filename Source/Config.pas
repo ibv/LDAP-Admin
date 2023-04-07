@@ -36,12 +36,8 @@ unit Config;
 interface
 
 uses
-     {$IFnDEF FPC}
-     Windows,Generics.Collections, Contnrs,
-     {$else}
-     fgl, strutils, LCLIntf, LCLType, {LazFileUtils,} Buttons, LCLVersion,
-     {$endif}
-     Registry, IniFiles,
+     strutils, LCLIntf, LCLType, {LazFileUtils,} Buttons, LCLVersion,
+     Registry,
      Classes,  SysUtils, LDAPClasses, Xml,
      TextFile, mormot.core.base;
 
@@ -410,8 +406,7 @@ uses
 {$ELSE}
 {$ENDIF}
   Constant, LinLDAP, base64, Dialogs, Forms, StdCtrls, Controls, WinBase64,
-  mormot.core.text,
-  Math {$IFDEF VER_XEH}, System.Types{$ENDIF};
+  mormot.core.text {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 
 function GetIndent(o: TObject): Integer;

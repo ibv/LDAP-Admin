@@ -28,12 +28,8 @@ unit Alias;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
-  SysUtils, Messages, Classes, Graphics, Controls, EncodedDn,
+  LCLIntf, LCLType,
+  SysUtils, Classes, Graphics, Controls, EncodedDn,
   StdCtrls, ExtCtrls, Forms, LDAPClasses, Connection, Constant, mormot.core.base;
 
 type

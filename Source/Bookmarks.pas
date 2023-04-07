@@ -28,11 +28,7 @@ unit Bookmarks;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, ComCtrls, Menus, LdapClasses, Sorter, mormot.core.base;
 
@@ -196,9 +192,6 @@ begin
 end;
 
 constructor TBookmarkDlg.Create(AOwner: TComponent; Bookmarks: TBookmarks);
-var
-  ls: TStringList;
-  i: Integer;
 begin
   inherited Create(AOwner);
   FBookmarks := Bookmarks;
@@ -242,9 +235,6 @@ begin
 end;
 
 procedure TBookmarkDlg.FormClose(Sender: TObject; var Action: TCloseAction);
-var
-  i: Integer;
-  s: RawUtf8;
 begin
   if fModified then
   begin

@@ -28,7 +28,7 @@ unit Cert;
 interface
 
 uses
-  LCLIntf, LCLType, LMessages, Dynlibs, cmem, LinLDAP, mormot.core.base;
+  LCLIntf, LCLType, Dynlibs, cmem, LinLDAP, mormot.core.base;
 
 procedure ShowCert(x509Cert: Pointer; x509CertLen: Cardinal);
 procedure ShowContext(x509Cert: Pointer; x509CertLen: Cardinal; ContextType: DWORD);
@@ -47,7 +47,7 @@ var
 
 implementation
 
-uses Controls, sysutils, Dialogs, Misc, Constant,Classes;
+uses Controls, sysutils, Dialogs, Classes;
 
 type
   {TCryptUIDlgViewCertificate = function (

@@ -106,7 +106,7 @@ var
 
 implementation
 
-uses Pickup, LinLDAP, Input, Main, Templates, Misc, Config;
+uses Pickup, Templates, Config;
 
 {$R *.dfm}
 

@@ -29,11 +29,7 @@ unit ConfigDlg;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows, LAControls,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, Dialogs, LDAPClasses, ComCtrls,  Grids, Connection, mormot.core.base ;
 
@@ -106,7 +102,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses FileCtrl, Config, Templates, Constant, Misc, Main, Lang
+uses Config, Templates, Constant, Misc, Main, Lang
 {$IFDEF VER_XEH}, System.Types, System.UITypes{$ENDIF};
 
 {$R *.dfm}

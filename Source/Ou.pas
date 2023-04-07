@@ -28,12 +28,7 @@ unit Ou;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  LCLIntf, LCLType, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, LDAPClasses, Constant, mormot.core.base;
 
 type
@@ -68,7 +63,7 @@ var
 
 implementation
 
-uses LinLDAP, Misc;
+uses Misc;
 
 {$R *.dfm}
 

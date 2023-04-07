@@ -28,11 +28,7 @@ unit adsie;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,ActiveDs_TLB,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
    SysUtils, Dialogs, mormot.core.base;
 
 function  ADsGetObject(LdapPath: PWideChar; const riid:TGUID; out ppObject):HRESULT;

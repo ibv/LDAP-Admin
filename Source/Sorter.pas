@@ -28,12 +28,7 @@ unit Sorter;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
-  Grids, Controls, Classes, Graphics, ComCtrls;
+  LCLIntf, LCLType, Grids, Controls, Classes, Graphics, ComCtrls;
 
 type
   TLVSorterOnSort=procedure(SortColumn:  TListColumn; SortAsc: boolean) of object;

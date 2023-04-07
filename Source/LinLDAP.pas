@@ -29,15 +29,9 @@ unit LinLDAP;
 
 interface
 
-{$IFnDEF FPC}
-uses
-  Windows;
-{$ELSE}
 uses
   SysUtils, Classes, LazFileUtils, mormot.net.ldap ,
-  LCLIntf, LCLType, LMessages, Ctypes, Gss, mormot.core.base;
-{$ENDIF}
-
+  LCLIntf, LCLType, mormot.core.base;
 
 {$HPPEMIT '#ifndef LDAP_CLIENT_DEFINED'}
 {$HPPEMIT '#pragma option push -b -a8 -pc -A- /*P_O_Push_S*/'}
@@ -1281,20 +1275,11 @@ const
   LDAP_OPT_REF_DEREF_CONN_PER_MSG = $94;
 
 
-  function ldap_explode_dn(dn: string; notypes: ULONG; list: TStringList): boolean; overload;
+  function ldap_explode_dn(dn: string; list: TStringList): boolean; overload;
 
   function ldap_get_option(ld: TLdapClient; option: integer; outvalue: pointer): ULONG;
 
-  {
-  function ldap_first_attribute(ld: TLDAPsend; entry: TLDAPsend;
-           var ptr: PBerElement): PChar;
-  function ldap_next_attribute(ld: TLDAPsend; entry: TLDAPsend;
-           ptr: PBerElement): PChar;
-
-  function ldap_get_values_len(ExternalHandle: TLDAPsend; Message: TLDAPsend;
-                    attr: PChar): PPLDAPBerVal;
-  }
-  function ldap_get_values(ld: TLdapClient; entry: TLDAPResult; attr: RawUtf8): PPChar;
+  function ldap_get_values(entry: TLDAPResult; attr: RawUtf8): TRawUtf8DynArray;
 
   function ldap_first_entry(ld: TLdapClient): TLDAPResult;
 
@@ -1324,7 +1309,7 @@ uses
   mormot.net.dns;
 
 
-function ldap_explode_dn(dn: string; notypes: ULONG; list: TStringList): boolean;
+function ldap_explode_dn(dn: string; list: TStringList): boolean;
 begin
   result:=false;
   if length(dn)=0 then exit;
@@ -1335,6 +1320,7 @@ end;
 
 function ldap_get_option(ld: TLdapClient; option: integer; outvalue: pointer): ULONG;
 begin
+  Result := 0;
   //result:=ldap.ldap_get_option(ld,option, outvalue);
 end;
 
@@ -1359,26 +1345,14 @@ begin
 end;
 }
 
-function ldap_get_values(ld: TLdapClient; entry: TLDAPResult; attr: RawUtf8
-  ): PPChar;
+function ldap_get_values(entry: TLDAPResult; attr: RawUtf8): TRawUtf8DynArray;
 var
-  i: integer;
   LDAPAttr: TLDAPAttribute;
-  p: string;
-  a: PCharArray;
 begin
   result:=nil;
   LDAPAttr:=entry.Attributes.Find(attr);
   if LDAPAttr<> nil then
-  begin
-    SetLength(a, LDAPAttr.Count+1);
-    for i:=0 to LDAPAttr.Count-1 do
-    begin
-      a[i]:=PChar(LDAPAttr.GetReadable(i));
-    end;
-    a[LDAPAttr.Count]:=nil;
-    result:=@a[0];
-  end;
+    Result := LDAPAttr.GetAllReadable;
 end;
 
 function ldap_first_entry(ld: TLdapClient): TLDAPResult;
@@ -1413,7 +1387,6 @@ procedure SaveLogfile(st: string);
 var
   FileName: string;
   LogFile: TextFile;
-  i: Integer;
 begin
   FileName :=  'ldap.log';
   AssignFile(LogFile, FileName);

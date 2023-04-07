@@ -28,12 +28,7 @@ unit Locality;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  LCLIntf, LCLType, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, LDAPClasses, Constant, mormot.core.base;
 
 type
@@ -63,7 +58,7 @@ var
 
 implementation
 
-uses Misc, LinLDAP;
+uses Misc;
 
 {$R *.dfm}
 

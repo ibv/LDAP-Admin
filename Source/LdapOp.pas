@@ -28,12 +28,8 @@ unit LdapOp;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows, WinLDAP,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, LinLDAP,
-{$ENDIF}
-  SysUtils, Messages, Classes, Graphics, Controls,
+  LCLIntf, LCLType,
+  SysUtils, Classes, Graphics, Controls,
   StdCtrls, ExtCtrls, Forms, ComCtrls, LDAPClasses, Posix, mormot.core.base;
 
 const

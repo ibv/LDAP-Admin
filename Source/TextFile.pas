@@ -154,6 +154,7 @@ var
   Tmp: RawUtf8;
   utf8: AnsiString;
 begin
+  utf8 := '';
   case Encoding of
     feAnsi:       Position := 0;
     feUTF8:       Position := SizeOf(UTF_8BOM);
@@ -172,7 +173,6 @@ begin
       Word(ch) := Word(ch) or b;
     end;
     if Encoding = feUTF8 then
-      ///utf8 := utf8 + AnsiChar(ch)
       utf8 := utf8 + AnsiChar(Lo(word(ch)))
     else
       Tmp := Tmp + ch;
@@ -267,6 +267,7 @@ var
   Tmp: RawUtf8;
   utf8: AnsiString;
 begin
+  utf8 := '';
   if Eof then
     raise Exception.Create(stLdifEof);
   Tmp := '';

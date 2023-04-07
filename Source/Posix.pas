@@ -27,7 +27,7 @@ unit Posix;
 
 interface
 
-uses PropertyObject, LDAPClasses, LinLDAP, Classes, mormot.core.base;
+uses PropertyObject, LDAPClasses, Classes, mormot.core.base;
 
 const
     eUidNumber           = 0;
@@ -85,7 +85,7 @@ type
 
 implementation
 
-uses Sysutils, base64, Constant;
+uses Sysutils;
 
 constructor TPosixAccount.Create(const Entry: TLdapEntry);
 begin

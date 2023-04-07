@@ -117,8 +117,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses Pickup, LinLDAP,PrefWiz, Main, Config, mormot.core.base, mormot.net.ldap
-     {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+uses Pickup, PrefWiz, Main, Config, mormot.core.base, mormot.net.ldap;
 
 {$R *.dfm}
 

@@ -60,11 +60,6 @@ type
 implementation
 
 uses
-  {$IFnDEF FPC}
-  Windows,
-  {$ELSE}
-  Misc,
-  {$ENDIF}
   LdapClasses, StdCtrls;
 
 { Encodes Dn, treating successive ',' or '=' characters as part of the value.

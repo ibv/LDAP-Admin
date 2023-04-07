@@ -27,7 +27,7 @@ unit Connection;
 
 interface
 
-uses Config, Sorter, Schema, LdapClasses, CustomMenus, Controls, Templates,
+uses Config, Schema, LdapClasses, CustomMenus, Controls, Templates,
      LinLDAP, Constant, TextFile, Bookmarks, mormot.core.base, mormot.net.ldap;
 
 const

@@ -27,7 +27,7 @@ unit Core;
 
 interface
 
-uses PropertyObject, LDAPClasses, LinLDAP, Classes, mormot.core.base;
+uses PropertyObject, LDAPClasses, Classes, mormot.core.base;
 
 const
     eCn                  = 0;

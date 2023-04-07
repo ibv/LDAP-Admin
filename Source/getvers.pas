@@ -100,10 +100,8 @@ begin
 end;
 
 Function GetProgramVersion (Var Version : TVersionQuad) : Boolean;
-
 Var
    S : String;
-
 begin
    Result:=GetProgramVersion(S);
    If Result then

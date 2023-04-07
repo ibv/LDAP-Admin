@@ -24,8 +24,7 @@ unit AdGroup;
 interface
 
 uses
-  Windows,
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls, ExtCtrls, LDAPClasses, Core, TemplateCtrl, Constant,
   Connection, AdObjects;
 
@@ -102,7 +101,7 @@ var
 
 implementation
 
-uses Pickup, LinLDAP, Input, Main, Templates, Misc, Config;
+uses Pickup, Main, Templates, Misc, Config;
 
 {$R *.dfm}
 

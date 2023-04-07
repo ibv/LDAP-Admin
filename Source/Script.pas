@@ -299,7 +299,7 @@ implementation
 {$I LdapAdmin.inc}
 
 uses {$IFDEF VARIANTS} variants, {$ENDIF} LdapClasses, Misc, Dialogs, Constant,
-     Connection, StdCtrls {$IFDEF VER_XEH}, System.Types{$ENDIF};
+     StdCtrls {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 var
   lastScriptExceptionMessage: RawUtf8;

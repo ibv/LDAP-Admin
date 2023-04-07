@@ -28,11 +28,7 @@ unit IControls;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, LCLMessageGlue,
-{$ENDIF}
+  LCLIntf, LCLType, LCLMessageGlue,
   Controls, Messages, Classes, LDAPClasses, Grids, StdCtrls, mormot.core.base;
 
 type

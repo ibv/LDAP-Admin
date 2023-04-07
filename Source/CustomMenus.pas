@@ -27,7 +27,7 @@ unit CustomMenus;
 
 interface
 
-uses Classes, Contnrs, Menus, Templates, Config, LDAPClasses, ObjectInfo, Constant,
+uses Classes, Contnrs, Menus, Templates, Config, LDAPClasses, Constant,
     mormot.core.base;
 
 type

@@ -213,7 +213,7 @@ begin
        end;
   end;
 
-  Result := Cardinal(pOut) - Cardinal(@OutBuf) + Chars;
+  Result := PtrInt(pOut) - PtrInt(@OutBuf) + Chars;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////

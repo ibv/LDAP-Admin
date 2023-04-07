@@ -29,15 +29,10 @@ unit Main;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows, Tabs, WinLDAP,System.Actions, Generics.Collections
-{$ELSE}
-  LCLIntf, LCLType, LinLDAP, LCLTranslator, fgl, LCLVersion,
-{$ENDIF}
+  LCLIntf, LCLType, LinLDAP, LCLTranslator, LCLVersion,
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ComCtrls, Menus, ImgList, StdCtrls, ExtCtrls, Clipbrd, ActnList,
-  Config, Connection, contnrs,
-  Sorter, ToolWin, Posix, Samba,
+  Config, Connection, Sorter, Posix, Samba,
   LDAPClasses,  uSchemaDlg,    Schema,
   uBetaImgLists, GraphicHint, CustomMenus,  ObjectInfo, mormot.core.base;
 
@@ -381,17 +376,12 @@ implementation
 {$I LdapAdmin.inc}
 
 uses
-{$IFnDEF FPC}
-  Shellapi,AdPrefs,
-{$ELSE}
   strutils,
-{$ENDIF}
   ADObjects,
   EditEntry, ConnList, Search, LdapOp, Constant, Export, Import, Prefs, Misc,
-  LdapCopy, BinView, Input, ConfigDlg, Templates, TemplateCtrl,
+  LdapCopy, BinView, ConfigDlg, Templates, TemplateCtrl,
   Cert, PicView, About, Alias, SizeGrip, CustMenuDlg, Lang, Bookmarks, DBLoad,
-  mormot.core.os, mormot.net.ldap
-  {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+  mormot.core.os, mormot.net.ldap;
 
 
 
@@ -681,7 +671,7 @@ begin
   sdn := System.Copy(dn, 1, Length(dn) - Length(FConnection.Base) - 1);
   comp:=TStringList.Create;
   try
-    if ldap_explode_dn(sdn, 0, comp) then
+    if ldap_explode_dn(sdn, comp) then
     begin
       for i:=comp.Count-1 Downto 0 do
       begin

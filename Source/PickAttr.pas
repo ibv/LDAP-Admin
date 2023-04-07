@@ -28,13 +28,9 @@ unit PickAttr;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, CheckLst, Schema, mormot.core.base;
+  Buttons, ExtCtrls,  Schema, mormot.core.base;
 
 const
   LB_ERR = -1;
@@ -72,8 +68,6 @@ var
   PickAttributesDlg: TPickAttributesDlg;
 
 implementation
-
-uses Math;
 
 {$R *.dfm}
 

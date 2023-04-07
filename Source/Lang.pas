@@ -125,23 +125,10 @@ implementation
 {$I LdapAdmin.inc}
 
 uses
-{$IFnDEF FPC}
- {$IFDEF VER130}ComConst,{$ENDIF}{$IFDEF D6UP} RTLConsts, ComConst,
-     WinHelpViewer, {$ENDIF}
-  Consts, OleConst, ComStrs, jconsts, Windows,
-{$ELSE}
   LCLIntf, LCLType, RtlConsts,
-{$ENDIF}
-  Constant, {Consts, ComStrs, SysConst, ComConst,}
   TypInfo, Config, SysUtils,
   Dialogs, Graphics,
-  ComCtrls, ExtCtrls, StdCtrls, Math, Misc{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
-
-
-
-
-
-
+  ComCtrls, ExtCtrls, StdCtrls, Math, Misc;
 
 function HookLoadResString(ResStringRec: PResStringRec):RawUtf8;
 var

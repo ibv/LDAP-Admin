@@ -36,7 +36,7 @@ uses
   SysUtils,
    Windows,
    Types, Printers,
-  LclIntf, LMessages, LclType, LclProc, InterfaceBase,
+  LclIntf, LMessages, LclType, LclProc,
   GraphType, Graphics, Controls;
    {Important: Be sure to list LclType after SysUtils and Classes 
      in order to use LclType's THandle declaration (32 or 64 bits)

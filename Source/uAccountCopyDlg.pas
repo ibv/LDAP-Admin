@@ -62,7 +62,7 @@ type
 
 implementation
 
-uses Math, Constant;
+uses Constant;
 
 {$R *.dfm}
 

@@ -111,9 +111,7 @@ type
 
 implementation
 
-uses Misc,
-     Classes
-     ;
+uses Classes;
 
 { TInetOrgPerson }
 

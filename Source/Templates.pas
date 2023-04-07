@@ -30,14 +30,10 @@ interface
 {$I LdapAdmin.inc}
 
 uses
-{$IFnDEF FPC}
-  jpeg, Mask, Windows,
-{$ELSE}
-  MaskEdit, LCLIntf, LCLType, LMessages, DateTimePicker,
-{$ENDIF}
+  MaskEdit, LCLIntf, LCLType, DateTimePicker,
   SysUtils, Script,
   ComCtrls, mormot.net.ldap, LDAPClasses, Classes, Contnrs, Controls, StdCtrls, ExtCtrls, Xml,
-     Forms, Graphics, Grids, Messages, Dialogs,  Math, XmlLoader, mormot.core.base
+     Forms, Graphics, Grids, Messages, Dialogs,  XmlLoader, mormot.core.base
     {$IFDEF REGEXPR}
     { Note: If you want to compile templates with regex support you'll need }
     { Regexpr.pas unit from TRegeExpr library (http://www.regexpstudio.com) }
@@ -670,12 +666,8 @@ implementation
 
 uses
    variants,
-{$IFnDEF FPC}
-  commctrl,
-{$ELSE}
-{$ENDIF}
   Windows,
-  WinBase64, {SysUtils,} Misc, Params, Config, PassDlg, Constant,  LinLDAP,
+  WinBase64, {SysUtils,} Misc, Params, Config, Constant,  LinLDAP,
   Connection,Pickup, ParseErr {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
 const

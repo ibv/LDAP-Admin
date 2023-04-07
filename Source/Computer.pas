@@ -28,13 +28,9 @@ unit Computer;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, LDAPClasses, Samba, Posix, PropertyObject, Config,
+  Buttons, ExtCtrls, LDAPClasses, Samba, Posix, Config,
   Constant, Connection, mormot.core.base;
 
 type
@@ -64,8 +60,6 @@ var
   ComputerDlg: TComputerDlg;
 
 implementation
-
-uses Misc;
 
 {$R *.dfm}
 

@@ -28,13 +28,9 @@ unit ListViewDlg;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, ComCtrls, LDAPClasses, ImgList, Sorter, Math, mormot.core.base;
+  Buttons, ExtCtrls, ComCtrls, ImgList, Sorter, mormot.core.base;
 
 type
   TListViewDlg = class(TForm)
@@ -71,7 +67,7 @@ implementation
 
 {$R *.dfm}
 
-uses LinLDAP, Constant, Main, Connection, SizeGrip;
+uses SizeGrip;
 
 constructor TListViewDlg.Create(AOwner: TComponent);
 begin

@@ -29,11 +29,7 @@ unit GraphicHint;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   Controls, Classes, Graphics, Forms;
 
 type
@@ -55,10 +51,6 @@ type
 implementation
 
 uses
-{$IFnDEF FPC}
-  jpeg,
-{$ELSE}
-{$ENDIF}
   SysUtils, LDAPClasses, Misc;
 
 constructor TGraphicHintWindow.Create(AOwner: TComponent);

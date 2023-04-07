@@ -144,8 +144,6 @@ Math;
 procedure DrawComboBtn(Canvas: TCanvas; Rect: TRect; BtnState: TBtnState);
 var
   uState: Cardinal;
-  PaintRect: TRect;
-  Details: TThemedElementDetails;
 begin
   {$IFDEF XPSTYLE}
   if ThemeServices.ThemesEnabled then begin

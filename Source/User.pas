@@ -31,11 +31,7 @@ unit User;
 interface
 
 uses
-{$IFnDEF FPC}
-  ShellApi, Windows, WinLDAP,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, DateTimePicker, {HtmlMisc,} LinLDAP,
-{$ENDIF}
+  LCLIntf, LCLType, DateTimePicker,
   Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, ComCtrls, LDAPClasses, ImgList, Posix, Shadow,
   InetOrg, Postfix, Samba, PropertyObject, Constant, ExtDlgs, TemplateCtrl,

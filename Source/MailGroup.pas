@@ -76,7 +76,7 @@ type
   private
     Entry: TLdapEntry;
     EditMode: TEditMode;
-    ParentDn: RawUtf8;
+    ParentDn: string;
     Session: TLDAPSession;
     Group: TMailGroup;
     ColumnToSort: Integer;
@@ -86,7 +86,7 @@ type
     procedure Save;
     procedure MailButtons(Enable: Boolean);
   public
-    constructor Create(AOwner: TComponent; dn: RawUtf8; Session: TLDAPSession; Mode: TEditMode); reintroduce;
+    constructor Create(AOwner: TComponent; dn: string; Session: TLDAPSession; Mode: TEditMode); reintroduce;
   end;
 
 var
@@ -94,7 +94,7 @@ var
 
 implementation
 
-uses Pickup, LinLDAP, Input, Main;
+uses Pickup, Input;
 
 {$R *.dfm}
 
@@ -122,7 +122,7 @@ begin
   OkBtn.Enabled := (edName.Text <> '') and (mail.Items.Count > 0);
 end;
 
-constructor TMailGroupDlg.Create(AOwner: TComponent; dn: RawUtf8; Session: TLDAPSession; Mode: TEditMode);
+constructor TMailGroupDlg.Create(AOwner: TComponent; dn: string; Session: TLDAPSession; Mode: TEditMode);
 begin
   inherited Create(AOwner);
   ParentDn := dn;
@@ -203,7 +203,7 @@ end;
 procedure TMailGroupDlg.RemoveUserBtnClick(Sender: TObject);
 var
   idx: Integer;
-  dn: RawUtf8;
+  dn: string;
 begin
   with UserList do
   If Assigned(Selected) then

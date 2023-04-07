@@ -28,12 +28,7 @@ unit Ldif;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, Base64,
-{$ENDIF}
-  LDAPClasses, TextFile, Classes, SysUtils, mormot.core.base;
+  LCLIntf, LCLType, LDAPClasses, TextFile, Classes, SysUtils, mormot.core.base;
 
 const
   SafeChar:     set of AnsiChar = [#$01..#09, #$0B..#$0C, #$0E..#$7F];
@@ -115,7 +110,7 @@ type
 
 implementation
 
-uses Constant,Misc, WinBase64;
+uses Constant, WinBase64;
 
 { TLDIF }
 

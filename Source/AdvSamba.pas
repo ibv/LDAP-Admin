@@ -28,11 +28,7 @@ unit AdvSamba;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, DateTimePicker,
-{$ENDIF}
+  LCLIntf, LCLType, DateTimePicker,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, ComCtrls, Samba, LDAPClasses, ImgList, mormot.core.base;
 

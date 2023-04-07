@@ -28,12 +28,7 @@ unit Host;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  LCLIntf, LCLType, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, LDAPClasses, Constant, mormot.core.base;
 
 type
@@ -62,7 +57,7 @@ type
     Entry: TLDAPEntry;
     procedure Save;
   public
-    constructor Create(AOwner: TComponent; dn: RawUtf8; Session: TLDAPSession; Mode: TEditMode); reintroduce;
+    constructor Create(AOwner: TComponent; dn: string; Session: TLDAPSession; Mode: TEditMode); reintroduce;
   private
     procedure HostButtons(Enable: Boolean);
   end;
@@ -72,7 +67,7 @@ var
 
 implementation
 
-uses LinLDAP, Input;
+uses Input;
 
 {$R *.dfm}
 
@@ -91,10 +86,10 @@ begin
 end;
 
 
-constructor THostDlg.Create(AOwner: TComponent; dn: RawUtf8; Session: TLDAPSession; Mode: TEditMode);
+constructor THostDlg.Create(AOwner: TComponent; dn: string; Session: TLDAPSession; Mode: TEditMode);
 var
   i: Integer;
-  attrValue: RawUtf8;
+  attrValue: string;
 begin
   inherited Create(AOwner);
   Entry := TLDAPEntry.Create(Session, dn);

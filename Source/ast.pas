@@ -129,7 +129,7 @@ function Parse(Filter: string): TASTNode;
 
 implementation
 
-uses LinLDAP, Constant;
+uses Constant;
 
 procedure Split(const Separator: Char; const Value: string; var attrib, assertion: string);
 var

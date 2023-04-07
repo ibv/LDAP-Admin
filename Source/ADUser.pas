@@ -24,8 +24,8 @@ unit ADUser;
 interface
 
 uses
-  Windows, ShellApi,
-  LinLDAP,DateTimePicker, Graphics, LCLIntf, LCLType, LMessages,
+  Windows,
+  LinLDAP,DateTimePicker, Graphics, LCLIntf, LCLType,
   Messages, SysUtils, Classes, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, ComCtrls, LDAPClasses,  ImgList, Constant,
   ExtDlgs, TemplateCtrl, CheckLst, Connection, AdObjects;
@@ -210,8 +210,8 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses Pickup, Input, Misc, Main, Templates, Config, adsie,
-     AdPrefs, AdAdv  {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+uses Misc, Main, Templates, Config, adsie,
+     AdPrefs, AdAdv ;
 
 {$R *.dfm}
 

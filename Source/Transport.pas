@@ -28,11 +28,7 @@ unit Transport;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, LDAPClasses, Constant, mormot.core.base;
 
@@ -61,8 +57,6 @@ var
 implementation
 
 {$R *.dfm}
-
-uses LinLDAP;
 
 constructor TTransportDlg.Create(AOwner: TComponent; dn: RawUtf8; Session: TLDAPSession; Mode: TEditMode);
 begin

@@ -28,13 +28,9 @@ unit ConnProp;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows, Validator,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Messages, Buttons, ExtCtrls, Config, ComCtrls, LDAPClasses,Constant, Connection,
+  Messages, Buttons, ExtCtrls, Config, ComCtrls, LDAPClasses,Constant,
   mormot.core.base;
 
 type

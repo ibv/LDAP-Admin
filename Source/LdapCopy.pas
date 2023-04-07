@@ -28,21 +28,17 @@ unit LdapCopy;
 interface
 
 uses
-{$IFnDEF FPC}
-  CommCtrl, Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, ComCtrls, LDAPClasses, LAControls,LinLDAP,
+  Buttons, ExtCtrls, ComCtrls, LDAPClasses,
   ImgList, Connection, mormot.core.base;
 
 type
 
   TTargetData = record
     Connection: TConnection;
-    Dn: RawUtf8;
-    Rdn: RawUtf8;
+    Dn: string;
+    Rdn: string;
   end;
 
   TExpandNodeProc = procedure (Node: TTreeNode; Session: TLDAPSession; TView: TTreeView) of object;
@@ -77,32 +73,32 @@ type
     ///fSortProc: TTVCompare;
     ddRoot: TTreeNode;
     procedure cbConnectionsCloseUp(var Index: integer; var CanCloseUp: boolean);
-    function  GetTgtDn: RawUtf8;
-    function  GetTgtRdn: RawUtf8;
+    function  GetTgtDn: string;
+    function  GetTgtRdn: string;
     function  GetTgtConnection: TConnection;
   public
     constructor Create(AOwner: TComponent;
-                       dn: RawUtf8;
+                       dn: string;
                        Count: Integer;
                        Move: Boolean;
                        Connection: TConnection); reintroduce;
-    property TargetDn: RawUtf8 read GetTgtDn;
-    property TargetRdn: RawUtf8 read GetTgtRdn;
+    property TargetDn: string read GetTgtDn;
+    property TargetRdn: string read GetTgtRdn;
     property TargetConnection: TConnection read GetTgtConnection;
   end;
 
 var
   CopyDlg: TCopyDlg;
 
-function ExecuteCopyDialog(Owner: TComponent; dn: RawUtf8; Count: Integer; Move: Boolean; Connection: TConnection; out TargetData: TTargetData): Boolean;
+function ExecuteCopyDialog(Owner: TComponent; dn: string; Count: Integer; Move: Boolean; Connection: TConnection; out TargetData: TTargetData): Boolean;
 
 implementation
 
 {$R *.dfm}
 
-uses Registry, Config, SizeGrip, Constant, ObjectInfo, Misc, Main;
+uses Config, SizeGrip, Constant, ObjectInfo, Main;
 
-function ExecuteCopyDialog(Owner: TComponent; dn: RawUtf8; Count: Integer; Move: Boolean; Connection: TConnection; out TargetData: TTargetData): Boolean;
+function ExecuteCopyDialog(Owner: TComponent; dn: string; Count: Integer; Move: Boolean; Connection: TConnection; out TargetData: TTargetData): Boolean;
 begin
     with TCopyDlg.Create(Owner, dn, Count, Move, Connection) do
     try
@@ -133,12 +129,12 @@ begin
     CanCloseUp := false;
 end;
 
-function TCopyDlg.GetTgtDn: RawUtf8;
+function TCopyDlg.GetTgtDn: string;
 begin
   Result := TObjectInfo(TreeView.Selected.Data).dn;
 end;
 
-function TCopyDlg.GetTgtRdn: RawUtf8;
+function TCopyDlg.GetTgtRdn: string;
 begin
   Result := RdnAttribute + '=' + edName.Text;
 end;
@@ -153,7 +149,7 @@ begin
 end;
 
 constructor TCopyDlg.Create(AOwner: TComponent;
-                            dn: RawUtf8;
+                            dn: string;
                             Count: Integer;
                             Move: Boolean;
                             Connection: TConnection);
@@ -348,7 +344,7 @@ end;
 procedure TCopyDlg.cbConnectionsDrawItem(Control: TWinControl;
   Index: Integer; Rect: TRect; State: TOwnerDrawState);
 var
-  s: RawUtf8;
+  s: string;
   ImageIndex, Indent: Integer;
 
   function GetImageIndex(o: TObject): Integer;

@@ -72,10 +72,6 @@ type
 
 implementation
 
-{$ifdef mswindows}
-uses ShlObj;
-{$endif}
-
 function GetNext(var p: PChar): string;
 var
   p0: PChar;

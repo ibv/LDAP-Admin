@@ -381,7 +381,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses Misc, Input, Dialogs, Cert, Gss, System.UITypes, HtmlMisc, mormot.net.dns;
+uses Misc, Input, Dialogs, Cert, Gss, System.UITypes, mormot.net.dns;
 
 { Name handling routines }
 
@@ -449,7 +449,7 @@ var
 begin
   result:=true;
   comp:=TStringList.Create;
-  if ldap_explode_dn(PChar(Value), 0, comp) then
+  if ldap_explode_dn(PChar(Value), comp) then
   for i:=0 to comp.Count-1 do
   begin
     if StrScan(PChar(comp[i]), '=') = nil then
@@ -468,7 +468,7 @@ var
 begin
   Result := '';
   comp:=TStringList.Create;
-  if ldap_explode_dn(PChar(dn), 1, comp) then
+  if ldap_explode_dn(PChar(dn), comp) then
     for i:=0 to comp.Count-1 do
     begin
       Result := Result + comp[i] + '/';
@@ -683,9 +683,6 @@ var
   i,j: Integer;
   pszAttr:RawUtf8;
   attrData: RawByteString;
-  pbe: PBerElement;
-  ppBer: PPLdapBerVal;
-  data: TLDAPAttributeData;
 begin
   // loop thru attributes
   for i := 0 to plmEntry.Attributes.Count - 1 do
@@ -696,7 +693,6 @@ begin
         for j:=0 to plmEntry.Attributes.Items[i].Count-1 do
         begin
           attrData:= plmEntry.Attributes.Items[i].GetRaw(j);
-          ///data:=TLdapAttributeData.Create(Attr);
           Attr.AddValue(@attrData[1],length(attrData));
         end;
   end;
@@ -704,10 +700,9 @@ end;
 
 procedure TLDAPSession.ProcessSearchMessage(const plmSearch: TLdapClient; const NoValues: LongBool; Result: TLdapEntryList);
 var
-  plmEntry: TLDAPResult;
   pszdn: RawUtf8;
   Entry: TLdapEntry;
-  i,j : integer;
+  i : integer;
 begin
   if plmSearch=nil then
     exit;
@@ -977,18 +972,17 @@ end;
 function TLDAPSession.Lookup(sBase, sFilter, sResult: RawUtf8; Scope: TLdapSearchScope): RawUtf8;
 var
   plmEntry:  TLDAPResult;
-  ppcVals: PPCHAR;
+  ppcVals: TRawUtf8DynArray;
 begin
     Result := '';
-    // perform search
 
     LDAPCheck(ldap_search_s(pld, sBase, Scope, sFilter, [sResult]));
     plmEntry := ldap_first_entry(pld);
     if Assigned(plmEntry) then
     begin
-      ppcVals := ldap_get_values(pld, plmEntry, sResult);
+      ppcVals := ldap_get_values(plmEntry, sResult);
       if Assigned(ppcVals) then
-        Result := pchararray(ppcVals)[0];
+        Result := ppcVals[0];
     end;
 end;
 
@@ -1210,8 +1204,8 @@ begin
     if ldapSSL or TLS then
     begin
       ///res := ldap_set_option(pld, LDAP_OPT_SERVER_CERTIFICATE, @VerifyCert);
-      if (res <> LDAP_SUCCESS) and (res <> LDAP_LOCAL_ERROR) then
-        LdapCheck(res);
+      //if (res <> LDAP_SUCCESS) and (res <> LDAP_LOCAL_ERROR) then
+      //  LdapCheck(res);
       CertServerName := PChar(Server);
     end;
     //CertUserAbort := false;

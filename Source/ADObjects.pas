@@ -24,7 +24,7 @@ unit ADObjects;
 interface
 
 uses
-  Windows, UITypes,
+  Windows,
   LinLDAP, forms, graphics, types, Process, Controls,
   Classes, LDAPClasses, Constant, Connection, ComCtrls;
 
@@ -211,8 +211,8 @@ implementation
 {$I LdapAdmin.inc}
 
 uses
-  {$IFDEF VARIANTS} variants, {$ENDIF} md4Samba, smbdes, Sysutils, Misc, Config,
-  Pickup, Dialogs, mormot.core.os, mormot.net.ldap;// {$ifdef mswindows},ActiveX, ComObj, ActiveDs_TLB, adsie,AclApi, AccCtrl{$endif};
+  Sysutils, Misc, Config,
+  Pickup, Dialogs, mormot.core.os, mormot.net.ldap;
 
 type
   TSidIdent = (siEveryone, siSelf);
@@ -261,12 +261,8 @@ end;
 
 function GetComputerName : string;
 var
-  c: array[0..127] of Char;
-  computer: string;
-  sz: dword;
   AProcess: TProcess;
   AStringList: TStringList;
-
 begin
   AProcess := TProcess.Create(nil);
   AStringList := TStringList.Create;
@@ -277,7 +273,6 @@ begin
   Result:=AStringList.Strings[0];
   AStringList.Free;
   AProcess.Free;
-
 end;
 
 function WrapGetComputerNameEx(ANameFormat: Windows.COMPUTER_NAME_FORMAT): string;

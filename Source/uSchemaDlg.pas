@@ -28,13 +28,9 @@ unit uSchemaDlg;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Graphics, Forms, Buttons, Classes, Controls, ComCtrls, ExtCtrls,
-  ImgList, Schema, StdCtrls, LDAPClasses, Messages, Menus, Clipbrd, ShellCtrls, mormot.core.base;
+  ImgList, Schema, StdCtrls, LDAPClasses, Menus, Clipbrd, ShellCtrls, mormot.core.base;
 
 type
 
@@ -134,7 +130,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses Math, Export,LinLDAP, Constant, Misc{$IFDEF VER_XEH}, System.Types{$ENDIF};
+uses Export, Constant, Misc;
 
 const
   FOLDER_IMG          = 0;
@@ -345,6 +341,7 @@ begin
 	  //logs('|'+copy(Node.Text, n, length(Node.Text)));
     ///View.Canvas.TextRect(Rect, Rect.Left+1, Rect.Top+1, copy(Node.Text, n, length(Node.Text)));
  	  View.Canvas.TextRect(Rect, Rect.Left+3, Rect.Top+1, copy(Node.Text, n, length(Node.Text)));
+    DefaultDraw := False;
   end;
 end;
 

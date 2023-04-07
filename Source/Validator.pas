@@ -64,7 +64,7 @@ type
 
 implementation
 
-uses Windows, Constant, SysUtils, MMSystem, Misc, Graphics;
+uses Windows, Constant, SysUtils, MMSystem, Graphics;
 
 function TValidateInput.ValidateText(Value: string): Boolean;
 var

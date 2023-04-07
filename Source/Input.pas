@@ -28,8 +28,8 @@ unit Input;
 interface
 
 uses
-  Windows,Validator,
-  LCLIntf, LCLType, LMessages, strutils,
+  Validator,
+  LCLIntf, LCLType,
   Messages,SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, mormot.core.base;
 
@@ -57,7 +57,7 @@ function InputDlg(ACaption, APrompt: RawUtf8; var AValue: RawUtf8; PasswordChar:
 implementation
 
 {$R *.dfm}
-uses Misc, Constant, mormot.core.text {$ifdef mswindows},MMSystem{$endif};
+uses mormot.core.text;
 
 
 function InputDlg(ACaption, APrompt: RawUtf8; var AValue: RawUtf8; PasswordChar: Char=#0; AcceptEmpty:Boolean=False; InvalidChars: RawUtf8 = ''): Boolean;

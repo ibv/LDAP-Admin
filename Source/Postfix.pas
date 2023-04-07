@@ -82,7 +82,7 @@ type
 
 implementation
 
-uses LinLDAP,Sysutils;
+uses Sysutils;
 
 { TMailUser }
 

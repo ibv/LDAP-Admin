@@ -29,7 +29,7 @@ interface
 
 uses
   Windows,
-  LCLIntf, LCLType, LMessages {$ifdef UNIX}, Unix {$endif} , lazutf8, strutils, types,
+  LCLIntf, LCLType, lazutf8, types,
   LDAPClasses, Classes, SysUtils, Forms, Dialogs, Controls,
      ExtCtrls, ComCtrls, Graphics, mormot.core.base;
 
@@ -66,13 +66,9 @@ function  CreateMessageDlgEx(const Msg: RawUtf8; DlgType: TMsgDlgType; Buttons: 
 function  MessageDlgEx(const Msg: RawUtf8; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons; Captions: array of RawUtf8; Events: array of TNotifyEvent): TModalResult;
 function  CheckedMessageDlgEx(const Msg: RawUtf8; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons; Captions: array of RawUtf8; Events: array of TNotifyEvent; CbCaption: RawUtf8; var CbChecked: Boolean): TModalResult;
 { Tree sort procedure }
-{$ifdef mswindows}
-function TreeSortProc(Node1, Node2: TTreeNode; Data: Integer): Integer; stdcall;
-{$else}
 function TreeSortProc(Node1, Node2: TTreeNode): Integer;
 function CharNext(lpsz: PChar): PChar;
 function CharPrev(lpsz,lpsc: PChar): PChar;
-{$endif}
 { everything else :-) }
 function  GetTextExtent(Text: RawUtf8; Font: TFont): TSize;
 function  CenterWithSpaces(Font: TFont; s: RawUtf8;  BorderSize: Integer): RawUtf8;
@@ -93,14 +89,10 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses StdCtrls, Messages, Constant, Config {$IFDEF VARIANTS} ,variants {$ENDIF},
+uses StdCtrls, Messages, Constant, Config, StrUtils, {$IFDEF VARIANTS} ,variants {$ENDIF}
      WinBase64, DateUtils, Math, Buttons, HtmlMisc, mormot.core.text;
 
-{$ifdef mswindows}
-function TreeSortProc(Node1, Node2: TTreeNode; Data: Integer): Integer; stdcall;
-{$else}
 function TreeSortProc(Node1, Node2: TTreeNode): Integer;
-{$endif}
 var
   n1, n2: Integer;
 begin
@@ -926,44 +918,6 @@ end;
 { Centers lines of text (denoted by #10 character) by padding space characters
   from the left. The BorderSize can be used to pad the longist line with spaces
   from both side to create a spaced border for better readability }
-{$ifdef mswindows}
-function CenterWithSpaces(Font: TFont; s: RawUtf8;  BorderSize: Integer): RawUtf8;
-var
-  i, c, MaxWidth, SpaceWidth: Integer;
-  Lines: array of String;
-  Widths: array of Integer;
-begin
-  Lines := String(s).Split([#10]);
-  SetLength(Widths, Length(Lines));
-  MaxWidth := 0;
-  for i := 0 to High(Lines) do
-  begin
-    c := GetTextExtent(Lines[i], Font).cx;
-    Widths[i] := c;
-    MaxWidth := Max(MaxWidth, c);
-  end;
-  SpaceWidth := GetTextExtent(#32, Font).cx;
-  for i := 0 to High(Lines) do
-  begin
-    c := MaxWidth - Widths[i];
-    if c = 0 then
-    begin
-      if BorderSize > 0 then
-      begin
-        c := Lines[i].Length + BorderSize;
-        Lines[i] := Lines[i].PadLeft(c);
-        Lines[i] := Lines[i].PadRight(c + BorderSize);
-      end;
-      continue;
-    end;
-    c := (c shr 1) div SpaceWidth;
-    inc(c, BorderSize); // compensate for border spaces
-    inc(c, Lines[i].Length);
-    Lines[i] := Lines[i].PadLeft(c);
-  end;
-  Result := String(Result).Join(#10, Lines);
-end;
-{$else}
 function CenterWithSpaces(Font: TFont; s: RawUtf8;  BorderSize: Integer): RawUtf8;
 var
   i, c, MaxWidth, SpaceWidth: Integer;
@@ -1004,9 +958,6 @@ begin
   result:=Lines.DelimitedText;
   Lines.Free;
 end;
-
-
-{$endif}
 
 function ComboMessageDlg(const Msg: RawUtf8; const csItems: RawUtf8; var Text: RawUtf8): TModalResult;
 var
