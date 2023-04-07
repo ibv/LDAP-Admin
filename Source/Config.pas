@@ -43,7 +43,7 @@ uses
      {$endif}
      Registry, IniFiles,
      Classes,  SysUtils, LDAPClasses, Xml,
-     TextFile ;
+     TextFile, mormot.core.base;
 
 type
   TDirectoryType = (dtAutodetect, dtPosix, dtActiveDirectory);
@@ -61,73 +61,73 @@ type
 
   TCustomConfig = class
   public
-    procedure     Delete(const Ident: string); virtual; abstract;
-    function      ValueExist(const Ident: string): boolean; virtual; abstract;
-    procedure     GetKeyNames(Parent: string; var Result: TStrings); virtual; abstract;
-    procedure     GetValueNames(Parent: string; var Result: TStrings); virtual; abstract;
-    function      ReadString(const Ident: string; const Default: string=''): string; virtual; abstract;
-    procedure     WriteString(const Ident: string; const Value: string); virtual; abstract;
-    function      ReadInteger(const Ident: string; const Default: integer=0): integer; virtual; abstract;
-    procedure     WriteInteger(const Ident: string; const Value: integer); virtual; abstract;
-    procedure     WriteBool(const Ident: string; const Value: boolean); virtual; abstract;
-    function      ReadBool(const Ident: string; const Default: boolean=false): boolean; virtual; abstract;
-    function      GetDataSize(const Ident: string): Integer; virtual; abstract;
-    function      ReadBinaryData(const Ident:  string; var Buffer; BufSize: Integer): Integer; virtual; abstract;
-    procedure     WriteBinaryData(const Ident: string; var Buffer; BufSize: Integer); virtual; abstract;
+    procedure     Delete(const Ident: RawUtf8); virtual; abstract;
+    function      ValueExist(const Ident: RawUtf8): boolean; virtual; abstract;
+    procedure     GetKeyNames(Parent: RawUtf8; var Result: TStrings); virtual; abstract;
+    procedure     GetValueNames(Parent: RawUtf8; var Result: TStrings); virtual; abstract;
+    function      ReadString(const Ident: RawUtf8; const Default: RawUtf8=''): RawUtf8; virtual; abstract;
+    procedure     WriteString(const Ident: RawUtf8; const Value: RawUtf8); virtual; abstract;
+    function      ReadInteger(const Ident: RawUtf8; const Default: integer=0): integer; virtual; abstract;
+    procedure     WriteInteger(const Ident: RawUtf8; const Value: integer); virtual; abstract;
+    procedure     WriteBool(const Ident: RawUtf8; const Value: boolean); virtual; abstract;
+    function      ReadBool(const Ident: RawUtf8; const Default: boolean=false): boolean; virtual; abstract;
+    function      GetDataSize(const Ident: RawUtf8): Integer; virtual; abstract;
+    function      ReadBinaryData(const Ident:  RawUtf8; var Buffer; BufSize: Integer): Integer; virtual; abstract;
+    procedure     WriteBinaryData(const Ident: RawUtf8; var Buffer; BufSize: Integer); virtual; abstract;
   end;
 
   TConfig = class(TCustomConfig)
   private
     FStorage:     TConfigStorage;
-    ///FRootPath:    string;
-    FName:        string;
+    ///FRootPath:    RawUtf8;
+    FName:        RawUtf8;
     FParent:      TObject;
-    function      Norm(Ident: string): string;
+    function      Norm(Ident: RawUtf8): RawUtf8;
   protected
     FChanged:     boolean;
-    function      GetPath: string; virtual;
-    procedure     ValidateName(const Value: string); virtual;
-    procedure     SetName(const Value: string); virtual;
+    function      GetPath: RawUtf8; virtual;
+    procedure     ValidateName(const Value: RawUtf8); virtual;
+    procedure     SetName(const Value: RawUtf8); virtual;
   public
-    constructor   Create(AParent: TObject; const AName: string); reintroduce; virtual;
-    procedure     Delete(const Ident: string); override;
-    procedure     GetKeyNames(Parent: string; var Result: TStrings); override;
-    procedure     GetValueNames(Parent: string; var Result: TStrings); override;
-    function      ValueExist(const Ident: string): boolean; override;
-    function      ReadString(const Ident: string; const Default: string=''):string; override;
-    procedure     WriteString(const Ident: string; const Value: string); override;
-    function      ReadInteger(const Ident: string; const Default: integer=0): integer; override;
-    procedure     WriteInteger(const Ident: string; const Value: integer); override;
-    function      ReadBool(const Ident: string; const Default: boolean=false): boolean; override;
-    procedure     WriteBool(const Ident: string; const Value: boolean); override;
-    function      GetDataSize(const Ident: string): Integer; override;
-    function      ReadBinaryData(const Ident:  string; var Buffer; BufSize: Integer): Integer; override;
-    procedure     WriteBinaryData(const Ident: string; var Buffer; BufSize: Integer); override;
+    constructor   Create(AParent: TObject; const AName: RawUtf8); reintroduce; virtual;
+    procedure     Delete(const Ident: RawUtf8); override;
+    procedure     GetKeyNames(Parent: RawUtf8; var Result: TStrings); override;
+    procedure     GetValueNames(Parent: RawUtf8; var Result: TStrings); override;
+    function      ValueExist(const Ident: RawUtf8): boolean; override;
+    function      ReadString(const Ident: RawUtf8; const Default: RawUtf8=''):RawUtf8; override;
+    procedure     WriteString(const Ident: RawUtf8; const Value: RawUtf8); override;
+    function      ReadInteger(const Ident: RawUtf8; const Default: integer=0): integer; override;
+    procedure     WriteInteger(const Ident: RawUtf8; const Value: integer); override;
+    function      ReadBool(const Ident: RawUtf8; const Default: boolean=false): boolean; override;
+    procedure     WriteBool(const Ident: RawUtf8; const Value: boolean); override;
+    function      GetDataSize(const Ident: RawUtf8): Integer; override;
+    function      ReadBinaryData(const Ident:  RawUtf8; var Buffer; BufSize: Integer): Integer; override;
+    procedure     WriteBinaryData(const Ident: RawUtf8; var Buffer; BufSize: Integer); override;
     property      Changed: boolean read FChanged;
     property      Storage: TConfigStorage read FStorage;
     property      Parent: TObject read FParent;
-    property      Name: string read FName write SetName;
-    property      Path: string read GetPath;
+    property      Name: RawUtf8 read FName write SetName;
+    property      Path: RawUtf8 read GetPath;
   end;
 
   TAccount=class(TConfig)
   private
-    FUser:        string;
-    FPassword:    string;
-    procedure     SetBase(const Value: string); virtual;
-    procedure     SetPassword(const Value: string); virtual;
+    FUser:        RawUtf8;
+    FPassword:    RawUtf8;
+    procedure     SetBase(const Value: RawUtf8); virtual;
+    procedure     SetPassword(const Value: RawUtf8); virtual;
     procedure     SetPort(const Value: integer); virtual;
-    procedure     SetServer(const Value: string); virtual;
-    procedure     SetUser(const Value: string); virtual;
+    procedure     SetServer(const Value: RawUtf8); virtual;
+    procedure     SetUser(const Value: RawUtf8); virtual;
     procedure     SetSSL(const Value: boolean); virtual;
     procedure     SetTLS(const Value: boolean); virtual;
     procedure     SetLdapVersion(const Value: integer); virtual;
-    function      GetBase: string; virtual;
+    function      GetBase: RawUtf8; virtual;
     function      GetLdapVersion: integer; virtual;
-    function      GetPassword: string; virtual;
+    function      GetPassword: RawUtf8; virtual;
     function      GetPort: integer; virtual;
-    function      GetServer: string; virtual;
-    function      GetUser: string; virtual;
+    function      GetServer: RawUtf8; virtual;
+    function      GetUser: RawUtf8; virtual;
     function      GetSSL: boolean; virtual;
     function      GetTLS: boolean; virtual;
     procedure     SetAuthMethod(const Value: TLdapAuthMethod); virtual;
@@ -146,23 +146,23 @@ type
     procedure     SetReferrals(const Value: boolean);
     function      GetReferralHops: Integer;
     procedure     SetReferralHops(const Value: Integer);
-    function      GetOperationalAttributes: string;
-    procedure     SetOperationalAttributes(const Value: string);
+    function      GetOperationalAttributes: RawUtf8;
+    procedure     SetOperationalAttributes(const Value: RawUtf8);
     procedure     ReadCredentials; virtual;
     procedure     WriteCredentials; virtual;
     function      GetDirectoryType: TDirectoryType;
     procedure     SetDirectoryType(Value: TDirectoryType);
   public
-    constructor   Create(AParent: TObject; const AName: string); override;
+    constructor   Create(AParent: TObject; const AName: RawUtf8); override;
     procedure     Assign(const Source: TAccount);
     property      SSL: boolean read GetSSL write SetSSL;
     property      TLS: boolean read GetTLS write SetTLS;
     property      Port: integer read GetPort write SetPort;
     property      LdapVersion: integer read GetLdapVersion write SetLdapVersion;
-    property      User: string read GetUser write SetUser;
-    property      Server: string read GetServer write SetServer;
-    property      Base: string read GetBase write SetBase;
-    property      Password: string read GetPassword write SetPassword;
+    property      User: RawUtf8 read GetUser write SetUser;
+    property      Server: RawUtf8 read GetServer write SetServer;
+    property      Base: RawUtf8 read GetBase write SetBase;
+    property      Password: RawUtf8 read GetPassword write SetPassword;
     property      TimeLimit: Integer read GetTimeLimit write SetTimeLimit;
     property      SizeLimit: Integer read GetSizeLimit write SetSizeLimit;
     property      PagedSearch: Boolean read GetPagedSearch write SetPagedSearch;
@@ -170,34 +170,34 @@ type
     property      DereferenceAliases: Integer read GetDerefAliases write SetDerefAliases;
     property      ChaseReferrals: Boolean read GetReferrals write SetReferrals;
     property      ReferralHops: Integer read GetReferralHops write SetReferralHops;
-    property      OperationalAttrs: string read GetOperationalAttributes write SetOperationalAttributes;
+    property      OperationalAttrs: RawUtf8 read GetOperationalAttributes write SetOperationalAttributes;
     property      AuthMethod: TLdapAuthMethod read GetAuthMethod write SetAuthMethod;
     property      DirectoryType: TDirectoryType read GetDirectoryType write SetDirectoryType;
   end;
 
   TFakeAccount=class(TAccount)
   private
-    FBase:        string;
+    FBase:        RawUtf8;
     FPort:        integer;
-    FServer:      string;
-    FUser:        string;
+    FServer:      RawUtf8;
+    FUser:        RawUtf8;
     FSSL:         boolean;
     FLdapVersion: integer;
     FAuthMethod:  TLdapAuthMethod;
   protected
-    procedure     SetBase(const Value: string); override;
+    procedure     SetBase(const Value: RawUtf8); override;
     procedure     SetPort(const Value: integer); override;
-    procedure     SetServer(const Value: string); override;
-    procedure     SetUser(const Value: string); override;
+    procedure     SetServer(const Value: RawUtf8); override;
+    procedure     SetUser(const Value: RawUtf8); override;
     procedure     SetSSL(const Value: boolean); override;
     procedure     SetLdapVersion(const Value: integer); override;
     procedure     SetAuthMethod(const Value: TLdapAuthMethod); override;
     function      GetAuthMethod: TLdapAuthMethod; override;
-    function      GetBase: string; override;
+    function      GetBase: RawUtf8; override;
     function      GetLdapVersion: integer; override;
     function      GetPort: integer; override;
-    function      GetServer: string; override;
-    function      GetUser: string; override;
+    function      GetServer: RawUtf8; override;
+    function      GetUser: RawUtf8; override;
     function      GetSSL: boolean; override;
   end;
 
@@ -210,7 +210,7 @@ type
     procedure     CheckProtocol;
     function      AddStorage(AStorage: TConfigStorage): integer;
     procedure     DeleteStorage(Index: integer);
-    function      StorageByName(const Name: string): TConfigStorage;
+    function      StorageByName(const Name: RawUtf8): TConfigStorage;
     property      Storages: TConfigStorageObjArray read FStorages;
   end;
 
@@ -218,11 +218,11 @@ type
   private
     FItems:       TConfigList;
   protected
-    function      GetPath: string; override;
-    procedure     ValidateName(const Value: string); override;
-    procedure     SetName(const Value: string); override;
+    function      GetPath: RawUtf8; override;
+    procedure     ValidateName(const Value: RawUtf8); override;
+    procedure     SetName(const Value: RawUtf8); override;
   public
-    constructor   Create(AParent: TObject; const AName: string); override;
+    constructor   Create(AParent: TObject; const AName: RawUtf8); override;
     destructor    Destroy; override;
     function      RootFolder: Boolean;
     property      Items: TConfigList read FItems;
@@ -237,12 +237,12 @@ type
   public
     constructor   Create(AParent: TObject);
     destructor    Destroy; override;
-    function      AddAccount(Name: string; CreateNew: Boolean = false): TAccount;
-    function      AddFolder(Name: string; CreateNew: Boolean = false): TAccountFolder;
+    function      AddAccount(Name: RawUtf8; CreateNew: Boolean = false): TAccount;
+    function      AddFolder(Name: RawUtf8; CreateNew: Boolean = false): TAccountFolder;
     procedure     DeleteItem(Item: TConfig);
-    function      AccountByName(Name: string): TAccount;
-    function      FolderByName(Name: string): TAccountFolder;
-    function      ByName(Name: string; Enum: TEnumObjects): TConfig;
+    function      AccountByName(Name: RawUtf8): TAccount;
+    function      FolderByName(Name: RawUtf8): TAccountFolder;
+    function      ByName(Name: RawUtf8; Enum: TEnumObjects): TConfig;
     property      Accounts: TAccountObjArray read FAccounts;
     property      Folders: TAccountFolderObjArray read FFolders;
     property      Storage: TConfigStorage read FStorage;
@@ -255,37 +255,37 @@ type
     FPwdSave:     Boolean;
     function      GetChanged: boolean;
   protected
-    function      Norm(Ident: string): string; virtual;
-    function      GetName: string; virtual; abstract;
+    function      Norm(Ident: RawUtf8): RawUtf8; virtual;
+    function      GetName: RawUtf8; virtual; abstract;
     procedure     LoadAccounts; virtual;
 
-    function      ValueExist(const Ident: string): boolean; virtual; abstract;
+    function      ValueExist(const Ident: RawUtf8): boolean; virtual; abstract;
 
-    procedure     Copy(Parent, SrcName, DestName: string); virtual; abstract;
-    procedure     New(Parent, Name: string); virtual; abstract;
-    procedure     Rename(Path, NewName: string); virtual; abstract;
-    procedure     GetKeyNames(Parent: string; var Result: TStrings); virtual; abstract;
-    procedure     GetValueNames(Parent: string; var Result: TStrings); virtual; abstract;
-    procedure     Delete(Ident: string); virtual; abstract;
+    procedure     Copy(Parent, SrcName, DestName: RawUtf8); virtual; abstract;
+    procedure     New(Parent, Name: RawUtf8); virtual; abstract;
+    procedure     Rename(Path, NewName: RawUtf8); virtual; abstract;
+    procedure     GetKeyNames(Parent: RawUtf8; var Result: TStrings); virtual; abstract;
+    procedure     GetValueNames(Parent: RawUtf8; var Result: TStrings); virtual; abstract;
+    procedure     Delete(Ident: RawUtf8); virtual; abstract;
 
-    function      ReadString(Ident: string; Default: string): string; virtual; abstract;
-    procedure     WriteString(Ident: string; Value: string); virtual; abstract;
+    function      ReadString(Ident: RawUtf8; Default: RawUtf8): RawUtf8; virtual; abstract;
+    procedure     WriteString(Ident: RawUtf8; Value: RawUtf8); virtual; abstract;
 
-    function      ReadInteger(Ident: string; Default: integer): integer; virtual; abstract;
-    procedure     WriteInteger(Ident: string; Value: integer); virtual; abstract;
+    function      ReadInteger(Ident: RawUtf8; Default: integer): integer; virtual; abstract;
+    procedure     WriteInteger(Ident: RawUtf8; Value: integer); virtual; abstract;
 
-    function      ReadBool(Ident: string; Default: boolean): boolean; virtual; abstract;
-    procedure     WriteBool(Ident: string; Value: boolean); virtual; abstract;
+    function      ReadBool(Ident: RawUtf8; Default: boolean): boolean; virtual; abstract;
+    procedure     WriteBool(Ident: RawUtf8; Value: boolean); virtual; abstract;
 
-    function      GetDataSize(Ident: string): Integer; virtual; abstract;
-    function      ReadBinaryData(Ident:  string; var Buffer; BufSize: Integer): Integer; virtual; abstract;
-    procedure     WriteBinaryData(Ident: string; var Buffer; BufSize: Integer); virtual; abstract;
+    function      GetDataSize(Ident: RawUtf8): Integer; virtual; abstract;
+    function      ReadBinaryData(Ident:  RawUtf8; var Buffer; BufSize: Integer): Integer; virtual; abstract;
+    procedure     WriteBinaryData(Ident: RawUtf8; var Buffer; BufSize: Integer); virtual; abstract;
   public
     constructor   Create; reintroduce; virtual;
     destructor    Destroy; override;
-    function      ByPath(APath: string; Relative: Boolean = false): TConfig;
+    function      ByPath(APath: RawUtf8; Relative: Boolean = false): TConfig;
     property      RootFolder: TAccountFolder read FRootFolder;
-    property      Name: string read GetName;
+    property      Name: RawUtf8 read GetName;
     property      Changed: boolean read GetChanged;
     property      PasswordCanSave: Boolean read FPwdSave write FPwdSave;
   end;
@@ -293,70 +293,70 @@ type
   TRegistryConfigStorage = class(TConfigStorage)
   private
     FRegistry:    TRegistry;
-    FRootPath:    string;
-    function      GetKeyName(Ident: string): string;
-    function      GetValName(Ident: string): string;
+    FRootPath:    RawUtf8;
+    function      GetKeyName(Ident: RawUtf8): RawUtf8;
+    function      GetValName(Ident: RawUtf8): RawUtf8;
   protected
-    function      GetName: string; override;
-    procedure     Copy(Parent, SrcName, DestName: string); override;
-    procedure     New(Parent, Name: string); override;
-    procedure     Rename(Path, NewName: string); override;
-    procedure     GetKeyNames(Parent: string; var Result: TStrings); override;
-    procedure     GetValueNames(Parent: string; var Result: TStrings); override;
-    procedure     Delete(Ident: string); override;
-    function      ValueExist(const Ident: string): boolean; override;
+    function      GetName: RawUtf8; override;
+    procedure     Copy(Parent, SrcName, DestName: RawUtf8); override;
+    procedure     New(Parent, Name: RawUtf8); override;
+    procedure     Rename(Path, NewName: RawUtf8); override;
+    procedure     GetKeyNames(Parent: RawUtf8; var Result: TStrings); override;
+    procedure     GetValueNames(Parent: RawUtf8; var Result: TStrings); override;
+    procedure     Delete(Ident: RawUtf8); override;
+    function      ValueExist(const Ident: RawUtf8): boolean; override;
 
-    function      ReadString(Ident: string; Default: string): string; override;
-    procedure     WriteString(Ident: string; Value: string); override;
+    function      ReadString(Ident: RawUtf8; Default: RawUtf8): RawUtf8; override;
+    procedure     WriteString(Ident: RawUtf8; Value: RawUtf8); override;
 
-    function      ReadInteger(Ident: string; Default: integer): integer; override;
-    procedure     WriteInteger(Ident: string; Value: integer); override;
+    function      ReadInteger(Ident: RawUtf8; Default: integer): integer; override;
+    procedure     WriteInteger(Ident: RawUtf8; Value: integer); override;
 
-    function      ReadBool(Ident: string; Default: boolean): boolean; override;
-    procedure     WriteBool(Ident: string; Value: boolean); override;
+    function      ReadBool(Ident: RawUtf8; Default: boolean): boolean; override;
+    procedure     WriteBool(Ident: RawUtf8; Value: boolean); override;
 
-    function      GetDataSize(Ident: string): Integer; override;
-    function      ReadBinaryData(Ident:  string; var Buffer; BufSize: Integer): Integer; override;
-    procedure     WriteBinaryData(Ident: string; var Buffer; BufSize: Integer); override;
+    function      GetDataSize(Ident: RawUtf8): Integer; override;
+    function      ReadBinaryData(Ident:  RawUtf8; var Buffer; BufSize: Integer): Integer; override;
+    procedure     WriteBinaryData(Ident: RawUtf8; var Buffer; BufSize: Integer); override;
 
   public
-    constructor   Create(const RootKey: HKEY; const ARootPath: string); reintroduce;
+    constructor   Create(const RootKey: HKEY; const ARootPath: RawUtf8); reintroduce;
     destructor    Destroy; override;
   end;
 
   TXmlConfigStorage=class(TConfigStorage)
   private
     FXml:         TXmlTree;
-    FFileName:    string;
-    procedure     SetFileName(const Value: string);
+    FFileName:    RawUtf8;
+    procedure     SetFileName(const Value: RawUtf8);
     function      GetEncoding: TFileEncode;
     procedure     SetEncoding(Value: TFileEncode);
   protected
-    procedure     New(Parent, Name: string); override;
-    procedure     Rename(Path, NewName: string); override;
-    function      GetName: string; override;
-    procedure     Copy(Parent, SrcName, DestName: string); override;
-    procedure     GetKeyNames(Parent: string; var Result: TStrings); override;
-    procedure     GetValueNames(Parent: string; var Result: TStrings); override;
-    procedure     Delete(Ident: string); override;
-    function      ValueExist(const Ident: string): boolean; override;
+    procedure     New(Parent, Name: RawUtf8); override;
+    procedure     Rename(Path, NewName: RawUtf8); override;
+    function      GetName: RawUtf8; override;
+    procedure     Copy(Parent, SrcName, DestName: RawUtf8); override;
+    procedure     GetKeyNames(Parent: RawUtf8; var Result: TStrings); override;
+    procedure     GetValueNames(Parent: RawUtf8; var Result: TStrings); override;
+    procedure     Delete(Ident: RawUtf8); override;
+    function      ValueExist(const Ident: RawUtf8): boolean; override;
 
-    function      ReadString(Ident: string; Default: string): string; override;
-    procedure     WriteString(Ident: string; Value: string); override;
+    function      ReadString(Ident: RawUtf8; Default: RawUtf8): RawUtf8; override;
+    procedure     WriteString(Ident: RawUtf8; Value: RawUtf8); override;
 
-    function      ReadInteger(Ident: string; Default: integer): integer; override;
-    procedure     WriteInteger(Ident: string; Value: integer); override;
+    function      ReadInteger(Ident: RawUtf8; Default: integer): integer; override;
+    procedure     WriteInteger(Ident: RawUtf8; Value: integer); override;
 
-    function      ReadBool(Ident: string; Default: boolean): boolean; override;
-    procedure     WriteBool(Ident: string; Value: boolean); override;
+    function      ReadBool(Ident: RawUtf8; Default: boolean): boolean; override;
+    procedure     WriteBool(Ident: RawUtf8; Value: boolean); override;
 
-    function      GetDataSize(Ident: string): Integer; override;
-    function      ReadBinaryData(Ident:  string; var Buffer; BufSize: Integer): Integer; override;
-    procedure     WriteBinaryData(Ident: string; var Buffer; BufSize: Integer); override;
+    function      GetDataSize(Ident: RawUtf8): Integer; override;
+    function      ReadBinaryData(Ident:  RawUtf8; var Buffer; BufSize: Integer): Integer; override;
+    procedure     WriteBinaryData(Ident: RawUtf8; var Buffer; BufSize: Integer); override;
   public
-    constructor   Create(const AFileName: string); reintroduce;
+    constructor   Create(const AFileName: RawUtf8); reintroduce;
     destructor    Destroy; override;
-    property      FileName: string read FFileName write SetFileName;
+    property      FileName: RawUtf8 read FFileName write SetFileName;
     property      Encoding: TFileEncode Read GetEncoding write SetEncoding;
   end;
 
@@ -397,7 +397,7 @@ const
   cXmlFalse                   = '0';
 
 function  GetIndent(o: TObject): Integer;
-procedure RegProtocol(Ext: string);
+procedure RegProtocol(Ext: RawUtf8);
 function  ConfigGetFolder(Value: TObject): TAccountFolder; inline;
 
 implementation
@@ -410,7 +410,7 @@ uses
 {$ELSE}
 {$ENDIF}
   Constant, LinLDAP, base64, Dialogs, Forms, StdCtrls, Controls, WinBase64,
-  mormot.core.base,
+  mormot.core.text,
   Math {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 
@@ -430,19 +430,18 @@ begin
 end;
 
 
-function ConfigIsFolder(AName: string): Boolean; inline;
+function ConfigIsFolder(AName: RawUtf8): Boolean; inline;
 begin
-  result:=true;
-  Result := AName.StartsWith(L_FOLDER_CHR) and AName.EndsWith(R_FOLDER_CHR);
+  Result := StartWithExact(AName, L_FOLDER_CHR) and EndWithExact(AName, R_FOLDER_CHR);
 end;
 
-function ConfigUnpackFolder(AName: string): string; inline;
+function ConfigUnpackFolder(AName: RawUtf8): RawUtf8; inline;
 begin
    Result:=ReplaceStr(Aname, L_FOLDER_CHR, '');
    Result:=ReplaceStr(Result,R_FOLDER_CHR,'');
 end;
 
-function ConfigPackFolder(AName: string): string; inline;
+function ConfigPackFolder(AName: RawUtf8): RawUtf8; inline;
 begin
   Result := L_FOLDER_CHR + AName + R_FOLDER_CHR;
 end;
@@ -455,7 +454,7 @@ begin
     Result := Value as TAccountFolder;
 end;
 
-function CheckProto(Ext: string): boolean;
+function CheckProto(Ext: RawUtf8): boolean;
 var
   Reg:  TRegistry;
 begin
@@ -471,7 +470,7 @@ begin
   end;
 end;
 
-procedure RegProtocol(Ext: string);
+procedure RegProtocol(Ext: RawUtf8);
   var
     Reg:  TRegistry;
     Win32MajorVersion: integer;
@@ -510,7 +509,7 @@ end;
 
 { TConfig }
 
-constructor TConfig.Create(AParent: TObject; const AName: string);
+constructor TConfig.Create(AParent: TObject; const AName: RawUtf8);
 begin
   ValidateName(AName);
 
@@ -525,20 +524,20 @@ begin
     FStorage := TConfig(FParent).Storage;
 end;
 
-function TConfig.GetPath: string;
+function TConfig.GetPath: RawUtf8;
 begin
   Result := Name;
   if Parent is TConfig then
     Result := TConfig(Parent).Path + '\' + Result
 end;
 
-procedure TConfig.ValidateName(const Value: string);
+procedure TConfig.ValidateName(const Value: RawUtf8);
 begin
   if Value = '' then raise
      Exception.Create(stAccntNameReq);
 end;
 
-procedure TConfig.SetName(const Value: string);
+procedure TConfig.SetName(const Value: RawUtf8);
 begin
   if FName <> Value then
   begin
@@ -550,84 +549,84 @@ begin
   end;
 end;
 
-function TConfig.Norm(Ident: string): string;
+function TConfig.Norm(Ident: RawUtf8): RawUtf8;
 begin
   if (length(Ident)>0) and (Ident[1]<>'\') then result:='\'+ExcludeTrailingBackslash(Ident)
   else result:=ExcludeTrailingBackslash(Ident)
 end;
 
-procedure TConfig.Delete(const Ident: string);
+procedure TConfig.Delete(const Ident: RawUtf8);
 begin
   if FStorage<>nil then FStorage.Delete(Path+Norm(Ident));
   FChanged:=true;
 end;
 
-function TConfig.ReadString(const Ident, Default: string): string;
+function TConfig.ReadString(const Ident, Default: RawUtf8): RawUtf8;
 begin
   result:=default;
   if FStorage<>nil then result:=FStorage.ReadString(Path+Norm(Ident), Default)
 end;
 
-procedure TConfig.WriteString(const Ident, Value: string);
+procedure TConfig.WriteString(const Ident, Value: RawUtf8);
 begin
   if FStorage<>nil then FStorage.WriteString(Path+Norm(Ident), Value);
   FChanged:=true;
 end;
 
-function TConfig.ReadInteger(const Ident: string; const Default: integer): integer;
+function TConfig.ReadInteger(const Ident: RawUtf8; const Default: integer): integer;
 begin
   result:=default;
   if FStorage<>nil then result:=FStorage.ReadInteger(Path+Norm(Ident), Default)
 end;
 
-procedure TConfig.WriteInteger(const Ident: string; const Value: integer);
+procedure TConfig.WriteInteger(const Ident: RawUtf8; const Value: integer);
 begin
   if FStorage<>nil then FStorage.WriteInteger(Path+Norm(Ident), Value);
   FChanged:=true;
 end;
 
-function TConfig.ReadBool(const Ident: string;  const Default: boolean): boolean;
+function TConfig.ReadBool(const Ident: RawUtf8;  const Default: boolean): boolean;
 begin
   result:=default;
   if FStorage<>nil then result:=FStorage.ReadBool(Path+Norm(Ident), Default)
 end;
 
-procedure TConfig.WriteBool(const Ident: string; const Value: boolean);
+procedure TConfig.WriteBool(const Ident: RawUtf8; const Value: boolean);
 begin
   if FStorage<>nil then FStorage.WriteBool(Path+Norm(Ident), Value);
   FChanged:=true;
 end;
 
-function TConfig.GetDataSize(const Ident: string): Integer;
+function TConfig.GetDataSize(const Ident: RawUtf8): Integer;
 begin
   result:=0;
   if FStorage<>nil then result:=FStorage.GetDataSize(Path+Norm(Ident));
 end;
 
-function TConfig.ReadBinaryData(const Ident: string; var Buffer; BufSize: Integer): Integer;
+function TConfig.ReadBinaryData(const Ident: RawUtf8; var Buffer; BufSize: Integer): Integer;
 begin
   if FStorage=nil then result:=0
   else result:=FStorage.ReadBinaryData(Path+Norm(Ident), Buffer, BufSize);
 end;
 
-procedure TConfig.WriteBinaryData(const Ident: string; var Buffer; BufSize: Integer);
+procedure TConfig.WriteBinaryData(const Ident: RawUtf8; var Buffer; BufSize: Integer);
 begin
   if FStorage<>nil then FStorage.WriteBinaryData(Path+Norm(Ident), Buffer, BufSize);
   FChanged:=true;
 end;
 
-function TConfig.ValueExist(const Ident: string): boolean;
+function TConfig.ValueExist(const Ident: RawUtf8): boolean;
 begin
   if FStorage=nil then result:=false
   else result:=FStorage.ValueExist(Path+Norm(Ident));
 end;
 
-procedure TConfig.GetKeyNames(Parent: string; var Result: TStrings);
+procedure TConfig.GetKeyNames(Parent: RawUtf8; var Result: TStrings);
 begin
   if FStorage<>nil then FStorage.GetKeyNames(Path+Norm(Parent), Result);
 end;
 
-procedure TConfig.GetValueNames(Parent: string; var Result: TStrings);
+procedure TConfig.GetValueNames(Parent: RawUtf8; var Result: TStrings);
 begin
   if FStorage<>nil then FStorage.GetValueNames(Path+Norm(Parent), Result);
 end;
@@ -740,7 +739,7 @@ begin
   ObjArrayDelete(FStorages, Index);
 end;
 
-function TGlobalConfig.StorageByName(const Name: string): TConfigStorage;
+function TGlobalConfig.StorageByName(const Name: RawUtf8): TConfigStorage;
 var
   i: Integer;
 begin
@@ -755,7 +754,7 @@ end;
 
 { TAccount }
 
-constructor TAccount.Create(AParent: TObject; const AName: string);
+constructor TAccount.Create(AParent: TObject; const AName: RawUtf8);
 begin
   if AName = '' then
     raise Exception.Create(stAccntNameReq);
@@ -763,22 +762,22 @@ begin
   inherited;
 end;
 
-function TAccount.GetBase: string;
+function TAccount.GetBase: RawUtf8;
 begin
  result:=ReadString(CONNECT_BASE, '');
 end;
 
-procedure TAccount.SetBase(const Value: string);
+procedure TAccount.SetBase(const Value: RawUtf8);
 begin
   WriteString(CONNECT_BASE, Value);
 end;
 
-function TAccount.GetServer: string;
+function TAccount.GetServer: RawUtf8;
 begin
   result:=ReadString(CONNECT_SERVER, '');
 end;
 
-procedure TAccount.SetServer(const Value: string);
+procedure TAccount.SetServer(const Value: RawUtf8);
 begin
   WriteString(CONNECT_SERVER, Value);
 end;
@@ -904,12 +903,12 @@ begin
   WriteInteger(CONNECT_REFFERAL_HOPS, Value);
 end;
 
-function TAccount.GetOperationalAttributes: string;
+function TAccount.GetOperationalAttributes: RawUtf8;
 begin
   result:=ReadString(CONNECT_OPERATIONAL_ATTRS, '');
 end;
 
-procedure TAccount.SetOperationalAttributes(const Value: string);
+procedure TAccount.SetOperationalAttributes(const Value: RawUtf8);
 begin
   WriteString(CONNECT_OPERATIONAL_ATTRS, Value);
 end;
@@ -918,14 +917,14 @@ end;
 procedure TAccount.ReadCredentials;
 { Format of credentials:
   Flags ........ 4 byte
-  User ......... 4 byte strlen*sizeof(char) + String
-  Password ..... 4 byte strlen*sizeof(char) + String }
+  User ......... 4 byte strlen*sizeof(char) + RawUtf8
+  Password ..... 4 byte strlen*sizeof(char) + RawUtf8 }
 var
   Buffer: array of byte;
   len,lcver: Integer;
   Offset: integer;
   Flags: Integer;
-  st: string;
+  st: RawUtf8;
   list: TStringList;
 
 
@@ -936,7 +935,7 @@ var
     inc(Offset, SizeOf(Integer));
   end;
 
-  function RdStr: string;
+  function RdStr: RawUtf8;
   var
     StrLen: Integer;
   begin
@@ -991,12 +990,12 @@ end;
 procedure TAccount.WriteCredentials;
 { Format of credentials:
   Flags ........ 4 byte
-  User ......... 4 byte strlen*sizeof(char) + String
-  Password ..... 4 byte strlen*sizeof(char) + String   }
+  User ......... 4 byte strlen*sizeof(char) + RawUtf8
+  Password ..... 4 byte strlen*sizeof(char) + RawUtf8   }
 var
   Buffer: array of byte;
   len,lcver: Integer;
-  st : string;
+  st : RawUtf8;
 
   procedure WrInteger(i: Integer);
   begin
@@ -1059,37 +1058,37 @@ begin
   WriteInteger(rDirectoryType, Integer(Value));
 end;
 
-function TAccount.GetUser: string;
+function TAccount.GetUser: RawUtf8;
 begin
   ReadCredentials;
   result:=FUser;
 end;
 
-procedure TAccount.SetUser(const Value: string);
+procedure TAccount.SetUser(const Value: RawUtf8);
 begin
   FUser:=Value;
   WriteCredentials;
 end;
 
 
-function TAccount.GetPassword: string;
+function TAccount.GetPassword: RawUtf8;
 begin
   ReadCredentials;
   result:=FPassword;
 end;
 
-procedure TAccount.SetPassword(const Value: string);
+procedure TAccount.SetPassword(const Value: RawUtf8);
 begin
   FPassword:=Value;
   WriteCredentials;
 end;
 
 procedure TAccount.Assign(const Source: TAccount);
-  procedure DoAssign(Path: string);
+  procedure DoAssign(Path: RawUtf8);
   var
     Idents: TStrings;
     i, Err, n: integer;
-    s: string;
+    s: RawUtf8;
   begin
     Idents:=TStringList.Create;
     Source.GetValueNames(Path, Idents);
@@ -1115,7 +1114,7 @@ end;
 
 { TAccountFolder }
 
-constructor TAccountFolder.Create(AParent: TObject; const AName: string);
+constructor TAccountFolder.Create(AParent: TObject; const AName: RawUtf8);
 begin
   inherited;
   FItems := TConfigList.Create(Self);
@@ -1132,22 +1131,22 @@ begin
   Result := FParent is TConfigStorage;
 end;
 
-function TAccountFolder.GetPath: string;
+function TAccountFolder.GetPath: RawUtf8;
 begin
   Result := Name;
   if Parent is TConfig then
     Result := TConfig(Parent).Path + '\' + ConfigPackFolder(Result)
 end;
 
-procedure TAccountFolder.ValidateName(const Value: string);
+procedure TAccountFolder.ValidateName(const Value: RawUtf8);
 begin
   if Value = '' then
     raise Exception.Create(stAccntNameReq);
-  if Value.Contains('\') then
+  if PosEx(Value, '\') <> 0 then
     raise Exception.CreateFmt(stInvalidChr, ['\', Value]);
 end;
 
-procedure TAccountFolder.SetName(const Value: string);
+procedure TAccountFolder.SetName(const Value: RawUtf8);
 begin
   if FName <> Value then
   begin
@@ -1163,7 +1162,7 @@ end;
 
 { Although, tehnically, TConfigList is account parent, parent field points to
   the parent of the list, since that is object we are interested in }
-function TConfigList.AddAccount(Name: string; CreateNew: Boolean = false): TAccount;
+function TConfigList.AddAccount(Name: RawUtf8; CreateNew: Boolean = false): TAccount;
 begin
   Result := TAccount.Create(FParent, Name);
   if CreateNew then
@@ -1175,7 +1174,7 @@ begin
 end;
 
 { CreateNew - creates a database entry as well (a key) }
-function TConfigList.AddFolder(Name: string; CreateNew: Boolean = false): TAccountFolder;
+function TConfigList.AddFolder(Name: RawUtf8; CreateNew: Boolean = false): TAccountFolder;
 begin
   Result := TAccountFolder.Create(FParent, Name);
   if CreateNew then
@@ -1200,10 +1199,10 @@ begin
   FStorage.FChanged:=true;
 end;
 
-function TConfigList.AccountByName(Name: string): TAccount;
+function TConfigList.AccountByName(Name: RawUtf8): TAccount;
 var
   i: integer;
-  folder: string;
+  folder: RawUtf8;
 begin
   result:=nil;
   folder:='';
@@ -1223,7 +1222,7 @@ begin
     end;
 end;
 
-function TConfigList.FolderByName(Name: string): TAccountFolder;
+function TConfigList.FolderByName(Name: RawUtf8): TAccountFolder;
 var
   i: integer;
 begin
@@ -1236,7 +1235,7 @@ begin
     end;
 end;
 
-function TConfigList.ByName(Name: string; Enum: TEnumObjects): TConfig;
+function TConfigList.ByName(Name: RawUtf8; Enum: TEnumObjects): TConfig;
 begin
   if (Enum = eoAll) or (Enum = eoFolders) then
   begin
@@ -1277,7 +1276,7 @@ begin
   inherited;
 end;
 
-function TConfigStorage.Norm(Ident: string): string;
+function TConfigStorage.Norm(Ident: RawUtf8): RawUtf8;
 begin
   if (length(Ident)>0) and (Ident[1]<>'\') then result:='\'+ExcludeTrailingBackslash(Ident)
   else result:=ExcludeTrailingBackslash(Ident)
@@ -1334,7 +1333,7 @@ begin
   end;
 end;
 
-function TConfigStorage.ByPath(APath: string; Relative: Boolean = false): TConfig;
+function TConfigStorage.ByPath(APath: RawUtf8; Relative: Boolean = false): TConfig;
 var
   i, l, h: Integer;
   Splitted: array of String;
@@ -1347,7 +1346,7 @@ begin
     System.Delete(APath, 1, 1);
   if APath = '' then
     exit;
-  Splitted := APath.Split(['\']);
+  Splitted := String(APath).Split(['\']);
   h := High(Splitted);
   l := Low(Splitted);
   AFolder := RootFolder;
@@ -1372,7 +1371,7 @@ end;
 
 { TRegistryConfigStorage }
 
-constructor TRegistryConfigStorage.Create(const RootKey: HKEY; const ARootPath: string);
+constructor TRegistryConfigStorage.Create(const RootKey: HKEY; const ARootPath: RawUtf8);
 begin
   inherited Create;
   FPwdSave := true;
@@ -1388,20 +1387,20 @@ begin
   inherited;
 end;
 
-function TRegistryConfigStorage.GetKeyName(Ident: string): string;
+function TRegistryConfigStorage.GetKeyName(Ident: RawUtf8): RawUtf8;
 begin
   result:=Norm(ExtractFileDir(Ident));
 end;
 
-function TRegistryConfigStorage.GetValName(Ident: string): string;
+function TRegistryConfigStorage.GetValName(Ident: RawUtf8): RawUtf8;
 begin
   result:=ExtractFileName(Ident);
 end;
 
-procedure TRegistryConfigStorage.Copy(Parent, SrcName, DestName: string);
+procedure TRegistryConfigStorage.Copy(Parent, SrcName, DestName: RawUtf8);
 var
   i: integer;
-  s: string;
+  s: RawUtf8;
   Buffer: PByteArray;
 begin
   if not FRegistry.OpenKey(FrootPath+Norm(Parent), false) then exit;
@@ -1430,21 +1429,21 @@ begin
   Fregistry.MoveKey(FRootPath+Norm(Parent)+Norm(SrcName), FRootPath+Norm(Parent)+Norm(DestName), false);
 end;
 
-procedure TRegistryConfigStorage.New(Parent, Name: string);
+procedure TRegistryConfigStorage.New(Parent, Name: RawUtf8);
 begin
   FRegistry.CreateKey(FrootPath + Norm(Parent) + Norm(Name));
 end;
 
-procedure TRegistryConfigStorage.Rename(Path, NewName: string);
+procedure TRegistryConfigStorage.Rename(Path, NewName: RawUtf8);
 begin
   FRegistry.MoveKey(FrootPath + Norm(Path), FrootPath + Norm(ExtractFileDir(Path)) + Norm(NewName), true);
 end;
 
-procedure TRegistryConfigStorage.Delete(Ident: string);
+procedure TRegistryConfigStorage.Delete(Ident: RawUtf8);
 var
-  s, parent, value: string;
+  s, parent, value: RawUtf8;
 
-  procedure SplitPath(const s: string; out ParentKey, ValueName: string);
+  procedure SplitPath(const s: RawUtf8; out ParentKey, ValueName: RawUtf8);
   var
     l, i: Integer;
   begin
@@ -1478,14 +1477,14 @@ begin
   end;
 end;
 
-procedure TRegistryConfigStorage.GetKeyNames(Parent: string; var Result: TStrings);
+procedure TRegistryConfigStorage.GetKeyNames(Parent: RawUtf8; var Result: TStrings);
 begin
   if not FRegistry.OpenKey(FRootPath+Norm(Parent), false) then exit;
   FRegistry.GetKeyNames(result);
   FRegistry.CloseKey;
 end;
 
-procedure TRegistryConfigStorage.GetValueNames(Parent: string; var Result: TStrings);
+procedure TRegistryConfigStorage.GetValueNames(Parent: RawUtf8; var Result: TStrings);
 begin
   if not FRegistry.OpenKey(FRootPath+Norm(Parent), false) then exit;
   FRegistry.GetValueNames(result);
@@ -1493,9 +1492,9 @@ begin
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
-function TRegistryConfigStorage.GetDataSize(Ident: string): Integer;
+function TRegistryConfigStorage.GetDataSize(Ident: RawUtf8): Integer;
 var
-  ValName: string;
+  ValName: RawUtf8;
 begin
   result:=0;
   if not FRegistry.OpenKey(FRootPath+GetKeyName(Ident), false) then exit;
@@ -1510,9 +1509,9 @@ begin
   FRegistry.CloseKey;
 end;
 
-function TRegistryConfigStorage.ReadBinaryData(Ident: string; var Buffer; BufSize: Integer): Integer;
+function TRegistryConfigStorage.ReadBinaryData(Ident: RawUtf8; var Buffer; BufSize: Integer): Integer;
 var
-  ValName, s: string;
+  ValName, s: RawUtf8;
 begin
   result:=0;
   if BufSize=0 then exit;
@@ -1535,7 +1534,7 @@ begin
   FRegistry.CloseKey;
 end;
 
-procedure TRegistryConfigStorage.WriteBinaryData(Ident: string; var Buffer; BufSize: Integer);
+procedure TRegistryConfigStorage.WriteBinaryData(Ident: RawUtf8; var Buffer; BufSize: Integer);
 begin
   FRegistry.OpenKey(FRootPath+GetKeyName(Ident), true);
   FRegistry.WriteBinaryData(GetValName(Ident), Buffer, BufSize);
@@ -1543,9 +1542,9 @@ begin
 end;
 ////////////////////////////////////////////////////////////////////////////////
 
-function TRegistryConfigStorage.ReadBool(Ident: string; Default: boolean): boolean;
+function TRegistryConfigStorage.ReadBool(Ident: RawUtf8; Default: boolean): boolean;
 var
-  ValName: string;
+  ValName: RawUtf8;
   BufLen: integer;
   Buffer: PByteArray;
 begin
@@ -1572,7 +1571,7 @@ begin
   FRegistry.CloseKey;
 end;
 
-procedure TRegistryConfigStorage.WriteBool(Ident: string; Value: boolean);
+procedure TRegistryConfigStorage.WriteBool(Ident: RawUtf8; Value: boolean);
 begin
   FRegistry.OpenKey(FRootPath+GetKeyName(Ident), true);
   FRegistry.WriteBool(GetValName(Ident), Value);
@@ -1580,9 +1579,9 @@ begin
 end;
 ////////////////////////////////////////////////////////////////////////////////
 
-function TRegistryConfigStorage.ReadInteger(Ident: string; Default: integer): integer;
+function TRegistryConfigStorage.ReadInteger(Ident: RawUtf8; Default: integer): integer;
 var
-  ValName: string;
+  ValName: RawUtf8;
   BufLen: integer;
   Buffer: PByteArray;
 begin
@@ -1608,7 +1607,7 @@ begin
   FRegistry.CloseKey;
 end;
 
-procedure TRegistryConfigStorage.WriteInteger(Ident: string; Value: integer);
+procedure TRegistryConfigStorage.WriteInteger(Ident: RawUtf8; Value: integer);
 begin
   FRegistry.OpenKey(FRootPath+GetKeyName(Ident), true);
   FRegistry.WriteInteger(GetValName(Ident), Value);
@@ -1616,12 +1615,12 @@ begin
 end;
 ////////////////////////////////////////////////////////////////////////////////
 
-function TRegistryConfigStorage.ReadString(Ident: string; Default: string): string;
+function TRegistryConfigStorage.ReadString(Ident: RawUtf8; Default: RawUtf8): RawUtf8;
 var
-  ValName: string;
+  ValName: RawUtf8;
   BufLen: integer;
   Buffer: PByteArray;
-  s: string;
+  s: RawUtf8;
 begin
   result:=Default;
   s := FRootPath + GetKeyName(Ident);
@@ -1647,7 +1646,7 @@ begin
   FRegistry.CloseKey;
 end;
 
-procedure TRegistryConfigStorage.WriteString(Ident: string; Value: string);
+procedure TRegistryConfigStorage.WriteString(Ident: RawUtf8; Value: RawUtf8);
 begin
   FRegistry.OpenKey(FRootPath+GetKeyName(Ident), true);
   FRegistry.WriteString(GetValName(Ident), Value);
@@ -1655,12 +1654,12 @@ begin
 end;
 ////////////////////////////////////////////////////////////////////////////////
 
-function TRegistryConfigStorage.GetName: string;
+function TRegistryConfigStorage.GetName: RawUtf8;
 begin
   result:=cRegistryCfgName;
 end;
 
-function TRegistryConfigStorage.ValueExist(const Ident: string): boolean;
+function TRegistryConfigStorage.ValueExist(const Ident: RawUtf8): boolean;
 begin
   FRegistry.OpenKey(FRootPath+GetKeyName(Ident), true);
   result:=FRegistry.ValueExists(GetValName(Ident));
@@ -1670,7 +1669,7 @@ end;
 
 { TXmlConfigStorage }
 
-constructor TXmlConfigStorage.Create(const AFileName: string);
+constructor TXmlConfigStorage.Create(const AFileName: RawUtf8);
 begin
   inherited Create;
   FFileName := AFileName;
@@ -1698,7 +1697,7 @@ begin
   inherited;
 end;
 
-procedure TXmlConfigStorage.Copy(Parent, SrcName, DestName: string);
+procedure TXmlConfigStorage.Copy(Parent, SrcName, DestName: RawUtf8);
   procedure CopyNode(Src, Dest: TXmlNode);
   var
     i: integer;
@@ -1713,7 +1712,7 @@ begin
   CopyNode(FXml.ByPath(Norm(Parent)+inherited Norm(SrcName)), FXml.ByPath(Norm(Parent)).Add(DestName));
 end;
 
-procedure TXmlConfigStorage.Delete(Ident: string);
+procedure TXmlConfigStorage.Delete(Ident: RawUtf8);
 var
   i: integer;
   Node: TXmlNode;
@@ -1727,15 +1726,15 @@ begin
   FChanged:=true;
 end;
 
-function TXmlConfigStorage.GetDataSize(Ident: string): Integer;
+function TXmlConfigStorage.GetDataSize(Ident: RawUtf8): Integer;
 begin
   if FXml.Exist(Norm(Ident)) then result:=Base64decSize(FXml.ByPath(Norm(Ident)).Content)
   else result:=0;
 end;
 
-function TXmlConfigStorage.ReadBinaryData(Ident: string; var Buffer; BufSize: Integer): Integer;
+function TXmlConfigStorage.ReadBinaryData(Ident: RawUtf8; var Buffer; BufSize: Integer): Integer;
 var
-  s: string;
+  s: RawUtf8;
 begin
   result:=0;
   if FXml.Exist(Norm(Ident)) then begin
@@ -1744,15 +1743,15 @@ begin
   end;
 end;
 
-procedure TXmlConfigStorage.WriteBinaryData(Ident: string; var Buffer; BufSize: Integer);
+procedure TXmlConfigStorage.WriteBinaryData(Ident: RawUtf8; var Buffer; BufSize: Integer);
 begin
   FXml.ByPath(Norm(Ident)).Content:=Base64Encode(Buffer, BufSize);
 end;
 
 
-function TXmlConfigStorage.ReadBool(Ident: string; Default: boolean): boolean;
+function TXmlConfigStorage.ReadBool(Ident: RawUtf8; Default: boolean): boolean;
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := Trim(LowerCase(ReadString(Ident, '')));
   if s = cXmlTrue then
@@ -1764,7 +1763,7 @@ begin
     Result := Default;
 end;
 
-procedure TXmlConfigStorage.WriteBool(Ident: string; Value: boolean);
+procedure TXmlConfigStorage.WriteBool(Ident: RawUtf8; Value: boolean);
 begin
   if Value then
     WriteString(Ident, cXmlTrue)
@@ -1773,33 +1772,33 @@ begin
 end;
 
 
-function TXmlConfigStorage.ReadInteger(Ident: string; Default: integer): integer;
+function TXmlConfigStorage.ReadInteger(Ident: RawUtf8; Default: integer): integer;
 begin
   result:=StrToIntDef(ReadString(Ident, ''), Default);
 end;
 
-procedure TXmlConfigStorage.WriteInteger(Ident: string; Value: integer);
+procedure TXmlConfigStorage.WriteInteger(Ident: RawUtf8; Value: integer);
 begin
   WriteString(Ident, IntToStr(Value));
 end;
 
 
-function TXmlConfigStorage.ReadString(Ident: string; Default: string): string;
+function TXmlConfigStorage.ReadString(Ident: RawUtf8; Default: RawUtf8): RawUtf8;
 begin
   if FXml.Exist(Norm(Ident)) then result:=FXml.ByPath(Norm(Ident)).Content;
 end;
 
-procedure TXmlConfigStorage.WriteString(Ident: string; Value: string);
+procedure TXmlConfigStorage.WriteString(Ident: RawUtf8; Value: RawUtf8);
 begin
   FXml.ByPath(Norm(Ident)).Content:=Value;
 end;
 
-function TXmlConfigStorage.GetName: string;
+function TXmlConfigStorage.GetName: RawUtf8;
 begin
   result:=ExtractFileName(FFileName);
 end;
 
-procedure TXmlConfigStorage.GetKeyNames(Parent: string; var Result: TStrings);
+procedure TXmlConfigStorage.GetKeyNames(Parent: RawUtf8; var Result: TStrings);
 var
   i: integer;
 begin
@@ -1811,7 +1810,7 @@ begin
   end;
 end;
 
-procedure TXmlConfigStorage.GetValueNames(Parent: string; var Result: TStrings);
+procedure TXmlConfigStorage.GetValueNames(Parent: RawUtf8; var Result: TStrings);
 var
   i: integer;
 begin
@@ -1823,7 +1822,7 @@ begin
   end;
 end;
 
-procedure TXmlConfigStorage.New(Parent, Name: string);
+procedure TXmlConfigStorage.New(Parent, Name: RawUtf8);
 var
   Splitted: array of String;
   i: Integer;
@@ -1831,7 +1830,7 @@ var
 begin
   if Parent[1] = '\' then
     System.Delete(Parent, 1, 1);
-  Splitted := Parent.Split(['\']);
+  Splitted := String(Parent).Split(['\']);
   ParentNode := FXml.Root;
   Node := ParentNode;
   for i := Low(Splitted) to High(Splitted) do
@@ -1844,13 +1843,13 @@ begin
   Node.Add(Name);
 end;
 
-procedure TXmlConfigStorage.Rename(Path, NewName: string);
+procedure TXmlConfigStorage.Rename(Path, NewName: RawUtf8);
 begin
   if not FXml.Exist(Norm(Path)) then exit;
   FXml.ByPath(Norm(Path)).Name:=NewName;
 end;
 
-procedure TXmlConfigStorage.SetFileName(const Value: string);
+procedure TXmlConfigStorage.SetFileName(const Value: RawUtf8);
 begin
   FFileName := Value;
   FChanged:=(FXml.Root.Count>0) or FileExists(FFileName);
@@ -1866,7 +1865,7 @@ begin
   FXml.Encoding := Value;
 end;
 
-function TXmlConfigStorage.ValueExist(const Ident: string): boolean;
+function TXmlConfigStorage.ValueExist(const Ident: RawUtf8): boolean;
 begin
   result:=FXml.Exist(Norm(Ident));
 end;
@@ -1874,12 +1873,12 @@ end;
 
 { TFakeAccount }
 
-function TFakeAccount.GetBase: string;
+function TFakeAccount.GetBase: RawUtf8;
 begin
   result:=FBase;
 end;
 
-procedure TFakeAccount.SetBase(const Value: string);
+procedure TFakeAccount.SetBase(const Value: RawUtf8);
 begin
   FBase:=Value;
 end;
@@ -1914,12 +1913,12 @@ begin
   FPort:=Value;
 end;
 
-function TFakeAccount.GetServer: string;
+function TFakeAccount.GetServer: RawUtf8;
 begin
   result:=FServer;
 end;
 
-procedure TFakeAccount.SetServer(const Value: string);
+procedure TFakeAccount.SetServer(const Value: RawUtf8);
 begin
   FServer:=Value;
 end;
@@ -1934,12 +1933,12 @@ begin
   FSSL:=Value;
 end;
 
-function TFakeAccount.GetUser: string;
+function TFakeAccount.GetUser: RawUtf8;
 begin
   result:=FUser;
 end;
 
-procedure TFakeAccount.SetUser(const Value: string);
+procedure TFakeAccount.SetUser(const Value: RawUtf8);
 begin
   FUser:=Value;
 end;

@@ -37,7 +37,7 @@ uses
 {$ENDIF}
   SysUtils, Script,
   ComCtrls, LDAPClasses, Classes, Contnrs, Controls, StdCtrls, ExtCtrls, Xml,
-     Forms, Graphics, Grids, Messages, Dialogs,  Math, XmlLoader
+     Forms, Graphics, Grids, Messages, Dialogs,  Math, XmlLoader, mormot.core.base
     {$IFDEF REGEXPR}
     { Note: If you want to compile templates with regex support you'll need }
     { Regexpr.pas unit from TRegeExpr library (http://www.regexpstudio.com) }
@@ -81,13 +81,13 @@ type
     fAutoSizeX:    Boolean;
     fAutoSizeY:    Boolean;
     fAutoArrange: Boolean;
-    fCaption:     string;
-    fName:        string;
-    fDataControlName: string;
+    fCaption:     RawUtf8;
+    fName:        RawUtf8;
+    fDataControlName: RawUtf8;
     fDataControl: TTemplateControl;
     {$IFDEF REGEXPR}
     fRegex:       TRegExpr;
-    fRegexMsg:    string;
+    fRegexMsg:    RawUtf8;
     {$ENDIF}
     procedure     OnChangeProc(Sender: TObject);
     procedure     OnExitProc(Sender: TObject);
@@ -127,9 +127,9 @@ type
     property      AutoSizeX: Boolean read fAutoSizeX write fAutoSizeX;
     property      AutoSizeY: Boolean read fAutoSizeY write fAutoSizeY;
     property      AutoArrange: Boolean read fAutoArrange write fAutoArrange {SetAutoArrange};
-    property      Caption: string read fCaption;
-    property      Name: string read fName;
-    property      DataControlName: string read fDataControlName;
+    property      Caption: RawUtf8 read fCaption;
+    property      Name: RawUtf8 read fName;
+    property      DataControlName: RawUtf8 read fDataControlName;
   end;
 
   TTemplateSVControl = class(TTemplateControl)
@@ -200,7 +200,7 @@ type
 
   TTemplateCtrlComboList = class(TTemplateSVControl)
   private
-    function      IndexOfValue(Value: string): Integer;
+    function      IndexOfValue(Value: RawUtf8): Integer;
   protected
     procedure     LoadProc(XmlNode: TXmlNode); override;
   public
@@ -214,10 +214,10 @@ type
   TTemplateCtrlComboLookupList = class(TTemplateCtrlComboList)
   private
     fScope:       Integer;
-    fSearchFilter: string;
-    fDisplayAttribute: string;
-    fValueAttribute: string;
-    fBase: string;
+    fSearchFilter: RawUtf8;
+    fDisplayAttribute: RawUtf8;
+    fValueAttribute: RawUtf8;
+    fBase: RawUtf8;
   protected
     procedure     SetLdapAttribute(Attribute: TLdapAttribute); override;
     procedure     LoadProc(XmlNode: TXmlNode); override;
@@ -290,10 +290,10 @@ type
 
   TTemplateCtrlCheckBox = class(TTemplateSVControl)
   private
-    fFalse:       string;
-    fTrue:        string;
+    fFalse:       RawUtf8;
+    fTrue:        RawUtf8;
     fMultivalue:  Boolean;
-    function      GetCbState(const AState: string): TCheckBoxState;
+    function      GetCbState(const AState: RawUtf8): TCheckBoxState;
   protected
     procedure     LoadProc(XmlNode: TXmlNode); override;
   public
@@ -348,8 +348,8 @@ type
   private
     fChanging:    Boolean;
     {$IFDEF VER130}
-    fFormat:       string;
-    procedure      SetFormat(Value: string);
+    fFormat:       RawUtf8;
+    procedure      SetFormat(Value: RawUtf8);
     {$ENDIF}
     procedure      CNNotify(var Message: TWMNotify); message CN_NOTIFY;
   protected
@@ -357,19 +357,19 @@ type
     function       MsgSetDateTime(Value: TSystemTime): Boolean;
   public
     {$IFDEF VER130}
-    property       Format: string read fFormat write SetFormat;
+    property       Format: RawUtf8 read fFormat write SetFormat;
     {$ENDIF}
   end{$ENDIF};
 
   TTemplateCtrlDate = class(TTemplateSVControl)
   private
-    fDateFormat:  string;
-    fTimeFormat:  string;
-    function      GetDisplayFormat: string;
-    procedure     SetDisplayFormat(Value: string);
-    function      GetTime(Value: string): TDateTime;
-    function      GetTimeString: string;
-    procedure     SetTimeString(Value: string);
+    fDateFormat:  RawUtf8;
+    fTimeFormat:  RawUtf8;
+    function      GetDisplayFormat: RawUtf8;
+    procedure     SetDisplayFormat(Value: RawUtf8);
+    function      GetTime(Value: RawUtf8): TDateTime;
+    function      GetTimeString: RawUtf8;
+    procedure     SetTimeString(Value: RawUtf8);
   protected
     procedure     LoadProc(XmlNode: TXmlNode); override;
   public
@@ -378,10 +378,10 @@ type
     procedure     SetValue(AValue: TTemplateAttributeValue); override;
     procedure     Read; override;
     procedure     Write; override;
-    property      DisplayFormat: string read GetDisplayFormat write SetDisplayFormat;
-    property      DateFormat: string read fDateFormat write fDateFormat;
-    property      TimeFormat: string read fTimeFormat write fTimeFormat;
-    property      AsString: string read GetTimeString write SetTimeString;
+    property      DisplayFormat: RawUtf8 read GetDisplayFormat write SetDisplayFormat;
+    property      DateFormat: RawUtf8 read fDateFormat write fDateFormat;
+    property      TimeFormat: RawUtf8 read fTimeFormat write fTimeFormat;
+    property      AsString: RawUtf8 read GetTimeString write SetTimeString;
   end;
 
   TTemplateCtrlTime = class(TTemplateCtrlDate)
@@ -411,11 +411,11 @@ type
 
   TTemplateCtrlPickupDlg = class(TTemplateDriverControl)
   private
-    fFilter:      string;
-    fColumns:     array of string;
-    fColNames:    array of string;
-    fReturns:     string;
-    fBase: string;
+    fFilter:      RawUtf8;
+    fColumns:     array of RawUtf8;
+    fColNames:    array of RawUtf8;
+    fReturns:     RawUtf8;
+    fBase: RawUtf8;
     procedure     ButtonClick(Sender: TObject);
   protected
     procedure     LoadProc(XmlNode: TXmlNode); override;
@@ -455,8 +455,8 @@ type
     function      GetItemIndex: Integer;
     procedure     SetItemIndex(const Value: Integer);
     function      GetLineCount: Integer;
-    function      GetLine(Index: Integer): string;
-    procedure     SetLine(Index: Integer; const Value: string);
+    function      GetLine(Index: Integer): RawUtf8;
+    procedure     SetLine(Index: Integer; const Value: RawUtf8);
   protected
     procedure     LoadProc(XmlNode: TXmlNode); override;
   public
@@ -465,10 +465,10 @@ type
     procedure     SetValue(AValue: TTemplateAttributeValue); override;
     procedure     Read; override;
     procedure     Write; override;
-    procedure     Add(const Value: string);
+    procedure     Add(const Value: RawUtf8);
     procedure     Delete(Index: Integer);
     property      ItemIndex: Integer read GetItemIndex write SetItemIndex;
-    property      Lines[Index: Integer]: string read GetLine write SetLine;
+    property      Lines[Index: Integer]: RawUtf8 read GetLine write SetLine;
     property      LineCount: Integer read GetLineCount;
   end;
 
@@ -510,7 +510,7 @@ type
 
   TTemplateCtrlLoadButton = class(TTemplateCtrlButton)
   private
-    fFilter: string;
+    fFilter: RawUtf8;
     fFilterIndex: Integer;
     procedure     ButtonClick(Sender: TObject);
   protected
@@ -525,13 +525,13 @@ type
   private
     fControl: TTemplateControl;
     fNode:      TXmlNode;
-    function    GetEventName: string;
-    function    GetCode: string;
+    function    GetEventName: RawUtf8;
+    function    GetCode: RawUtf8;
   public
     constructor Create(Control: TTemplateControl; Node: TXmlNode);
     property    Control: TTemplateControl read fControl;
-    property    Name: string read GetEventName;
-    property    Code: string read GetCode;
+    property    Name: RawUtf8 read GetEventName;
+    property    Code: RawUtf8 read GetCode;
   end;
 
   TTemplateControlList = class(TObjectList)
@@ -558,25 +558,25 @@ type
   TTemplateAttributeValue = class
   private
     FBase64:      Boolean;
-    FValue:       string;
+    FValue:       RawUtf8;
     FAttribute:   TTemplateAttribute;
     procedure     SetBase64(const Value: Boolean);
-    procedure     SetValue(const Value: string);
-    function      GetString: string;
+    procedure     SetValue(const Value: RawUtf8);
+    function      GetString: RawUtf8;
   public
     constructor   Create(AAttribute: TTemplateAttribute);
     procedure     SaveToStream(AStream: TStream);
     property      Base64: Boolean read FBase64 write SetBase64;
-    property      Value: string read FValue write SetValue;
-    property      AsString: string read GetString;
+    property      Value: RawUtf8 read FValue write SetValue;
+    property      AsString: RawUtf8 read GetString;
     property      Attribute: TTemplateAttribute read fAttribute;
   end;
 
  TTemplateAttribute = class
   private
     FRequired:    Boolean;
-    FDescription: string;
-    FName:        string;
+    FDescription: RawUtf8;
+    FName:        RawUtf8;
     FValues:      TObjectList;
     FControls:    TTemplateControlList;
     FDefaultControlClass: TTControl;
@@ -585,8 +585,8 @@ type
   public
     constructor   Create(XmlNode: TXmlNode); reintroduce;
     destructor    Destroy; override;
-    property      Name: string read FName;
-    property      Description: string read FDescription;
+    property      Name: RawUtf8 read FName;
+    property      Description: RawUtf8 read FDescription;
     property      Required: Boolean read FRequired;
     property      Values[Index: Integer]: TTemplateAttributeValue read GetValues;
     property      ValuesCount: integer read GetValuesCount;
@@ -596,31 +596,31 @@ type
  TTemplate = class
   private
     FXmlTree: TXmlTree;
-    FDescription: string;
-    FName:        string;
-    FFileName:    string;
-    FRdn:         string;
+    FDescription: RawUtf8;
+    FName:        RawUtf8;
+    FFileName:    RawUtf8;
+    FRdn:         RawUtf8;
     FAutoArrange: Boolean;
     FAutoSize: Boolean;
     FObjectclass: TTemplateAttribute;
     FExtends:     TStringList;
     FIcon:        TBitmap;
     FImageIndex:  Integer;
-    function      GetObjectclasses(Index: Integer): string;
+    function      GetObjectclasses(Index: Integer): RawUtf8;
     function      GetObjectclassCount: Integer;
   public
-    constructor   Create(const AFileName: string); reintroduce;
+    constructor   Create(const AFileName: RawUtf8); reintroduce;
     function      Matches(ObjectClass: TLdapAttribute): Boolean;
     destructor    Destroy; override;
-    property      Name: string read FName;
+    property      Name: RawUtf8 read FName;
     procedure     Parse(Control: TTemplateControl; out Script: TCustomScript);
-    property      Description: string read FDescription;
-    property      Objectclasses[Index: Integer]: string read GetObjectclasses;
+    property      Description: RawUtf8 read FDescription;
+    property      Objectclasses[Index: Integer]: RawUtf8 read GetObjectclasses;
     property      ObjectclassCount: Integer read GetObjectclassCount;
     property      AutoArrangeControls: Boolean read fAutoArrange;
     property      AutoSizeControls: Boolean read fAutoSize;
     property      Extends: TStringlist read fExtends;
-    property      Rdn: string read fRdn;
+    property      Rdn: RawUtf8 read fRdn;
     property      Icon: TBitmap read FIcon;
     property      XmlTree: TxmlTree read fXmlTree;
     property      ImageIndex: Integer read FImageIndex;
@@ -636,13 +636,13 @@ type
   TExtensionList = class
   private
     fExtensionList: TStringList;
-    function      GetTemplates(Index: string): TTemplateList;
+    function      GetTemplates(Index: RawUtf8): TTemplateList;
   public
     constructor   Create;
     destructor    Destroy; override;
     procedure     Clear;
-    procedure     Add(AValue: string; ATemplate: TTemplate);
-    property      Extensions[Index: string]: TTemplateList read GetTemplates; default;
+    procedure     Add(AValue: RawUtf8; ATemplate: TTemplate);
+    property      Extensions[Index: RawUtf8]: TTemplateList read GetTemplates; default;
   end;
 
   TTemplateParser = class(TXmlLoader)
@@ -655,15 +655,15 @@ type
     constructor   Create; override;
     destructor    Destroy; override;
     procedure     Clear; override;
-    function      Parse(const FileName: string): TObject; override;
-    function      IndexOf(const Name: string): Integer;
+    function      Parse(const FileName: RawUtf8): TObject; override;
+    function      IndexOf(const Name: RawUtf8): Integer;
     property      Templates[Index: Integer]: TTemplate read GetTemplate;
     property      Extensions: TExtensionList read fExtensionList;
     property      ImageList: TImageList read fImageList write SetImageList;
   end;
 
 var
-  Iso639LangName: string;
+  Iso639LangName: RawUtf8;
   TemplateParser: TTemplateParser;
 
 implementation
@@ -703,10 +703,10 @@ const
                                                   TTemplateCtrlLoadButton );
   //DEFAULT_CONTROL_CLASS: TTControl = TTemplateCtrlEdit;
 
-  EVENT_NAMES: string = 'ONCLICK,ONDBLCLICK,ONKEYDOWN,ONKEYPRESS,ONKEYUP,' +
+  EVENT_NAMES: RawUtf8 = 'ONCLICK,ONDBLCLICK,ONKEYDOWN,ONKEYPRESS,ONKEYUP,' +
                         'ONCHANGE,ONMOUSEDOWN,ONMOUSEMOVE,ONMOUSEUP,ONRESIZE';
 
-function GetXmlTypeByClass(AClass: TTControl): string;
+function GetXmlTypeByClass(AClass: TTControl): RawUtf8;
 const
   PREFIX='ttemplatectrl';
   LEN=length(PREFIX);
@@ -718,7 +718,7 @@ begin
   else result:='';
 end;
 
-function GetClassByXmlType(XmlType: string): TTControl;
+function GetClassByXmlType(XmlType: RawUtf8): TTControl;
 const
   PREFIX='ttemplatectrl';
 var
@@ -735,7 +735,7 @@ end;
 
 function GetDefaultXmlType(XmlNode: TXmlNode): TTControl;
 var
-  XmlType: string;
+  XmlType: RawUtf8;
 begin
   Result := nil;
   if XmlNode.Name = 'objectclass' then Exit;
@@ -763,7 +763,7 @@ begin
     Result := TTemplateNoCtrl;
 end;
 
-function CheckStrToInt(const Value, Tag: string): Integer;
+function CheckStrToInt(const Value, Tag: RawUtf8): Integer;
 begin
   try
     Result := StrToInt(Value);
@@ -775,7 +775,7 @@ begin
   end;
 end;
 
-function GetIso639LangName: string;
+function GetIso639LangName: RawUtf8;
 var
   Buffer: array[0..8] of Char;
 begin
@@ -791,7 +791,7 @@ end;
 
 function XmlLanguageMatch(XmlNode: TXmlNode): Boolean;
 var
-  Lang: string;
+  Lang: RawUtf8;
 begin
   if Iso639LangName <> '' then
   begin
@@ -807,8 +807,8 @@ end;
 
 function CreateScript(XmlNode: TXmlNode): TCustomScript;
 var
-  XmlType: string;
-  FileName: string;
+  XmlType: RawUtf8;
+  FileName: RawUtf8;
 begin
   XmlType := XmlNode.Attributes.Values['type'];
 
@@ -851,7 +851,7 @@ end;
 function TTemplateMVControl.GetParams: TStringList;
 var
   p: PChar;
-  Param: string;
+  Param: RawUtf8;
   i: Integer;
 begin
   if not Assigned(fParams) then
@@ -879,7 +879,7 @@ procedure TTemplateMVControl.RegexEvaluate;
 var
   Res: Boolean;
   err, i: Integer;
-  val, msg: string;
+  val, msg: RawUtf8;
 begin
  if Assigned(fLdapAttribute) and (fRegex.Expression <> '') then
  for i := 0 to fLdapAttribute.ValueCount - 1 do
@@ -933,7 +933,7 @@ end;
 function TTemplateSVControl.GetParams: TStringList;
 var
   p: PChar;
-  Param: string;
+  Param: RawUtf8;
 begin
   if not Assigned(fParams) then
   begin
@@ -1055,7 +1055,7 @@ var
   AControl: TTemplateControl;
   Node: TXmlNode;
 
-  function GetColor(const Value, Tag: string): TColor;
+  function GetColor(const Value, Tag: RawUtf8): TColor;
   var
     c: Cardinal;
   begin
@@ -1064,7 +1064,7 @@ var
     Result := (c shr 16 + c and $00FF00 + c shl 16) and $00FFFFFF;
   end;
 
-  procedure ParseStyle(const Value: string);
+  procedure ParseStyle(const Value: RawUtf8);
   var
     style: TFontStyles;
   begin
@@ -1232,7 +1232,7 @@ procedure TTemplateControl.RegexEvaluate;
 var
   Res: Boolean;
   err: Integer;
-  msg: string;
+  msg: RawUtf8;
 begin
  if Assigned(fLdapAttribute) and (fRegex.Expression <> '') and (fLdapAttribute.AsString <> '') then
  begin
@@ -1264,7 +1264,7 @@ var
   procedure PlaceControl;
   var
     L: TLabel;
-    cap: string;
+    cap: RawUtf8;
   begin
    { Position the control }
     with TemplateControl do
@@ -1388,7 +1388,7 @@ end;
 procedure TTemplateNoCtrl.EventProc(Attribute: TLdapAttribute; Event: TEventType);
 var
   i: Integer;
-  s: string;
+  s: RawUtf8;
 begin
   if (Event = etChange) then with fTemplateAttribute do
     for i := 0 to ValuesCount -  1 do
@@ -1525,7 +1525,7 @@ end;
 
 { TTemplateCtrlComboList }
 
-function TTemplateCtrlComboList.IndexOfValue(Value: string): Integer;
+function TTemplateCtrlComboList.IndexOfValue(Value: RawUtf8): Integer;
 var
   p: PChar;
 begin
@@ -1577,7 +1577,7 @@ procedure TTemplateCtrlComboList.LoadProc(XmlNode: TXmlNode);
 var
   i: integer;
   ItemsNode, Node: TXmlNode;
-  cap, val: string;
+  cap, val: RawUtf8;
 begin
   ItemsNode:=XmlNode.NodeByName('items');
   if ItemsNode=nil then exit;
@@ -1653,7 +1653,7 @@ procedure TTemplateCtrlComboLookupList.SetLdapAttribute(Attribute: TLdapAttribut
 var
   EntryList: TLdapEntryList;
   i: Integer;
-  val, cap: string;
+  val, cap: RawUtf8;
 begin
   inherited;
 
@@ -1892,7 +1892,7 @@ end;
 procedure TTemplateCtrlGrid.EventProc(Attribute: TLdapAttribute; Event: TEventType);
 var
   i: Integer;
-  s: string;
+  s: RawUtf8;
 begin
   with (fControl as TEditGrid), fTemplateAttribute do
   if (Event = etChange) and (ValuesCount > 0) then
@@ -2013,9 +2013,9 @@ end;
 
 { TTemplateCtrlCheckBox }
 
-function TTemplateCtrlCheckBox.GetCbState(const AState: string): TCheckBoxState;
+function TTemplateCtrlCheckBox.GetCbState(const AState: RawUtf8): TCheckBoxState;
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := AState;
   if s = fTrue then
@@ -2035,7 +2035,7 @@ end;
 
 procedure TTemplateCtrlCheckBox.Read;
 
-  function GetValue: string;
+  function GetValue: RawUtf8;
   var
     i: Integer;
   begin
@@ -2307,7 +2307,7 @@ end;
 
 {$IFDEF TDATETIME_FIX}
 {$IFDEF VER130}
-procedure TDateTimePickerFixed.SetFormat(Value: string);
+procedure TDateTimePickerFixed.SetFormat(Value: RawUtf8);
 begin
   fFormat := Value;
   ///DateTime_SetFormat(Handle, PChar(fFormat));
@@ -2343,11 +2343,11 @@ end;
 
 { TTemplateCtrlDate }
 
-function TTemplateCtrlDate.GetTime(Value: string): TDateTime;
+function TTemplateCtrlDate.GetTime(Value: RawUtf8): TDateTime;
 
-  function ConvertVariant(const Value: string): TDateTime;
+  function ConvertVariant(const Value: RawUtf8): TDateTime;
   var
-    aValue: string;
+    aValue: RawUtf8;
   begin
     try
       Result := StrToDateTime(Value);
@@ -2378,22 +2378,22 @@ begin
     Result := ConvertVariant(Value);
 end;
 
-function TTemplateCtrlDate.GetDisplayFormat: string;
+function TTemplateCtrlDate.GetDisplayFormat: RawUtf8;
 begin
   //Result := TDateTimePickerFixed(fControl).Format;
 end;
 
-procedure TTemplateCtrlDate.SetDisplayFormat(Value: string);
+procedure TTemplateCtrlDate.SetDisplayFormat(Value: RawUtf8);
 begin
   ///TDateTimePickerFixed(fControl).Format := Value;
 end;
 
-function TTemplateCtrlDate.GetTimeString: string;
+function TTemplateCtrlDate.GetTimeString: RawUtf8;
 var
   ldapTime: TDateTime;
-  t: string;
+  t: RawUtf8;
 
-  function GetDateOrTime(DateTime: TDateTime; DataFormat: string; Kind: TDateTimeKind): string;
+  function GetDateOrTime(DateTime: TDateTime; DataFormat: RawUtf8; Kind: TDateTimeKind): RawUtf8;
   {$ifdef mswindows}
   var
     Buffer: array [0..256] of byte;
@@ -2500,11 +2500,11 @@ begin
   end;
 end;
 
-procedure TTemplateCtrlDate.SetTimeString(Value: string);
+procedure TTemplateCtrlDate.SetTimeString(Value: RawUtf8);
 
   procedure Err;
   var
-    s: string;
+    s: RawUtf8;
   begin
     with (Control as TDateTimePicker) do begin
       case Kind of
@@ -2711,7 +2711,7 @@ var
   i, j: Integer;
   Value: TTemplateAttributeValue;
   Attr: TLdapAttribute;
-  s: string;
+  s: RawUtf8;
 begin
   if Assigned(LdapSession) then
   with TPickupDlg.Create(Sender as TControl) do
@@ -2777,7 +2777,7 @@ end;
 procedure TTemplateCtrlPickupDlg.LoadProc(XmlNode: TXmlNode);
 var
   i: Integer;
-  t: string;
+  t: RawUtf8;
 
   procedure SetColumnValues(Node: TXmlNode);
   var
@@ -2949,12 +2949,12 @@ begin
   Result := TListBox(Control).Items.Count;
 end;
 
-function TTemplateCtrlList.GetLine(Index: Integer): string;
+function TTemplateCtrlList.GetLine(Index: Integer): RawUtf8;
 begin
   Result := TListBox(Control).Items[Index];
 end;
 
-procedure TTemplateCtrlList.SetLine(Index: Integer; const Value: string);
+procedure TTemplateCtrlList.SetLine(Index: Integer; const Value: RawUtf8);
 begin
   TListBox(Control).Items[Index] := Value;
   OnChangeProc(Control);
@@ -3022,7 +3022,7 @@ begin
   TListBox(fControl).OnExit := OnExitProc;
 end;
 
-procedure TTemplateCtrlList.Add(const Value: string);
+procedure TTemplateCtrlList.Add(const Value: RawUtf8);
 begin
   TListBox(Control).Items.Add(Value);
   OnChangeProc(Control);
@@ -3055,7 +3055,7 @@ end;
 
 procedure TTemplateCtrlListBox.ActAdd(Sender: TObject);
 var
-  s: string;
+  s: String;
 begin
   if InputQuery(cAddValue, cValue + ':', s) and (s <> '') then
   begin
@@ -3083,7 +3083,7 @@ end;
 
 procedure TTemplateCtrlListBox.ActEdit(Sender: TObject);
 var
-  s: string;
+  s: String;
 begin
   with fList do
   begin
@@ -3192,7 +3192,7 @@ procedure TTemplateCtrlListBox.LoadProc(XmlNode: TXmlNode);
 var
   i: Integer;
 
-  procedure AssignAction(btn: TButton; const Action: string);
+  procedure AssignAction(btn: TButton; const Action: RawUtf8);
   begin
     if Action = 'browse' then
       btn.Caption := cBrowse
@@ -3222,7 +3222,7 @@ var
   procedure LoadButton(Node: TXmlNode);
   var
     btn: TButton;
-    action: string;
+    action: RawUtf8;
     Ctrl: TTemplateControl;
   begin
     action := Node.Attributes.Values['type'];
@@ -3406,7 +3406,7 @@ end;
 
 { TExtensionList }
 
-function TExtensionList.GetTemplates(Index: string): TTemplateList;
+function TExtensionList.GetTemplates(Index: RawUtf8): TTemplateList;
 var
   idx: Integer;
 begin
@@ -3438,7 +3438,7 @@ begin
   fExtensionList.Clear;
 end;
 
-procedure TExtensionList.Add(AValue: string; ATemplate: TTemplate);
+procedure TExtensionList.Add(AValue: RawUtf8; ATemplate: TTemplate);
 var
   idx: Integer;
 begin
@@ -3471,12 +3471,12 @@ end;
 
 { TTemplateScriptEvent }
 
-function TTemplateScriptEvent.GetEventName: string;
+function TTemplateScriptEvent.GetEventName: RawUtf8;
 begin
   Result := fNode.Attributes.Values['type'];
 end;
 
-function TTemplateScriptEvent.GetCode: string;
+function TTemplateScriptEvent.GetCode: RawUtf8;
 begin
   Result := fNode.Content;
 end;
@@ -3507,7 +3507,7 @@ begin
   inherited;
 end;
 
-function TTemplateParser.Parse(const FileName: string): TObject;
+function TTemplateParser.Parse(const FileName: RawUtf8): TObject;
 var
   i: Integer;
 begin
@@ -3531,7 +3531,7 @@ begin
 
 end;
 
-function TTemplateParser.IndexOf(const Name: string): Integer;
+function TTemplateParser.IndexOf(const Name: RawUtf8): Integer;
 begin
   for Result := 0 to Count - 1 do
     if AnsiCompareText(GetTemplate(Result).Name, Name) = 0 then Exit;
@@ -3563,7 +3563,7 @@ end;
 
 { TTemplate }
 
-constructor TTemplate.Create(const AFileName: string);
+constructor TTemplate.Create(const AFileName: RawUtf8);
 var
   i: integer;
 
@@ -3572,7 +3572,7 @@ var
     Stream: TMemoryStream;
     Buffer: Pointer;
     vLen: Integer;
-    FileName, Bitmap, TransColor: string;
+    FileName, Bitmap, TransColor: RawUtf8;
     i: Integer;
   begin
     for i := 0 to Node.Count - 1 do with Node[i] do
@@ -3669,7 +3669,7 @@ begin
   inherited;
 end;
 
-function TTemplate.GetObjectclasses(Index: Integer): string;
+function TTemplate.GetObjectclasses(Index: Integer): RawUtf8;
 begin
   if Index < ObjectclassCount then
     Result := fObjectclass.Values[Index].Value
@@ -3811,12 +3811,12 @@ begin
   FBase64 := Value;
 end;
 
-procedure TTemplateAttributeValue.SetValue(const Value: string);
+procedure TTemplateAttributeValue.SetValue(const Value: RawUtf8);
 begin
   FValue := Value;
 end;
 
-function TTemplateAttributeValue.GetString: string;
+function TTemplateAttributeValue.GetString: RawUtf8;
 var
   vLen: Integer;
   {$IFDEF UNICODE}
@@ -3830,7 +3830,7 @@ begin
     SetLength(aOut, Base64decSize(vLen));
     vLen := Base64Decode(AnsiString(Value)[1], vLen, aOut[1]);
     SetLength(aOut, vLen);
-    Result := string(aOut);
+    Result := RawUtf8(aOut);
     {$ELSE}
     SetLength(Result, Base64decSize(vLen));
     vLen := Base64Decode(Value[1], vLen, Result[1]);

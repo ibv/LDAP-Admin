@@ -37,7 +37,7 @@ uses
 {$ELSE}
   LCLIntf, LCLType, LazUtils, LinLDAP, lazutf8, LazFileUtils,
 {$ENDIF}
-  Sysutils,  Classes, Events, Constant, mormot.net.ldap;
+  Sysutils,  Classes, Events, Constant, mormot.net.ldap, mormot.core.base;
 
 const
   LdapOpRead            = $FFFFFFFF;
@@ -75,7 +75,7 @@ type
     FErrorCode: ULONG;
     FExtErrorCode: ULONG;
   public
-    constructor Create(ErrCode, ExtErrCode: ULONG; Msg: string);
+    constructor Create(ErrCode, ExtErrCode: ULONG; Msg: RawUtf8);
     property    ErrorCode: ULONG read FErrorCode write FErrorCode;
     property    ExtErrorCode: ULONG read FExtErrorCode write FExtErrorCode;
   end;
@@ -103,6 +103,8 @@ type
 
   TLdapAuthMethod = Integer;
 
+  { TLdapAttributeData }
+
   TLdapAttributeData = class
   private
     fBerval: record
@@ -116,8 +118,8 @@ type
     //fType: TDataType; there is no need to determine this on per value basis
     fUtf8: Boolean;
     function GetType: TDataType;
-    function GetString: string;
-    procedure SetString(AValue: string);
+    function GetString: RawUtf8;
+    procedure SetString(AValue: RawUtf8);
     function BervalAddr: PLdapBerval;
   public
     constructor Create(Attribute: TLdapAttribute); virtual;
@@ -127,7 +129,7 @@ type
     procedure LoadFromStream(Stream: TStream);
     procedure SaveToStream(Stream: TStream);
     property DataType: TDataType read GetType;
-    property AsString: string read GetString write SetString;
+    property AsString: RawUtf8 read GetString write SetString;
     property DataSize: Cardinal read fBerval.Bv_Len;
     property Data: PBytes read fBerval.Bv_Val;
     property Berval: PLdapBerval read BervalAddr;
@@ -139,34 +141,34 @@ type
   TLdapAttribute = class
   private
     fState: TLdapAttributeStates;
-    fName: string;
+    fName: RawUtf8;
     fValues: TList;
     fOwnerList: TLdapAttributeList;
     fEntry: TLdapEntry;
     fDataType: TDataType;
     function GetCount: Integer;
     function GetValue(Index: Integer): TLdapAttributeData;
-    function GetString: string;
-    procedure SetString(AValue: string);
+    function GetString: RawUtf8;
+    procedure SetString(AValue: RawUtf8);
     function GetDataType: TDataType;
     function GetEmpty: Boolean;
   public
-    constructor Create(const AName: string; OwnerList: TLdapAttributeList); virtual;
+    constructor Create(const AName: RawUtf8; OwnerList: TLdapAttributeList); virtual;
     destructor Destroy; override;
     function  AddValue: TLdapAttributeData; overload;
-    procedure AddValue(const AValue: string); overload; virtual;
+    procedure AddValue(const AValue: RawUtf8); overload; virtual;
     procedure AddValue(const AData: Pointer; const ADataSize: Cardinal); overload; virtual;
-    procedure DeleteValue(const AValue: string); virtual;
+    procedure DeleteValue(const AValue: RawUtf8); virtual;
     procedure Delete;
-    function IndexOf(const AValue: string): Integer; overload;
+    function IndexOf(const AValue: RawUtf8): Integer; overload;
     function IndexOf(const AData: Pointer; const ADataSize: Cardinal): Integer; overload;
     procedure MoveIndex(Index: Integer);
     property Values[Index: Integer]: TLdapAttributeData read GetValue; default;
   published
     property State: TLdapAttributeStates read fState;
-    property Name: string read fName;
+    property Name: RawUtf8 read fName;
     property ValueCount: Integer read GetCount;
-    property AsString: string read GetString write SetString;
+    property AsString: RawUtf8 read GetString write SetString;
     property Entry: TLdapEntry read fEntry;
     property DataType: TDataType read GetDataType;
     property Empty: Boolean read GetEmpty;
@@ -181,10 +183,10 @@ type
   public
     constructor Create(Entry: TLdapEntry); virtual;
     destructor Destroy; override;
-    function Add(const AName: string): TLdapAttribute;
-    //function Insert(const AName: string; Index: Integer): TLdapAttribute;
-    function IndexOf(const Name: string): Integer;
-    function AttributeOf(const Name: string): TLdapAttribute;
+    function Add(const AName: RawUtf8): TLdapAttribute;
+    //function Insert(const AName: RawUtf8; Index: Integer): TLdapAttribute;
+    function IndexOf(const Name: RawUtf8): Integer;
+    function AttributeOf(const Name: RawUtf8): TLdapAttribute;
     procedure Clear;
     procedure Delete(Index: Integer);
     property Items[Index: Integer]: TLdapAttribute read GetNode; default;
@@ -194,11 +196,11 @@ type
   TLDAPSession = class
   private
     ldappld: TLdapClient;
-    ldapServer: string;
-    ldapUser, ldapPassword: string;
+    ldapServer: RawUtf8;
+    ldapUser, ldapPassword: RawUtf8;
     ldapPort: Integer;
     ldapVersion: Integer;
-    ldapBase: string;
+    ldapBase: RawUtf8;
     ldapSSL: Boolean;
     ldapTLS: Boolean;
     ldapAuthMethod: TLdapAuthMethod;
@@ -213,9 +215,9 @@ type
     fOnDisconnect: TNotifyEvents;
     fOperationalAttrs: PCharArray;
     procedure LDAPCheck(const err: ULONG; const Critical: Boolean = true);
-    procedure SetServer(Server: string);
-    procedure SetUser(User: string);
-    procedure SetPassword(Password: string);
+    procedure SetServer(Server: RawUtf8);
+    procedure SetUser(User: RawUtf8);
+    procedure SetPassword(Password: RawUtf8);
     procedure SetPort(Port: Integer);
     procedure SetVersion(Version: Integer);
     procedure SetConnect(DoConnect: Boolean);
@@ -227,8 +229,8 @@ type
     procedure SetDerefAliases(const Value: Integer);
     procedure SetChaseReferrals(const Value: boolean);
     procedure SetReferralHops(const Value: Integer);
-    function  GetOperationalAttrs: string;
-    procedure SetOperationalAttrs(const Value: string);
+    function  GetOperationalAttrs: RawUtf8;
+    procedure SetOperationalAttrs(const Value: RawUtf8);
     procedure ProcessSearchEntry(const plmEntry: TLDAPResult; Attributes: TLdapAttributeList);
     procedure ProcessSearchMessage(const plmSearch: TLdapClient; const NoValues: LongBool; Result: TLdapEntryList);
   protected
@@ -239,15 +241,15 @@ type
     procedure Connect; virtual;
     procedure Disconnect; virtual;
     property pld: TLdapClient read ldappld;
-    property Server: string read ldapServer write SetServer;
-    property User: string read ldapUser write SetUser;
-    property Password: string read ldapPassword write SetPassword;
+    property Server: RawUtf8 read ldapServer write SetServer;
+    property User: RawUtf8 read ldapUser write SetUser;
+    property Password: RawUtf8 read ldapPassword write SetPassword;
     property Port: Integer read ldapPort write SetPort;
     property Version: Integer read ldapVersion write SetVersion;
     property SSL: Boolean read ldapSSL write SetSSL;
     property TLS: Boolean read ldapTLS write SetTLS;
     property AuthMethod: TLdapAuthMethod read ldapAuthMethod write SetLdapAuthMethod;
-    property Base: string read ldapBase write ldapBase;
+    property Base: RawUtf8 read ldapBase write ldapBase;
     property TimeLimit: Integer read fTimeLimit write SetTimeLimit;
     property SizeLimit: Integer read fSizeLimit write SetSizeLimit;
     property PagedSearch: Boolean read fPagedSearch write fPagedSearch;
@@ -256,30 +258,30 @@ type
     property ChaseReferrals: Boolean read fChaseReferrals write SetChaseReferrals;
     property ReferralHops: Integer read fReferralHops write SetReferralHops;
     property Connected: Boolean read IsConnected write SetConnect;
-    function Lookup(sBase, sFilter, sResult: string; Scope: ULONG): string; virtual;
-    function GetDn(sFilter: string): string; virtual;
-    procedure Search(const Filter, Base: string; const Scope: Cardinal; QueryAttrs: array of string; const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback = nil); overload;
-    procedure Search(const Filter, Base: string; const Scope: Cardinal; attrs: PCharArray; const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback = nil); overload; virtual;
-    procedure ModifySet(const Filter, Base: string;
+    function Lookup(sBase, sFilter, sResult: RawUtf8; Scope: ULONG): RawUtf8; virtual;
+    function GetDn(sFilter: RawUtf8): RawUtf8; virtual;
+    procedure Search(const Filter, Base: RawUtf8; const Scope: Cardinal; QueryAttrs: array of RawUtf8; const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback = nil); overload;
+    procedure Search(const Filter, Base: RawUtf8; const Scope: Cardinal; attrs: PCharArray; const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback = nil); overload; virtual;
+    procedure ModifySet(const Filter, Base: RawUtf8;
                         const Scope: Cardinal;
-                        argNames: array of string;
-                        argVals: array of string;
-                        argNewVals: array of string;
+                        argNames: array of RawUtf8;
+                        argVals: array of RawUtf8;
+                        argNewVals: array of RawUtf8;
                         const ModOp: Cardinal);
     procedure WriteEntry(Entry: TLdapEntry); virtual;
     procedure ReadEntry(Entry: TLdapEntry); overload; virtual;
-    procedure ReadEntry(Entry: TLdapEntry; Attributes: array of string); overload; virtual;
-    procedure DeleteEntry(const adn: string); virtual;
-    function  RenameEntry(const OldDn, NewRdn, NewParent: string; FailOnError: Boolean = true): Cardinal;
+    procedure ReadEntry(Entry: TLdapEntry; Attributes: array of RawUtf8); overload; virtual;
+    procedure DeleteEntry(const adn: RawUtf8); virtual;
+    function  RenameEntry(const OldDn, NewRdn, NewParent: RawUtf8; FailOnError: Boolean = true): Cardinal;
     property  OnConnect: TNotifyEvents read FOnConnect;
     property  OnDisconnect: TNotifyEvents read FOnDisconnect;
-    property  OperationalAttrs: string read GetOperationalAttrs write SetOperationalAttrs;
+    property  OperationalAttrs: RawUtf8 read GetOperationalAttrs write SetOperationalAttrs;
   end;
 
   TLDAPEntry = class
   private
     fSession: TLDAPSession;
-    fdn: string;
+    fdn: RawUtf8;
     fAttributes: TLdapAttributeList;
     fOperationalAttributes: TLdapAttributeList;
     fObjectClass: TLdapAttribute;
@@ -287,39 +289,39 @@ type
     fOnChangeProc: TDataNotifyEvent;
     fOnRead: TNotifyEvent;
     fOnWrite: TNotifyEvent;
-    function GetNamedAttribute(const AName: string): TLdapAttribute;
+    function GetNamedAttribute(const AName: RawUtf8): TLdapAttribute;
     function GetObjectClass: TLdapAttribute;
   protected
-    procedure SetDn(const adn: string);
-    procedure SetUtf8Dn(const adn: AnsiString);
-    function  GetUtf8Dn: AnsiString;
+    procedure SetDn(const adn: RawUtf8);
+    procedure SetUtf8Dn(const adn: RawUtf8);
+    function  GetUtf8Dn: RawUtf8;
   public
     ObjectId: Integer;
     property Session: TLDAPSession read fSession;
-    constructor Create(const ASession: TLDAPSession; const adn: string); virtual;
+    constructor Create(const ASession: TLDAPSession; const adn: RawUtf8); virtual;
     destructor Destroy; override;
     procedure Read; overload; virtual;
-    procedure Read(Attributes: array of string); overload; virtual;
+    procedure Read(Attributes: array of RawUtf8); overload; virtual;
     procedure Write; virtual;
     procedure Delete; virtual;
     procedure Clone(ToEntry: TLdapEntry); virtual;
     property Attributes: TLdapAttributeList read fAttributes;
-    property AttributesByName[const Name: string]: TLdapAttribute read GetNamedAttribute;
+    property AttributesByName[const Name: RawUtf8]: TLdapAttribute read GetNamedAttribute;
     property OperationalAttributes: TLdapAttributeList read fOperationalAttributes;
   published
-    { dn is internally saved as escaped LDAP string, as returned from LDAP server.
+    { dn is internally saved as escaped LDAP RawUtf8, as returned from LDAP server.
       We cannot encode dn on write, since we cannot decide reliably if the
       particular ',' or '=' character should be escaped or not. This means that we
       have to deal with encoding before we assign a value to the dn property which
       is basically only when we deal with a user input. And, since vast majority of
       dn assignments happens internally we have an advantage of no performance impact }
-    property dn: string read fdn write SetDn;
+    property dn: RawUtf8 read fdn write SetDn;
     { To avoid perpetual conversions, fdn is internaly coded as UNICODE and not as
       Utf8. The ldap_add_s and ldap_modify_s Windows API functions need no converting,
       since the corresponding API UNICODE functions, which insure propper handling,
       are called. That leavs us with neccessity to convert dn specificaly to UTF8
       for base64 encoding when exporting entry to LDIF or DSML, hence utf8dn property }
-    property utf8dn: AnsiString read GetUtf8Dn write SetUtf8Dn;
+    property utf8dn: RawUtf8 read GetUtf8Dn write SetUtf8Dn;
     property State: TLdapEntryStates read fState;
     property OnChange: TDataNotifyEvent read fOnChangeProc write fOnChangeProc;
     property OnRead: TNotifyEvent read fOnRead write fOnRead;
@@ -340,27 +342,27 @@ type
     procedure     Delete(Index: Integer);
     procedure     Extract(Index: Integer);
     procedure     Clear;
-    function      IndexOf(adn: string): Integer;
+    function      IndexOf(adn: RawUtf8): Integer;
     property      Items[Index: Integer]: TLdapEntry read GetNode; default;
     property      Count: Integer read GetCount;
-    procedure     Sort(const Attributes: array of string; const Asc: boolean); overload;
+    procedure     Sort(const Attributes: array of RawUtf8; const Asc: boolean); overload;
     procedure     Sort(const Compare: TCompareLdapEntry; const Asc: boolean; const Data: pointer=nil); overload;
     property      OwnsEntries: Boolean read fOwnsEntries write fOwnsEntries;
   end;
 
 { Name handling routines }
-function  DecodeLdapString(const Src: string; const Escape: Char ='\'): string;
-function  EncodeLdapString(const Src: string; const Escape: Char ='\'): string;
-function  IsValidDn(Value: string): Boolean;
-function  CanonicalName(dn: string): string;
-procedure SplitRdn(const dn: string; var attrib, value: string);
-function  GetAttributeFromDn(const dn: string): string;
-function  GetNameFromDn(const dn: string): string;
-function  GetRdnFromDn(const dn: string): string;
-function  GetDirFromDn(const dn: string): string;
+function  DecodeLdapString(const Src: RawUtf8; const Escape: Char ='\'): RawUtf8;
+function  EncodeLdapString(const Src: RawUtf8; const Escape: Char ='\'): RawUtf8;
+function  IsValidDn(Value: RawUtf8): Boolean;
+function  CanonicalName(dn: RawUtf8): RawUtf8;
+procedure SplitRdn(const dn: RawUtf8; var attrib, value: RawUtf8);
+function  GetAttributeFromDn(const dn: RawUtf8): RawUtf8;
+function  GetNameFromDn(const dn: RawUtf8): RawUtf8;
+function  GetRdnFromDn(const dn: RawUtf8): RawUtf8;
+function  GetDirFromDn(const dn: RawUtf8): RawUtf8;
 
 
-function GetAttributeSortType(Attribute: string): TLdapAttributeSortType;
+function GetAttributeSortType(Attribute: RawUtf8): TLdapAttributeSortType;
 
 const
   PSEUDOATTR_DN         = '*DN*';
@@ -374,12 +376,11 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses Misc, Input, Dialogs, Cert, Gss, System.UITypes, HtmlMisc,
-  mormot.core.base;
+uses Misc, Input, Dialogs, Cert, Gss, System.UITypes, HtmlMisc;
 
 { Name handling routines }
 
-function DecodeLdapString(const Src: string; const Escape: Char ='\'): string;
+function DecodeLdapString(const Src: RawUtf8; const Escape: Char ='\'): RawUtf8;
 var
   i, d, l: Integer;
 begin
@@ -409,7 +410,7 @@ begin
   end;
 end;
 
-function EncodeLdapString(const Src: string; const Escape: Char ='\'): string;
+function EncodeLdapString(const Src: RawUtf8; const Escape: Char ='\'): RawUtf8;
 var
   i, d, l: Integer;
 begin
@@ -436,7 +437,7 @@ begin
 end;
 
 
-function IsValidDn(Value: string): Boolean;
+function IsValidDn(Value: RawUtf8): Boolean;
 var
   i: Integer;
   comp: TStringList;
@@ -455,7 +456,7 @@ begin
   comp.Free;
 end;
 
-function CanonicalName(dn: string): string;
+function CanonicalName(dn: RawUtf8): RawUtf8;
 var
   comp: TStringList;
   i: Integer;
@@ -484,7 +485,7 @@ begin
   end;
 end;
 
-procedure SplitRdn(const dn: string; var attrib, value: string);
+procedure SplitRdn(const dn: RawUtf8; var attrib, value: RawUtf8);
 var
   p, p0, p1: PChar;
 begin
@@ -508,7 +509,7 @@ begin
   SetString(value, P, P1 - P);
 end;
 
-function GetAttributeFromDn(const dn: string): string;
+function GetAttributeFromDn(const dn: RawUtf8): RawUtf8;
 var
   p, p1: PChar;
 begin
@@ -519,7 +520,7 @@ begin
   SetString(Result, P, P1 - P);
 end;
 
-function GetNameFromDn(const dn: string): string;
+function GetNameFromDn(const dn: RawUtf8): RawUtf8;
 var
   p, p1: PChar;
 begin
@@ -541,7 +542,7 @@ begin
   SetString(Result, P, P1 - P);
 end;
 
-function GetRdnFromDn(const dn: string): string;
+function GetRdnFromDn(const dn: RawUtf8): RawUtf8;
 var
   p, p1: PChar;
 begin
@@ -560,7 +561,7 @@ begin
   SetString(Result, P, P1 - P);
 end;
 
-function GetDirFromDn(const dn: string): string;
+function GetDirFromDn(const dn: RawUtf8): RawUtf8;
 var
   p: PChar;
 begin
@@ -584,7 +585,7 @@ begin
   Result := p;
 end;
 
-function GetAttributeSortType(Attribute: string): TLdapAttributeSortType;
+function GetAttributeSortType(Attribute: RawUtf8): TLdapAttributeSortType;
 begin
   if Attribute=PSEUDOATTR_DN   then result:=AT_DN   else
   if Attribute=PSEUDOATTR_RDN  then result:=AT_RDN  else
@@ -594,7 +595,7 @@ end;
 
 { ErrLdap }
 
-constructor ErrLdap.Create(ErrCode, ExtErrCode: ULONG; Msg: string);
+constructor ErrLdap.Create(ErrCode, ExtErrCode: ULONG; Msg: RawUtf8);
 begin
   inherited Create(Msg);
   FErrorCode := ErrCode;
@@ -606,7 +607,7 @@ end;
 procedure TLdapSession.LDAPCheck(const err: ULONG; const Critical: Boolean = true);
 var
   ErrorEx: PChar;
-  msg: string;
+  msg: RawUtf8;
   c: ULONG;
 begin
   if (err = LDAP_SUCCESS) then exit;
@@ -633,7 +634,7 @@ procedure TLdapSession.ProcessSearchEntry(const plmEntry: TLDAPResult; Attribute
 var
   Attr: TLdapAttribute;
   i,j: Integer;
-  pszAttr:string;
+  pszAttr:RawUtf8;
   attrData: RawByteString;
   pbe: PBerElement;
   ppBer: PPLdapBerVal;
@@ -657,7 +658,7 @@ end;
 procedure TLDAPSession.ProcessSearchMessage(const plmSearch: TLdapClient; const NoValues: LongBool; Result: TLdapEntryList);
 var
   plmEntry: TLDAPResult;
-  pszdn: string;
+  pszdn: RawUtf8;
   Entry: TLdapEntry;
   i,j : integer;
 begin
@@ -681,7 +682,7 @@ begin
   end;
 end;
 
-procedure TLDAPSession.Search(const Filter, Base: string; const Scope: Cardinal; attrs: PCharArray; const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback = nil);
+procedure TLDAPSession.Search(const Filter, Base: RawUtf8; const Scope: Cardinal; attrs: PCharArray; const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback = nil);
 var
   plmSearch: TLdapClient;
   Err: Integer;
@@ -768,7 +769,7 @@ begin
 end;
 
 
-procedure TLdapSession.Search(const Filter, Base: string; const Scope: Cardinal; QueryAttrs: array of string; const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback = nil);
+procedure TLdapSession.Search(const Filter, Base: RawUtf8; const Scope: Cardinal; QueryAttrs: array of RawUtf8; const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback = nil);
 var
   attrs: PCharArray;
   len: Integer;
@@ -788,11 +789,11 @@ begin
 end;
 
 { Modify set of attributes in every entry set returned by search filter }
-procedure TLdapSession.ModifySet(const Filter, Base: string;
+procedure TLdapSession.ModifySet(const Filter, Base: RawUtf8;
                                  const Scope: Cardinal;
-                                 argNames: array of string;
-                                 argVals: array of string;
-                                 argNewVals: array of string;
+                                 argNames: array of RawUtf8;
+                                 argVals: array of RawUtf8;
+                                 argNewVals: array of RawUtf8;
                                  const ModOp: Cardinal);
 var
   List: TLdapEntryList;
@@ -919,7 +920,7 @@ begin
     DoRead(fOperationalAttrs, Entry.OperationalAttributes);
 end;
 
-procedure TLDAPSession.ReadEntry(Entry: TLdapEntry; Attributes: array of string);
+procedure TLDAPSession.ReadEntry(Entry: TLdapEntry; Attributes: array of RawUtf8);
 var
   plmEntry: TLdapClient;
   attrs: PCharArray;
@@ -948,15 +949,15 @@ begin
     end;
   end;
 
-procedure TLdapSession.DeleteEntry(const adn: string);
+procedure TLdapSession.DeleteEntry(const adn: RawUtf8);
 begin
   LdapCheck(ldap_delete_s(pld, PChar(adn)));
 end;
 
-function TLdapSession.RenameEntry(const OldDn, NewRdn, NewParent: string; FailOnError: Boolean = true): Cardinal;
+function TLdapSession.RenameEntry(const OldDn, NewRdn, NewParent: RawUtf8; FailOnError: Boolean = true): Cardinal;
 var
   nilControl: PLDAPCOntrol;
-  rdn: string;
+  rdn: RawUtf8;
 begin
 
   {if Version < LDAP_VERSION3 then
@@ -982,7 +983,7 @@ begin
     LdapCheck(Result);
 end;
 
-function TLDAPSession.Lookup(sBase, sFilter, sResult: string; Scope: ULONG): string;
+function TLDAPSession.Lookup(sBase, sFilter, sResult: RawUtf8; Scope: ULONG): RawUtf8;
 var
   plmSearch: TLdapClient;
   plmEntry:  TLDAPResult;
@@ -1014,7 +1015,7 @@ begin
     end;
 end;
 
-function TLDAPSession.GetDn(sFilter: string): string;
+function TLDAPSession.GetDn(sFilter: RawUtf8): RawUtf8;
 var
   plmSearch: TLdapClient;
   plmEntry: TLDAPResult;
@@ -1037,19 +1038,19 @@ begin
     end;
 end;
 
-procedure TLDAPSession.SetServer(Server: string);
+procedure TLDAPSession.SetServer(Server: RawUtf8);
 begin
   Disconnect;
   ldapServer := Server;
 end;
 
-procedure TLDAPSession.SetUser(User: string);
+procedure TLDAPSession.SetUser(User: RawUtf8);
 begin
   Disconnect;
   ldapUser := User;
 end;
 
-procedure TLDAPSession.SetPassword(Password: string);
+procedure TLDAPSession.SetPassword(Password: RawUtf8);
 begin
   Disconnect;
   ldapPassword := Password;
@@ -1153,7 +1154,7 @@ begin
   end;
 end;
 
-function TLDAPSession.GetOperationalAttrs: string;
+function TLDAPSession.GetOperationalAttrs: RawUtf8;
 var
   i: Integer;
 begin
@@ -1167,7 +1168,7 @@ begin
     Result := '';
 end;
 
-procedure TLDAPSession.SetOperationalAttrs(const Value: string);
+procedure TLDAPSession.SetOperationalAttrs(const Value: RawUtf8);
 var
   fStringList: TStringList;
   i: Integer;
@@ -1232,7 +1233,7 @@ begin
   ldappld.free;
   fOnConnect.Free;
   fOnDisconnect.Free;
-  OperationalAttrs := ''; // dispose string array
+  OperationalAttrs := ''; // dispose RawUtf8 array
   inherited;
 end;
 
@@ -1336,7 +1337,7 @@ end;
 
 { TLDapAttributeData }
 
-function TLDapAttributeData.GetType: TDataType;
+function TLdapAttributeData.GetType: TDataType;
 var
   w: Word;
 
@@ -1404,7 +1405,7 @@ begin
   Result := Attribute.fDataType;
 end;
 
-function TLDapAttributeData.GetString: string;
+function TLdapAttributeData.GetString: RawUtf8;
 var
   tempBuffer: RawUtf8;
 begin
@@ -1413,7 +1414,7 @@ begin
   Result := tempBuffer;
 end;
 
-procedure TLDapAttributeData.SetString(AValue: string);
+procedure TLdapAttributeData.SetString(AValue: RawUtf8);
 var
   s: AnsiString;
 begin
@@ -1424,7 +1425,7 @@ begin
   SetData(PChar(s), Length(s));
 end;
 
-procedure TLDapAttributeData.LoadFromStream(Stream: TStream);
+procedure TLdapAttributeData.LoadFromStream(Stream: TStream);
 var
   p: Pointer;
 begin
@@ -1440,19 +1441,19 @@ begin
   end;
 end;
 
-procedure TLDapAttributeData.SaveToStream(Stream: TStream);
+procedure TLdapAttributeData.SaveToStream(Stream: TStream);
 begin
   if Assigned(Self) and (ModOp <> LdapOpNoop) and (ModOp <> LdapOpDelete) then
     ///Stream.WriteBuffer(Berval.bv_val^, fBerval.Bv_Len);
     Stream.WriteBuffer(Pointer(fBerval.Bv_Val)^, fBerval.Bv_Len);
 end;
 
-function TLDapAttributeData.BervalAddr: PLdapBerval;
+function TLdapAttributeData.BervalAddr: PLdapBerval;
 begin
   Result := Addr(fBerval);
 end;
 
-constructor TLDapAttributeData.Create(Attribute: TLdapAttribute);
+constructor TLdapAttributeData.Create(Attribute: TLdapAttribute);
 begin
   fAttribute := Attribute;
   fEntry := Attribute.fEntry;
@@ -1468,7 +1469,7 @@ begin
 end;
 
 //{$IFDEF CPUX64}
-function TLDapAttributeData.CompareData(P: Pointer; Length: Integer): Boolean;
+function TLdapAttributeData.CompareData(P: Pointer; Length: Integer): Boolean;
 begin
   Result := (DataSize = Length) and CompareMem(P, Data, Length);
 end;
@@ -1535,7 +1536,7 @@ begin
   if Assigned(fEntry.OnChange) then fEntry.OnChange(Self);
 end;
 
-procedure TLDapAttributeData.Delete;
+procedure TLdapAttributeData.Delete;
 var
   i: Integer;
 begin
@@ -1602,7 +1603,7 @@ begin
   fValues.Add(Result);
 end;
 
-procedure TLdapAttribute.AddValue(const AValue: string);
+procedure TLdapAttribute.AddValue(const AValue: RawUtf8);
 var
   idx: Integer;
   Value: TLdapAttributeData;
@@ -1635,7 +1636,7 @@ begin
 end;
 
 
-function TLdapAttribute.GetString: string;
+function TLdapAttribute.GetString: RawUtf8;
 begin
   if fValues.Count > 0 then
     Result := TLdapAttributeData(fValues[0]).AsString
@@ -1643,9 +1644,9 @@ begin
     Result := '';
 end;
 
-procedure TLdapAttribute.SetString(AValue: string);
+procedure TLdapAttribute.SetString(AValue: RawUtf8);
 begin
-  // Setting string value(s) to '' means deleting of the attribute
+  // Setting RawUtf8 value(s) to '' means deleting of the attribute
   if AValue = '' then
     Delete
   else
@@ -1681,7 +1682,7 @@ begin
   Result := not Result;
 end;
 
-constructor TLdapAttribute.Create(const AName: string; OwnerList: TLdapAttributeList);
+constructor TLdapAttribute.Create(const AName: RawUtf8; OwnerList: TLdapAttributeList);
 begin
   fName := AName;
   fOwnerList := OwnerList;
@@ -1699,7 +1700,7 @@ begin
   fValues.Free;
 end;
 
-procedure TLdapAttribute.DeleteValue(const AValue: string);
+procedure TLdapAttribute.DeleteValue(const AValue: RawUtf8);
 var
   idx: Integer;
 begin
@@ -1721,7 +1722,7 @@ begin
     TLdapAttributeData(fValues[i]).Delete;
 end;
 
-function TLdapAttribute.IndexOf(const AValue: string): Integer;
+function TLdapAttribute.IndexOf(const AValue: RawUtf8): Integer;
 begin
   Result := fValues.Count - 1;
   while Result >= 0 do begin
@@ -1780,19 +1781,19 @@ begin
   inherited Destroy;
 end;
 
-function TLdapAttributeList.Add(const AName: string): TLdapAttribute;
+function TLdapAttributeList.Add(const AName: RawUtf8): TLdapAttribute;
 begin
   Result := TLdapAttribute.Create(AName, Self);
   fList.Add(Result);
 end;
 
-{function TLdapAttributeList.Insert(const AName: string; Index: Integer): TLdapAttribute;
+{function TLdapAttributeList.Insert(const AName: RawUtf8; Index: Integer): TLdapAttribute;
 begin
   Result := TLdapAttribute.Create(AName, Self);
   fList.Insert(Index, Result);
 end;}
 
-function TLdapAttributeList.IndexOf(const Name: string): Integer;
+function TLdapAttributeList.IndexOf(const Name: RawUtf8): Integer;
 begin
   Result := fList.Count - 1;
   while Result >= 0 do
@@ -1803,7 +1804,7 @@ begin
   end;
 end;
 
-function TLdapAttributeList.AttributeOf(const Name: string): TLdapAttribute;
+function TLdapAttributeList.AttributeOf(const Name: RawUtf8): TLdapAttribute;
 var
   idx: Integer;
 begin
@@ -1832,9 +1833,9 @@ end;
 
 { TLdapEntry }
 
-procedure TLDAPEntry.SetDn(const adn: string);
+procedure TLDAPEntry.SetDn(const adn: RawUtf8);
 var
-  attrib, value: string;
+  attrib, value: RawUtf8;
   i, j: Integer;
 begin
   if adn = fdn then
@@ -1875,17 +1876,17 @@ begin
   fdn := adn;
 end;
 
-procedure TLDAPEntry.SetUtf8Dn(const adn: AnsiString);
+procedure TLDAPEntry.SetUtf8Dn(const adn: RawUtf8);
 begin
   SetDn(UTF8Decode(adn));
 end;
 
-function  TLDAPEntry.GetUtf8Dn: AnsiString;
+function  TLDAPEntry.GetUtf8Dn: RawUtf8;
 begin
   Result := UTF8Encode(dn);
 end;
 
-constructor TLDAPEntry.Create(const ASession: TLDAPSession; const adn: string);
+constructor TLDAPEntry.Create(const ASession: TLDAPSession; const adn: RawUtf8);
 begin
   inherited Create;
   fdn := adn;
@@ -1917,7 +1918,7 @@ begin
   if Assigned(fOnRead) then fOnRead(Self);
 end;
 
-procedure TLDAPEntry.Read(Attributes: array of string);
+procedure TLDAPEntry.Read(Attributes: array of RawUtf8);
 begin
   fAttributes.Clear;
   fObjectClass := nil;
@@ -1986,7 +1987,7 @@ begin
   CopyAttrList(fOperationalAttributes, ToEntry.fOperationalAttributes);
 end;
 
-function TLDAPEntry.GetNamedAttribute(const AName: string): TLdapAttribute;
+function TLDAPEntry.GetNamedAttribute(const AName: RawUtf8): TLdapAttribute;
 var
   i: Integer;
 begin
@@ -2059,7 +2060,7 @@ begin
   fList.Clear;
 end;
 
-function TLdapEntryList.IndexOf(adn: string): Integer;
+function TLdapEntryList.IndexOf(adn: RawUtf8): Integer;
 begin
   Result := fList.Count - 1;
   while Result >= 0 do
@@ -2070,7 +2071,7 @@ begin
   end;
 end;
 
-procedure TLdapEntryList.Sort(const Attributes: array of string; const Asc: boolean);
+procedure TLdapEntryList.Sort(const Attributes: array of RawUtf8; const Asc: boolean);
 var
   AttrTypes: array of TLdapAttributeSortType;
   i: integer;

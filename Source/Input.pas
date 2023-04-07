@@ -31,7 +31,7 @@ uses
   Windows,Validator,
   LCLIntf, LCLType, LMessages, strutils,
   Messages,SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls;
+  Buttons, ExtCtrls, mormot.core.base;
 
 type
   TInputDlg = class(TForm)
@@ -52,15 +52,15 @@ type
     { Public declarations }
   end;
 
-function InputDlg(ACaption, APrompt: string; var AValue: string; PasswordChar: Char=#0; AcceptEmpty:Boolean=False; InvalidChars: string = ''): Boolean;
+function InputDlg(ACaption, APrompt: RawUtf8; var AValue: RawUtf8; PasswordChar: Char=#0; AcceptEmpty:Boolean=False; InvalidChars: RawUtf8 = ''): Boolean;
 
 implementation
 
 {$R *.dfm}
-uses Misc, Constant {$ifdef mswindows},MMSystem{$endif};
+uses Misc, Constant, mormot.core.text {$ifdef mswindows},MMSystem{$endif};
 
 
-function InputDlg(ACaption, APrompt: string; var AValue: string; PasswordChar: Char=#0; AcceptEmpty:Boolean=False; InvalidChars: string = ''): Boolean;
+function InputDlg(ACaption, APrompt: RawUtf8; var AValue: RawUtf8; PasswordChar: Char=#0; AcceptEmpty:Boolean=False; InvalidChars: RawUtf8 = ''): Boolean;
 begin
   Result := false;
   with TInputDlg.Create(Application) do
@@ -73,7 +73,7 @@ begin
     FValidator.InvalidChars := InvalidChars;
     FValidator.Caption := APrompt;
     Caption := ACaption;
-    if not APrompt.EndsWith(':') then
+    if not EndWithExact(APrompt, ':') then
       APrompt := APrompt + ':';
     Prompt.Caption := APrompt;
     Edit.PasswordChar := PasswordChar;

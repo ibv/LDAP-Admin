@@ -34,7 +34,7 @@ uses
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls, Buttons,
-  LDAPClasses;
+  LDAPClasses, mormot.core.base;
 
 type
   TADPassDlg = class(TForm)
@@ -108,7 +108,7 @@ begin
 end;
 {$ELSE}
 var
-  uacValue: string;
+  uacValue: RawUtf8;
   uacFlags: Cardinal;
 begin
   if (ModalResult = mrOk) then

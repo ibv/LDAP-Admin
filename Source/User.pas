@@ -39,7 +39,7 @@ uses
   Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, ComCtrls, LDAPClasses, ImgList, Posix, Shadow,
   InetOrg, Postfix, Samba, PropertyObject, Constant, ExtDlgs, TemplateCtrl,
-  CheckLst, Connection;
+  CheckLst, Connection, mormot.core.base;
 
 
 const
@@ -209,7 +209,7 @@ type
       var AllowChange: Boolean);
     procedure cbxGroupsChange(Sender: TObject);
   private
-    ParentDn: string;
+    ParentDn: RawUtf8;
     Entry: TLdapEntry;
     EventHandler: TEventHandler;
     PosixAccount: TPosixAccount;
@@ -228,7 +228,7 @@ type
     TranscodeList: TStringList;
     procedure PanelWindowProc (var Msg : TMessage) ;
     procedure PanelImageDrop (var Msg : TWMDROPFILES) ;
-    function FormatString(const Src : string) : string;
+    function FormatString(const Src : RawUtf8) : RawUtf8;
     procedure SetCheckbox(Cbx: TCheckBox; Check: Boolean);
     procedure LoadControls(Parent: TWinControl);
     procedure PosixPreset;
@@ -239,16 +239,16 @@ type
     procedure SetShadowTime;
     procedure GetShadowTime;
     procedure CheckSchema;
-    function GetGroupQuery(const Invert: Boolean = false): string;
+    function GetGroupQuery(const Invert: Boolean = false): RawUtf8;
     procedure PopulateGroupList;
     procedure MailButtons(Enable: Boolean);
     procedure CopyGroups;
     function FindDataString(dstr: PChar): Boolean;
-    procedure HandleGroupModify(dn: string; ModOp: Integer);
+    procedure HandleGroupModify(dn: RawUtf8; ModOp: Integer);
     procedure SaveGroups;
-    procedure SetText(Edit: TCustomEdit; Value: string);
+    procedure SetText(Edit: TCustomEdit; Value: RawUtf8);
   public
-    constructor Create(AOwner: TComponent; adn: string; AConnection: TConnection; Mode: TEditMode); reintroduce;
+    constructor Create(AOwner: TComponent; adn: RawUtf8; AConnection: TConnection; Mode: TEditMode); reintroduce;
   end;
 
 var
@@ -289,14 +289,14 @@ begin
    ImagePanel.Caption := '';
 end;
 
-function TUserDlg.FormatString(const Src : string) : string;
+function TUserDlg.FormatString(const Src : RawUtf8) : RawUtf8;
 var
   p, p1: PChar;
 
-  function CheckRange(var p1: PChar; src: string): string;
+  function CheckRange(var p1: PChar; src: RawUtf8): RawUtf8;
   var
     p: PChar;
-    rg: string;
+    rg: RawUtf8;
   begin
     p := p1 + 1;
     if p^ = '[' then
@@ -357,7 +357,7 @@ procedure TUserDlg.LoadControls(Parent: TWinControl);
 var
   Control: TControl;
   i: Integer;
-  s: string;
+  s: RawUtf8;
 begin
   PageSetup := true;
   for i := 0 to Parent.ControlCount - 1 do
@@ -380,9 +380,9 @@ end;
 
 procedure TUserDlg.PosixPreset;
 var
-  s: string;
+  s: RawUtf8;
 
-  function Transcode(Source: string): string;
+  function Transcode(Source: RawUtf8): RawUtf8;
   var
     i, l: Integer;
     p: PChar;
@@ -511,7 +511,7 @@ end;
 
 procedure TUserDlg.MailPreset;
 var
-  s: string;
+  s: RawUtf8;
 begin
   if not cbMail.Checked then
     Exit;
@@ -619,7 +619,7 @@ end;
 procedure TUserDlg.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 var
   uidnr: Integer;
-  newdn, olddn: string;
+  newdn, olddn: RawUtf8;
 begin
   if ModalResult = mrOk then
   begin
@@ -667,7 +667,7 @@ begin
   EditMailBtn.Enabled := Enable;
 end;
 
-constructor TUserDlg.Create(AOwner: TComponent; adn: string; AConnection: TConnection; Mode: TEditMode);
+constructor TUserDlg.Create(AOwner: TComponent; adn: RawUtf8; AConnection: TConnection; Mode: TEditMode);
 var
   i: Integer;
   Oc: TLdapAttribute;
@@ -756,7 +756,7 @@ end;
 
 procedure TUserDlg.AddMailBtnClick(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   if (uid.Text <> '') and (Connection.Account.ReadString(rpostfixMailAddress) <> '') then
     s := FormatString(Connection.Account.ReadString(rpostfixMailAddress))
@@ -772,7 +772,7 @@ end;
 
 procedure TUserDlg.EditMailBtnClick(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := mail.Items[mail.ItemIndex];
   if InputDlg(cEditAddress, cSmtpAddress, s) then
@@ -800,7 +800,7 @@ begin
   end;
 end;
 
-function TUserDlg.GetGroupQuery(const Invert: Boolean = false): string;
+function TUserDlg.GetGroupQuery(const Invert: Boolean = false): RawUtf8;
 var
   ix: Integer;
 begin
@@ -957,7 +957,7 @@ end;
   its > 0 we add user to this group in LDAP directory and if its < 0 we remove
   user from this group in LDAP directory }
 
-procedure TUserDlg.HandleGroupModify(dn: string; ModOp: Integer);
+procedure TUserDlg.HandleGroupModify(dn: RawUtf8; ModOp: Integer);
 var
   i,v: Integer;
 
@@ -1006,7 +1006,7 @@ end;
 procedure TUserDlg.RemoveGroupBtnClick(Sender: TObject);
 var
   idx: Integer;
-  dn: string;
+  dn: RawUtf8;
 begin
   with GroupList do
   If Assigned(Selected) then
@@ -1031,7 +1031,7 @@ var
   i, modop: Integer;
   GroupEntry: TLdapEntry;
   MemberAttr: TLdapAttribute;
-  MemberValue: string;
+  MemberValue: RawUtf8;
 begin
   if Assigned(origGroups) then with origGroups do
   begin
@@ -1090,7 +1090,7 @@ end;
 procedure TUserDlg.PrimaryGroupBtnClick(Sender: TObject);
 var
   gidnr: Integer;
-  gsid: string;
+  gsid: RawUtf8;
 begin
   with TPickupDlg.Create(self) do begin
     Caption := cPickGroups;
@@ -1134,7 +1134,7 @@ begin
   end;
 end;
 
-procedure TUserDlg.SetText(Edit: TCustomEdit; Value: string);
+procedure TUserDlg.SetText(Edit: TCustomEdit; Value: RawUtf8);
 begin
   Edit.Text := Value;
   Edit.Modified := true;
@@ -1256,7 +1256,7 @@ end;
 
 procedure TUserDlg.EditChange(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   if not PageSetup then with Sender as TCustomEdit do
   begin
@@ -1365,12 +1365,12 @@ var
   TabSheet: TTabSheet;
   TemplatePanel: TTemplatePanel;
   i, j: Integer;
-  s: string;
+  s: RawUtf8;
 
-  function SafeDelete(const name: string): boolean;
+  function SafeDelete(const name: RawUtf8): boolean;
   var
     i: Integer;
-    s: string;
+    s: RawUtf8;
   begin
     Result := false;
     s := lowercase(name);

@@ -31,15 +31,15 @@ unit ShaCrypt;
 interface
 
 uses
-  sha256,sha512;
+  sha256,sha512, mormot.core.base;
 
 const
   ROUNDS_DEFAULT = 5000;
   ROUNDS_MIN     = 1000;
   ROUNDS_MAX     = 999999999;
 
-function Sha256(const Key: string; const Salt: string = ''; Rounds: Integer = ROUNDS_DEFAULT): string;
-function Sha512(const Key: string; const Salt: string = ''; Rounds: Integer = ROUNDS_DEFAULT): string;
+function Sha256(const Key: RawUtf8; const Salt: RawUtf8 = ''; Rounds: Integer = ROUNDS_DEFAULT): RawUtf8;
+function Sha512(const Key: RawUtf8; const Salt: RawUtf8 = ''; Rounds: Integer = ROUNDS_DEFAULT): RawUtf8;
 
 implementation
 
@@ -188,7 +188,7 @@ begin
    Result := AltResult;
 end;
 
-function Sha256(const Key: string; const Salt: string = ''; Rounds: Integer = ROUNDS_DEFAULT): string;
+function Sha256(const Key: RawUtf8; const Salt: RawUtf8 = ''; Rounds: Integer = ROUNDS_DEFAULT): RawUtf8;
 var
   ASalt, AltResult: AnsiString;
   bAltResult: PByteArray;
@@ -214,7 +214,7 @@ begin
     Result := Result + b64_from_24bit(0,              bAltResult[31], bAltResult[30], 3);
 end;
 
-function Sha512(const Key: string; const Salt: string = ''; Rounds: Integer = ROUNDS_DEFAULT): string;
+function Sha512(const Key: RawUtf8; const Salt: RawUtf8 = ''; Rounds: Integer = ROUNDS_DEFAULT): RawUtf8;
 var
   ASalt, AltResult: AnsiString;
   bAltResult: PByteArray;

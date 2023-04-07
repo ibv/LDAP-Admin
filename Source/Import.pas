@@ -34,7 +34,7 @@ uses
   LCLIntf, LCLType, LMessages, LinLDAP,
 {$ENDIF}
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, Dialogs, LDAPClasses, ComCtrls;
+  Buttons, ExtCtrls, Dialogs, LDAPClasses, ComCtrls, mormot.core.base;
 
 const
   cwSmall   = 262;
@@ -79,7 +79,7 @@ type
     ErrCount: Integer;
     Session: TLDAPSession;
     Stop: Boolean;
-    procedure ImportFile(const FileName: string);
+    procedure ImportFile(const FileName: RawUtf8);
   public
     constructor Create(AOwner: TComponent; const ASession: TLDAPSession); reintroduce;
   end;
@@ -107,7 +107,7 @@ begin
     edFileName.Text := OpenDialog.FileName;
 end;
 
-procedure TImportDlg.ImportFile(const FileName: string);
+procedure TImportDlg.ImportFile(const FileName: RawUtf8);
 var
   Entry: TLDAPEntry;
   F: File;

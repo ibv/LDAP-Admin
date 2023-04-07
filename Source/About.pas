@@ -45,6 +45,9 @@ var
 
 implementation
 
+uses
+  mormot.core.base;
+
 {$IFnDEF FPC}
 uses
   Shellapi;
@@ -53,21 +56,10 @@ uses
 
 {$R *.dfm}
 
-function GetVersionInfo: string;
-type
-  PLandCodepage = ^TLandCodepage;
-  TLandCodepage = record
-    wLanguage,
-    wCodePage: word;
-  end;
-var
-  dummy,
-  len: cardinal;
-  buf, pntr: pointer;
-  lang: string;
+function GetVersionInfo: String;
 begin
   result:='n/a';
-  GetProgramVersion (Result);
+  GetProgramVersion(Result);
 end;
 
 procedure TAboutDlg.FormClose(Sender: TObject; var Action: TCloseAction);

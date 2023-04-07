@@ -34,7 +34,7 @@ uses
   LCLIntf, LCLType, LMessages, DateTimePicker,
 {$ENDIF}
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, ComCtrls, Samba, LDAPClasses, ImgList;
+  Buttons, ExtCtrls, ComCtrls, Samba, LDAPClasses, ImgList, mormot.core.base;
 
 type
   TSambaAdvancedDlg = class(TForm)
@@ -70,7 +70,7 @@ type
     fSDomTrust: Boolean;
     fSHomeRq: Boolean;
     fSServTrust: Boolean;
-    fSWorkstation: string;
+    fSWorkstation: RawUtf8;
     fSExpDate: TDateTime;
   public
     constructor Create(const AOwner: TComponent; const Session: TLdapSession; const SambaAccount: TSamba3Account); reintroduce; overload;
@@ -126,7 +126,7 @@ end;
 procedure TSambaAdvancedDlg.FormClose(Sender: TObject; var Action: TCloseAction);
 var
   i: Integer;
-  s: string;
+  s: RawUtf8;
 begin
   with fSambaAccount do
   if ModalResult = mrOk then
@@ -180,7 +180,7 @@ begin
 end;
 
 procedure TSambaAdvancedDlg.AddBtnClick(Sender: TObject);
-  function IsPresent(S: string): boolean;
+  function IsPresent(S: RawUtf8): boolean;
   var
     i: integer;
   begin
@@ -192,7 +192,7 @@ procedure TSambaAdvancedDlg.AddBtnClick(Sender: TObject);
   end;
 var
   i: integer;
-  wsname: string;
+  wsname: RawUtf8;
 begin
   with TPickupDlg.Create(self) do begin
     Caption := cPickAccounts;

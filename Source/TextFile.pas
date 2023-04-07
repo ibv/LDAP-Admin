@@ -23,7 +23,7 @@ unit TextFile;
 
 interface
 
-uses SysUtils, Classes;
+uses SysUtils, Classes, mormot.core.base;
 
 const
   UTF_16BOM_BE: Word = $FFFE; // actualy $FEFF but reverse because of word read
@@ -38,7 +38,7 @@ type
     fUnixWrite: Boolean;
     fEncoding:  TFileEncode;
     fCharSize:  Integer;
-    //fFileName:  string;
+    //fFileName:  RawUtf8;
     //fMode:      Integer;
     function    IsEof: Boolean;
     procedure   SetEncoding(AEncoding: TFileEncode);
@@ -48,12 +48,12 @@ type
     //function    Read(var Buffer; Count: Longint): Longint; override;
     //function    Write(const Buffer; Count: Longint): Longint; override;
     procedure   ReadHeader;
-    function    GetText: string;
+    function    GetText: RawUtf8;
     function    ReadChar: WideChar;
     procedure   WriteChar(AChar: WideChar);
-    procedure   WriteString(Value: string);
-    function    ReadLn: string;
-    procedure   WriteLn(Value: string);
+    procedure   WriteString(Value: RawUtf8);
+    function    ReadLn: RawUtf8;
+    procedure   WriteLn(Value: RawUtf8);
     property    Eof: Boolean read IsEof;
     property    UnixWrite: Boolean read fUnixWrite write fUnixWrite;
     property    CharSize: Integer read fCharSize;
@@ -62,10 +62,10 @@ type
 
   TTextFile = class(TTextStream)
   private
-    fFileName:  string;
+    fFileName:  RawUtf8;
     fMode:      Integer;
   public
-    constructor Create(const FileName: string; Mode: Word);
+    constructor Create(const FileName: RawUtf8; Mode: Word);
     destructor  Destroy; override;
   end;
 
@@ -75,7 +75,7 @@ uses Constant, Misc;
 
 procedure TTextStream.SetEncoding(AEncoding: TFileEncode);
 var
-  Buffer: string;
+  Buffer: RawUtf8;
 begin
   if Position > 0 then
     Buffer := GetText
@@ -147,11 +147,11 @@ begin
   Position := 0;
 end;
 
-function TTextStream.GetText: string;
+function TTextStream.GetText: RawUtf8;
 var
   ch: WideChar;
   b: Byte;
-  Tmp: String;
+  Tmp: RawUtf8;
   utf8: AnsiString;
 begin
   case Encoding of
@@ -178,9 +178,9 @@ begin
       Tmp := Tmp + ch;
   end;
   if Encoding = feUTF8 then
-    Result := String(UTF8ToStringLen(PAnsiChar(utf8), Length(utf8)))
+    Result := RawUtf8(UTF8ToStringLen(PAnsiChar(utf8), Length(utf8)))
   else
-    Result := String(Tmp);
+    Result := RawUtf8(Tmp);
 end;
 
 function TTextStream.ReadChar: WideChar;
@@ -211,7 +211,7 @@ begin
   WriteBuffer(AChar, FCharSize);
 end;
 
-procedure TTextStream.WriteString(Value: string);
+procedure TTextStream.WriteString(Value: RawUtf8);
 var
   {$IFNDEF UNICODE}
   w: WideString;
@@ -260,11 +260,11 @@ begin
   end;
 end;
 
-function TTextStream.ReadLn: string;
+function TTextStream.ReadLn: RawUtf8;
 var
   ch: WideChar;
   b: Byte;
-  Tmp: String;
+  Tmp: RawUtf8;
   utf8: AnsiString;
 begin
   if Eof then
@@ -293,12 +293,12 @@ begin
   end;
 
   if Encoding = feUTF8 then
-    Result := String(UTF8ToStringLen(PAnsiChar(utf8), Length(utf8)))
+    Result := RawUtf8(UTF8ToStringLen(PAnsiChar(utf8), Length(utf8)))
   else
-    Result := String(Tmp);
+    Result := RawUtf8(Tmp);
 end;
 
-procedure TTextStream.WriteLn(Value: string);
+procedure TTextStream.WriteLn(Value: RawUtf8);
 begin
   if UnixWrite then
     WriteString(Value + #10)
@@ -308,7 +308,7 @@ end;
 
 { TTextFile }
 
-constructor TTextFile.Create(const FileName: string; Mode: Word);
+constructor TTextFile.Create(const FileName: RawUtf8; Mode: Word);
 begin
   inherited Create;
 

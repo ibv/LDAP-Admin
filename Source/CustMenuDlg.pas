@@ -35,7 +35,7 @@ uses
 {$ENDIF}
   Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ComCtrls, Menus, ImgList, ActnList, ExtCtrls, StdCtrls, CustomMenus,
-  ToolWin, Connection;
+  ToolWin, Connection, mormot.core.base;
 
 const
   CB_ICON_INDENT =  4;
@@ -133,7 +133,7 @@ type
     fActMenu: TCustomActionMenu;
     fSaveStatus: TSaveStatus;
     procedure ActionItemToTreeView(ActionItem: TCustomActionItem; TreeView: TTreeview);
-    procedure AddItem(const ActionIndex: Integer; const Caption: string);
+    procedure AddItem(const ActionIndex: Integer; const Caption: RawUtf8);
     procedure SetNodeIcon(Node: TTreeNode; Item: TCustomActionItem);
     procedure SetOverlayImage(node: TTreeNode; const OverlayIndex: Integer);
     function  ValidateInput: Boolean;
@@ -199,7 +199,7 @@ begin
   end;
 end;
 
-procedure TCustomMenuDlg.AddItem(const ActionIndex: Integer; const Caption: string);
+procedure TCustomMenuDlg.AddItem(const ActionIndex: Integer; const Caption: RawUtf8);
 var
   ParentItem, NewItem: TCustomActionItem;
   Node: TTreeNode;
@@ -594,7 +594,7 @@ end;
 
 procedure TCustomMenuDlg.mbDeleteClick(Sender: TObject);
 var
-  msg: string;
+  msg: RawUtf8;
 
   procedure PreserveStandardItems(Node: TTreeNode);
   var

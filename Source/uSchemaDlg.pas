@@ -34,7 +34,7 @@ uses
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
   SysUtils, Graphics, Forms, Buttons, Classes, Controls, ComCtrls, ExtCtrls,
-  ImgList, Schema, StdCtrls, LDAPClasses, Messages, Menus, Clipbrd, ShellCtrls;
+  ImgList, Schema, StdCtrls, LDAPClasses, Messages, Menus, Clipbrd, ShellCtrls, mormot.core.base;
 
 type
 
@@ -106,13 +106,13 @@ type
     procedure btnCloseClick(Sender: TObject);
   private
     FSchema:        TLDAPSchema;
-    FLastSerched:   string;
-    function        AddValue(const Name: string; Value: string; const Parent: TTreeNode=nil): TTreeNode; overload;
-    function        AddValue(const Name: string; Value: integer): TTreeNode; overload;
-    function        AddValue(const Name: string; Value: boolean): TTreeNode; overload;
-    function        AddValue(const Name: string; const Value: TLdapSchemaItem; const AsString: string; const Parent: TTreeNode=nil): TTreeNode; overload;
-    procedure       AddValues(const Name: string; const Values: TLdapSchemaItems; const AsString: string; const Parent: TTreeNode=nil); overload;
-    procedure       AddValues(const Name: string; const Values: TStringList; const Parent: TTreeNode=nil); overload;
+    FLastSerched:   RawUtf8;
+    function        AddValue(const Name: RawUtf8; Value: RawUtf8; const Parent: TTreeNode=nil): TTreeNode; overload;
+    function        AddValue(const Name: RawUtf8; Value: integer): TTreeNode; overload;
+    function        AddValue(const Name: RawUtf8; Value: boolean): TTreeNode; overload;
+    function        AddValue(const Name: RawUtf8; const Value: TLdapSchemaItem; const AsString: RawUtf8; const Parent: TTreeNode=nil): TTreeNode; overload;
+    procedure       AddValues(const Name: RawUtf8; const Values: TLdapSchemaItems; const AsString: RawUtf8; const Parent: TTreeNode=nil); overload;
+    procedure       AddValues(const Name: RawUtf8; const Values: TStringList; const Parent: TTreeNode=nil); overload;
 
     procedure       ShowObjectClass(const ObjClass: TLDAPSchemaClass);
     procedure       ShowAttribute(const Attribute: TLDAPSchemaAttribute);
@@ -126,7 +126,7 @@ type
     constructor     Create(const ASession: TLDAPSession); reintroduce;
     destructor      Destroy; override;
     procedure       SessionDisconnect(Sender: TObject);
-    function        Search(const SearchStr: string; const WholeWords: boolean; const InNewTab: boolean): TTreeNode;
+    function        Search(const SearchStr: RawUtf8; const WholeWords: boolean; const InNewTab: boolean): TTreeNode;
     property        Schema: TLdapSchema read FSchema;
   end;
 
@@ -151,7 +151,7 @@ const
 
 constructor TSchemaDlg.Create(const ASession: TLDAPSession);
 
-  procedure AddSchemaItems(Item: TLdapSchemaItems; Caption: string; Img: integer);
+  procedure AddSchemaItems(Item: TLdapSchemaItems; Caption: RawUtf8; Img: integer);
   var
     i: integer;
     ParentNode: TTreeNode;
@@ -245,8 +245,8 @@ begin
 
 end;
 
-function TSchemaDlg.Search(const SearchStr: string; const WholeWords: boolean; const InNewTab: boolean): TTreeNode;
-  function DoSearch(Start: TTreeNode; Pattern: string): TTreeNode;
+function TSchemaDlg.Search(const SearchStr: RawUtf8; const WholeWords: boolean; const InNewTab: boolean): TTreeNode;
+  function DoSearch(Start: TTreeNode; Pattern: RawUtf8): TTreeNode;
   begin
     result:=Start;
     while result <> nil do begin
@@ -256,7 +256,7 @@ function TSchemaDlg.Search(const SearchStr: string; const WholeWords: boolean; c
   end;
 
 var
-  s: string;
+  s: RawUtf8;
 begin
   s:=Trim(UpperCase(SearchStr));
   if WholeWords then s:=','+s+',';
@@ -366,9 +366,9 @@ begin
   end;
 end;
 
-function TSchemaDlg.AddValue(const Name: string; Value: string; const Parent: TTreeNode=nil): TTreeNode;
+function TSchemaDlg.AddValue(const Name: RawUtf8; Value: RawUtf8; const Parent: TTreeNode=nil): TTreeNode;
 var
-  s: string;
+  s: RawUtf8;
 begin
   if Name<>'' then
     s := ': '
@@ -380,9 +380,9 @@ begin
   result.StateIndex:=-1;
 end;
 
-function TSchemaDlg.AddValue(const Name: string; const Value: TLdapSchemaItem; const AsString: string; const Parent: TTreeNode=nil): TTreeNode;
+function TSchemaDlg.AddValue(const Name: RawUtf8; const Value: TLdapSchemaItem; const AsString: RawUtf8; const Parent: TTreeNode=nil): TTreeNode;
 var
-  s: string;
+  s: RawUtf8;
 begin
   if Name<>'' then
     s := ': '
@@ -395,7 +395,7 @@ begin
   result.StateIndex:=-1;
 end;
 
-procedure TSchemaDlg.AddValues(const Name: string; const Values: TLdapSchemaItems; const AsString: string; const Parent: TTreeNode=nil);
+procedure TSchemaDlg.AddValues(const Name: RawUtf8; const Values: TLdapSchemaItems; const AsString: RawUtf8; const Parent: TTreeNode=nil);
 var
   i: integer;
 begin
@@ -403,7 +403,7 @@ begin
   Parent.AlphaSort;
 end;
 
-procedure TSchemaDlg.AddValues(const Name: string; const Values: TStringList; const Parent: TTreeNode=nil);
+procedure TSchemaDlg.AddValues(const Name: RawUtf8; const Values: TStringList; const Parent: TTreeNode=nil);
 var
   i: integer;
 begin
@@ -411,12 +411,12 @@ begin
   Parent.AlphaSort;
 end;
 
-function TSchemaDlg.AddValue(const Name: string; Value: integer): TTreeNode;
+function TSchemaDlg.AddValue(const Name: RawUtf8; Value: integer): TTreeNode;
 begin
   result:=AddValue(Name,inttostr(Value));
 end;
 
-function TSchemaDlg.AddValue(const Name: string; Value: boolean): TTreeNode;
+function TSchemaDlg.AddValue(const Name: RawUtf8; Value: boolean): TTreeNode;
 begin
   if Value then result:=AddValue(Name,'Yes')
   else result:=AddValue(Name,'No');

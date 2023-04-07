@@ -26,7 +26,7 @@ unit ActiveDs_TLB;
 //   (1) v2.0 stdole, (C:\WINDOWS\system32\STDOLE2.TLB)
 //   (2) v4.0 StdVCL, (C:\WINDOWS\system32\stdvcl40.dll)
 // Fehler
-//   Hinweis: Element 'String' von '_ADS_CASEIGNORE_LIST' geändert zu 'String_'
+//   Hinweis: Element 'RawUtf8' von '_ADS_CASEIGNORE_LIST' geändert zu 'String_'
 //   Hinweis: Element 'Type' von '__MIDL___MIDL_itf_ads_0000_0005' geändert zu 'Type_'
 //   Hinweis: Element 'Type' von '__MIDL___MIDL_itf_ads_0000_0014' geändert zu 'Type_'
 //   Hinweis: Element 'Class' von 'IADs' geändert zu 'Class_'
@@ -3982,7 +3982,7 @@ type
 // *********************************************************************//
   CoPropertyEntry = class
     class function Create: IADsPropertyEntry;
-    class function CreateRemote(const MachineName: string): IADsPropertyEntry;
+    class function CreateRemote(const MachineName: RawUtf8): IADsPropertyEntry;
   end;
 
 // *********************************************************************//
@@ -3994,7 +3994,7 @@ type
 // *********************************************************************//
   CoPropertyValue = class
     class function Create: IADsPropertyValue;
-    class function CreateRemote(const MachineName: string): IADsPropertyValue;
+    class function CreateRemote(const MachineName: RawUtf8): IADsPropertyValue;
   end;
 
 // *********************************************************************//
@@ -4006,7 +4006,7 @@ type
 // *********************************************************************//
   CoAccessControlEntry = class
     class function Create: IADsAccessControlEntry;
-    class function CreateRemote(const MachineName: string): IADsAccessControlEntry;
+    class function CreateRemote(const MachineName: RawUtf8): IADsAccessControlEntry;
   end;
 
 // *********************************************************************//
@@ -4018,7 +4018,7 @@ type
 // *********************************************************************//
   CoAccessControlList = class
     class function Create: IADsAccessControlList;
-    class function CreateRemote(const MachineName: string): IADsAccessControlList;
+    class function CreateRemote(const MachineName: RawUtf8): IADsAccessControlList;
   end;
 
 // *********************************************************************//
@@ -4030,7 +4030,7 @@ type
 // *********************************************************************//
   CoSecurityDescriptor = class
     class function Create: IADsSecurityDescriptor;
-    class function CreateRemote(const MachineName: string): IADsSecurityDescriptor;
+    class function CreateRemote(const MachineName: RawUtf8): IADsSecurityDescriptor;
   end;
 
 // *********************************************************************//
@@ -4042,7 +4042,7 @@ type
 // *********************************************************************//
   CoLargeInteger = class
     class function Create: IADsLargeInteger;
-    class function CreateRemote(const MachineName: string): IADsLargeInteger;
+    class function CreateRemote(const MachineName: RawUtf8): IADsLargeInteger;
   end;
 
 // *********************************************************************//
@@ -4054,7 +4054,7 @@ type
 // *********************************************************************//
   CoNameTranslate = class
     class function Create: IADsNameTranslate;
-    class function CreateRemote(const MachineName: string): IADsNameTranslate;
+    class function CreateRemote(const MachineName: RawUtf8): IADsNameTranslate;
   end;
 
 // *********************************************************************//
@@ -4066,7 +4066,7 @@ type
 // *********************************************************************//
   CoCaseIgnoreList = class
     class function Create: IADsCaseIgnoreList;
-    class function CreateRemote(const MachineName: string): IADsCaseIgnoreList;
+    class function CreateRemote(const MachineName: RawUtf8): IADsCaseIgnoreList;
   end;
 
 // *********************************************************************//
@@ -4078,7 +4078,7 @@ type
 // *********************************************************************//
   CoFaxNumber = class
     class function Create: IADsFaxNumber;
-    class function CreateRemote(const MachineName: string): IADsFaxNumber;
+    class function CreateRemote(const MachineName: RawUtf8): IADsFaxNumber;
   end;
 
 // *********************************************************************//
@@ -4090,7 +4090,7 @@ type
 // *********************************************************************//
   CoNetAddress = class
     class function Create: IADsNetAddress;
-    class function CreateRemote(const MachineName: string): IADsNetAddress;
+    class function CreateRemote(const MachineName: RawUtf8): IADsNetAddress;
   end;
 
 // *********************************************************************//
@@ -4102,7 +4102,7 @@ type
 // *********************************************************************//
   CoOctetList = class
     class function Create: IADsOctetList;
-    class function CreateRemote(const MachineName: string): IADsOctetList;
+    class function CreateRemote(const MachineName: RawUtf8): IADsOctetList;
   end;
 
 // *********************************************************************//
@@ -4114,7 +4114,7 @@ type
 // *********************************************************************//
   CoEmail = class
     class function Create: IADsEmail;
-    class function CreateRemote(const MachineName: string): IADsEmail;
+    class function CreateRemote(const MachineName: RawUtf8): IADsEmail;
   end;
 
 // *********************************************************************//
@@ -4126,7 +4126,7 @@ type
 // *********************************************************************//
   CoPath = class
     class function Create: IADsPath;
-    class function CreateRemote(const MachineName: string): IADsPath;
+    class function CreateRemote(const MachineName: RawUtf8): IADsPath;
   end;
 
 // *********************************************************************//
@@ -4138,7 +4138,7 @@ type
 // *********************************************************************//
   CoReplicaPointer = class
     class function Create: IADsReplicaPointer;
-    class function CreateRemote(const MachineName: string): IADsReplicaPointer;
+    class function CreateRemote(const MachineName: RawUtf8): IADsReplicaPointer;
   end;
 
 // *********************************************************************//
@@ -4150,7 +4150,7 @@ type
 // *********************************************************************//
   CoTimestamp = class
     class function Create: IADsTimestamp;
-    class function CreateRemote(const MachineName: string): IADsTimestamp;
+    class function CreateRemote(const MachineName: RawUtf8): IADsTimestamp;
   end;
 
 // *********************************************************************//
@@ -4162,7 +4162,7 @@ type
 // *********************************************************************//
   CoPostalAddress = class
     class function Create: IADsPostalAddress;
-    class function CreateRemote(const MachineName: string): IADsPostalAddress;
+    class function CreateRemote(const MachineName: RawUtf8): IADsPostalAddress;
   end;
 
 // *********************************************************************//
@@ -4174,7 +4174,7 @@ type
 // *********************************************************************//
   CoBackLink = class
     class function Create: IADsBackLink;
-    class function CreateRemote(const MachineName: string): IADsBackLink;
+    class function CreateRemote(const MachineName: RawUtf8): IADsBackLink;
   end;
 
 // *********************************************************************//
@@ -4186,7 +4186,7 @@ type
 // *********************************************************************//
   CoTypedName = class
     class function Create: IADsTypedName;
-    class function CreateRemote(const MachineName: string): IADsTypedName;
+    class function CreateRemote(const MachineName: RawUtf8): IADsTypedName;
   end;
 
 // *********************************************************************//
@@ -4198,7 +4198,7 @@ type
 // *********************************************************************//
   CoHold = class
     class function Create: IADsHold;
-    class function CreateRemote(const MachineName: string): IADsHold;
+    class function CreateRemote(const MachineName: RawUtf8): IADsHold;
   end;
 
 // *********************************************************************//
@@ -4210,7 +4210,7 @@ type
 // *********************************************************************//
   CoPathname = class
     class function Create: IADsPathname;
-    class function CreateRemote(const MachineName: string): IADsPathname;
+    class function CreateRemote(const MachineName: RawUtf8): IADsPathname;
   end;
 
 // *********************************************************************//
@@ -4222,7 +4222,7 @@ type
 // *********************************************************************//
   CoADSystemInfo = class
     class function Create: IADsADSystemInfo;
-    class function CreateRemote(const MachineName: string): IADsADSystemInfo;
+    class function CreateRemote(const MachineName: RawUtf8): IADsADSystemInfo;
   end;
 
 // *********************************************************************//
@@ -4234,7 +4234,7 @@ type
 // *********************************************************************//
   CoWinNTSystemInfo = class
     class function Create: IADsWinNTSystemInfo;
-    class function CreateRemote(const MachineName: string): IADsWinNTSystemInfo;
+    class function CreateRemote(const MachineName: RawUtf8): IADsWinNTSystemInfo;
   end;
 
 // *********************************************************************//
@@ -4246,7 +4246,7 @@ type
 // *********************************************************************//
   CoDNWithBinary = class
     class function Create: IADsDNWithBinary;
-    class function CreateRemote(const MachineName: string): IADsDNWithBinary;
+    class function CreateRemote(const MachineName: RawUtf8): IADsDNWithBinary;
   end;
 
 // *********************************************************************//
@@ -4258,7 +4258,7 @@ type
 // *********************************************************************//
   CoDNWithString = class
     class function Create: IADsDNWithString;
-    class function CreateRemote(const MachineName: string): IADsDNWithString;
+    class function CreateRemote(const MachineName: RawUtf8): IADsDNWithString;
   end;
 
 // *********************************************************************//
@@ -4270,7 +4270,7 @@ type
 // *********************************************************************//
   CoADsSecurityUtility = class
     class function Create: IADsSecurityUtility;
-    class function CreateRemote(const MachineName: string): IADsSecurityUtility;
+    class function CreateRemote(const MachineName: RawUtf8): IADsSecurityUtility;
   end;
 
 implementation
@@ -4287,7 +4287,7 @@ begin
   Result := CreateComObject(CLASS_PropertyEntry) as IADsPropertyEntry;
 end;
 
-class function CoPropertyEntry.CreateRemote(const MachineName: string): IADsPropertyEntry;
+class function CoPropertyEntry.CreateRemote(const MachineName: RawUtf8): IADsPropertyEntry;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_PropertyEntry) as IADsPropertyEntry;
 end;
@@ -4297,7 +4297,7 @@ begin
   Result := CreateComObject(CLASS_PropertyValue) as IADsPropertyValue;
 end;
 
-class function CoPropertyValue.CreateRemote(const MachineName: string): IADsPropertyValue;
+class function CoPropertyValue.CreateRemote(const MachineName: RawUtf8): IADsPropertyValue;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_PropertyValue) as IADsPropertyValue;
 end;
@@ -4307,7 +4307,7 @@ begin
   Result := CreateComObject(CLASS_AccessControlEntry) as IADsAccessControlEntry;
 end;
 
-class function CoAccessControlEntry.CreateRemote(const MachineName: string): IADsAccessControlEntry;
+class function CoAccessControlEntry.CreateRemote(const MachineName: RawUtf8): IADsAccessControlEntry;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_AccessControlEntry) as IADsAccessControlEntry;
 end;
@@ -4317,7 +4317,7 @@ begin
   Result := CreateComObject(CLASS_AccessControlList) as IADsAccessControlList;
 end;
 
-class function CoAccessControlList.CreateRemote(const MachineName: string): IADsAccessControlList;
+class function CoAccessControlList.CreateRemote(const MachineName: RawUtf8): IADsAccessControlList;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_AccessControlList) as IADsAccessControlList;
 end;
@@ -4327,7 +4327,7 @@ begin
   Result := CreateComObject(CLASS_SecurityDescriptor) as IADsSecurityDescriptor;
 end;
 
-class function CoSecurityDescriptor.CreateRemote(const MachineName: string): IADsSecurityDescriptor;
+class function CoSecurityDescriptor.CreateRemote(const MachineName: RawUtf8): IADsSecurityDescriptor;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_SecurityDescriptor) as IADsSecurityDescriptor;
 end;
@@ -4337,7 +4337,7 @@ begin
   Result := CreateComObject(CLASS_LargeInteger) as IADsLargeInteger;
 end;
 
-class function CoLargeInteger.CreateRemote(const MachineName: string): IADsLargeInteger;
+class function CoLargeInteger.CreateRemote(const MachineName: RawUtf8): IADsLargeInteger;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_LargeInteger) as IADsLargeInteger;
 end;
@@ -4347,7 +4347,7 @@ begin
   Result := CreateComObject(CLASS_NameTranslate) as IADsNameTranslate;
 end;
 
-class function CoNameTranslate.CreateRemote(const MachineName: string): IADsNameTranslate;
+class function CoNameTranslate.CreateRemote(const MachineName: RawUtf8): IADsNameTranslate;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_NameTranslate) as IADsNameTranslate;
 end;
@@ -4357,7 +4357,7 @@ begin
   Result := CreateComObject(CLASS_CaseIgnoreList) as IADsCaseIgnoreList;
 end;
 
-class function CoCaseIgnoreList.CreateRemote(const MachineName: string): IADsCaseIgnoreList;
+class function CoCaseIgnoreList.CreateRemote(const MachineName: RawUtf8): IADsCaseIgnoreList;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_CaseIgnoreList) as IADsCaseIgnoreList;
 end;
@@ -4367,7 +4367,7 @@ begin
   Result := CreateComObject(CLASS_FaxNumber) as IADsFaxNumber;
 end;
 
-class function CoFaxNumber.CreateRemote(const MachineName: string): IADsFaxNumber;
+class function CoFaxNumber.CreateRemote(const MachineName: RawUtf8): IADsFaxNumber;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_FaxNumber) as IADsFaxNumber;
 end;
@@ -4377,7 +4377,7 @@ begin
   Result := CreateComObject(CLASS_NetAddress) as IADsNetAddress;
 end;
 
-class function CoNetAddress.CreateRemote(const MachineName: string): IADsNetAddress;
+class function CoNetAddress.CreateRemote(const MachineName: RawUtf8): IADsNetAddress;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_NetAddress) as IADsNetAddress;
 end;
@@ -4387,7 +4387,7 @@ begin
   Result := CreateComObject(CLASS_OctetList) as IADsOctetList;
 end;
 
-class function CoOctetList.CreateRemote(const MachineName: string): IADsOctetList;
+class function CoOctetList.CreateRemote(const MachineName: RawUtf8): IADsOctetList;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_OctetList) as IADsOctetList;
 end;
@@ -4397,7 +4397,7 @@ begin
   Result := CreateComObject(CLASS_Email) as IADsEmail;
 end;
 
-class function CoEmail.CreateRemote(const MachineName: string): IADsEmail;
+class function CoEmail.CreateRemote(const MachineName: RawUtf8): IADsEmail;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_Email) as IADsEmail;
 end;
@@ -4407,7 +4407,7 @@ begin
   Result := CreateComObject(CLASS_Path) as IADsPath;
 end;
 
-class function CoPath.CreateRemote(const MachineName: string): IADsPath;
+class function CoPath.CreateRemote(const MachineName: RawUtf8): IADsPath;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_Path) as IADsPath;
 end;
@@ -4417,7 +4417,7 @@ begin
   Result := CreateComObject(CLASS_ReplicaPointer) as IADsReplicaPointer;
 end;
 
-class function CoReplicaPointer.CreateRemote(const MachineName: string): IADsReplicaPointer;
+class function CoReplicaPointer.CreateRemote(const MachineName: RawUtf8): IADsReplicaPointer;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_ReplicaPointer) as IADsReplicaPointer;
 end;
@@ -4427,7 +4427,7 @@ begin
   Result := CreateComObject(CLASS_Timestamp) as IADsTimestamp;
 end;
 
-class function CoTimestamp.CreateRemote(const MachineName: string): IADsTimestamp;
+class function CoTimestamp.CreateRemote(const MachineName: RawUtf8): IADsTimestamp;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_Timestamp) as IADsTimestamp;
 end;
@@ -4437,7 +4437,7 @@ begin
   Result := CreateComObject(CLASS_PostalAddress) as IADsPostalAddress;
 end;
 
-class function CoPostalAddress.CreateRemote(const MachineName: string): IADsPostalAddress;
+class function CoPostalAddress.CreateRemote(const MachineName: RawUtf8): IADsPostalAddress;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_PostalAddress) as IADsPostalAddress;
 end;
@@ -4447,7 +4447,7 @@ begin
   Result := CreateComObject(CLASS_BackLink) as IADsBackLink;
 end;
 
-class function CoBackLink.CreateRemote(const MachineName: string): IADsBackLink;
+class function CoBackLink.CreateRemote(const MachineName: RawUtf8): IADsBackLink;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_BackLink) as IADsBackLink;
 end;
@@ -4457,7 +4457,7 @@ begin
   Result := CreateComObject(CLASS_TypedName) as IADsTypedName;
 end;
 
-class function CoTypedName.CreateRemote(const MachineName: string): IADsTypedName;
+class function CoTypedName.CreateRemote(const MachineName: RawUtf8): IADsTypedName;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_TypedName) as IADsTypedName;
 end;
@@ -4467,7 +4467,7 @@ begin
   Result := CreateComObject(CLASS_Hold) as IADsHold;
 end;
 
-class function CoHold.CreateRemote(const MachineName: string): IADsHold;
+class function CoHold.CreateRemote(const MachineName: RawUtf8): IADsHold;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_Hold) as IADsHold;
 end;
@@ -4477,7 +4477,7 @@ begin
   Result := CreateComObject(CLASS_Pathname) as IADsPathname;
 end;
 
-class function CoPathname.CreateRemote(const MachineName: string): IADsPathname;
+class function CoPathname.CreateRemote(const MachineName: RawUtf8): IADsPathname;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_Pathname) as IADsPathname;
 end;
@@ -4487,7 +4487,7 @@ begin
   Result := CreateComObject(CLASS_ADSystemInfo) as IADsADSystemInfo;
 end;
 
-class function CoADSystemInfo.CreateRemote(const MachineName: string): IADsADSystemInfo;
+class function CoADSystemInfo.CreateRemote(const MachineName: RawUtf8): IADsADSystemInfo;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_ADSystemInfo) as IADsADSystemInfo;
 end;
@@ -4497,7 +4497,7 @@ begin
   Result := CreateComObject(CLASS_WinNTSystemInfo) as IADsWinNTSystemInfo;
 end;
 
-class function CoWinNTSystemInfo.CreateRemote(const MachineName: string): IADsWinNTSystemInfo;
+class function CoWinNTSystemInfo.CreateRemote(const MachineName: RawUtf8): IADsWinNTSystemInfo;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_WinNTSystemInfo) as IADsWinNTSystemInfo;
 end;
@@ -4507,7 +4507,7 @@ begin
   Result := CreateComObject(CLASS_DNWithBinary) as IADsDNWithBinary;
 end;
 
-class function CoDNWithBinary.CreateRemote(const MachineName: string): IADsDNWithBinary;
+class function CoDNWithBinary.CreateRemote(const MachineName: RawUtf8): IADsDNWithBinary;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_DNWithBinary) as IADsDNWithBinary;
 end;
@@ -4517,7 +4517,7 @@ begin
   Result := CreateComObject(CLASS_DNWithString) as IADsDNWithString;
 end;
 
-class function CoDNWithString.CreateRemote(const MachineName: string): IADsDNWithString;
+class function CoDNWithString.CreateRemote(const MachineName: RawUtf8): IADsDNWithString;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_DNWithString) as IADsDNWithString;
 end;
@@ -4527,7 +4527,7 @@ begin
   Result := CreateComObject(CLASS_ADsSecurityUtility) as IADsSecurityUtility;
 end;
 
-class function CoADsSecurityUtility.CreateRemote(const MachineName: string): IADsSecurityUtility;
+class function CoADsSecurityUtility.CreateRemote(const MachineName: RawUtf8): IADsSecurityUtility;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_ADsSecurityUtility) as IADsSecurityUtility;
 end;

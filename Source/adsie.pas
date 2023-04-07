@@ -33,7 +33,7 @@ uses
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
-   SysUtils, Dialogs;
+   SysUtils, Dialogs, mormot.core.base;
 
 function  ADsGetObject(LdapPath: PWideChar; const riid:TGUID; out ppObject):HRESULT;
 function  ADsOpenObject(LdapPath, UserName, Password: PWideChar; Reserved:DWORD; const riid:TGUID; out ppObject):HRESULT;
@@ -66,7 +66,7 @@ begin
     raise Exception.Create('Cannot load ActiveDS.DLL');
 end;
 
-function BindProc(ProcName: string): Pointer;
+function BindProc(ProcName: RawUtf8): Pointer;
 begin
   if ActiveDSHandle = 0 then
     LoadLib;

@@ -34,7 +34,7 @@ uses
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
   Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, LDAPClasses, Constant;
+  StdCtrls, LDAPClasses, Constant, mormot.core.base;
 
 type
   TOuDlg = class(TForm)
@@ -57,10 +57,10 @@ type
     procedure FormDestroy(Sender: TObject);
   private
     Entry: TLDAPEntry;
-    ParentDn: string;
+    ParentDn: RawUtf8;
     procedure Save;
   public
-    constructor Create(AOwner: TComponent; dn: string; Session: TLDAPSession; Mode: TEditMode); reintroduce;
+    constructor Create(AOwner: TComponent; dn: RawUtf8; Session: TLDAPSession; Mode: TEditMode); reintroduce;
   end;
 
 var
@@ -76,7 +76,7 @@ procedure TOuDlg.Save;
 var
   C: Integer;
   Component: TComponent;
-  s: string;
+  s: RawUtf8;
 begin
   if ou.Text = '' then
     raise Exception.Create(Format(stReqNoEmpty, [cName]));
@@ -109,7 +109,7 @@ begin
 end;
 
 
-constructor TOuDlg.Create(AOwner: TComponent; dn: string; Session: TLDAPSession; Mode: TEditMode);
+constructor TOuDlg.Create(AOwner: TComponent; dn: RawUtf8; Session: TLDAPSession; Mode: TEditMode);
 var
   C: Integer;
 begin

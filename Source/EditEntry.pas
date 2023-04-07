@@ -37,7 +37,7 @@ uses
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, ComCtrls, Grids, LDAPClasses, Constant,
   Menus, ActnList,  IControls, Schema, Templates,
-  TemplateCtrl, Sorter, Connection, DlgWrap;
+  TemplateCtrl, Sorter, Connection, DlgWrap, mormot.core.base;
 
 const
   NAMING_VALUE_TAG = -1;
@@ -210,7 +210,7 @@ type
     function  NewValue(Attr: TLdapAttribute): TLdapAttributeData;
     procedure TemplatePopupClick(Sender: TObject);
   public
-    constructor Create(AOwner: TComponent; const adn: string;
+    constructor Create(AOwner: TComponent; const adn: RawUtf8;
                        AConnection: TConnection; const Mode: TEditMode); reintroduce; overload;
     procedure   SessionDisconnect(Sender: TObject);
     property    OnWrite: TNotifyEvent read fOnWrite write fOnWrite;
@@ -325,9 +325,9 @@ procedure TEditEntryFrm.KeyComboExit(Sender: TObject);
 var
    StringGrid: TStringGrid;
    InplaceCombo: TInplaceComboBox;
-   s: string;
+   s: RawUtf8;
 
-   function IsRequired(const Name: string): Boolean;
+   function IsRequired(const Name: RawUtf8): Boolean;
    var
      i, j: Integer;
      Attribute: TLDAPSchemaAttribute;
@@ -389,7 +389,7 @@ procedure TEditEntryFrm.ResizeMemo(AMemo: TInplaceMemo);
 var
   c, h: Integer;
   StringGrid: TStringGrid;
-  s: string;
+  s: RawUtf8;
 begin
   with AMemo do
   if ControlVisible then
@@ -461,7 +461,7 @@ begin
   end;
 end;
 
-constructor TEditEntryFrm.Create(AOwner: TComponent; const adn: string;
+constructor TEditEntryFrm.Create(AOwner: TComponent; const adn: RawUtf8;
                                  AConnection: TConnection; const Mode: TEditMode);
 var
   i, j: integer;
@@ -599,7 +599,7 @@ var
     i, idx, k: Integer;
     SAttr: TLdapSchemaAttribute;
     LAttr: TLdapAttribute;
-    s: string;
+    s: RawUtf8;
   begin
     with fRows do begin
       for i := 0 to AList.Count - 1 do
@@ -840,7 +840,7 @@ var
   { Check if the value belongs to naming attribute and disable the control to prevent modifying accordingly }
   function CheckNamingValue(const Value: TLdapAttributeData; const IA: TInplaceAttribute): TInplaceAttribute;
   var
-    attr, val: string;
+    attr, val: RawUtf8;
   begin
     Result := IA;
     if Assigned(Value) then
@@ -911,7 +911,7 @@ end;
 
 procedure TEditEntryFrm.mbSaveClick(Sender: TObject);
 
-  function EncodeRdn(const rdn: string): string;
+  function EncodeRdn(const rdn: RawUtf8): RawUtf8;
   var
     i: Integer;
   begin
@@ -1446,7 +1446,7 @@ end;
 procedure TEditEntryFrm.ActFindInSchemaExecute(Sender: TObject);
 var
   StringGrid: TStringGrid;
-  s: string;
+  s: RawUtf8;
 begin
   if objStringGrid.Focused then
     StringGrid := objStringGrid

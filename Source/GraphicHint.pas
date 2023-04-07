@@ -43,7 +43,7 @@ type
     FInheritedPaint: Boolean;
     FBitmap: TBitmap;
   public
-    procedure ActivateHint(Rect: TRect; const AHint: string); override;
+    procedure ActivateHint(Rect: TRect; const AHint: String); override;
   protected
     procedure Paint; override;
   public
@@ -78,7 +78,7 @@ begin
   end;
 end;
 
-procedure TGraphicHintWindow.ActivateHint(Rect: TRect; const AHint: string);
+procedure TGraphicHintWindow.ActivateHint(Rect: TRect; const AHint: String);
 var
   h: Integer;
   Value: TLdapAttributeData;

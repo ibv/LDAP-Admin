@@ -117,7 +117,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses Pickup, LinLDAP,PrefWiz, Main, Config
+uses Pickup, LinLDAP,PrefWiz, Main, Config, mormot.core.base
      {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
 {$R *.dfm}
@@ -254,7 +254,7 @@ end;
 
 procedure TPrefDlg.IDGroupClick(Sender: TObject);
 var
-  Msg: string;
+  Msg: RawUtf8;
 begin
   Case gbId.ItemIndex of
     0: Msg := stNoPosixID;

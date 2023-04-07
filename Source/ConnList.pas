@@ -35,7 +35,7 @@ uses
 {$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ComCtrls, StdCtrls, Menus, ImgList, ExtCtrls, Buttons, Config,
-  ActnList, DlgWrap;
+  ActnList, DlgWrap, mormot.core.base;
 
 type
   TPrepareMode = (pmExport, pmImport);
@@ -122,7 +122,7 @@ type
       var Handled: Boolean);
     procedure ActRenameAccountExecute(Sender: TObject);
     procedure AccountsViewEdited(Sender: TObject; Item: TListItem;
-      var S: String);
+      var S: RawUtf8);
     procedure ActCopyAccountExecute(Sender: TObject);
     procedure ActPropertiesAccountExecute(Sender: TObject);
     procedure ActNewStorageExecute(Sender: TObject);
@@ -137,7 +137,7 @@ type
     procedure ActRenameFolderExecute(Sender: TObject);
     procedure TreeViewEditing(Sender: TObject; Node: TTreeNode;
       var AllowEdit: Boolean);
-    procedure TreeViewEdited(Sender: TObject; Node: TTreeNode; var S: string);
+    procedure TreeViewEdited(Sender: TObject; Node: TTreeNode; var S: RawUtf8);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure TreeViewDragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
@@ -155,22 +155,22 @@ type
     FImageOffset: Integer;
     FFolderAction: TCopyAction;
     FAccountAction: TCopyAction;
-    procedure CopyAccount(ToFolder: TAccountFolder; Name: string; Src: TAccount; Move: Boolean);
+    procedure CopyAccount(ToFolder: TAccountFolder; Name: RawUtf8; Src: TAccount; Move: Boolean);
     procedure CopyFolder(SourceFolder, DestFolder: TAccountFolder; Move: Boolean);
     function  GetSelection(AStorages: TConfigStorageObjArray; TargetFolder: TAccountFolder; Items: TObjectList; PrepareMode: TPrepareMode; var IncludePasswords: Boolean): Boolean;
     function  GetExportSelection(AStorages: TConfigStorageObjArray; Items: TObjectList; var IncludePasswords: Boolean): Boolean;
     function  ImportSelection(AStorages: TConfigStorageObjArray; TargetFolder: TAccountFolder): Boolean;
-    function  GetSelPath(TreeView: TTreeView): string;
-    procedure SetSelPath(TreeView: TTreeView; APath: string);
+    function  GetSelPath(TreeView: TTreeView): RawUtf8;
+    procedure SetSelPath(TreeView: TTreeView; APath: RawUtf8);
     procedure SetViewStyle(Style: integer);
     procedure RefreshAccountsView;
-    procedure RefreshStorageTree(AStorages: TConfigStorageObjArray; TreeView: TTreeView; ImageOffset: Integer; SelectedPath: string);
+    procedure RefreshStorageTree(AStorages: TConfigStorageObjArray; TreeView: TTreeView; ImageOffset: Integer; SelectedPath: RawUtf8);
     function  GetAccount: TAccount;
     procedure GetAccountSelection(AList: TObjectList);
     function  GetCurrentFolder: TAccountFolder;
     procedure Export(Elements: TObjectList; WithPasswords: Boolean); overload;
     procedure Export(AFolder: TAccountFolder); overload;
-    procedure Import(AFileName: string);
+    procedure Import(AFileName: RawUtf8);
   public
     constructor Create(AOwner: TComponent); reintroduce;
     property    Account: TAccount read GetAccount;
@@ -193,8 +193,7 @@ implementation
 {$R *.dfm}
 {$I LdapAdmin.inc}
 
-uses ConnProp, Constant, Math, uAccountCopyDlg, SizeGrip, Input, Misc, Connection,
-  mormot.core.base
+uses ConnProp, Constant, Math, uAccountCopyDlg, SizeGrip, Input, Misc, Connection
      {$IFDEF VER_XEH}, System.Types, System.UITypes{$ENDIF};
 
 const
@@ -317,7 +316,7 @@ begin
 end;
 
 
-function GetUniqueName(AFolder: TAccountFolder; AName: string; Enum: TEnumObjects): string;
+function GetUniqueName(AFolder: TAccountFolder; AName: RawUtf8; Enum: TEnumObjects): RawUtf8;
 const
   NAME_PATTERN='%s [%d]';
 var
@@ -337,10 +336,10 @@ end;
   If rename action is chosen a unique name in AName variable is returned. If a
   default action is chosen the DefaultAction variable is set accordingly. }
 
-function CheckName(var AName: string; AFolder: TAccountFolder; Enum: TEnumObjects;
+function CheckName(var AName: RawUtf8; AFolder: TAccountFolder; Enum: TEnumObjects;
                    var AConfig: TConfig; var DefaultAction: TCopyAction): TCopyAction; overload;
 var
-  cb, Message: string;
+  cb, Message: RawUtf8;
   Res: TModalResult;
   c: Boolean;
 begin
@@ -396,7 +395,7 @@ begin
     DefaultAction := Result;
 end;
 
-function CheckName(var AName: string; AFolder: TAccountFolder; Enum: TEnumObjects; var AConfig: TConfig): TCopyAction; overload;
+function CheckName(var AName: RawUtf8; AFolder: TAccountFolder; Enum: TEnumObjects; var AConfig: TConfig): TCopyAction; overload;
 var
   Action: TCopyAction;
 begin
@@ -476,7 +475,7 @@ end;
 
 { TConnListFrm }
 
-procedure TConnListFrm.CopyAccount(ToFolder: TAccountFolder; Name: string; Src: TAccount; Move: Boolean);
+procedure TConnListFrm.CopyAccount(ToFolder: TAccountFolder; Name: RawUtf8; Src: TAccount; Move: Boolean);
 var
   Account: TAccount;
   Action: TCopyAction;
@@ -496,7 +495,7 @@ procedure TConnListFrm.CopyFolder(SourceFolder, DestFolder: TAccountFolder; Move
 var
   i: Integer;
   NewFolder: TAccountFolder;
-  AName: string;
+  AName: RawUtf8;
   Action: TCopyAction;
 begin
   AName := SourceFolder.Name;
@@ -543,7 +542,7 @@ var
     end;
   end;
 
-  function GetFolderName(Value: TObject): string; inline;
+  function GetFolderName(Value: TObject): RawUtf8; inline;
   begin
     if Value is TConfigStorage then
       Result := TConfigStorage(Value).Name
@@ -556,7 +555,7 @@ var
     NextNode: TTreeNode;
     Cfg: TConfig;
 
-    function AddAccount(AName: string): TAccount;
+    function AddAccount(AName: RawUtf8): TAccount;
     var
       Action: TCopyAction;
     begin
@@ -567,7 +566,7 @@ var
         Result := TArgetFolder.Items.AddAccount(AName);
     end;
 
-    function AddFolder(AName: string): TAccountFolder;
+    function AddFolder(AName: RawUtf8): TAccountFolder;
     var
       Action: TCopyAction;
     begin
@@ -858,7 +857,7 @@ begin
   Result := GetSelection(AStorages, TargetFolder, nil, pmImport, IncludePasswords);
 end;
 
-function TConnListFrm.GetSelPath(TreeView: TTreeView): string;
+function TConnListFrm.GetSelPath(TreeView: TTreeView): RawUtf8;
 var
   Node: TTreeNode;
 begin
@@ -873,7 +872,7 @@ begin
   Result := ExcludeTrailingBackslash(Result);
 end;
 
-procedure TConnListFrm.SetSelPath(TreeView: TTreeView; APath: string);
+procedure TConnListFrm.SetSelPath(TreeView: TTreeView; APath: RawUtf8);
 var
   i: Integer;
   Splitted: TStringList;
@@ -1068,7 +1067,7 @@ begin
   end;
 end;
 
-procedure TConnListFrm.Import(AFileName: string);
+procedure TConnListFrm.Import(AFileName: RawUtf8);
 var
   StorageList: TConfigStorageObjArray;
 begin
@@ -1138,7 +1137,7 @@ begin
 end;
 
 procedure TConnListFrm.RefreshStorageTree(AStorages: TConfigStorageObjArray;
-  TreeView: TTreeView; ImageOffset: Integer; SelectedPath: string);
+  TreeView: TTreeView; ImageOffset: Integer; SelectedPath: RawUtf8);
 var
   i, img: Integer;
   Node: TTreeNode;
@@ -1278,7 +1277,7 @@ procedure TConnListFrm.ActNewFolderExecute(Sender: TObject);
 var
   NewFolder: TAccountFolder;
   Node: TTreeNode;
-  s: string;
+  s: RawUtf8;
 begin
   s := '';
   Node := TreeView.Selected;
@@ -1300,7 +1299,7 @@ end;
 procedure TConnListFrm.ActDeleteAccountExecute(Sender: TObject);
 var
   List: TObjectList;
-  s: string;
+  s: RawUtf8;
   i: Integer;
 begin
   if (AccountsView.Selected=nil) or (AccountsView.Selected.Data=nil) then exit;
@@ -1327,7 +1326,7 @@ end;
 procedure TConnListFrm.ActDeleteFolderExecute(Sender: TObject);
 var
   AConfig: TConfig;
-  Msg: string;
+  Msg: RawUtf8;
 begin
   if not (TObject(TreeView.Selected.Data) is TConfig) then
     exit;
@@ -1383,7 +1382,7 @@ begin
   AllowEdit:=(Item<>nil) and (Item.Data<>nil);
 end;
 
-procedure TConnListFrm.AccountsViewEdited(Sender: TObject; Item: TListItem; var S: String);
+procedure TConnListFrm.AccountsViewEdited(Sender: TObject; Item: TListItem; var S: RawUtf8);
 begin
   if Item.Data=nil then exit;
   TAccount(Item.Data).Name:=S;
@@ -1395,7 +1394,7 @@ var
   List: TObjectList;
   i: Integer;
 
-  function MultiName: string;
+  function MultiName: RawUtf8;
   begin
     Result := TConfig(List[0]).Name;
     if List.Count = 2 then
@@ -1738,7 +1737,7 @@ begin
     Accept := Assigned(TreeView.DropTarget) and (TreeView.DropTarget <> TreeView.Selected);
 end;
 
-procedure TConnListFrm.TreeViewEdited(Sender: TObject; Node: TTreeNode; var S: string);
+procedure TConnListFrm.TreeViewEdited(Sender: TObject; Node: TTreeNode; var S: RawUtf8);
 begin
   TAccountFolder(Node.Data).Name := s;
 end;

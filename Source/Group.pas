@@ -35,7 +35,7 @@ uses
 {$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls, ExtCtrls, Samba, Posix, LDAPClasses, Core, TemplateCtrl,
-  Constant, Connection;
+  Constant, Connection, mormot.core.base;
 
 type
   TGroupDlg = class(TForm)
@@ -79,7 +79,7 @@ type
     procedure edRidChange(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
-    ParentDn: string;
+    ParentDn: RawUtf8;
     Connection: TConnection;
     Entry: TLdapEntry;
     PosixGroup: TPosixGroup;
@@ -97,7 +97,7 @@ type
     function GetGroupType: Integer;
     procedure TemplateCbxClick(Sender: TObject);
   public
-    constructor Create(AOwner: TComponent; dn: string; Connection: TConnection; Mode: TEditMode; APosixGroup: Boolean = true; AGroupOfUniqueNames: Integer = 0); reintroduce;
+    constructor Create(AOwner: TComponent; dn: RawUtf8; Connection: TConnection; Mode: TEditMode; APosixGroup: Boolean = true; AGroupOfUniqueNames: Integer = 0); reintroduce;
     procedure InitiateAction; override;
   end;
 
@@ -169,7 +169,7 @@ begin
     RemoveUserBtn.Enabled := true;
 end;
 
-constructor TGroupDlg.Create(AOwner: TComponent; dn: string; Connection: TConnection; Mode: TEditMode; APosixGroup: Boolean = true; AGroupOfUniqueNames: Integer = 0);
+constructor TGroupDlg.Create(AOwner: TComponent; dn: RawUtf8; Connection: TConnection; Mode: TEditMode; APosixGroup: Boolean = true; AGroupOfUniqueNames: Integer = 0);
 var
   n: Integer;
   TemplateList: TTemplateList;
@@ -290,12 +290,12 @@ end;
 procedure TGroupDlg.TemplateCbxClick(Sender: TObject);
 var
   i, j: Integer;
-  s: string;
+  s: RawUtf8;
 
-  function SafeDelete(const name: string): boolean;
+  function SafeDelete(const name: RawUtf8): boolean;
   var
     i: Integer;
-    s: string;
+    s: RawUtf8;
   begin
     Result := false;
     s := lowercase(name);
@@ -646,7 +646,7 @@ end;
 
 procedure TGroupDlg.edRidChange(Sender: TObject);
 var
-  arid: string;
+  arid: RawUtf8;
 begin
   if Assigned(SambaGroup) and Assigned(DomList) then
   begin

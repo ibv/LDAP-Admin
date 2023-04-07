@@ -440,7 +440,7 @@ resourcestring
   stEvTypeEvTypeErr = 'Error setting %s event: %s event type is not supported!';
   stExtConfirmAssoc = 'LDAPAdmin is currently not your default LDAP browser.'+#10+'Would you like to make it your default LDAP browser?';
   stExpectedAt      = 'Expected %s at %s!';
-  stExpectedEndOfStr= 'Expected end of string but found "%s" at %s!';
+  stExpectedEndOfStr= 'Expected end of RawUtf8 but found "%s" at %s!';
   stExpectedButReceived = 'Expected "=" but recieved "';
   stExportAccounts  = 'Export accounts';
   stExportSelect    = 'Select items to export:';
@@ -555,9 +555,9 @@ resourcestring
   stTrustConnManual = 'Please create a manual connection to \\%s\IPC$ and retry the operation.';
   stTooManyArgs     = 'Too many arguments!';
   stUnclosedParam   = 'Invalid (Unclosed) parameter!';
-  stUnclosedStr     = 'Unclosed string!';
+  stUnclosedStr     = 'Unclosed RawUtf8!';
   stUnclosedReference = 'Invalid (unclosed) reference: %s';
-  stUnexpectedEofStr= 'Unexpected end of string: %s!';
+  stUnexpectedEofStr= 'Unexpected end of RawUtf8: %s!';
   stUnknownValueType= 'Unknown value type.'#10'key:%s'#10'value:%s"';
   stUnsupportedAuth = 'Unsupported authentication method: %s!';
   stUnsupportedRule = 'Unsupported matching rule %s!';

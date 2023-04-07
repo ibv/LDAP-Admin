@@ -36,7 +36,7 @@ uses
   LCLIntf, LCLType,
 {$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Buttons, Config, ImgList;
+  Dialogs, StdCtrls, Buttons, Config, ImgList, mormot.core.base;
 
 type
   TAccountCopyDlg = class(TForm)
@@ -52,12 +52,12 @@ type
   private
     function    GetTarget: TAccountFolder;
     procedure   SetTarget(const Value: TAccountFolder);
-    function    GetAccountName: string;
-    procedure   SetAccountName(const Value: string);
+    function    GetAccountName: RawUtf8;
+    procedure   SetAccountName(const Value: RawUtf8);
   public
     constructor Create(AOwner: TComponent); override;
     property    TargetFolder: TAccountFolder read GetTarget write SetTarget;
-    property    AccountName: string read GetAccountName write SetAccountName;
+    property    AccountName: RawUtf8 read GetAccountName write SetAccountName;
   end;
 
 implementation
@@ -92,12 +92,12 @@ begin
   end;
 end;
 
-function TAccountCopyDlg.GetAccountName: string;
+function TAccountCopyDlg.GetAccountName: RawUtf8;
 begin
   result:=NameEd.Text;
 end;
 
-procedure TAccountCopyDlg.SetAccountName(const Value: string);
+procedure TAccountCopyDlg.SetAccountName(const Value: RawUtf8);
 begin
   NameEd.Text:=Value;
 end;

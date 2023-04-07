@@ -34,7 +34,7 @@ uses
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
   Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, LDAPClasses, Constant;
+  StdCtrls, LDAPClasses, Constant, mormot.core.base;
 
 type
   TLocalityDlg = class(TForm)
@@ -55,7 +55,7 @@ type
     Entry: TLDAPEntry;
     procedure Save;
   public
-    constructor Create(AOwner: TComponent; dn: string; Session: TLDAPSession; Mode: TEditMode); reintroduce;
+    constructor Create(AOwner: TComponent; dn: RawUtf8; Session: TLDAPSession; Mode: TEditMode); reintroduce;
   end;
 
 var
@@ -88,7 +88,7 @@ begin
 end;
 
 
-constructor TLocalityDlg.Create(AOwner: TComponent; dn: string; Session: TLDAPSession; Mode: TEditMode);
+constructor TLocalityDlg.Create(AOwner: TComponent; dn: RawUtf8; Session: TLDAPSession; Mode: TEditMode);
 begin
   inherited Create(AOwner);
   Entry := TLDAPEntry.Create(Session, dn);

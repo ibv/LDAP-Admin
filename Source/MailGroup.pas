@@ -36,7 +36,7 @@ uses
 {$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls, ExtCtrls, Samba, Posix, LDAPClasses, Config, Postfix,
-  Constant;
+  Constant, mormot.core.base;
 
 type
   TMailGroupDlg = class(TForm)
@@ -76,7 +76,7 @@ type
   private
     Entry: TLdapEntry;
     EditMode: TEditMode;
-    ParentDn: string;
+    ParentDn: RawUtf8;
     Session: TLDAPSession;
     Group: TMailGroup;
     ColumnToSort: Integer;
@@ -86,7 +86,7 @@ type
     procedure Save;
     procedure MailButtons(Enable: Boolean);
   public
-    constructor Create(AOwner: TComponent; dn: string; Session: TLDAPSession; Mode: TEditMode); reintroduce;
+    constructor Create(AOwner: TComponent; dn: RawUtf8; Session: TLDAPSession; Mode: TEditMode); reintroduce;
   end;
 
 var
@@ -122,7 +122,7 @@ begin
   OkBtn.Enabled := (edName.Text <> '') and (mail.Items.Count > 0);
 end;
 
-constructor TMailGroupDlg.Create(AOwner: TComponent; dn: string; Session: TLDAPSession; Mode: TEditMode);
+constructor TMailGroupDlg.Create(AOwner: TComponent; dn: RawUtf8; Session: TLDAPSession; Mode: TEditMode);
 begin
   inherited Create(AOwner);
   ParentDn := dn;
@@ -203,7 +203,7 @@ end;
 procedure TMailGroupDlg.RemoveUserBtnClick(Sender: TObject);
 var
   idx: Integer;
-  dn: string;
+  dn: RawUtf8;
 begin
   with UserList do
   If Assigned(Selected) then
@@ -278,7 +278,7 @@ end;
 
 procedure TMailGroupDlg.AddMailBtnClick(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := '';
   if InputDlg(cAddAddress, cSmtpAddress, s) then
@@ -292,7 +292,7 @@ end;
 
 procedure TMailGroupDlg.EditMailBtnClick(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := mail.Items[mail.ItemIndex];
   if InputDlg(cEditAddress, cSmtpAddress, s) then

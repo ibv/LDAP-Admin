@@ -34,7 +34,7 @@ uses
   LCLIntf, LCLType, LMessages, LinLDAP,
 {$ENDIF}
   SysUtils, Messages, Classes, Graphics, Controls,
-  StdCtrls, ExtCtrls, Forms, ComCtrls, LDAPClasses, Posix;
+  StdCtrls, ExtCtrls, Forms, ComCtrls, LDAPClasses, Posix, mormot.core.base;
 
 const
   LDAP_OP_SUCCESS = Pointer(1);
@@ -52,19 +52,19 @@ type
     fSmartDelete: Boolean;
     fDeleteAll: Boolean;
     fSkipOnOverlap: Boolean;
-    function  CheckPathOverlap(const SourceDn, DestDn: string): Boolean;
+    function  CheckPathOverlap(const SourceDn, DestDn: RawUtf8): Boolean;
     procedure SetShowProgress(Value: Boolean);
     function  GetDstSession: TLDAPSession;
-    procedure Prepare(const dn: string); overload;
+    procedure Prepare(const dn: RawUtf8); overload;
     procedure Prepare(List: TStringList); overload;
     procedure DeleteLeaf(const Entry: TLdapEntry);
-    procedure DeleteChildren(const dn: string);
-    procedure Copy(const SourceDn, TargetDn: string; Move: Boolean);
+    procedure DeleteChildren(const dn: RawUtf8);
+    procedure Copy(const SourceDn, TargetDn: RawUtf8; Move: Boolean);
   public
     constructor Create(AOwner: TComponent; ASession: TLDAPSession); reintroduce;
-    procedure CopyTree(const dn, pdn, rdn: string; Move: Boolean); overload;
-    procedure CopyTree(List: TStringList; const DestDn: string; Move: Boolean); overload;
-    procedure DeleteTree(const adn: string); overload;
+    procedure CopyTree(const dn, pdn, rdn: RawUtf8; Move: Boolean); overload;
+    procedure CopyTree(List: TStringList; const DestDn: RawUtf8; Move: Boolean); overload;
+    procedure DeleteTree(const adn: RawUtf8); overload;
     procedure DeleteTree(List: TStringList); overload;
     property SourceSession: TLDAPSession read fSrcSession;
     property DestSession: TLDAPSession read GetDstSession write fDstSession;
@@ -82,7 +82,7 @@ implementation
 
 uses Misc, Dialogs, Config, Constant{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
-function TLdapOpDlg.CheckPathOverlap(const SourceDn, DestDn: string): Boolean;
+function TLdapOpDlg.CheckPathOverlap(const SourceDn, DestDn: RawUtf8): Boolean;
 begin
   Result := (SourceSession <> DestSession) or (System.Copy(DestDn, Length(DestDn) - Length(SourceDn) + 1, MaxInt) <> SourceDn);
   if not (Result or fSkipOnOverlap) then
@@ -107,7 +107,7 @@ begin
     Result := fSrcSession
 end;
 
-procedure TLdapOpDlg.Prepare(const dn: string);
+procedure TLdapOpDlg.Prepare(const dn: RawUtf8);
 var
   EntryList: TLdapEntryList;
 begin
@@ -158,7 +158,7 @@ end;
 
 { This procedure copies entire subtree to a different location (dn). If Move is
   set to true then the source entries are deleted, effectivly moving the tree }
-procedure TLdapOpDlg.Copy(const SourceDn, TargetDn: string; Move: Boolean);
+procedure TLdapOpDlg.Copy(const SourceDn, TargetDn: RawUtf8; Move: Boolean);
 var
   EntryList: TLdapEntryList;
   srcEntry, dstEntry: TLDAPEntry;
@@ -249,7 +249,7 @@ end;
 procedure TLdapOpDlg.DeleteLeaf(const Entry: TLdapEntry);
 var
   i: Cardinal;
-  uid: string;
+  uid: RawUtf8;
   oc: TLdapAttribute;
 begin
   Entry.Delete;
@@ -277,7 +277,7 @@ end;
 
 { This procedure checks for leaf's children and deletes them recursively if
   boolean fDeleteAll is set to true. Otherwise, user is prompted to delete }
-procedure TLdapOpDlg.DeleteChildren(const dn: string);
+procedure TLdapOpDlg.DeleteChildren(const dn: RawUtf8);
 var
   EntryList: TLdapEntryList;
   i: Integer;
@@ -320,9 +320,9 @@ begin
   fSmartDelete := GlobalConfig.ReadBool(rSmartDelete, true);
 end;
 
-procedure TLdapOpDlg.CopyTree(const dn, pdn, rdn: string; Move: Boolean);
+procedure TLdapOpDlg.CopyTree(const dn, pdn, rdn: RawUtf8; Move: Boolean);
 var
-  tgtdn: string;
+  tgtdn: RawUtf8;
 begin
   if rdn = '' then
     tgtdn := GetRdnFromDn(dn) + ',' + pdn
@@ -357,10 +357,10 @@ begin
   end;
 end;
 
-procedure TLdapOpDlg.CopyTree(List: TStringList; const DestDn: string; Move: Boolean);
+procedure TLdapOpDlg.CopyTree(List: TStringList; const DestDn: RawUtf8; Move: Boolean);
 var
   i: Integer;
-  tgtdn: string;
+  tgtdn: RawUtf8;
 begin
   Prepare(List);
   if Move then
@@ -383,7 +383,7 @@ begin
   end;
 end;
 
-procedure TLdapOpDlg.DeleteTree(const adn: string);
+procedure TLdapOpDlg.DeleteTree(const adn: RawUtf8);
 var
   Entry: TLdapEntry;
 begin

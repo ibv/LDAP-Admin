@@ -28,11 +28,7 @@ unit Cert;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows, , Wcrypt2, WinLDAP,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, Dynlibs, cmem, LinLDAP;
-{$ENDIF}
+  LCLIntf, LCLType, LMessages, Dynlibs, cmem, LinLDAP, mormot.core.base;
 
 procedure ShowCert(x509Cert: Pointer; x509CertLen: Cardinal);
 procedure ShowContext(x509Cert: Pointer; x509CertLen: Cardinal; ContextType: DWORD);
@@ -47,7 +43,7 @@ const
 { Global variables used by VerifyCert }
 var
   CertUserAbort: Boolean;
-  CertServerName: string;
+  CertServerName: RawUtf8;
 
 implementation
 
@@ -74,17 +70,17 @@ type
     //CryptUIDlgViewCertificate: TCryptUIDlgViewCertificate;
     CryptUIDlgViewContext: TCryptUIDlgViewContext;
     ///pCertContext: PCCERT_CONTEXT;
-    Caption: string;
+    Caption: RawUtf8;
     procedure OnClick(Sender: TObject);
     procedure ShowCert;
   public
     OnClickProc: TNotifyEvent;
-    ///constructor Create(ApCertContext: PCCERT_CONTEXT; ContextType: DWORD; ACaption: string);
+    ///constructor Create(ApCertContext: PCCERT_CONTEXT; ContextType: DWORD; ACaption: RawUtf8);
     destructor Destroy; override;
   end;
 
 {
-constructor TUIDlg.Create(ApCertContext: PCCERT_CONTEXT; ContextType: DWORD; ACaption: string);
+constructor TUIDlg.Create(ApCertContext: PCCERT_CONTEXT; ContextType: DWORD; ACaption: RawUtf8);
 begin
   Handle := LoadLibrary(CRYPTUI);
   if Handle <> 0 then
@@ -207,14 +203,14 @@ begin
   end;
 end;
 
-function VerifyCertHostName(pCertContext: PCCERT_CONTEXT; HostName: string): boolean;
+function VerifyCertHostName(pCertContext: PCCERT_CONTEXT; HostName: RawUtf8): boolean;
 type
   PCERT_ALT_NAME_ENTRY = array of CERT_ALT_NAME_ENTRY;
 var
   cbStructInfo, dwCommonNameLength, i: Cardinal;
   szOID: LPSTR;
   pvStructInfo: Cardinal;
-  CommonName, DNSName: string;
+  CommonName, DNSName: RawUtf8;
   pExtension: PCERT_EXTENSION;
   pNameInfo: PCERT_ALT_NAME_INFO;
 begin
@@ -320,7 +316,7 @@ function EnumSysCallback(pvSystemStore: Pointer; dwFlags: DWORD; pStoreInfo: PCE
                          pvReserved: Pointer; pvArg: Pointer): BOOL; stdcall;
 {$IFNDEF UNICODE}
 var
-  s: string;
+  s: RawUtf8;
 {$ENDIF}
 begin
   {$IFNDEF UNICODE}
@@ -344,7 +340,7 @@ var
   flags: DWORD;
   iCert, pSub: PCCERT_CONTEXT;
   err: Cardinal;
-  errStr, cap: string;
+  errStr, cap: RawUtf8;
   uidlg: TUIDlg;
 begin
   Result := false;

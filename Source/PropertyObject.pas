@@ -27,7 +27,7 @@ unit PropertyObject;
 
 interface
 
-uses Classes, LDAPClasses, SysUtils;
+uses Classes, LDAPClasses, SysUtils, mormot.core.base;
 
 const
   INT_NULL    = 0;
@@ -40,36 +40,36 @@ type
   TPropertyObject = class
   private
     fPropertyNames: Pointer;
-    fObjectClass: string;
+    fObjectClass: RawUtf8;
     function GetAttr(Index: TProperties): TLdapAttribute;
     function IsObjectActive: Boolean;
   protected
     fEntry: TLdapEntry;
-    procedure AddObjectClass(Oc: array of string);
-    procedure RemoveObjectClass(Oc: array of string);
+    procedure AddObjectClass(Oc: array of RawUtf8);
+    procedure RemoveObjectClass(Oc: array of RawUtf8);
     procedure SetInt(Index: TProperties; Value: Integer);
     function  GetInt(Index: TProperties): Integer;
     procedure SetBool(Index: TProperties; Value: Boolean);
     function  GetBool(Index: TProperties): Boolean;
-    procedure SetString(Index: TProperties; Value: string);
-    function  GetString(Index: TProperties): string;
-    function  GetMultiString(VIndex, AIndex: TProperties): string;
-    function  AddToMultiString(Index: TProperties; Value: string): string;
-    function  RemoveFromMultiString(Index: TProperties; Value: string): string;
+    procedure SetString(Index: TProperties; Value: RawUtf8);
+    function  GetString(Index: TProperties): RawUtf8;
+    function  GetMultiString(VIndex, AIndex: TProperties): RawUtf8;
+    function  AddToMultiString(Index: TProperties; Value: RawUtf8): RawUtf8;
+    function  RemoveFromMultiString(Index: TProperties; Value: RawUtf8): RawUtf8;
     function  GetMultiStringCount(Index: TProperties): Integer;
     function  GetFromUnixTime(Index: TProperties): TDateTime;
     procedure SetAsUnixTime(Index: TProperties; AValue: TDateTime);
-    function  GetCommaText(Index: Integer): string;
-    procedure SetCommaText(Index: Integer; AValue: string);
-    procedure SetProperty(Index: TProperties; Value: string); virtual;
+    function  GetCommaText(Index: Integer): RawUtf8;
+    procedure SetCommaText(Index: Integer; AValue: RawUtf8);
+    procedure SetProperty(Index: TProperties; Value: RawUtf8); virtual;
     constructor Create(const Entry: TLdapEntry); overload; virtual; abstract;
-    constructor Create(const Entry: TLdapEntry; const MyObjectClass: string; Properties: Pointer); overload;
+    constructor Create(const Entry: TLdapEntry; const MyObjectClass: RawUtf8; Properties: Pointer); overload;
   public
     function IsNull(const Index: TProperties): boolean;
     procedure New; virtual;
     procedure Remove; virtual;
     property Attributes[Index: Tproperties]: TLdapAttribute read GetAttr;
-    property ObjectClass: string read fObjectClass;
+    property ObjectClass: RawUtf8 read fObjectClass;
     property Activated: Boolean read IsObjectActive;
   end;
 
@@ -102,7 +102,7 @@ begin
   end;
 end;
 
-procedure TPropertyObject.AddObjectClass(Oc: array of string);
+procedure TPropertyObject.AddObjectClass(Oc: array of RawUtf8);
 var
   i: Integer;
 begin
@@ -110,7 +110,7 @@ begin
     fEntry.AttributesByName['objectclass'].AddValue(Oc[i]);
 end;
 
-procedure TPropertyObject.RemoveObjectClass(Oc: array of string);
+procedure TPropertyObject.RemoveObjectClass(Oc: array of RawUtf8);
 var
   i: Integer;
 begin
@@ -118,7 +118,7 @@ begin
     fEntry.AttributesByName['objectclass'].DeleteValue(Oc[i]);
 end;
 
-procedure TPropertyObject.SetProperty(Index: TProperties; Value: string);
+procedure TPropertyObject.SetProperty(Index: TProperties; Value: RawUtf8);
 begin
   fEntry.AttributesByName[PCharArray(fPropertyNames)[Index]].AsString := Value;
 end;
@@ -154,27 +154,27 @@ begin
       Result := false;
 end;
 
-procedure TPropertyObject.SetString(Index: TProperties; Value: string);
+procedure TPropertyObject.SetString(Index: TProperties; Value: RawUtf8);
 begin
   SetProperty(Index, Value);
 end;
 
-function TPropertyObject.GetString(Index: TProperties): string;
+function TPropertyObject.GetString(Index: TProperties): RawUtf8;
 begin
   Result := fEntry.AttributesByName[PCharArray(fPropertyNames)[Index]].AsString;
 end;
 
-function TPropertyObject.GetMultiString(VIndex, AIndex: TProperties): string;
+function TPropertyObject.GetMultiString(VIndex, AIndex: TProperties): RawUtf8;
 begin
   Result := fEntry.AttributesByName[PCharArray(fPropertyNames)[AIndex]].Values[VIndex].AsString;
 end;
 
-function TPropertyObject.AddToMultiString(Index: TProperties; Value: string): string;
+function TPropertyObject.AddToMultiString(Index: TProperties; Value: RawUtf8): RawUtf8;
 begin
   fEntry.AttributesByName[PCharArray(fPropertyNames)[Index]].AddValue(Value);
 end;
 
-function TPropertyObject.RemoveFromMultiString(Index: TProperties; Value: string): string;
+function TPropertyObject.RemoveFromMultiString(Index: TProperties; Value: RawUtf8): RawUtf8;
 begin
   fEntry.AttributesByName[PCharArray(fPropertyNames)[Index]].DeleteValue(Value);
 end;
@@ -186,7 +186,7 @@ end;
 
 function TPropertyObject.GetFromUnixTime(Index: TProperties): TDateTime;
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := GetString(Index);
   if s = '' then
@@ -202,7 +202,7 @@ begin
   SetString(Index, IntToStr(DateTimeToUnixTime(AValue)));
 end;
 
-function TPropertyObject.GetCommaText(Index: Integer): string;
+function TPropertyObject.GetCommaText(Index: Integer): RawUtf8;
 var
   i: Integer;
   Attr: TLdapAttribute;
@@ -219,10 +219,10 @@ begin
       end;
 end;
 
-procedure TPropertyObject.SetCommaText(Index: Integer; AValue: string);
+procedure TPropertyObject.SetCommaText(Index: Integer; AValue: RawUtf8);
 var
   P, P1: PChar;
-  S: string;
+  S: RawUtf8;
   Attr: TLdapAttribute;
 begin
   Attr := fEntry.AttributesByName[PCharArray(fPropertyNames)[Index]];
@@ -247,7 +247,7 @@ begin
     end;
 end;
 
-constructor TPropertyObject.Create(const Entry: TLdapEntry; const MyObjectClass: string; Properties: Pointer);
+constructor TPropertyObject.Create(const Entry: TLdapEntry; const MyObjectClass: RawUtf8; Properties: Pointer);
 begin
   fEntry := Entry;
   fPropertyNames := Properties;

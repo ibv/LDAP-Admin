@@ -108,7 +108,7 @@ uses
   CommCtrl,
 {$ELSE}
 {$ENDIF}
-  SysUtils {$IFDEF VER_XEH}, System.Types, System.UiTypes{$ENDIF};
+  SysUtils, mormot.core.base {$IFDEF VER_XEH}, System.Types, System.UiTypes{$ENDIF};
 
 { TListViewSorter }
 
@@ -421,9 +421,9 @@ procedure TStringGridSorter.SortGrid;
   procedure QuickSort(Left, Right: Integer; S: TStrings);
    var
     i, j, n: Integer;
-    Pivot: string;
+    Pivot: RawUtf8;
 
-    function SCompare(const S1, S2: string): Integer;
+    function SCompare(const S1, S2: RawUtf8): Integer;
     begin
       Result := AnsiCompareStr(S1, S2);
       if not fSortAsc then Result := -Result;

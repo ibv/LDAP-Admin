@@ -35,7 +35,7 @@ uses
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, Dialogs, LDAPClasses, ComCtrls,  Grids, Connection ;
+  Buttons, ExtCtrls, Dialogs, LDAPClasses, ComCtrls,  Grids, Connection, mormot.core.base ;
 
 type
   TConfigDlg = class(TForm)
@@ -87,7 +87,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure SetDefBtnClick(Sender: TObject);
     procedure TranscodingTableSetEditText(Sender: TObject; ACol,
-      ARow: Integer; const Value: String);
+      ARow: Integer; const Value: RawUtf8);
     procedure btnAddLangClick(Sender: TObject);
     procedure btnDelLangClick(Sender: TObject);
     procedure ListMouseMove(Sender: TObject; Shift: TShiftState; X,Y: Integer);
@@ -114,7 +114,7 @@ uses FileCtrl, Config, Templates, Constant, Misc, Main, Lang
 constructor TConfigDlg.Create(AOwner: TComponent; ASession: TLdapSession);
 var
   i, j: Integer;
-  s: string;
+  s: RawUtf8;
   names: TStrings;
 
   procedure DoAddFolder(AFolder: TAccountFolder);
@@ -211,7 +211,7 @@ end;
 
 procedure TConfigDlg.btnAddClick(Sender: TObject);
 var
-  Dir: string;
+  Dir: String;
 begin
   if SelectDirectory('','',Dir) then
     TemplateList.Items.Add(Dir);
@@ -258,7 +258,7 @@ procedure TConfigDlg.FormClose(Sender: TObject; var Action: TCloseAction);
 var
   Account: TAccount;
   i: Integer;
-  s: string;
+  s: RawUtf8;
 begin
   Action := caFree;
   if ModalResult = mrOk then with GlobalConfig do
@@ -314,7 +314,7 @@ end;
 procedure TConfigDlg.cbStartupConnectionDrawItem(Control: TWinControl;
   Index: Integer; Rect: TRect; State: TOwnerDrawState);
 var
-  s: string;
+  s: RawUtf8;
   ///ImageIndex: Integer;
   ImageIndex, Indent: Integer;
 {begin
@@ -391,7 +391,7 @@ begin
   {$endif}
 end;
 
-procedure TConfigDlg.TranscodingTableSetEditText(Sender: TObject; ACol, ARow: Integer; const Value: String);
+procedure TConfigDlg.TranscodingTableSetEditText(Sender: TObject; ACol, ARow: Integer; const Value: RawUtf8);
 begin
   with TranscodingTable do
   if (ARow = RowCount - 1) and (Cells[ACol, ARow] <> '') then
@@ -403,7 +403,7 @@ end;
 
 procedure TConfigDlg.btnAddLangClick(Sender: TObject);
 var
-  Dir: string;
+  Dir: String;
 begin
   if SelectDirectory('','',Dir) then
     LanguageList.Items.Add(Dir);
@@ -432,7 +432,7 @@ end;
 
 procedure TConfigDlg.btnEditLangClick(Sender: TObject);
 var
-  Dir: string;
+  Dir: String;
 begin
   with LanguageList do
   begin

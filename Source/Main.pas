@@ -39,7 +39,7 @@ uses
   Config, Connection, contnrs,
   Sorter, ToolWin, Posix, Samba,
   LDAPClasses,  uSchemaDlg,    Schema,
-  uBetaImgLists, GraphicHint, CustomMenus,  ObjectInfo;
+  uBetaImgLists, GraphicHint, CustomMenus,  ObjectInfo, mormot.core.base;
 
 
 type
@@ -49,7 +49,7 @@ type
     FTreeView:  TTreeView;
     FRootIndex: Integer;
     FTreeHistory: TTreeHistory;
-    FSelected:  string;
+    FSelected:  RawUtf8;
     FLVSorter:  TListViewSorter;
     procedure   SetRootNode(Value: TTreeNode);
     function    GetRootNode: TTreeNode;
@@ -58,7 +58,7 @@ type
     destructor  Destroy; override;
     property    Connection: TConnection read FConnection;
     property    History: TTreeHistory read FTreeHistory;
-    property    Selected: string read FSelected write FSelected;
+    property    Selected: RawUtf8 read FSelected write FSelected;
     property    LVSorter: TListViewSorter read FLVSorter write FLVSorter;
     property    TreeView: TTreeView read FTreeView write FTreeView;
     property    RootNode: TTreeNode read GetRootNode write SetRootNode;
@@ -295,7 +295,7 @@ type
     procedure pbViewPictureClick(Sender: TObject);
     procedure ValueListViewCustomDrawItem(Sender: TCustomListView;
       Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
-    procedure ValueListViewInfoTip(Sender: TObject; Item: TListItem;var InfoTip: String);
+    procedure ValueListViewInfoTip(Sender: TObject; Item: TListItem;var InfoTip: RawUtf8);
     procedure ActEditValueExecute(Sender: TObject);
     procedure ActAliasExecute(Sender: TObject);
     procedure ActCustomizeMenuExecute(Sender: TObject);
@@ -320,7 +320,7 @@ type
     fIdObject: Boolean;
     fEnforceContainer: Boolean;
     fLocatedEntry: Integer;
-    fQuickSearchFilter: string;
+    fQuickSearchFilter: RawUtf8;
     fTemplateProperties: Boolean;
     fTreeHistory: TTreeHistory;
     fDisabledImages: TBetaDisabledImageList;
@@ -340,7 +340,7 @@ type
     procedure RefreshTree;
     procedure RefreshValueListView(Node: TTreeNode);
     procedure RefreshEntryListView(Node: TTreeNode);
-    procedure CopySelection(TargetSession: TLdapSession; TargetDn, TargetRdn: string; Move: Boolean);
+    procedure CopySelection(TargetSession: TLdapSession; TargetDn, TargetRdn: RawUtf8; Move: Boolean);
     procedure GetSelection(List: TStringList);
     procedure RemoveNodes(List: TStringList);
     procedure CopyMove(Move: Boolean);
@@ -359,11 +359,11 @@ type
     //--
 
     procedure ExpandNode(Node: TTreeNode; Session: TLDAPSession; TView: TTreeView);
-    procedure DoCopyMove(List: TStringList; TargetSession: TLdapSession; TargetDn, TargetRdn: string; Move: Boolean);
+    procedure DoCopyMove(List: TStringList; TargetSession: TLdapSession; TargetDn, TargetRdn: RawUtf8; Move: Boolean);
     procedure DoDelete(List: TStringList);
     function  ShowSchema: TSchemaDlg;
-    function  PickEntry(const ACaption: string): string;
-    function  LocateEntry(const dn: string; const Select: Boolean): TTreeNode;
+    function  PickEntry(const ACaption: RawUtf8): RawUtf8;
+    function  LocateEntry(const dn: RawUtf8; const Select: Boolean): TTreeNode;
     procedure EditProperty(AOwner: TControl; ObjectInfo: TObjectInfo);
     procedure ServerConnect(Account: TAccount);
     procedure ServerDisconnect;
@@ -390,7 +390,7 @@ uses
   EditEntry, ConnList, Search, LdapOp, Constant, Export, Import, Prefs, Misc,
   LdapCopy, BinView, Input, ConfigDlg, Templates, TemplateCtrl,
   Cert, PicView, About, Alias, SizeGrip, CustMenuDlg, Lang, Bookmarks, DBLoad,
-  mormot.core.os, mormot.core.base
+  mormot.core.os
   {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
 
@@ -458,7 +458,7 @@ procedure TMainFrm.EntryWrite(Sender: TObject);
 var
  Node: TTreeNode;
  Entry: TLdapEntry;
- tgtDn: string;
+ tgtDn: RawUtf8;
 begin
   Node := LdapTree.Selected;
   if Assigned(Node) then
@@ -552,9 +552,9 @@ end;
 procedure TMainFrm.InitLanguageMenu;
 var
   i: Integer;
-  CurrentLanguage: string;
+  CurrentLanguage: RawUtf8;
 
-  procedure AddMenuItem(const ACaption: string; ATag: Integer; AChecked: Boolean = false);
+  procedure AddMenuItem(const ACaption: RawUtf8; ATag: Integer; AChecked: Boolean = false);
   var
     MenuItem: TMenuItem;
   begin
@@ -599,7 +599,7 @@ begin
       AddMenuItem(Languages[i], i);
 end;
 
-function TMainFrm.PickEntry(const ACaption: string): string;
+function TMainFrm.PickEntry(const ACaption: RawUtf8): RawUtf8;
 var
   DirDlg: TForm;
   ddTree: TTreeView;
@@ -668,9 +668,9 @@ begin
 
 end;
 
-function TMainFrm.LocateEntry(const dn: string; const Select: Boolean): TTreeNode;
+function TMainFrm.LocateEntry(const dn: RawUtf8; const Select: Boolean): TTreeNode;
 var
-  sdn: string;
+  sdn: RawUtf8;
   comp: TStringList;
   i: Integer;
   Parent: TTreeNode;
@@ -845,7 +845,7 @@ end;
 
 procedure TMainFrm.InitStatusBar;
 var
- s: string;
+ s: RawUtf8;
 begin
   if (FConnection <> nil) and (FConnection.Connected) then begin
     s := Format(cServer, [FConnection.Server]);
@@ -896,7 +896,7 @@ end;
 
 procedure TMainFrm.RefreshStatusBar;
 var
-  s3, s4: string;
+  s3, s4: RawUtf8;
 begin
   if StatusBar.Tag <> 0 then Exit;
   s4 := '';
@@ -1045,7 +1045,7 @@ var
   var
     i, j, k: Integer;
 
-    function DataTypeToText(const AType: TDataType): string;
+    function DataTypeToText(const AType: TDataType): RawUtf8;
     begin
       case AType of
         dtText: Result := cText;
@@ -1106,7 +1106,7 @@ end;
 
 procedure TMainFrm.RefreshEntryListView(Node: TTreeNode);
 var
-  s: string;
+  s: RawUtf8;
   ListItem: TListItem;
   ANode: TTreeNode;
 begin
@@ -1281,7 +1281,7 @@ begin
   end;
 end;
 
-procedure TMainFrm.CopySelection(TargetSession: TLdapSession; TargetDn, TargetRdn: string; Move: Boolean);
+procedure TMainFrm.CopySelection(TargetSession: TLdapSession; TargetDn, TargetRdn: RawUtf8; Move: Boolean);
 var
   List: TStringList;
 begin
@@ -1294,10 +1294,10 @@ begin
   end;
 end;
 
-procedure TMainFrm.DoCopyMove(List: TStringList; TargetSession: TLdapSession; TargetDn, TargetRdn: string; Move: Boolean);
+procedure TMainFrm.DoCopyMove(List: TStringList; TargetSession: TLdapSession; TargetDn, TargetRdn: RawUtf8; Move: Boolean);
 var
   Node: TTreeNode;
-  dstdn, seldn: string;
+  dstdn, seldn: RawUtf8;
   ep: TLVCustomDrawItemEvent;
   i: Integer;
 
@@ -1397,7 +1397,7 @@ end;
 
 procedure TMainFrm.DoDelete(List: TStringList);
 var
-  msg: string;
+  msg: RawUtf8;
 begin
   if List.Count > 1 then
     msg := Format(stConfirmMultiDel, [List.Count])
@@ -1439,7 +1439,7 @@ end;
 
 procedure TMainFrm.LDAPTreeEdited(Sender: TObject; Node: TTreeNode; var S: String);
 var
-  newdn, pdn, temp: string;
+  newdn, pdn, temp: RawUtf8;
   i: Integer;
 
   function ConfirmRename: Boolean;
@@ -1501,7 +1501,7 @@ see DragDrop.info
 }
 procedure TMainFrm.LDAPTreeDragOver(Sender, Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
 var
-  srcdn, dstdn: string;
+  srcdn, dstdn: RawUtf8;
 begin
 
   with LdapTree do
@@ -1943,10 +1943,10 @@ end;
 
 procedure TMainFrm.FormShow(Sender: TObject);
 var
-  aproto, auser, apassword, ahost, abase: string;
+  aproto, auser, apassword, ahost, abase: RawUtf8;
   aport, aversion, i,j:     integer;
   auth: TLdapAuthMethod;
-  SessionName, StorageName: string;
+  SessionName, StorageName: RawUtf8;
   AStorage: TConfigStorage;
 begin
   InitTemplateMenu;
@@ -2050,7 +2050,7 @@ end;
 
 procedure TMainFrm.edSearchKeyPress(Sender: TObject; var Key: Char);
 
-  function Parse(const Param, Val: string): string;
+  function Parse(const Param, Val: RawUtf8): RawUtf8;
   var
     p, p1: PChar;
   begin
@@ -2164,7 +2164,7 @@ end;
 
 procedure TMainFrm.ActFindInSchemaExecute(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   if ValueListView.Selected <> nil then
   begin
@@ -2366,7 +2366,7 @@ procedure TMainFrm.ValueListViewCustomDrawItem(Sender: TCustomListView;
 var
   AttributeData: TLdapAttributeData;
   SubItem: Integer;
-  Content: String;
+  Content: RawUtf8;
   mRect: TRect;
 begin
   DefaultDraw := False;
@@ -2410,16 +2410,16 @@ begin
   end;
 end;
 
-procedure TMainFrm.ValueListViewInfoTip(Sender: TObject; Item: TListItem; var InfoTip: String);
+procedure TMainFrm.ValueListViewInfoTip(Sender: TObject; Item: TListItem; var InfoTip: RawUtf8);
 const
-  Partials: array[0..8] of string = ('time', 'expires', 'logon', 'logoff', 'last', 'created', 'modify', 'modified', 'change');
+  Partials: array[0..8] of RawUtf8 = ('time', 'expires', 'logon', 'logoff', 'last', 'created', 'modify', 'modified', 'change');
 var
   n: Int64;
   c: Integer;
-  s, Value: string;
+  s, Value: RawUtf8;
   ///ST: SystemTime;
 
-  function PartialMatch(const m: string): Boolean;
+  function PartialMatch(const m: RawUtf8): Boolean;
   var
     i: Integer;
   begin
@@ -2445,7 +2445,7 @@ begin
   try
     Value := Item.SubItems[0];
     s := lowercase(Item.Caption);
-    if s.Contains('guid') then
+    if PosEx(s, 'guid') <> 0 then
     begin
       InfoTip := GuidToString(PGUID(TLdapAttributeData(Item.Data).Data)^);
       exit;
@@ -2491,7 +2491,7 @@ end;
 procedure TMainFrm.ActEditValueExecute(Sender: TObject);
 var
   Value: TLdapAttributeData;
-  s: string;
+  s: String;
 begin
   if ValueListView.Selected=nil then exit;
   if ValueListView.Selected.SubItems.Count=0 then exit;
@@ -2519,7 +2519,7 @@ end;
 
 procedure TMainFrm.ActCustomizeMenuExecute(Sender: TObject);
 var
-  Selected: string;
+  Selected: RawUtf8;
 begin
   if CustomizeMenu(Self, ImageList, FConnection) then
   try
@@ -2559,7 +2559,7 @@ end;
 
 procedure TMainFrm.ActBookmarkExecute(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := '';
   if Assigned(LDAPTree.Selected) then

@@ -35,7 +35,7 @@ uses
 {$ENDIF}
   Script,
   Classes, Forms, Controls, ComCtrls, StdCtrls, ExtCtrls, Templates, LDAPClasses,
-     Graphics, Contnrs, Constant ;
+     Graphics, Contnrs, Constant, mormot.core.base ;
 
 type
   TEventHandler = class
@@ -147,14 +147,14 @@ type
     fEntry: TLdapEntry;
     fEventHandler: TEventHandler;
     fTemplatePanels: TList;
-    fRdn: string;
+    fRdn: RawUtf8;
     procedure OKBtnClick(Sender: TObject);
     procedure CancelBtnClick(Sender: TObject);
   protected
     procedure KeyPress(var Key: Char); override;
   public
     PageControl: TPageControl;
-    constructor Create(AOwner: TComponent; adn: string; ASession: TLDAPSession; Mode: TEditMode); reintroduce;
+    constructor Create(AOwner: TComponent; adn: RawUtf8; ASession: TLDAPSession; Mode: TEditMode); reintroduce;
     destructor  Destroy; override;
     procedure   AddTemplate(ATemplate: TTemplate);
     procedure   LoadMatching;
@@ -812,7 +812,7 @@ procedure TTemplateForm.OKBtnClick(Sender: TObject);
 var
   i, j: Integer;
   S: TStringList;
-  ardn, aval: string;
+  ardn, aval: RawUtf8;
 begin
   try
     if esNew in fEntry.State then
@@ -873,7 +873,7 @@ begin
   end;
 end;
 
-constructor TTemplateForm.Create(AOwner: TComponent; adn: string; ASession: TLDAPSession; Mode: TEditMode);
+constructor TTemplateForm.Create(AOwner: TComponent; adn: RawUtf8; ASession: TLDAPSession; Mode: TEditMode);
 var
   Panel: TPanel;
   Btn : TButton;

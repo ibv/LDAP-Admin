@@ -34,7 +34,7 @@ uses
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
   Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, LDAPClasses, Constant;
+  StdCtrls, LDAPClasses, Constant, mormot.core.base;
 
 type
   THostDlg = class(TForm)
@@ -62,7 +62,7 @@ type
     Entry: TLDAPEntry;
     procedure Save;
   public
-    constructor Create(AOwner: TComponent; dn: string; Session: TLDAPSession; Mode: TEditMode); reintroduce;
+    constructor Create(AOwner: TComponent; dn: RawUtf8; Session: TLDAPSession; Mode: TEditMode); reintroduce;
   private
     procedure HostButtons(Enable: Boolean);
   end;
@@ -91,10 +91,10 @@ begin
 end;
 
 
-constructor THostDlg.Create(AOwner: TComponent; dn: string; Session: TLDAPSession; Mode: TEditMode);
+constructor THostDlg.Create(AOwner: TComponent; dn: RawUtf8; Session: TLDAPSession; Mode: TEditMode);
 var
   i: Integer;
-  attrValue: string;
+  attrValue: RawUtf8;
 begin
   inherited Create(AOwner);
   Entry := TLDAPEntry.Create(Session, dn);
@@ -140,7 +140,7 @@ end;
 
 procedure THostDlg.AddHostBtnClick(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := '';
   if InputDlg(cAddHost, cHostName, s) and (s <> '') then
@@ -153,7 +153,7 @@ end;
 
 procedure THostDlg.EditHostBtnClick(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := cnList.Items[cnList.ItemIndex];
   if InputDlg(cEditHost, cHostName, s) then

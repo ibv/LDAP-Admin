@@ -34,7 +34,7 @@ uses
   LCLIntf, LCLType,
 {$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls;
+  StdCtrls, ExtCtrls, mormot.core.base;
 
 type
   TParseErrDlg = class(TForm)
@@ -49,11 +49,11 @@ type
   private
     fLine: Integer;
     fPosition: Integer;
-    fIdentifier: string;
+    fIdentifier: RawUtf8;
     procedure HighlightText;
   end;
 
-procedure ParseError(AType: TMsgDlgType; AOwner: TComponent; const FileName, Err1, Err2, Code, Identifier: string; LineNr, Pos: Integer);
+procedure ParseError(AType: TMsgDlgType; AOwner: TComponent; const FileName, Err1, Err2, Code, Identifier: RawUtf8; LineNr, Pos: Integer);
 
 implementation
 
@@ -142,9 +142,9 @@ begin
 end;
 
 
-procedure ParseError(AType: TMsgDlgType; AOwner: TComponent; const FileName, Err1, Err2, Code, Identifier: string; LineNr, Pos: Integer);
+procedure ParseError(AType: TMsgDlgType; AOwner: TComponent; const FileName, Err1, Err2, Code, Identifier: RawUtf8; LineNr, Pos: Integer);
 var
-  typeMsg: string;
+  typeMsg: RawUtf8;
 begin
   with TParseErrDlg.Create(AOwner) do
   try

@@ -27,16 +27,16 @@ unit Password;
 
 interface
 
-uses {LdapClasses,} Hash, md4, md5, sha1, rmd160;
+uses {LdapClasses,} Hash, md4, md5, sha1, rmd160, mormot.core.base;
 
 type
   THashType = (chText, chCrypt, chMd5Crypt, chMd4, chMd5, chSha1, chSMD5, chSSHA, chSha256, chSha512, chRipemd);
 
 const
-  IdStrings: array [chText..chRipemd] of string = (
+  IdStrings: array [chText..chRipemd] of RawUtf8 = (
   '','{CRYPT}','{CRYPT}','{MD4}','{MD5}','{SHA}','{SMD5}','{SSHA}','{CRYPT}','{CRYPT}','{RMD160}');
 
-function GetPasswordString(const HashType: THashType; const Password: string): string;
+function GetPasswordString(const HashType: THashType; const Password: RawUtf8): RawUtf8;
 
 implementation
 
@@ -55,7 +55,7 @@ begin
     Result[i] := SaltChars[Random(64)];
 end;
 
-function Digest(const HashType: THashType; const Password: AnsiString): String;
+function Digest(const HashType: THashType; const Password: AnsiString): RawUtf8;
 var
   md4Digest: TMD5Digest;
   md5Digest: TMD5Digest;
@@ -82,7 +82,7 @@ begin
   end;
 end;
 
-function SaltedDigest(const HashType: THashType; const Password: string): string;
+function SaltedDigest(const HashType: THashType; const Password: RawUtf8): RawUtf8;
 var
   Salt, SaltedKey, Hash: AnsiString;
   ///HashContext: THashContext;
@@ -104,9 +104,9 @@ begin
   Result := Base64Encode(Hash + Salt);
 end;
 
-function GetPasswordString(const HashType: THashType; const Password: string): string;
+function GetPasswordString(const HashType: THashType; const Password: RawUtf8): RawUtf8;
 var
-  passwd: string;
+  passwd: RawUtf8;
 begin
   case HashType of
     chText:      passwd := Password;

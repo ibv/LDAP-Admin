@@ -34,7 +34,7 @@ uses
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, CheckLst, Schema;
+  Buttons, ExtCtrls, CheckLst, Schema, mormot.core.base;
 
 const
   LB_ERR = -1;
@@ -58,14 +58,14 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     //FAttrsMaxLen: Integer;
-    function GetAttrs: string;
+    function GetAttrs: RawUtf8;
   public
     procedure MoveSelected(List: TCustomListBox; Items: TStrings);
     procedure SetItem(List: TListBox; Index: Integer);
     function GetFirstSelection(List: TCustomListBox): Integer;
     procedure SetButtons;
-    constructor Create(AOwner: TComponent; ASchema: TLDAPSchema; Attrs: string); reintroduce;
-    property Attributes: string read GetAttrs;
+    constructor Create(AOwner: TComponent; ASchema: TLDAPSchema; Attrs: RawUtf8); reintroduce;
+    property Attributes: RawUtf8 read GetAttrs;
   end;
 
 var
@@ -77,7 +77,7 @@ uses Math;
 
 {$R *.dfm}
 
-function TPickAttributesDlg.GetAttrs: string;
+function TPickAttributesDlg.GetAttrs: RawUtf8;
 var
   i, p: Integer;
 begin
@@ -97,7 +97,7 @@ begin
   end;
 end;
 
-constructor TPickAttributesDlg.Create(AOwner: TComponent; ASchema: TLDAPSchema; Attrs: string);
+constructor TPickAttributesDlg.Create(AOwner: TComponent; ASchema: TLDAPSchema; Attrs: RawUtf8);
 var
   i, idx: Integer;
 

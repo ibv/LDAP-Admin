@@ -27,7 +27,7 @@ unit Dsml;
 
 interface
 
-uses Xml, LdapClasses, Classes, TextFile;
+uses Xml, LdapClasses, Classes, TextFile, mormot.core.base;
 
 type
   TDsmlTree = class(TXmlTree)
@@ -65,7 +65,7 @@ var
 
   procedure XmlAddValue(Node: TXmlNode; Value: TLdapAttributeData);
   var
-    v: string;
+    v: RawUtf8;
   begin
     if Value.DataType <> dtText then
     begin

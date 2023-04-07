@@ -27,7 +27,7 @@ unit Posix;
 
 interface
 
-uses PropertyObject, LDAPClasses, LinLDAP, Classes;
+uses PropertyObject, LDAPClasses, LinLDAP, Classes, mormot.core.base;
 
 const
     eUidNumber           = 0;
@@ -41,7 +41,7 @@ const
     eDescription         = 8;
     eMemberUid           = 9;
 
-  PropAttrNames: array[eUidNumber..eMemberUid] of string = (
+  PropAttrNames: array[eUidNumber..eMemberUid] of RawUtf8 = (
     'uidNumber',
     'gidNumber',
     'uid',
@@ -61,25 +61,25 @@ type
     procedure New; override;
     property uidNumber: Integer index eUidNumber read GetInt write SetInt;
     property gidNumber: Integer index eGidNumber read GetInt write SetInt;
-    property uid: string index eUid read GetString write SetString;
-    property Cn: string index eCn read GetString write SetString;
-    property UserPassword: string index eUserPassword read GetString write SetString;
-    property HomeDirectory: string index eHomeDirectory read GetString write SetString;
-    property LoginShell: string index eLoginShell read GetString write SetString;
-    property Gecos: string index eGecos read GetString write SetString;
-    property Description: string index eDescription read GetString write SetString;
+    property uid: RawUtf8 index eUid read GetString write SetString;
+    property Cn: RawUtf8 index eCn read GetString write SetString;
+    property UserPassword: RawUtf8 index eUserPassword read GetString write SetString;
+    property HomeDirectory: RawUtf8 index eHomeDirectory read GetString write SetString;
+    property LoginShell: RawUtf8 index eLoginShell read GetString write SetString;
+    property Gecos: RawUtf8 index eGecos read GetString write SetString;
+    property Description: RawUtf8 index eDescription read GetString write SetString;
   end;
 
   TPosixGroup = class(TPropertyObject)
   public
     constructor Create(const Entry: TLdapEntry); override;
-    procedure AddMember(const AMember: string); virtual;
-    procedure RemoveMember(const AMember: string); virtual;
+    procedure AddMember(const AMember: RawUtf8); virtual;
+    procedure RemoveMember(const AMember: RawUtf8); virtual;
     procedure New; override;
     property GidNumber: Integer index eGidNumber read GetInt write SetInt;
-    property Cn: string index eCn read GetString write SetString;
-    property Description: string index eDescription read GetString write SetString;
-    property Members[Index: Integer]: string index eMemberUid read GetMultiString;
+    property Cn: RawUtf8 index eCn read GetString write SetString;
+    property Description: RawUtf8 index eDescription read GetString write SetString;
+    property Members[Index: Integer]: RawUtf8 index eMemberUid read GetMultiString;
     property MembersCount: Integer index eMemberUid read GetMultiStringCount;
   end;
 
@@ -105,12 +105,12 @@ begin
   inherited Create(Entry, 'posixGroup', @PropAttrNames);
 end;
 
-procedure TPosixGroup.AddMember(const AMember: string);
+procedure TPosixGroup.AddMember(const AMember: RawUtf8);
 begin
   AddToMultiString(eMemberUid, AMember);
 end;
 
-procedure TPosixGroup.RemoveMember(const AMember: string);
+procedure TPosixGroup.RemoveMember(const AMember: RawUtf8);
 begin
   RemoveFromMultiString(eMemberUid, AMember);
 end;

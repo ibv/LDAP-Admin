@@ -35,7 +35,7 @@ uses
 {$ENDIF}
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, Dialogs, LDAPClasses, ComCtrls, Xml, DlgWrap,
-  TextFile;
+  TextFile, mormot.core.base;
 
 type
   TExportDlg = class(TForm)
@@ -72,7 +72,7 @@ type
     fEntryList:   TLdapEntryList;
     fdnList:      TStringList;
     fCount:       Integer;
-    FAttributes:  array of string;
+    FAttributes:  array of RawUtf8;
     FScope:       Cardinal;
     Session:      TLDAPSession;
     fTickCount:   Cardinal;
@@ -80,13 +80,13 @@ type
     fEncoding:    TFileEncode;
     procedure     SearchCallback(Sender: TLdapEntryList; var AbortSearch: Boolean);
     procedure     XmlCallback(Node: TXmlNode);
-    procedure     Prepare(const Filter: string);
+    procedure     Prepare(const Filter: RawUtf8);
     procedure     WriteToLdif(UnixWrite: Boolean);
     procedure     WriteToDsml;
   public
     constructor   Create(const ASession: TLDAPSession; const CanSubDirs: boolean=true); reintroduce; overload;
-    constructor   Create(const adn: string; const ASession: TLDAPSession; AAttributes: array of string; const CanSubDirs: boolean=true); reintroduce; overload;
-    procedure     AddDn(const adn: string);
+    constructor   Create(const adn: RawUtf8; const ASession: TLDAPSession; AAttributes: array of RawUtf8; const CanSubDirs: boolean=true); reintroduce; overload;
+    procedure     AddDn(const adn: RawUtf8);
   end;
 
 var
@@ -98,7 +98,7 @@ uses LDIF, Dsml, Constant;
 
 {$R *.dfm}
 
-function TrimPath(const s: string; const MaxLen: Integer): string;
+function TrimPath(const s: RawUtf8; const MaxLen: Integer): RawUtf8;
 var
   p, pr: PChar;
 begin
@@ -158,7 +158,7 @@ begin
   SubDirsCbkClick(nil);
 end;
 
-constructor TExportDlg.Create(const adn: string; const ASession: TLDAPSession; AAttributes: array of string; const CanSubDirs: boolean=true);
+constructor TExportDlg.Create(const adn: RawUtf8; const ASession: TLDAPSession; AAttributes: array of RawUtf8; const CanSubDirs: boolean=true);
 var
   i: Integer;
 begin
@@ -168,7 +168,7 @@ begin
   for i:=0 to length(AAttributes)-1 do FAttributes[i]:=AAttributes[i];
 end;
 
-procedure TExportDlg.AddDn(const adn: string);
+procedure TExportDlg.AddDn(const adn: RawUtf8);
 begin
   fdnList.Add(adn);
 end;
@@ -191,10 +191,10 @@ begin
   end;
 end;
 
-procedure TExportDlg.Prepare(const Filter: string);
+procedure TExportDlg.Prepare(const Filter: RawUtf8);
 var
   i: Integer;
-  s: string;
+  s: RawUtf8;
 begin
   fEntryList.Clear;
   fTickStep := 1000;
@@ -305,7 +305,7 @@ end;
 
 procedure TExportDlg.FormShow(Sender: TObject);
 var
-  dn: string;
+  dn: RawUtf8;
 begin
   if fdnList.Count > 1 then
     dn := Format(stNumObjects, [fdnList.Count])

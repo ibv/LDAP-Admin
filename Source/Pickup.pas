@@ -35,11 +35,11 @@ uses
 {$ENDIF}
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, ComCtrls, LDAPClasses, ImgList, Sorter, Math,
-  ListViewDlg;
+  ListViewDlg, mormot.core.base;
 
 type
   TPopulateColumn = record
-    Attribute: string;
+    Attribute: RawUtf8;
     DataType:  TLdapAttributeSortType;
   end;
 
@@ -63,7 +63,7 @@ type
     FImageIndex:      integer;
     procedure         FillListView;
     procedure         DoSort(SortColumn:  TListColumn; SortAsc: boolean);
-    function          GetText(Index: integer; Entry: TLdapEntry): string;
+    function          GetText(Index: integer; Entry: TLdapEntry): RawUtf8;
     function          GetSelCount: integer;
     function          GetSelected(Index: integer): TLdapEntry;
   protected
@@ -71,7 +71,7 @@ type
   public
     constructor       Create(AOwner: TComponent); override;
     destructor        Destroy; override;
-    procedure         Populate(const Session: TLDAPSession; const Filter: string; const Attributes: array of string; const Base: string = '');
+    procedure         Populate(const Session: TLDAPSession; const Filter: RawUtf8; const Attributes: array of RawUtf8; const Base: RawUtf8 = '');
 
     property          Entries:  TLdapEntryList read FEntries;
     property          ImageIndex: integer read FImageIndex write FImageIndex;
@@ -112,13 +112,13 @@ begin
   FSorter.OnSort:=DoSort;
 end;
 
-procedure TPickupDlg.Populate(const Session: TLDAPSession; const Filter: string; const Attributes: array of string; const Base: string = '');
+procedure TPickupDlg.Populate(const Session: TLDAPSession; const Filter: RawUtf8; const Attributes: array of RawUtf8; const Base: RawUtf8 = '');
 var
   i: integer;
   popIdx: integer;
   attrs: PCharArray;
   len: Integer;
-  aBase: string;
+  aBase: RawUtf8;
 begin
   popIdx:=length(FPopulates);
   setlength(FPopulates, popIdx+1);
@@ -171,10 +171,10 @@ begin
   FillListView;
 end;
 
-function  TPickupDlg.GetText(Index: integer; Entry: TLdapEntry): string;
+function  TPickupDlg.GetText(Index: integer; Entry: TLdapEntry): RawUtf8;
 var
   i: integer;
-  s: string;
+  s: RawUtf8;
 begin
   result:='';
   for i:=0 to length(FPopulates)-1 do begin
@@ -219,7 +219,7 @@ var
   function Match(Entry: TLdapEntry): boolean;
   var
     i : integer;
-    s: string;
+    s: RawUtf8;
   begin
     if sl.Count=0 then begin
       result:=true;
@@ -263,7 +263,7 @@ end;
 
 procedure TPickupDlg.DoSort(SortColumn: TListColumn; SortAsc: boolean);
 var
-  Attrs: array of string;
+  Attrs: array of RawUtf8;
   i,n : integer;
 
 begin
