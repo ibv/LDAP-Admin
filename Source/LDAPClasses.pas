@@ -112,6 +112,7 @@ type
     fAttribute: TLdapAttribute;
     fEntry: TLdapEntry;
     fModOp: Cardinal;
+    fSchemaAttribute: TObject;
     //fType: TDataType; there is no need to determine this on per value basis
     fUtf8: Boolean;
     function GetType: TDataType;
@@ -132,6 +133,7 @@ type
     property Berval: PLdapBerval read BervalAddr;
     property ModOp: Cardinal read fModOp write fModOp;
     property Attribute: TLdapAttribute read fAttribute;
+    property SchemaAttribute: TObject read fSchemaAttribute write fSchemaAttribute ;
   end;
 
   TLdapAttribute = class

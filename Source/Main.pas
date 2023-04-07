@@ -1043,7 +1043,7 @@ var
 
   procedure ShowAttrs(Attributes: TLdapAttributeList);
   var
-    i, j: Integer;
+    i, j, k: Integer;
 
     function DataTypeToText(const AType: TDataType): string;
     begin
@@ -1059,21 +1059,30 @@ var
 
   begin
     for i := 0 to Attributes.Count - 1 do with Attributes[i] do
-    for j := 0 to ValueCount - 1 do
-    begin
-      ListItem := ValueListView.Items.Add;
-      ListItem.Caption := Name;
-      with Values[j] do
+      for j := 0 to ValueCount - 1 do
       begin
-        if DataType = dtText then
-          ListItem.SubItems.Add(AsString)
-        else
-          ListItem.SubItems.Add(HexMem(Data, DataSize, true));
-        ListItem.SubItems.Add(DataTypeToText(DataType));
-        ListItem.SubItems.Add(IntToStr(DataSize));
+        ListItem := ValueListView.Items.Add;
+        ListItem.Caption := Name;
+        with Values[j] do
+        begin
+          if DataType = dtText then
+            ListItem.SubItems.Add(AsString)
+          else
+            ListItem.SubItems.Add(HexMem(Data, DataSize, true));
+          ListItem.SubItems.Add(DataTypeToText(DataType));
+          ListItem.SubItems.Add(IntToStr(DataSize));
+
+          with fConnections[TabControl1.TabIndex].Connection do
+            if Schema.Loaded then
+              for k := 0 to Schema.ObjectClasses.Count - 1 do
+              begin
+                SchemaAttribute := Schema.ObjectClasses[k].Must.ByName[Attribute.Name];
+                if SchemaAttribute <> nil then
+                  Break;
+              end;
+        end;
+        ListItem.Data := Attributes[i].Values[j];
       end;
-      ListItem.Data := Attributes[i].Values[j];
-    end;
   end;
 
 begin
@@ -2356,7 +2365,7 @@ procedure TMainFrm.ValueListViewCustomDrawItem(Sender: TCustomListView;
   Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
 var
   AttributeData: TLdapAttributeData;
-  SubItem, i: Integer;
+  SubItem: Integer;
   Content: String;
   mRect: TRect;
 begin
@@ -2375,19 +2384,8 @@ begin
     else
     if Attribute.Entry.OperationalAttributes.AttributeOf(Item.Caption) = Attribute then
       Sender.Canvas.Font.Color := clDkGray
-    else if TabControl1.TabIndex <> -1 then with fConnections[TabControl1.TabIndex].Connection do
-    try
-      if Schema.Loaded then
-      begin
-       for i := 0 to Schema.ObjectClasses.Count - 1 do
-         if Schema.ObjectClasses[i].Must.ByName[Attribute.Name] <> nil then
-         begin
-           Sender.Canvas.Font.Style := [fsBold];
-           Break;
-         end;
-      end;
-    except
-    end;
+    else if (TabControl1.TabIndex <> -1) and (SchemaAttribute <> nil) then
+      Sender.Canvas.Font.Style := [fsBold];
 
     for SubItem := 0 to item.SubItems.Count do
     begin
