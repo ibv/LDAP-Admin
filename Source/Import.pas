@@ -87,7 +87,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses LDIF, TextFile, Constant{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+uses Ldif, TextFile, Constant{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
 {$R *.dfm}
 

@@ -665,7 +665,7 @@ var
 implementation
 
 uses
-   variants, {$ifdef WINDOWS} Windows, {$endif}{SysUtils,} Misc, Params, Config, Constant,  LinLDAP,
+   variants, {$ifdef WINDOWS} Windows, {$else} Math, {$endif}{SysUtils,} Misc, Params, Config, Constant,  LinLDAP,
   Connection,Pickup, ParseErr, mormot.core.buffers
    {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 

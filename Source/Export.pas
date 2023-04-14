@@ -90,7 +90,7 @@ var
 
 implementation
 
-uses LDIF, Dsml, Constant;
+uses Ldif, Dsml, Constant;
 
 {$R *.dfm}
 

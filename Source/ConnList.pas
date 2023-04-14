@@ -1251,7 +1251,7 @@ begin
       Account.LdapVersion        := LdapVersion;
       Account.User               := User;
       Account.Server             := Server;
-      Account.Password           := Password;
+      Account.Password           := Password + #0;
       Account.TimeLimit          := Timelimit;
       Account.SizeLimit          := SizeLimit;
       Account.PagedSearch        := PagedSearch;

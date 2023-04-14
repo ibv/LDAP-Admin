@@ -64,7 +64,7 @@ type
 
 implementation
 
-uses Constant, SysUtils, MMSystem, Graphics;
+uses Constant, SysUtils, Graphics;
 
 function TValidateInput.ValidateText(Value: string): Boolean;
 var
@@ -85,7 +85,7 @@ var
       Message := Format(fmt, [FCaption, FInvalidChars]);
     end;
     //BallonHint(CenterWithSpaces(TFontControl(FControl).Font, Message, 5));
-    PlaySound('SYSTEMQUESTION', 0, SND_ASYNC);
+    //PlaySound('SYSTEMQUESTION', 0, SND_ASYNC);
   end;
 
   function DoCheck: Boolean;

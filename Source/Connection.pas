@@ -182,8 +182,8 @@ var
 
 implementation
 
-uses SysUtils,  User, Host, Locality, Computer, Group, LDIF, Dialogs,
-     AdObjects, ADUser, AdGroup, AdComputer, AdContainer,
+uses SysUtils,  User, Host, Locality, Computer, Group, Ldif, Dialogs,
+     ADObjects, ADUser, AdGroup, AdComputer, AdContainer,
      {$ifdef mswindows} UiTypes,      {$endif}
      MailGroup, Transport, Ou, Classes, PassDlg, ADPassDlg, Alias, Ast ;
 

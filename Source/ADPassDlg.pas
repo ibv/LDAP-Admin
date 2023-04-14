@@ -60,7 +60,7 @@ implementation
 
 
 uses
-  AdObjects,
+  ADObjects,
   LinLDAP, mormot.net.ldap,
   Constant;
 

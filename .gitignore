@@ -24,6 +24,8 @@
 backup/
 *.bak
 lib/
+ppu/
+
 
 # Application bundle for Mac OS
 *.app/

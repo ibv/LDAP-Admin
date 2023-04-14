@@ -90,7 +90,7 @@ implementation
 
 uses StdCtrls, Messages, Constant, Config, StrUtils, {$IFDEF VARIANTS} ,variants {$ENDIF}
      DateUtils, Math, Buttons, HtmlMisc, mormot.core.text, mormot.core.buffers
-     {$ifdef WINDOWS}, Windows{$endif};
+     {$ifdef WINDOWS}, Windows {$else} ,Unix, LMessages {$endif};
 
 function TreeSortProc(Node1, Node2: TTreeNode): Integer;
 var
@@ -902,7 +902,7 @@ begin
 
 end;
 
-function GetTextExtent(Text: RawUtf8; Font: TFont): TSize;
+function GetTextExtent(Text: RawUtf8; Font: TFont): types.TSize;
 var
   c: Graphics.TBitmap;
 begin

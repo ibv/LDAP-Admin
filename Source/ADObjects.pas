@@ -24,7 +24,7 @@ unit ADObjects;
 interface
 
 uses
-  Windows,
+  {$ifdef WINDOWS} Windows, {$endif}
   LinLDAP, forms, graphics, types, Process, Controls,
   Classes, LDAPClasses, Constant, Connection, ComCtrls;
 
@@ -56,8 +56,10 @@ resourcestring
   stWkstOrServer = 'Workstation or server';
 
 const
+  {$ifdef WINDOWS}
   SECURITY_WORLD_SID_AUTHORITY: TSidIdentifierAuthority = (Value: (0, 0, 0, 0, 0, 1));
   SECURITY_NT_AUTHORITY : TSidIdentifierAuthority = (Value: (0, 0, 0, 0, 0, 5));
+  {$endif}
   SECURITY_BUILTIN_DOMAIN_RID = ($00000020);
   DOMAIN_ALIAS_RID_ADMINS = ($00000220);
   SECURITY_WORLD_RID =($00000000);
@@ -203,7 +205,7 @@ type
 function  DateTimeToWinapiTime(Value: TDateTime): TFileTime;
 function  WinapiTimeToDateTime(Value: TFileTime): TDateTime;
 function  GetUACstring(Uac: string): string;
-function  WrapGetComputerNameEx(ANameFormat: Windows.COMPUTER_NAME_FORMAT): string;
+function  WrapGetComputerNameEx({$ifdef WINDOWS}ANameFormat: Windows.COMPUTER_NAME_FORMAT{$endif}): string;
 function  GetNetBiosDomain: string;
 
 implementation
@@ -275,7 +277,7 @@ begin
   AProcess.Free;
 end;
 
-function WrapGetComputerNameEx(ANameFormat: Windows.COMPUTER_NAME_FORMAT): string;
+function WrapGetComputerNameEx({$ifdef WINDOWS}ANameFormat: Windows.COMPUTER_NAME_FORMAT{$endif}): string;
 var
   nSize: DWORD;
 begin
@@ -295,7 +297,9 @@ function GetNetBiosDomain: string;
 var
   dwDomainSize, dwSidSize, dwComputerSize: DWord;
   ComputerName: Array [0..MAX_PATH] of Char;
+  {$ifdef WINDOWS}
   SidNameUse: Windows.SID_NAME_USE;
+  {$endif}
   sid: array[0..512] of Byte;
 begin
    dwSidSize := 512;

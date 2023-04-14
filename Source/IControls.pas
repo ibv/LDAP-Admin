@@ -118,7 +118,7 @@ type
 
 implementation
 
-uses Graphics, Misc; ///, LAControls;
+uses Graphics, Misc, ADObjects; ///, LAControls;
 
 { TInplaceAttribute }
 
@@ -277,8 +277,10 @@ end;
 procedure TComboBoxEx.CNCommand(var Message: TWMCommand);
 begin
   inherited;
+  {$ifdef WINDOWS}
   if (Message.NotifyCode = CBN_CLOSEUP) and Assigned(fOnCloseup) then
     fOnCloseUp(Self);
+  {$endif}
 end;
 
 {procedure TComboBoxEx.SetAutoComplete(Value: Boolean);
