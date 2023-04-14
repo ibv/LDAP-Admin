@@ -33,11 +33,7 @@ interface
 
 
 uses
-{$IFnDEF FPC}
-  ComObj, ActiveX, Windows,
-{$ELSE}
   LCLIntf, LCLType, Types,
-{$ENDIF}
    SysUtils, Classes, TypInfo,
   ScriptIntf, Contnrs, Controls, mormot.core.base;
 

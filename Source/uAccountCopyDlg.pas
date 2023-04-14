@@ -30,11 +30,7 @@ unit uAccountCopyDlg;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, Buttons, Config, ImgList, mormot.core.base;
 

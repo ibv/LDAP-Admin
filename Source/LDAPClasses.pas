@@ -32,11 +32,7 @@ unit LDAPClasses;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,  WinLDAP,
-{$ELSE}
   LCLIntf, LCLType, LazUtils, LinLDAP, lazutf8, LazFileUtils,
-{$ENDIF}
   Sysutils,  Classes, Events, Constant, mormot.net.ldap, mormot.core.base;
 
 const
@@ -193,6 +189,8 @@ type
     property Count: Integer read GetCount;
   end;
 
+  PLdapClientSettings = ^TLdapClientSettings;
+
   { TLDAPSession }
 
   TLDAPSession = class
@@ -215,11 +213,11 @@ type
     function GetPassword: SpiUtf8;
     function GetPort: RawUtf8;
     function GetServer: RawUtf8;
-    function GetSettings: TLdapClientSettings;
+    function GetSettings: PLdapClientSettings;
     function GetTls: Boolean;
     function GetUser: RawUtf8;
     procedure LDAPCheck(const err: ULONG; const Critical: Boolean = true);
-    procedure SetLdapSettings(AValue: TLdapClientSettings);
+    procedure SetLdapSettings(AValue: PLdapClientSettings);
     procedure SetPassword(AValue: SpiUtf8);
     procedure SetServer(AValue: RawUtf8);
     procedure SetUser(AValue: RawUtf8);
@@ -246,7 +244,7 @@ type
     procedure Connect; virtual;
     procedure Disconnect; virtual;
     property pld: TLdapClient read ldappld;
-    property Settings: TLdapClientSettings read GetSettings write SetLdapSettings;
+    property Settings: PLdapClientSettings read GetSettings write SetLdapSettings;
     property Server: RawUtf8 read GetServer write SetServer;
     property User: RawUtf8 read GetUser write SetUser;
     property Password: SpiUtf8 read GetPassword write SetPassword;
@@ -623,8 +621,8 @@ begin
     msg := Format(stLdapError, [RawLdapErrorString(err)]);
     c := 0;
     // TODO check with OpenLdap
-    if (ldap_get_option(pld, LDAP_OPT_SERVER_EXT_ERROR, @c) = LDAP_SUCCESS) then
-      msg := msg + #10 + SysErrorMessage(c);
+    //if (ldap_get_option(pld, LDAP_OPT_SERVER_EXT_ERROR, @c) = LDAP_SUCCESS) then
+    //  msg := msg + #10 + SysErrorMessage(c);
     //
 
   if Critical then
@@ -644,12 +642,12 @@ end;
 
 function TLDAPSession.GetServer: RawUtf8;
 begin
-  Result := Settings.TargetHost;
+  Result := Settings^.TargetHost;
 end;
 
-function TLDAPSession.GetSettings: TLdapClientSettings;
+function TLDAPSession.GetSettings: PLdapClientSettings;
 begin
-  Result := ldappld.Settings;
+  Result := @ldappld.Settings;
 end;
 
 function TLDAPSession.GetTls: Boolean;
@@ -662,11 +660,11 @@ begin
   Result := Settings.UserName;
 end;
 
-procedure TLDAPSession.SetLdapSettings(AValue: TLdapClientSettings);
+procedure TLDAPSession.SetLdapSettings(AValue: PLdapClientSettings);
 begin
   if Settings=AValue then Exit;
   Disconnect;
-  ldappld.Settings.Assign(AValue);
+  ldappld.Settings.Assign(AValue^);
 end;
 
 procedure TLDAPSession.SetPassword(AValue: SpiUtf8);
@@ -1186,6 +1184,7 @@ var
   res: Cardinal;
   v: Pointer;
   tempPassword: SpiUtf8;
+  dnsRes: TDnsResult;
 begin
   if (User<>'') and (Password='') then
   begin
@@ -1227,7 +1226,8 @@ begin
           begin
             if ldapAuthMethod = AUTH_GSS_SASL then
               LdapCheck(ldap_set_option(ldappld,LDAP_OPT_ENCRYPT, LDAP_OPT_ON));
-            DnsLdapControlers(Server, false, @Settings.KerberosDN);
+            if DnsQuery(Server, dnsRes) and (Length(dnsRes.Authority) > 0) then
+              Settings.KerberosDN := dnsRes.Authority[0].QName;
             ldappld.BindSaslKerberos;
             res:=ldappld.ResultCode;
          end;

@@ -28,11 +28,7 @@ unit Group;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls, ExtCtrls, Samba, Posix, LDAPClasses, Core, TemplateCtrl,
   Constant, Connection, mormot.core.base;

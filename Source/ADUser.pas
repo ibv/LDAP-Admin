@@ -24,7 +24,9 @@ unit ADUser;
 interface
 
 uses
+ {$ifdef WINDOWS}
   Windows,
+ {$endif}
   LinLDAP,DateTimePicker, Graphics, LCLIntf, LCLType,
   Messages, SysUtils, Classes, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, ComCtrls, LDAPClasses,  ImgList, Constant,

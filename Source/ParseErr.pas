@@ -28,11 +28,7 @@ unit ParseErr;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, mormot.core.base;
 
@@ -58,7 +54,7 @@ procedure ParseError(AType: TMsgDlgType; AOwner: TComponent; const FileName, Err
 implementation
 
 uses
-  MMSystem, Windows,
+  {$ifdef WINDOWS} MMSystem, Windows, {$endif}
   Misc, Constant, HtmlMisc;
 
 {$R *.dfm}

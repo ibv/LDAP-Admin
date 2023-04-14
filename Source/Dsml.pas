@@ -43,7 +43,7 @@ type
 
 implementation
 
-uses Sysutils, WinBase64;
+uses Sysutils, mormot.core.buffers;
 
 constructor TDsmlTree.Create;
 begin
@@ -69,7 +69,7 @@ var
   begin
     if Value.DataType <> dtText then
     begin
-      v := Base64Encode(Pointer(Value.Data)^, Value.DataSize);
+      v := BinToBase64(PAnsiChar(Value.Data), Value.DataSize);
       Node.Attributes.Add('encoding=base64');
     end
     else

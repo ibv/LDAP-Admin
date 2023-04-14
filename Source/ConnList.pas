@@ -28,11 +28,7 @@ unit ConnList;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,System.Actions,ToolWin,System.Contnrs
-{$ELSE}
   LCLIntf, LCLType,Contnrs, Messages,
-{$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ComCtrls, StdCtrls, Menus, ImgList, ExtCtrls, Buttons, Config,
   ActnList, DlgWrap, mormot.core.base;

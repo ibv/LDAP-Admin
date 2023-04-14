@@ -28,7 +28,6 @@ unit Misc;
 interface
 
 uses
-  Windows,
   LCLIntf, LCLType, lazutf8, types,
   LDAPClasses, Classes, SysUtils, Forms, Dialogs, Controls,
      ExtCtrls, ComCtrls, Graphics, mormot.core.base;
@@ -90,7 +89,8 @@ implementation
 {$I LdapAdmin.inc}
 
 uses StdCtrls, Messages, Constant, Config, StrUtils, {$IFDEF VARIANTS} ,variants {$ENDIF}
-     WinBase64, DateUtils, Math, Buttons, HtmlMisc, mormot.core.text;
+     DateUtils, Math, Buttons, HtmlMisc, mormot.core.text, mormot.core.buffers
+     {$ifdef WINDOWS}, Windows{$endif};
 
 function TreeSortProc(Node1, Node2: TTreeNode): Integer;
 var
@@ -311,7 +311,7 @@ begin
   if Value.DataType = dtText then
     Result := Value.AsString
   else
-    Result := Base64Encode(Pointer(Value.Data)^, Value.DataSize)
+    Result := BinToBase64(PAnsiChar(Value.Data), Value.DataSize);
 end;
 
 { Time conversion routines }
@@ -904,9 +904,9 @@ end;
 
 function GetTextExtent(Text: RawUtf8; Font: TFont): TSize;
 var
-  c: TBitmap;
+  c: Graphics.TBitmap;
 begin
-  c := TBitmap.Create;
+  c := Graphics.TBitmap.Create;
   try
     c.Canvas.Font.Assign(Font);
     Result := c.Canvas.TextExtent(Text);
@@ -1057,7 +1057,7 @@ begin
           if Captions[ci] <> '' then
           begin
             Caption := Captions[ci];
-            TextRect := Rect(0,0,0,0);
+            TextRect := TRect.Create(0,0,0,0);
             {$IFDEF MSWINDOWS}
             windows.DrawText( canvas.handle, PChar(Captions[ci]), -1, TextRect,
                               DT_CALCRECT or DT_LEFT or DT_SINGLELINE);
@@ -1370,7 +1370,7 @@ begin
   try
     ms.LoadFromFile(FileName);
     ms.Position := 0;
-    Result := Base64Encode(ms.Memory^, ms.Size);
+    Result := BinToBase64(PChar(ms.Memory), ms.Size);
   finally
     ms.free;
   end;

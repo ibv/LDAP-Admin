@@ -39,7 +39,7 @@ unit ActiveDs_TLB;
 interface
 
 uses
-  ActiveX, OleServer, Windows,
+  ActiveX, OleServer,
   LCLIntf, LCLType, LMessages,
   Classes, Graphics;
 

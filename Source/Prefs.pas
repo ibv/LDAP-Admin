@@ -28,11 +28,7 @@ unit Prefs;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls, ExtCtrls, Constant, Samba, LDAPClasses, Connection;
 

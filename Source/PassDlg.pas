@@ -28,11 +28,7 @@ unit PassDlg;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls, Buttons,
      LDAPClasses, Password, Samba, ExtCtrls, mormot.core.base;
 

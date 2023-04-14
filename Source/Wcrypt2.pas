@@ -55,14 +55,8 @@ unit Wcrypt2;
 
 interface
 
-{$IFnDEF FPC}
-uses
-  Windows;
-{$ELSE}
 uses
   LCLIntf, LCLType, LMessages, Types;
-{$ENDIF}
-
 
 const
   ADVAPI32    = 'advapi32.dll';

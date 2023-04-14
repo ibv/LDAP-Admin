@@ -29,11 +29,7 @@ unit EditEntry;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows, WinLDAP, FileUtil,System.Actions,
-{$ELSE}
   LCLIntf, LCLType, {MouseAndKeyInput,} LazFileUtils, LCLMessageGlue,
-{$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, ComCtrls, Grids, LDAPClasses, Constant,
   Menus, ActnList,  IControls, Schema, Templates,

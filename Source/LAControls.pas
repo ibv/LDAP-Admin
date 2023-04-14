@@ -27,7 +27,6 @@ unit LAControls;
 
 interface
 uses
-  Windows,
   LCLIntf, LCLType, LMessages,
   Messages, Controls, StdCtrls, Classes, Graphics;
 

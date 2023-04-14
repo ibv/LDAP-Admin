@@ -29,11 +29,7 @@ unit MailGroup;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls, ExtCtrls, Samba, Posix, LDAPClasses, Config, Postfix,
   Constant, mormot.core.base;

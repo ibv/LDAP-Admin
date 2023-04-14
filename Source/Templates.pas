@@ -665,10 +665,9 @@ var
 implementation
 
 uses
-   variants,
-  Windows,
-  WinBase64, {SysUtils,} Misc, Params, Config, Constant,  LinLDAP,
-  Connection,Pickup, ParseErr {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+   variants, {$ifdef WINDOWS} Windows, {$endif}{SysUtils,} Misc, Params, Config, Constant,  LinLDAP,
+  Connection,Pickup, ParseErr, mormot.core.buffers
+   {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
 const
   CONTROLS_CLASSES: array[0..21] of TTControl = ( TTemplateCtrlEdit,
@@ -3562,9 +3561,9 @@ var
   procedure LoadIcon(var Icon: Graphics.TBitmap; Node: TXmlNode);
   var
     Stream: TMemoryStream;
-    Buffer: Pointer;
     vLen: Integer;
     FileName, Bitmap, TransColor: RawUtf8;
+    Buffer: RawByteString;
     i: Integer;
   begin
     for i := 0 to Node.Count - 1 do with Node[i] do
@@ -3586,14 +3585,8 @@ var
     begin
       Stream := TMemoryStream.Create;
       try
-        vLen := Length(Bitmap);
-        GetMem(Buffer, Base64DecSize(vLen));
-        try
-          vLen := Base64Decode(Bitmap, Buffer^);
-          Stream.WriteBuffer(Buffer^, vLen);
-        finally
-          FreeMem(Buffer);
-        end;
+        Buffer := Base64ToBin(Bitmap);
+        Stream.WriteBuffer(Buffer[1], vLen);
         Stream.Position := 0;
         Icon.LoadFromStream(Stream);
       finally
@@ -3809,26 +3802,9 @@ begin
 end;
 
 function TTemplateAttributeValue.GetString: RawUtf8;
-var
-  vLen: Integer;
-  {$IFDEF UNICODE}
-  aOut: AnsiString;
-  {$ENDIF}
 begin
   if Base64 then
-  begin
-    vLen := Length(Value);
-    {$IFDEF UNICODE}
-    SetLength(aOut, Base64decSize(vLen));
-    vLen := Base64Decode(AnsiString(Value)[1], vLen, aOut[1]);
-    SetLength(aOut, vLen);
-    Result := RawUtf8(aOut);
-    {$ELSE}
-    SetLength(Result, Base64decSize(vLen));
-    vLen := Base64Decode(Value[1], vLen, Result[1]);
-    SetLength(Result, vLen);
-    {$ENDIF}
-  end
+    Result := Base64ToBin(Value)
   else
     Result := Value;
 end;
@@ -3840,19 +3816,12 @@ end;
 
 procedure TTemplateAttributeValue.SaveToStream(AStream: TStream);
 var
-  Buffer: Pointer;
-  vLen: Integer;
+  Buffer: RawByteString;
 begin
   if Base64 then
   begin
-    vLen := Length(Value);
-    GetMem(Buffer, Base64DecSize(vLen));
-    try
-      vLen := Base64Decode(Value[1], vLen, Buffer^);
-      AStream.WriteBuffer(Buffer^, vLen);
-    finally
-      FreeMem(Buffer);
-    end;
+    Buffer := Base64ToBin(Value);
+    AStream.WriteBuffer(Buffer[1], Length(Buffer));
   end
   else
     AStream.WriteBuffer(Value[1], Length(Value));

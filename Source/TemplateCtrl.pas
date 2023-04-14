@@ -28,11 +28,7 @@ unit TemplateCtrl;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   Script,
   Classes, Forms, Controls, ComCtrls, StdCtrls, ExtCtrls, Templates, LDAPClasses,
      Graphics, Contnrs, Constant, mormot.core.base ;

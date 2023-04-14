@@ -31,11 +31,7 @@ interface
 
 uses
     {$IFDEF VER_D7H}
-{$IFnDEF FPC}
-  Windows, WinLDAP,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   Themes,{$ENDIF}
     Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
     ComCtrls, StdCtrls, LDAPClasses, Menus, ExtCtrls, Sorter,

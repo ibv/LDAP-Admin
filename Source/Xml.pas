@@ -43,11 +43,7 @@ unit Xml;
 interface
 
 uses
-{$IFnDEF FPC}
-  windows,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   sysutils, Classes, TextFile, Contnrs, mormot.core.base;
 
 

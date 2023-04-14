@@ -110,7 +110,7 @@ type
 
 implementation
 
-uses Constant, WinBase64;
+uses Constant, mormot.core.buffers;
 
 { TLDIF }
 
@@ -155,9 +155,10 @@ procedure TLDIF.ParseRecord(Entry: TLdapEntry);
 var
   i, po: Integer;
   Line, s, url: RawUtf8;
-  atName, atValue: RawUtf8;
+  atName: RawUtf8;
   ChangeType: TAttributeOpMode;
   OpType: TValueOpMode;
+  atValue: RawByteString;
 
 function GetNextLine: Boolean;
 begin
@@ -198,11 +199,7 @@ begin
       atValue := ''
     else
     if Line[po + 1] = ':' then
-    {$ifdef mswindows}
-      atValue := Base64Decode(TrimLeft(Copy(Line, po + 2, MaxInt)))
-    {$else}
-      atValue:=DecodeStringBase64(TrimLeft(Copy(Line, po + 2, MaxInt)))
-    {$endif}
+      atValue := Base64ToBin(TrimLeft(Copy(Line, po + 2, MaxInt)))
     else
     if Line[po + 1] = '<' then
       url := TrimLeft(Copy(Line, po + 2, MaxInt))
@@ -386,12 +383,7 @@ begin
     end
     else
     begin
-      {$ifdef mswindows}
-      s := RawUtf8(Base64Encode(Pointer(Buffer)^, DataSize));
-      {$else}
-      SetString(s, PChar(Buffer), DataSize);
-      s:=EncodeStringBase64(s);
-      {$endif}
+      s := BinToBase64(PAnsiChar(Buffer), DataSize);
       line := line + ': ' + s;
     end;
   end;

@@ -40,7 +40,7 @@ function GetPasswordString(const HashType: THashType; const Password: RawUtf8): 
 
 implementation
 
-uses Sysutils, Unixpass, md5crypt, ShaCrypt, WinBase64;
+uses Sysutils, Unixpass, md5crypt, ShaCrypt, mormot.core.buffers;
 
 function GetSalt(Len: Integer): AnsiString;
 const
@@ -65,19 +65,19 @@ begin
   case HashType of
     chMd4:    begin
                 MD4Full(TMD4Digest(md4Digest), @Password[1], Length(Password));
-                Result := Base64Encode(md4Digest, SizeOf(md4Digest));
+                Result := BinToBase64(PAnsiChar(@md4Digest[0]), SizeOf(md4Digest));
               end;
     chMd5:    begin
                 MD5Full(md5Digest, @Password[1], Length(Password));
-                Result := Base64Encode(md5Digest, SizeOf(md5Digest));
+                Result := BinToBase64(PAnsiChar(@md5Digest[0]), SizeOf(md5Digest));
               end;
     chSha1:   begin
                 SHA1Full(sha1Digest, @Password[1], Length(Password));
-                Result := Base64Encode(sha1Digest, SizeOf(sha1Digest));
+                Result := BinToBase64(PAnsiChar(@sha1Digest[0]), SizeOf(sha1Digest));
               end;
     chRipemd: begin
                 RMD160Full(rmd160Digest, @Password[1], Length(Password));
-                Result := Base64Encode(rmd160Digest, SizeOf(rmd160Digest));
+                Result := BinToBase64(PAnsiChar(@rmd160Digest[0]), SizeOf(rmd160Digest));
               end;
   end;
 end;
@@ -101,7 +101,7 @@ begin
                 SetString(Hash, PAnsiChar(@sha1Digest), sizeof(sha1Digest));
               end;
   end;
-  Result := Base64Encode(Hash + Salt);
+  Result := BinToBase64(Hash + Salt);
 end;
 
 function GetPasswordString(const HashType: THashType; const Password: RawUtf8): RawUtf8;

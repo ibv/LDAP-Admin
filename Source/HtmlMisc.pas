@@ -34,7 +34,9 @@ interface
 
 uses 
   SysUtils,
+  {$ifdef WINDOWS}
    Windows,
+  {$endif}
    Types, Printers,
   LclIntf, LMessages, LclType, LclProc,
   GraphType, Graphics, Controls;

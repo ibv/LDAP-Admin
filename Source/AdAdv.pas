@@ -24,7 +24,9 @@ unit AdAdv;
 interface
 
 uses
+  {$ifdef WINDOWS}
   Windows,
+  {$endif}
   LCLIntf, LCLType,
   Grids,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
