@@ -57,7 +57,7 @@ function InputDlg(ACaption, APrompt: RawUtf8; var AValue: RawUtf8; PasswordChar:
 implementation
 
 {$R *.dfm}
-uses mormot.core.text;
+uses mormot.core.unicode;
 
 
 function InputDlg(ACaption, APrompt: RawUtf8; var AValue: RawUtf8; PasswordChar: Char=#0; AcceptEmpty:Boolean=False; InvalidChars: RawUtf8 = ''): Boolean;

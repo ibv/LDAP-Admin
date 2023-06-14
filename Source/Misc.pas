@@ -89,8 +89,8 @@ implementation
 {$I LdapAdmin.inc}
 
 uses StdCtrls, Messages, Constant, Config, StrUtils, {$IFDEF VARIANTS} ,variants {$ENDIF}
-     DateUtils, Math, Buttons, HtmlMisc, mormot.core.text, mormot.core.buffers
-     {$ifdef WINDOWS}, Windows {$else} ,Unix, LMessages {$endif};
+     DateUtils, Math, Buttons, HtmlMisc, mormot.core.text, mormot.core.buffers,
+     mormot.core.unicode {$ifdef WINDOWS}, Windows {$else} ,Unix, LMessages {$endif};
 
 function TreeSortProc(Node1, Node2: TTreeNode): Integer;
 var

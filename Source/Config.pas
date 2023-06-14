@@ -407,7 +407,8 @@ uses
 {$ENDIF}
 base64,
   Constant, LinLDAP, Dialogs, Forms, StdCtrls, Controls,
-  mormot.core.text, mormot.core.buffers {$IFDEF VER_XEH}, System.Types{$ENDIF};
+  mormot.core.text, mormot.core.unicode,
+  mormot.core.buffers {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 
 function GetIndent(o: TObject): Integer;
