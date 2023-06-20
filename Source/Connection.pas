@@ -27,9 +27,8 @@ unit Connection;
 
 interface
 
-uses Config, Sorter, Schema, LdapClasses, CustomMenus, Controls, Templates,
-     {$ifdef mswindows}WinLDAP, {$else} LinLDAP, {$endif}
-     Constant, TextFile, Bookmarks;
+uses Config, Schema, LdapClasses, CustomMenus, Controls, Templates,
+     LinLDAP, Constant, TextFile, Bookmarks, mormot.core.base, mormot.net.ldap;
 
 const
   { Posix objects }
@@ -93,8 +92,8 @@ type
 
   IDirectoryIdentity = Interface
     function  ClassifyLdapEntry(Entry: TLdapEntry): Integer;
-    function  NewProperty(Owner: TControl; const Index: Integer; const dn: string): Boolean;
-    function  EditProperty(Owner: TControl; const Index: Integer; const dn: string): Boolean;
+    function  NewProperty(Owner: TControl; const Index: Integer; const dn: RawUtf8): Boolean;
+    function  EditProperty(Owner: TControl; const Index: Integer; const dn: RawUtf8): Boolean;
     function  ChangePassword(Entry: TLdapEntry): Boolean;
     function  IsContainer(Index: Integer): Boolean;
     function  CreateMenu: TCustomActionMenu;
@@ -113,8 +112,8 @@ type
     function    GetDirectoryIdentity: IDirectoryIdentity;
     function    GetActionMenu: TCustomActionMenu;
     function    GetSchema: TLdapSchema;
-    function    GetFreeRandomNumber(const Min, Max: Integer; const Objectclass, id: string): Integer;
-    function    GetSequentialNumber(const Min, Max: Integer; const Objectclass, id: string): Integer;
+    function    GetFreeRandomNumber(const Min, Max: Integer; const Objectclass, id: RawUtf8): Integer;
+    function    GetSequentialNumber(const Min, Max: Integer; const Objectclass, id: RawUtf8): Integer;
   public
     constructor Create(Account: TAccount);
     destructor  Destroy; override;
@@ -137,21 +136,23 @@ type
 
   TDBAccount=class(TFakeAccount)
   private
-    FFileName:  string;
+    FFileName:  RawUtf8;
   public
-    property    FileName: string read FFileName write FFileName;
+    property    FileName: RawUtf8 read FFileName write FFileName;
   end;
 
   TEntryNode = class(TLdapEntry)
   private
     fChildren: TLdapEntryList;
   public
-    constructor Create(const ASession: TLDAPSession; const adn: string); override;
+    constructor Create(const ASession: TLDAPSession; const adn: RawUtf8); override;
     destructor  Destroy; override;
     property    Children: TLdapEntryList read fChildren;
   end;
 
   TLoadCallback = procedure(BytesRead: Integer; var Abort: Boolean) of object;
+
+  { TDBConnection }
 
   TDBConnection = class(TConnection)
   private
@@ -159,19 +160,19 @@ type
     fModified:  Boolean;
     fDestroying: Boolean;
     fEncoding:  TFileEncode;
-    function    FindNode(const adn: string): TEntryNode;
+    function    FindNode(const adn: RawUtf8): TEntryNode;
   protected
     function    ISConnected: Boolean; override;
   public
     constructor Create(Account: TDBAccount; CallbackProc: TLoadCallback = nil);
     destructor  Destroy; override;
-    procedure   Search(const Filter, Base: string; const Scope: Cardinal; attrs: PCharArray; const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback = nil); overload; override;
-    function    Lookup(sBase, sFilter, sResult: string; Scope: Cardinal): string; override;
-    function    GetDn(sFilter: string): string; override;
+    procedure   Search(const Filter, Base: RawUtf8; const Scope: TLdapSearchScope; attrs: TRawByteStringDynArray; const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback = nil); overload; override;
+    function    Lookup(sBase, sFilter, sResult: RawUtf8; Scope: TLdapSearchScope): RawUtf8; override;
+    function    GetDn(sFilter: RawUtf8): RawUtf8; override;
     procedure   WriteEntry(Entry: TLdapEntry); override;
     procedure   ReadEntry(Entry: TLdapEntry); override;
-    procedure   DeleteEntry(const adn: string); override;
-    procedure   SaveToFile(FileName: string);
+    procedure   DeleteEntry(const adn: RawUtf8); override;
+    procedure   SaveToFile(FileName: RawUtf8);
     procedure   Connect; override;
     procedure   Disconnect; override;
   end;
@@ -181,8 +182,8 @@ var
 
 implementation
 
-uses SysUtils,  User, Host, Locality, Computer, Group, LDIF, Dialogs,
-     AdObjects, ADUser, AdGroup, AdComputer, AdContainer,
+uses SysUtils,  User, Host, Locality, Computer, Group, Ldif, Dialogs,
+     ADObjects, ADUser, AdGroup, AdComputer, AdContainer,
      {$ifdef mswindows} UiTypes,      {$endif}
      MailGroup, Transport, Ou, Classes, PassDlg, ADPassDlg, Alias, Ast ;
 
@@ -200,8 +201,8 @@ type
   TPosixDirectoryIdentity = class(TCustomDirectoryIdentity, IDirectoryIdentity)
   public
     function  ClassifyLdapEntry(Entry: TLdapEntry): Integer;
-    function  NewProperty(Owner: TControl; const Index: Integer; const dn: string): Boolean;
-    function  EditProperty(Owner: TControl; const Index: Integer; const dn: string): Boolean;
+    function  NewProperty(Owner: TControl; const Index: Integer; const dn: RawUtf8): Boolean;
+    function  EditProperty(Owner: TControl; const Index: Integer; const dn: RawUtf8): Boolean;
     function  ChangePassword(Entry: TLdapEntry): Boolean;
     function  IsContainer(Index: Integer): Boolean;
     function  CreateMenu: TCustomActionMenu;
@@ -210,8 +211,8 @@ type
   TADDirectoryIdentity = class(TCustomDirectoryIdentity, IDirectoryIdentity)
   public
     function  ClassifyLdapEntry(Entry: TLdapEntry): Integer;
-    function  NewProperty(Owner: TControl; const Index: Integer; const dn: string): Boolean;
-    function  EditProperty(Owner: TControl; const Index: Integer; const dn: string): Boolean;
+    function  NewProperty(Owner: TControl; const Index: Integer; const dn: RawUtf8): Boolean;
+    function  EditProperty(Owner: TControl; const Index: Integer; const dn: RawUtf8): Boolean;
     function  ChangePassword(Entry: TLdapEntry): Boolean;
     function  IsContainer(Index: Integer): Boolean;
     function  CreateMenu: TCustomActionMenu;
@@ -234,7 +235,7 @@ begin
   Result := Account.DirectoryType;
   if (Result = dtAutodetect) and Connected then
   begin
-    if Lookup('', sAnyClass,'isGlobalCatalogReady', LDAP_SCOPE_BASE) <> '' then
+    if Lookup('', sAnyClass,'isGlobalCatalogReady', lssBaseObject) <> '' then
       Result := dtActiveDirectory
     else
       Result := dtPosix;
@@ -315,7 +316,7 @@ end;
 
 { Get random free uidNumber from the pool of available numbers, return -1 if
   no more free numbers are available }
-function TConnection.GetFreeRandomNumber(const Min, Max: Integer; const Objectclass, id: string): Integer;
+function TConnection.GetFreeRandomNumber(const Min, Max: Integer; const Objectclass, id: RawUtf8): Integer;
 var
   i: Integer;
   uidpool: array of Word;
@@ -331,7 +332,7 @@ begin
   begin
     r := Random(N);
     Result := Min + uidpool[r];
-    if Lookup(Base, Format('(&(objectclass=%s)(%s=%d))', [Objectclass, id, Result]), 'objectclass', LDAP_SCOPE_SUBTREE) = '' then
+    if Lookup(Base, Format('(&(objectclass=%s)(%s=%d))', [Objectclass, id, Result]), 'objectclass', lssWholeSubtree) = '' then
       exit;
     uidpool[r] := uidpool[N - 1];
     dec(N);
@@ -341,20 +342,15 @@ end;
 
 { Get sequential free uidNumber from the pool of available numbers, return -1 if
   no more free numbers are available }
-function TConnection.GetSequentialNumber(const Min, Max: Integer; const Objectclass, id: string): Integer;
+function TConnection.GetSequentialNumber(const Min, Max: Integer; const Objectclass, id: RawUtf8): Integer;
 var
-  attrs: PCharArray;
   i, n: Integer;
   SearchList: TLdapEntryList;
 begin
   Result := Min;
-  SetLength(attrs, 2);
-  attrs[0] := PChar(id);
-  attrs[1] := nil;
-
   SearchList := TLdapEntryList.Create;
   try
-    Search(Format('(objectclass=%s)', [Objectclass]), Base, LDAP_SCOPE_ONELEVEL, attrs, false, SearchList);
+    Search(Format('(objectclass=%s)', [Objectclass]), Base, lssSingleLevel, [id], false, SearchList);
     for i := 0 to SearchList.Count - 1 do
     begin
       n := StrToInt(SearchList[i].Attributes[0].AsString);
@@ -428,11 +424,11 @@ end;
 
 function TPosixDirectoryIdentity.ClassifyLdapEntry(Entry: TLdapEntry): Integer;
 var
-  Attr: TLdapAttribute;
+  Attr: LdapClasses.TLdapAttribute;
   i: integer;
-  s: string;
+  s: RawUtf8;
 
-  function IsComputer(const s: string): Boolean;
+  function IsComputer(const s: RawUtf8): Boolean;
   var
     i: Integer;
   begin
@@ -490,7 +486,7 @@ begin
   end;
 end;
 
-function  TPosixDirectoryIdentity.NewProperty(Owner: TControl; const Index: Integer; const dn: string): Boolean;
+function  TPosixDirectoryIdentity.NewProperty(Owner: TControl; const Index: Integer; const dn: RawUtf8): Boolean;
 begin
   Result := true;
   case Index of
@@ -509,7 +505,7 @@ begin
   end;
 end;
 
-function TPosixDirectoryIdentity.EditProperty(Owner: TControl; const Index: Integer; const dn: string): Boolean;
+function TPosixDirectoryIdentity.EditProperty(Owner: TControl; const Index: Integer; const dn: RawUtf8): Boolean;
 begin
   Result := true;
   case Index of
@@ -558,9 +554,9 @@ end;
 
 function TADDirectoryIdentity.ClassifyLdapEntry(Entry: TLdapEntry): Integer;
 var
-  Attr: TLdapAttribute;
+  Attr: LdapClasses.TLdapAttribute;
   i: integer;
-  s: string;
+  s: RawUtf8;
 begin
   Result := oidEntry;
   Attr := Entry.ObjectClass;
@@ -597,7 +593,7 @@ begin
 
 end;
 
-function  TADDirectoryIdentity.NewProperty(Owner: TControl; const Index: Integer; const dn: string): Boolean;
+function  TADDirectoryIdentity.NewProperty(Owner: TControl; const Index: Integer; const dn: RawUtf8): Boolean;
 begin
   Result := true;
   case Index of
@@ -613,7 +609,7 @@ begin
   end;
 end;
 
-function TADDirectoryIdentity.EditProperty(Owner: TControl; const Index: Integer; const dn: string): Boolean;
+function TADDirectoryIdentity.EditProperty(Owner: TControl; const Index: Integer; const dn: RawUtf8): Boolean;
 begin
   Result := true;
   case Index of
@@ -651,7 +647,7 @@ end;
 
 { Local LDAP DB }
 
-constructor TEntryNode.Create(const ASession: TLDAPSession; const adn: string);
+constructor TEntryNode.Create(const ASession: TLDAPSession; const adn: RawUtf8);
 begin
   inherited;
   fChildren := TLdapEntryList.Create;
@@ -664,7 +660,7 @@ begin
 end;
 
 { Finds a matching node for a whole or a part of a dn }
-function TDBConnection.FindNode(const adn: string): TEntryNode;
+function TDBConnection.FindNode(const adn: RawUtf8): TEntryNode;
 var
   i: Integer;
   Parent: TEntryNode;
@@ -742,7 +738,10 @@ end;
 
 { Note: NoValue and attrs are ignored, for the time being all attributes and values are returned }
 { Also: Implement FirstOnly to stop traversing of the tree tree when only one result is expected (usefull for Lookup and GetDn functions }
-procedure TDBConnection.Search(const Filter, Base: string; const Scope: Cardinal; attrs: PCharArray; const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback = nil);
+procedure TDBConnection.Search(const Filter, Base: RawUtf8;
+  const Scope: TLdapSearchScope; attrs: TRawByteStringDynArray;
+  const NoValues: LongBool; Result: TLdapEntryList; SearchProc: TSearchCallback
+  );
 var
   BaseNode: TEntryNode;
   FilterNode :TAstNode;
@@ -812,7 +811,7 @@ begin
     Node.Clone(Entry);
 end;
 
-procedure TDBConnection.DeleteEntry(const adn: string);
+procedure TDBConnection.DeleteEntry(const adn: RawUtf8);
 var
   ParentNode: TentryNode;
   i: Integer;
@@ -828,7 +827,7 @@ begin
   ParentNode.Children.Delete(i);
 end;
 
-procedure TDBConnection.SaveToFile(FileName: string);
+procedure TDBConnection.SaveToFile(FileName: RawUtf8);
 var
   ldif: TLDIFFile;
   i: Integer;
@@ -884,7 +883,8 @@ begin
   Result := Assigned(Root);
 end;
 
-function TDBConnection.Lookup(sBase, sFilter, sResult: string; Scope: Cardinal): string;
+function TDBConnection.Lookup(sBase, sFilter, sResult: RawUtf8;
+  Scope: TLdapSearchScope): RawUtf8;
 var
   l: TLdapEntryList;
 
@@ -901,14 +901,14 @@ begin
   end;
 end;
 
-function TDBConnection.GetDn(sFilter: string): string;
+function TDBConnection.GetDn(sFilter: RawUtf8): RawUtf8;
 var
   l: TLdapEntryList;
 
 begin
   l := TLdapEntryList.Create;
   try
-    Search(sFilter, Base, LDAP_SCOPE_SUBTREE, nil, true, l);
+    Search(sFilter, Base, lssWholeSubtree, nil, true, l);
     if l.Count > 0 then
       Result := l[0].dn
     else

@@ -6,13 +6,8 @@ unit Gss;
 
 interface
 
-{$IFnDEF FPC}
 uses
-  Windows;
-{$ELSE}
-uses
-  LCLIntf, LCLType, LMessages;
-{$ENDIF}
+  LCLIntf, LCLType;
 
 
 type

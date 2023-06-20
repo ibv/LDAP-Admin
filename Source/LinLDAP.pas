@@ -29,16 +29,9 @@ unit LinLDAP;
 
 interface
 
-{$IFnDEF FPC}
 uses
-  Windows;
-{$ELSE}
-uses
-  SysUtils, ldapsend, ssl_openssl,
-  Classes, LazFileUtils,
-  LCLIntf, LCLType, LMessages, Ctypes, Gss;
-{$ENDIF}
-
+  SysUtils, Classes, LazFileUtils, mormot.net.ldap ,
+  LCLIntf, LCLType, mormot.core.base;
 
 {$HPPEMIT '#ifndef LDAP_CLIENT_DEFINED'}
 {$HPPEMIT '#pragma option push -b -a8 -pc -A- /*P_O_Push_S*/'}
@@ -102,7 +95,7 @@ const
   //
 
   {$EXTERNALSYM LDAP_PORT}
-  LDAP_PORT               = 389;
+  LDAP_PORT               = '389';
   {$EXTERNALSYM LDAP_SSL_PORT}
   LDAP_SSL_PORT           = 636;
   {$EXTERNALSYM LDAP_GC_PORT}
@@ -1076,14 +1069,14 @@ type
 // The following two types don't have a TLDAPxxx type declared, since they are
 // meant as opaque pointer types only, so a TLDAPxxx is not needed.
 
-  {$EXTERNALSYM PLDAPSearch}
+  //{$EXTERNALSYM PLDAPSearch}
   PLDAPSearch = ^LDAPSearch;
-  {$EXTERNALSYM LDAPSearch}
+  //{$EXTERNALSYM LDAPSearch}
   LDAPSearch = record
-     Base: PAnsiChar;
-     Scope: cardinal;
-     Filter: PAnsiChar;
-     attrs: PChar;
+     Base: RawUtf8;
+     Scope: TLdapSearchScope;
+     Filter: RawUtf8;
+     attrs: TRawByteStringDynArray;
      NoValues: cardinal;
   end;
 
@@ -1281,114 +1274,42 @@ const
   {$EXTERNALSYM LDAP_OPT_REF_DEREF_CONN_PER_MSG}
   LDAP_OPT_REF_DEREF_CONN_PER_MSG = $94;
 
-  ///LDAPLib = 'wldap32.dll';
-  //LDAPLib = 'libldap.so';
 
+  function ldap_explode_dn(dn: string; list: TStringList): boolean; overload;
 
-  function ldap_explode_dn(dn: string; notypes: ULONG; list: TStringList): boolean; overload;
+  function ldap_get_option(ld: TLdapClient; option: integer; outvalue: pointer): ULONG;
 
-  function ldap_value_free(vals: PPChar): ULONG;
+  function ldap_get_values(entry: TLDAPResult; attr: RawUtf8): TRawUtf8DynArray;
 
-  function ldap_get_option(ld: TLDAPsend; option: integer; outvalue: pointer): ULONG;
+  function ldap_first_entry(ld: TLdapClient): TLDAPResult;
 
-  function ldap_err2string(ld: TLDAPsend;err: ULONG): PChar;
+  function ldap_next_entry(ld: TLdapClient; entry: TLDAPResult): TLDAPResult;
 
-  procedure ldap_memfree(Block: PChar);
+  function ldap_search_s(ld: TLdapClient; const base: RawUtf8; scope: TLDAPSearchScope;
+           const filter: RawUtf8; Attributes: TRawByteStringDynArray): ULONG;
 
-  {
-  function ldap_first_attribute(ld: TLDAPsend; entry: TLDAPsend;
-           var ptr: PBerElement): PChar;
-  function ldap_next_attribute(ld: TLDAPsend; entry: TLDAPsend;
-           ptr: PBerElement): PChar;
-
-  function ldap_get_values_len(ExternalHandle: TLDAPsend; Message: TLDAPsend;
-                    attr: PChar): PPLDAPBerVal;
-  }
-  function ldap_get_values(ld: TLDAPsend; entry: TLDAPResult; attr: PChar): PPChar;
-
-
-  function ldap_value_free_len(vals: PPLDAPBerVal): ULONG;
-
-  procedure ber_free(var BerElement: PBerElement; fbuf: Integer);
-
-  function ldap_first_entry(ld: TLDAPsend; res: TLDAPsend): TLDAPResult;
-
-  function ldap_get_dn(ld: TLDAPsend; entry: TLDAPResult): PChar;
-
-  function ldap_next_entry(ld: TLDAPsend; entry: TLDAPResult): TLDAPResult;
-
-  function ldap_msgfree(res: TLDAPsend): ULONG;
-
-  function ldap_search_s(ld: TLDAPsend; base: PChar; scope: ULONG;
-           filter, attrs:  PChar; attrsonly: ULONG;
-           var res: TLDAPsend): ULONG;
-
-  function ldap_search_init_page(ExternalHandle: TLDAPsend;
-           DistinguishedName: PChar; ScopeOfSearch: ULONG; SearchFilter: PChar;
-           AttributeList: PChar; AttributesOnly: ULONG;
-           var ServerControls, ClientControls: PLDAPControl;
-           PageTimeLimit, TotalSizeLimit: ULONG;
-           var SortKeys: PLDAPSortKey): PLDAPSearch;
+  function ldap_search_init_page(pld: TLdapClient;
+           const DistinguishedName: RawUtf8; ScopeOfSearch: TLdapSearchScope; const SearchFilter: RawUtf8;
+           AttributeList: TRawByteStringDynArray; PageTimeLimit, TotalSizeLimit: ULONG; AttributesOnly: Boolean): PLDAPSearch;
 
   function LdapGetLastError: ULONG;
 
-  function ldap_get_next_page_s(ExternalHandle: TLDAPsend; SearchHandle: PLDAPSearch;
-           var timeout: TLDAPTimeVal; PageSize: ULONG; var TotalCount: ULONG;
-           var Res: TLDAPsend): ULONG;
+  function ldap_get_next_page_s(pld: TLdapClient; SearchHandle: PLDAPSearch;
+           TimeOut, PageSize: ULONG; var TotalCount: ULONG): ULONG;
 
   function ldap_search_abandon_page(SearchBlock: PLDAPSearch): ULONG;
 
-  function ldap_add_s(ld: TLDAPsend; dn: PChar; attrs: TLDAPAttributeList): ULONG;
-
-  //function ldap_modify_s(ld: TLDAPsend; dn: PChar; mods: PLDAPMod): ULONG;
-  function ldap_modify_s(ld: TLDAPsend; dn: PChar; ModOp: TLDAPModifyOp; const Value: TLDAPAttribute): ULONG;
-
-
-  function ldap_rename_ext_s(ld: TLDAPSend; dn, NewRDN, NewParent: PChar; DeleteOldRdn: Integer;
-                              var ServerControls, ClientControls: PLDAPControl): ULONG;
-
-
-  function ldap_delete_s(ld: TLDAPsend; dn: PChar): ULONG;
-
-
-  function ldap_start_tls_s( ExternalHandle: TLDAPsend; ServerReturnValue: PULONG;
-                           res: PPLDAPMessage; ServerControls: PPLDAPControl;
-                           ClientControls: PPLDAPControl): ULONG;
-
-
-  function ldap_stop_tls_s( ExternalHandle: TLDAPsend): BOOLEAN;
-
-  function ldap_set_option(ld: TLDAPsend; option: integer; invalue: pointer): ULONG;
-
-  function ldap_sslinit(ld: TLDAPsend; HostName: AnsiString; PortNumber: ULONG; secure: integer): boolean;
-
-  function ldap_init(ld: TLDAPsend;HostName: AnsiString; PortNumber: ULONG): boolean;
-
-
-  function ldap_bind_s(ld: TLDAPsend; dn, cred: PChar; method: ULONG): ULONG;
-
-  //function ldap_simple_bind_s(ld: PLDAP2; dn, passwd: PChar): ULONG;
-  {$EXTERNALSYM ldap_simple_bind_s}
-  function ldap_simple_bind_s(ld: TLDAPsend; dn, passwd: PChar): ULONG;
-  {
-  function ldap_simple_bind_s(
-	ld		: PLDAP;
-	const dn	: pcchar;
-	const passwd	: pcchar;
-	); cint; cdecl; external;
-   }
-
-
-  function ldap_unbind_s(ld: TLDAPsend): ULONG;
-
+  function ldap_set_option(ld: TLdapClient; option: integer; invalue: pointer): ULONG;
 
   procedure SaveLogfile(st: string);
 
 implementation
 
+uses
+  mormot.net.dns;
 
 
-function ldap_explode_dn(dn: string; notypes: ULONG; list: TStringList): boolean;
+function ldap_explode_dn(dn: string; list: TStringList): boolean;
 begin
   result:=false;
   if length(dn)=0 then exit;
@@ -1397,28 +1318,10 @@ begin
 end;
 
 
-
-
-function ldap_value_free(vals: PPChar): ULONG;
+function ldap_get_option(ld: TLdapClient; option: integer; outvalue: pointer): ULONG;
 begin
-  //ldap.ldap_value_free_len(@vals);
-end;
-
-function ldap_get_option(ld: TLDAPsend; option: integer; outvalue: pointer): ULONG;
-begin
+  Result := 0;
   //result:=ldap.ldap_get_option(ld,option, outvalue);
-end;
-
-
-function ldap_err2string(ld: TLDAPsend; err: ULONG): PChar;
-begin
-  result:=PChar(ld.GetErrorString(err));
-end;
-
-
-procedure ldap_memfree(Block: PChar);
-begin
-
 end;
 
 {
@@ -1442,53 +1345,27 @@ begin
 end;
 }
 
-function ldap_get_values(ld: TLDAPsend; entry: TLDAPResult; attr: PChar): PPChar;
+function ldap_get_values(entry: TLDAPResult; attr: RawUtf8): TRawUtf8DynArray;
 var
-  i: integer;
   LDAPAttr: TLDAPAttribute;
-  p: string;
-  a: PCharArray;
 begin
   result:=nil;
   LDAPAttr:=entry.Attributes.Find(attr);
   if LDAPAttr<> nil then
-  begin
-    SetLength(a, LDAPAttr.Count+1);
-    for i:=0 to LDAPAttr.Count-1 do
-    begin
-      a[i]:=PChar(LDAPattr[i]);
-    end;
-    a[LDAPAttr.Count]:=nil;
-    result:=@a[0];
-  end;
+    Result := LDAPAttr.GetAllReadable;
 end;
 
-
-function ldap_value_free_len(vals: PPLDAPBerVal): ULONG;
-begin
-   //result:=(ldap.ldap_value_free_len(@vals));
-end;
-
-
-procedure ber_free(var BerElement: PBerElement; fbuf: Integer);
-begin
-
-end;
-
-
-
-
-function ldap_first_entry(ld: TLDAPsend; res: TLDAPsend): TLDAPResult;
+function ldap_first_entry(ld: TLdapClient): TLDAPResult;
 begin
   result:=nil;
-  if (ld.SearchResult.Count > 0) and (ld.SearchResult[0].Attributes.Count > 0) then
+  if (ld.SearchResult.Count > 0) and (ld.SearchResult.Items[0].Attributes.Count > 0) then
   begin
     result:=ld.SearchResult.Items[0];
   end;
 end;
 
 
-function ldap_next_entry(ld: TLDAPsend; entry: TLDAPResult): TLDAPResult;
+function ldap_next_entry(ld: TLdapClient; entry: TLDAPResult): TLDAPResult;
 var
   i: integer;
 begin
@@ -1497,33 +1374,19 @@ begin
   i:=0;
   while i < LD.SearchResult.Count-1 do
   begin
-    if ld.SearchResult[i].ObjectName = entry.ObjectName then
+    if ld.SearchResult.Items[i].ObjectName = entry.ObjectName then
     begin
-      result:=ld.SearchResult[i+1];
+      result:=ld.SearchResult.Items[i+1];
       break;
     end;
     inc(i);
   end;
 end;
 
-
-function ldap_get_dn(ld: TLDAPsend; entry: TLDAPResult): PChar;
-begin
-  result:=PChar(entry.ObjectName);
-end;
-
-
-function ldap_msgfree(res: TLDAPsend): ULONG;
-begin
-
-end;
-
-
 procedure SaveLogfile(st: string);
 var
   FileName: string;
   LogFile: TextFile;
-  i: Integer;
 begin
   FileName :=  'ldap.log';
   AssignFile(LogFile, FileName);
@@ -1547,74 +1410,57 @@ begin
 end;
 
 
-function ldap_search_s(ld: TLDAPsend; base: PChar; scope: ULONG;
-  filter, attrs: PChar; attrsonly: ULONG;
-  var res: TLDAPsend): ULONG;
+function ldap_search_s(ld: TLdapClient; const base: RawUtf8;
+  scope: TLDAPSearchScope; const filter: RawUtf8;
+  Attributes: TRawByteStringDynArray): ULONG;
 var
-  lAttribs : TStringList;
-  i        : integer;
+  previousScope: TLdapSearchScope;
 begin
   result:=LDAP_OPERATIONS_ERROR;
-  lAttribs := TStringList.Create;
-  i:=0;
-  if attrs<> nil then
-  begin
-    while PCharArray(attrs)[i] <> nil do
-    begin
-      lAttribs.Add(PCharArray(attrs)[i]);
-      inc(i);
-    end;
-  end;
-  ld.SearchScope:=TLDAPSearchScope(scope);
-  ld.Search(base,false,filter,lAttribs);
-  res:=nil;
-  if ld.SearchResult.Count >0 then
-  begin
-    res:=ld;
-    //SaveLogfile(LDAPResultDump(ld.SearchResult));
+  try
+    previousScope := ld.SearchScope;
+    ld.SearchScope := scope;
+    ld.Search(base, false, filter, Attributes);
+  finally
+    ld.SearchScope := previousScope
   end;
   result := ld.ResultCode;
-  lAttribs.Free;
 end;
 
 
-function ldap_search_init_page(ExternalHandle: TLDAPsend;
-  DistinguishedName: PChar; ScopeOfSearch: ULONG; SearchFilter: PChar;
-  AttributeList: PChar; AttributesOnly: ULONG;
-  var ServerControls, ClientControls: PLDAPControl;
-  PageTimeLimit, TotalSizeLimit: ULONG;
-  var SortKeys: PLDAPSortKey): PLDAPSearch;
+function ldap_search_init_page(pld: TLdapClient;
+  const DistinguishedName: RawUtf8; ScopeOfSearch: TLdapSearchScope;
+  const SearchFilter: RawUtf8; AttributeList: TRawByteStringDynArray;
+  PageTimeLimit, TotalSizeLimit: ULONG; AttributesOnly: Boolean): PLDAPSearch;
 var
   t: PLDAPSearch ;
 begin
-  ExternalHandle.SearchSizeLimit:=TotalSizeLimit;
-  ExternalHandle.SearchTimeLimit:=PageTimeLimit;
-  //ExternalHandle.SearchPageSize:=0;
-  ExternalHandle.SearchCookie:='';
+  pld.SearchSizeLimit:=TotalSizeLimit;
+  pld.SearchTimeLimit:=PageTimeLimit;
+  pld.SearchCookie:='';
+
   t:=new(PLDAPSearch);
   t.Base:=DistinguishedName;
   t.Scope:=ScopeOfSearch;
   t.Filter:=SearchFilter;
   t.attrs:=AttributeList;
-  t.NoValues:=AttributesOnly;
+  t.NoValues:=Ord(AttributesOnly);
   result:=t;
 end;
 
 
-function ldap_get_next_page_s(ExternalHandle: TLDAPsend; SearchHandle: PLDAPSearch;
-  var timeout: TLDAPTimeVal; PageSize: ULONG; var TotalCount: ULONG;
-  var Res: TLDAPsend): ULONG;
+function ldap_get_next_page_s(pld: TLdapClient; SearchHandle: PLDAPSearch;
+  TimeOut, PageSize: ULONG; var TotalCount: ULONG): ULONG;
 begin
-  ExternalHandle.SearchPageSize:=PageSize;
+  pld.SearchPageSize := PageSize;
+  pld.SearchTimeLimit := TimeOut;
   result:=LDAP_NO_RESULTS_RETURNED;
   if TotalCount <> 0 then
   begin
-    result:= ldap_search_s(ExternalHandle,SearchHandle.Base,SearchHandle.Scope,SearchHandle.Filter,SearchHandle.attrs,SearchHandle.NoValues,res);
-    //SaveLogfile(LDAPResultDump(res.SearchResult));
+    result:= ldap_search_s(pld, SearchHandle.Base, SearchHandle.Scope, SearchHandle.Filter, SearchHandle.attrs);
     TotalCount:=0;
-    if ExternalHandle.SearchCookie<>'' then
+    if pld.SearchCookie <> '' then
       inc(TotalCount);
-    Res:=ExternalHandle;
   end;
 end;
 
@@ -1629,72 +1475,12 @@ begin
   end;
 end;
 
-
-
 function LdapGetLastError: ULONG;
 begin
   result:=LDAP_NOT_SUPPORTED;
 end;
 
-
-
-function ldap_add_s(ld: TLDAPsend; dn: PChar; attrs: TLDAPAttributeList): ULONG;
-begin
-  ld.Add(dn,attrs);
-  result := ld.ResultCode;
-end;
-
-
-function ldap_modify_s(ld: TLDAPsend; dn: PChar; ModOp: TLDAPModifyOp ; const Value: TLDAPAttribute): ULONG;
-begin
-  ld.Modify(dn, ModOp, Value);
-  result := ld.ResultCode;
-end;
-
-
-function ldap_rename_ext_s(ld: TLDAPSend; dn, NewRDN, NewParent: PChar; DeleteOldRdn: Integer;
-                            var ServerControls, ClientControls: PLDAPControl): ULONG;
-begin
-  result:=LDAP_NOT_SUPPORTED;
-  if ld.Version>= LDAP_VERSION3 then
-  begin
-    ld.ModifyDN(dn, newRDN, newParent, DeleteOldRDN=1);
-    result := ld.ResultCode;
-  end;
-end;
-
-function ldap_delete_s(ld: TLDAPsend; dn: PChar): ULONG;
-begin
-  ld.Delete(dn);
-  result := ld.ResultCode;
-end;
-
-
-function ldap_start_tls_s( ExternalHandle: TLDAPsend; ServerReturnValue: PULONG;
-                           res: PPLDAPMessage; ServerControls: PPLDAPControl;
-                           ClientControls: PPLDAPControl): ULONG;
-begin
-  ExternalHandle.AutoTLS := true;
-  result:=LDAP_SUCCESS;
-end;
-
-{
-function ldap_start_tls_sA( ExternalHandle: TLDAPsend; ServerReturnValue: PULONG;
-                           res: PPLDAPMessage; ServerControls: PPLDAPControl;
-                           ClientControls: PPLDAPControl): ULONG;
-begin
-
-end;
-}
-
-function ldap_stop_tls_s( ExternalHandle: TLDAPsend): BOOLEAN;
-begin
-  ExternalHandle.AutoTLS := false;
-  result:=true;
-
-end;
-
-function ldap_set_option(ld: TLDAPsend; option: integer; invalue: pointer): ULONG;
+function ldap_set_option(ld: TLdapClient; option: integer; invalue: pointer): ULONG;
 begin
   //result:=ldap.ldap_set_option(ld, option, invalue);
   case option of
@@ -1707,50 +1493,6 @@ begin
   end;
   result:=LDAP_SUCCESS;
 end;
-
-
-function ldap_sslinit(ld:TLDAPsend; HostName: AnsiString; PortNumber: ULONG; secure: integer): boolean;
-begin
-  ld.TargetHost:=Hostname;
-  ld.TargetPort:=IntToStr(PortNumber);
-  ld.FullSSL := true;
-  result:=ld.login;
-end;
-
-
-function ldap_init(ld:TLDAPsend; HostName: AnsiString; PortNumber: ULONG): boolean;
-begin
-  ld.TargetHost:=Hostname;
-  ld.TargetPort:=IntToStr(PortNumber);
-  result:=ld.login;
-end;
-
-
-function ldap_simple_bind_s(ld: TLDAPsend; dn, passwd: PChar): ULONG;
-begin
-  result:=LDAP_OPERATIONS_ERROR;
-  ld.UserName:=dn;
-  ld.Password:=passwd;
-  if ld.bind then result:=LDAP_SUCCESS;
-end;
-
-//function ldap_simple_bind_s; external LDAPLib name 'ldap_simple_bind_s';
-
-function ldap_bind_s(ld: TLDAPsend; dn, cred: PChar; method: ULONG): ULONG;
-begin
-  ld.UserName:=PSEC_WINNT_AUTH_IDENTITY(cred)^.User;
-  ld.Password:=PSEC_WINNT_AUTH_IDENTITY(cred)^.Password;
-  ld.BindSasl;
-  result:=ld.ResultCode;
-end;
-
-
-function ldap_unbind_s(ld: TLDAPsend): ULONG;
-begin
-  result:=LDAP_OPERATIONS_ERROR;
-  if ld.Logout then result:=LDAP_SUCCESS;
-end;
-
 
 end.
 

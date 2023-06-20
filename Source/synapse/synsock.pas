@@ -60,7 +60,9 @@ unit synsock;
   {$I ssdotnet.inc}
 {$ELSE}
   {$IFDEF MSWINDOWS}
-    {$I sswin32.inc}
+    //{$I sswin32.inc}
+interface
+implementation
   {$ELSE}
     {$IFDEF WINCE}
       {$I sswin32.inc}  //not complete yet!

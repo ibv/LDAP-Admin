@@ -24,11 +24,10 @@ unit ADUser;
 interface
 
 uses
-  {$ifdef mswindows}
-  Windows,WinLDAP,Vcl.AppEvnts, ShellApi,
-  {$else}
-  LinLDAP,DateTimePicker, Graphics, LCLIntf, LCLType, LMessages,
-  {$endif}
+ {$ifdef WINDOWS}
+  Windows,
+ {$endif}
+  LinLDAP,DateTimePicker, Graphics, LCLIntf, LCLType,
   Messages, SysUtils, Classes, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, ComCtrls, LDAPClasses,  ImgList, Constant,
   ExtDlgs, TemplateCtrl, CheckLst, Connection, AdObjects;
@@ -135,11 +134,7 @@ type
     edPassword1: TEdit;
     edPassword2: TEdit;
     Label14: TLabel;
-    {$ifdef mswindows}
-    ApplicationEvents1: TApplicationEvents;
-    {$else}
     ApplicationEvents1: TApplicationProperties;
-    {$endif}
     wWWHomePage: TEdit;
     Label16: TLabel;
     TimePicker: TDateTimePicker;
@@ -217,8 +212,8 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses Pickup, Input, Misc {$ifdef mswindows}, Jpeg, ActiveDs_TLB, ComObj, ActiveX {$endif}, Main, Templates, Config, adsie,
-     AdPrefs, AdAdv  {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+uses Misc, Main, Templates, Config, adsie,
+     AdPrefs, AdAdv ;
 
 {$R *.dfm}
 
@@ -313,7 +308,7 @@ var
 begin
    ///DragQueryFile(Msg.Drop, 0, @buffer, sizeof(buffer)) ;
    Image1.Picture.LoadFromFile(buffer) ;
-   Entry.JPegPhoto := Image1.Picture.Graphic as TJpegImage;
+   //Entry.JPegPhoto := Image1.Picture.Graphic as TJpegImage;
    DeleteJpegBtn.Enabled := true;
    ImagePanel.Caption := '';
 end;
@@ -528,11 +523,7 @@ begin
    if Checked[afDoNotRequireKerb] then Flags := Flags or UF_DONT_REQ_PREAUTH;
    if Checked[afPasswordNotRequired] then Flags := Flags or UF_PASSWD_NOTREQD;
   end;
-  {$ifdef mswindows}
-  Attr.AsString := UIntToStr(Flags);
-  {$else}
   Attr.AsString := IntToStr(Flags);
-  {$endif}
 end;
 
 procedure TADUserDlg.Save;
@@ -562,31 +553,6 @@ begin
       else
         raise;
   end;
-  {$ifdef mswindows}
-  with clbxAccountOptions do
-  try
-    if Checked[afCanNotChangePwd] <> fCanNotChangePwd then
-    begin
-      try
-        SetUserCannotChangePassword(Entry, Checked[afCanNotChangePwd]);
-      except
-        on E: EOleException do
-        begin
-          if (ResultCode(E.ErrorCode) = ERROR_INVALID_SID) and (fADH.NTDomain <> GetNetBIOSDomain) then
-            raise Exception.CreateFmt(stInvalidSid, [E.Message,
-                  WrapGetComputerNameEx(ComputerNameDnsFullyQualified), fADH.NTDomain]);
-        end
-        else
-          raise;
-      end;
-      fCanNotChangePwd := Checked[afCanNotChangePwd];
-    end;
-  except
-    fCanNotChangePwd := GetUserCanNotChangePassword(Entry);
-    Checked[afCanNotChangePwd] := fCanNotChangePwd;
-    raise;
-  end;
-  {$endif}
 end;
 
 procedure TADUserDlg.Load;
@@ -724,11 +690,7 @@ begin
     { When creating user, UAC flags must be ordered AFTER the unicodePwd attribute
       to be able to create a user with password constrains }
       Entry.Attributes.Add('unicodePwd');
-      {$ifdef mswindows}
-      Entry.AttributesByName['userAccountControl'].AsString := UIntToStr(UF_NORMAL_ACCOUNT);
-      {$else}
       Entry.AttributesByName['userAccountControl'].AsString := IntToStr(UF_NORMAL_ACCOUNT);
-      {$endif}
     end;
     cn.Enabled := true;
     label13.Visible := true;
@@ -741,7 +703,7 @@ begin
     cbUPNDomain.ItemIndex  := cbUpnDomain.Items.IndexOf(Connection.Account.ReadString(rAdUpnDomain));
     if (cbUPNDomain.Items.Count > 0) and (cbUPNDomain.ItemIndex = -1) then
       cbUPNDomain.ItemIndex  := 0;
-    SetTimePickers(Date);
+    SetTimePickers(Now);
   end
   else begin
     //Fill out the form
@@ -751,7 +713,7 @@ begin
     Caption := Format(cPropertiesOf, [cn.Text]);
 
     if rgAccountExpires.ItemIndex = 0 then
-      SetTimePickers(Date);
+      SetTimePickers(Now);
 
     // Initialize the template extensions
     if Assigned(TemplateList) and GlobalConfig.ReadBool(rTemplateAutoload, true) then with CheckListBox do
@@ -796,7 +758,7 @@ begin
   begin
     if not Assigned(Image1.Picture.Graphic) then
     begin
-      Image1.Picture.Graphic := Entry.JPegPhoto;
+      //Image1.Picture.Graphic := Entry.JPegPhoto;
       if Assigned(Image1.Picture.Graphic) then
       begin
         DeleteJpegBtn.Enabled := true;
@@ -997,11 +959,11 @@ begin
   begin
     Image1.Picture.LoadFromFile(OpenPictureDialog.FileName);
     try
-      Entry.JPegPhoto := Image1.Picture.Graphic as TJpegImage;
+      //Entry.JPegPhoto := Image1.Picture.Graphic as TJpegImage;
     except
       on E: Exception do
       begin
-        Image1.Picture.Graphic := Entry.JPegPhoto;
+        //Image1.Picture.Graphic := Entry.JPegPhoto;
         if E is EInvalidCast then
           raise Exception.Create(stImgInvalidForm)
         else
@@ -1021,7 +983,7 @@ end;
 procedure TADUserDlg.DeleteJpegBtnClick(Sender: TObject);
 begin
   Image1.Picture.Bitmap.FreeImage;
-  Entry.JPegPhoto := nil;
+  //Entry.JPegPhoto := nil;
   DeleteJpegBtn.Enabled := false;
 end;
 

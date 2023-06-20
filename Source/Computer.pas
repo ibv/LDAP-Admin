@@ -28,14 +28,10 @@ unit Computer;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, LDAPClasses, Samba, Posix, PropertyObject, Config,
-  Constant, Connection;
+  Buttons, ExtCtrls, LDAPClasses, Samba, Posix, Config,
+  Constant, Connection, mormot.core.base;
 
 type
   TComputerDlg = class(TForm)
@@ -57,7 +53,7 @@ type
     Entry: TLdapEntry;
     Account: TSamba3Computer;
   public
-    constructor Create(AOwner: TComponent; adn: string; AConnection: TConnection; AMode: TEditMode); reintroduce;
+    constructor Create(AOwner: TComponent; adn: RawUtf8; AConnection: TConnection; AMode: TEditMode); reintroduce;
   end;
 
 var
@@ -65,11 +61,9 @@ var
 
 implementation
 
-uses Misc;
-
 {$R *.dfm}
 
-constructor TComputerDlg.Create(AOwner: TComponent; adn: string; AConnection: TConnection; AMode: TEditMode);
+constructor TComputerDlg.Create(AOwner: TComponent; adn: RawUtf8; AConnection: TConnection; AMode: TEditMode);
 var
   i: Integer;
 begin

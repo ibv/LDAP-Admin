@@ -10,9 +10,12 @@ unit smbdes;
 
 interface
 
+uses
+  mormot.core.base;
+
 procedure E_P16(var p14, p16: array of Byte); overload;
-//procedure E_P16(var sp14, sp16: string); overload;
-function E_P16(inStr: string): string; overload;
+//procedure E_P16(var sp14, sp16: RawUtf8); overload;
+function E_P16(inStr: RawUtf8): RawUtf8; overload;
 
 implementation
 
@@ -414,7 +417,7 @@ begin
 	smbhash(@p16[8], @sp8, @p14[7]);
 end;
 
-{procedure E_P16(var sp14, sp16: string);
+{procedure E_P16(var sp14, sp16: RawUtf8);
 const
   sp8: array [0..7] of Byte = ($4b, $47, $53, $21, $40, $23, $24, $25);
 var
@@ -435,7 +438,7 @@ begin
 
 end;}
 
-function E_P16(inStr: string): string;
+function E_P16(inStr: RawUtf8): RawUtf8;
 const
   sp8: array [0..7] of Byte = ($4b, $47, $53, $21, $40, $23, $24, $25);
 var

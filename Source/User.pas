@@ -31,15 +31,11 @@ unit User;
 interface
 
 uses
-{$IFnDEF FPC}
-  ShellApi, Windows, WinLDAP,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, DateTimePicker, {HtmlMisc,} LinLDAP,
-{$ENDIF}
+  LCLIntf, LCLType, DateTimePicker,
   Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, ComCtrls, LDAPClasses, ImgList, Posix, Shadow,
   InetOrg, Postfix, Samba, PropertyObject, Constant, ExtDlgs, TemplateCtrl,
-  CheckLst, Connection;
+  CheckLst, Connection, mormot.core.base;
 
 
 const
@@ -209,7 +205,7 @@ type
       var AllowChange: Boolean);
     procedure cbxGroupsChange(Sender: TObject);
   private
-    ParentDn: string;
+    ParentDn: RawUtf8;
     Entry: TLdapEntry;
     EventHandler: TEventHandler;
     PosixAccount: TPosixAccount;
@@ -228,7 +224,7 @@ type
     TranscodeList: TStringList;
     procedure PanelWindowProc (var Msg : TMessage) ;
     procedure PanelImageDrop (var Msg : TWMDROPFILES) ;
-    function FormatString(const Src : string) : string;
+    function FormatString(const Src : RawUtf8) : RawUtf8;
     procedure SetCheckbox(Cbx: TCheckBox; Check: Boolean);
     procedure LoadControls(Parent: TWinControl);
     procedure PosixPreset;
@@ -239,16 +235,16 @@ type
     procedure SetShadowTime;
     procedure GetShadowTime;
     procedure CheckSchema;
-    function GetGroupQuery(const Invert: Boolean = false): string;
+    function GetGroupQuery(const Invert: Boolean = false): RawUtf8;
     procedure PopulateGroupList;
     procedure MailButtons(Enable: Boolean);
     procedure CopyGroups;
     function FindDataString(dstr: PChar): Boolean;
-    procedure HandleGroupModify(dn: string; ModOp: Integer);
+    procedure HandleGroupModify(dn: RawUtf8; ModOp: Integer);
     procedure SaveGroups;
-    procedure SetText(Edit: TCustomEdit; Value: string);
+    procedure SetText(Edit: TCustomEdit; Value: RawUtf8);
   public
-    constructor Create(AOwner: TComponent; adn: string; AConnection: TConnection; Mode: TEditMode); reintroduce;
+    constructor Create(AOwner: TComponent; adn: RawUtf8; AConnection: TConnection; Mode: TEditMode); reintroduce;
   end;
 
 var
@@ -263,7 +259,7 @@ uses
   Jpeg,
 {$ELSE}
 {$ENDIF}
-  AdvSamba, Pickup, Input, Misc, Main, Templates, Config;
+  AdvSamba, Pickup, Input, Misc, Main, Templates, Config, mormot.net.ldap;
 
 
 {$R *.dfm}
@@ -289,24 +285,24 @@ begin
    ImagePanel.Caption := '';
 end;
 
-function TUserDlg.FormatString(const Src : string) : string;
+function TUserDlg.FormatString(const Src : RawUtf8) : RawUtf8;
 var
   p, p1: PChar;
 
-  function CheckRange(var p1: PChar; src: string): string;
+  function CheckRange(var p1: PChar; src: RawUtf8): RawUtf8;
   var
     p: PChar;
-    rg: string;
+    rg: RawUtf8;
   begin
-    p := CharNext(p1);
+    p := p1 + 1;
     if p^ = '[' then
     begin
-      p := CharNext(p);
+      p := p + 1;
       p1 := p;
       while p1^ <> ']' do begin
         if p1 = #0 then
           raise Exception.Create(stUnclosedParam);
-        p1 := CharNext(p1);
+        p1 := p1 + 1;
       end;
       SetString(rg, p, p1 - p);
       Result := Copy(src, 1, StrToInt(rg));
@@ -319,7 +315,7 @@ begin
   Result := '';
   p := PChar(Src);
   while p^ <> #0 do begin
-    p1 := CharNext(p);
+    p1 := p + 1;
     if (p^ = '%') then
     begin
       case p1^ of
@@ -332,7 +328,7 @@ begin
       else
         Result := Result + p^ + p1^;
       end;
-      p1 := CharNext(p1);
+      p1 := p1 + 1;
     end
     else
       Result := Result + p^;
@@ -357,7 +353,7 @@ procedure TUserDlg.LoadControls(Parent: TWinControl);
 var
   Control: TControl;
   i: Integer;
-  s: string;
+  s: RawUtf8;
 begin
   PageSetup := true;
   for i := 0 to Parent.ControlCount - 1 do
@@ -380,9 +376,9 @@ end;
 
 procedure TUserDlg.PosixPreset;
 var
-  s: string;
+  s: RawUtf8;
 
-  function Transcode(Source: string): string;
+  function Transcode(Source: RawUtf8): RawUtf8;
   var
     i, l: Integer;
     p: PChar;
@@ -404,7 +400,7 @@ var
       if i = -1 then
       begin
         Result := Result + p^;
-        p := CharNext(p);
+        p := p + 1;
       end;
     end;
   end;
@@ -511,7 +507,7 @@ end;
 
 procedure TUserDlg.MailPreset;
 var
-  s: string;
+  s: RawUtf8;
 begin
   if not cbMail.Checked then
     Exit;
@@ -619,7 +615,7 @@ end;
 procedure TUserDlg.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 var
   uidnr: Integer;
-  newdn, olddn: string;
+  newdn, olddn: RawUtf8;
 begin
   if ModalResult = mrOk then
   begin
@@ -667,10 +663,10 @@ begin
   EditMailBtn.Enabled := Enable;
 end;
 
-constructor TUserDlg.Create(AOwner: TComponent; adn: string; AConnection: TConnection; Mode: TEditMode);
+constructor TUserDlg.Create(AOwner: TComponent; adn: RawUtf8; AConnection: TConnection; Mode: TEditMode);
 var
   i: Integer;
-  Oc: TLdapAttribute;
+  Oc: LDAPClasses.TLdapAttribute;
   TemplateList: TTemplateList;
 begin
   inherited Create(AOwner);
@@ -756,7 +752,7 @@ end;
 
 procedure TUserDlg.AddMailBtnClick(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   if (uid.Text <> '') and (Connection.Account.ReadString(rpostfixMailAddress) <> '') then
     s := FormatString(Connection.Account.ReadString(rpostfixMailAddress))
@@ -772,7 +768,7 @@ end;
 
 procedure TUserDlg.EditMailBtnClick(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := mail.Items[mail.ItemIndex];
   if InputDlg(cEditAddress, cSmtpAddress, s) then
@@ -800,7 +796,7 @@ begin
   end;
 end;
 
-function TUserDlg.GetGroupQuery(const Invert: Boolean = false): string;
+function TUserDlg.GetGroupQuery(const Invert: Boolean = false): RawUtf8;
 var
   ix: Integer;
 begin
@@ -832,7 +828,7 @@ begin
   try
     GroupList.Items.BeginUpdate;
     GroupList.Items.Clear;
-    Connection.Search(GetGroupQuery, Connection.Base, LDAP_SCOPE_SUBTREE,
+    Connection.Search(GetGroupQuery, Connection.Base, lssWholeSubtree,
                       ['cn', 'description', 'objectclass'], false, EntryList);
     for i := 0 to EntryList.Count - 1 do with EntryList[i] do
     begin
@@ -957,7 +953,7 @@ end;
   its > 0 we add user to this group in LDAP directory and if its < 0 we remove
   user from this group in LDAP directory }
 
-procedure TUserDlg.HandleGroupModify(dn: string; ModOp: Integer);
+procedure TUserDlg.HandleGroupModify(dn: RawUtf8; ModOp: Integer);
 var
   i,v: Integer;
 
@@ -1006,7 +1002,7 @@ end;
 procedure TUserDlg.RemoveGroupBtnClick(Sender: TObject);
 var
   idx: Integer;
-  dn: string;
+  dn: RawUtf8;
 begin
   with GroupList do
   If Assigned(Selected) then
@@ -1030,8 +1026,8 @@ procedure TUserDlg.SaveGroups;
 var
   i, modop: Integer;
   GroupEntry: TLdapEntry;
-  MemberAttr: TLdapAttribute;
-  MemberValue: string;
+  MemberAttr: LdapClasses.TLdapAttribute;
+  MemberValue: RawUtf8;
 begin
   if Assigned(origGroups) then with origGroups do
   begin
@@ -1090,7 +1086,7 @@ end;
 procedure TUserDlg.PrimaryGroupBtnClick(Sender: TObject);
 var
   gidnr: Integer;
-  gsid: string;
+  gsid: RawUtf8;
 begin
   with TPickupDlg.Create(self) do begin
     Caption := cPickGroups;
@@ -1102,10 +1098,10 @@ begin
     ShowModal;
 
     if (SelCount>0) and (AnsiCompareStr(edGidNumber.Text, Selected[0].Dn) <> 0) then begin
-      gidnr := StrToInt(Connection.Lookup(Selected[0].Dn, sANYCLASS, 'gidNumber', LDAP_SCOPE_BASE));
+      gidnr := StrToInt(Connection.Lookup(Selected[0].Dn, sANYCLASS, 'gidNumber', lssBaseObject));
       if SambaAccount.Activated then
       begin
-        gsid := Connection.Lookup(Selected[0].Dn, sANYCLASS, 'sambasid', LDAP_SCOPE_BASE);
+        gsid := Connection.Lookup(Selected[0].Dn, sANYCLASS, 'sambasid', lssBaseObject);
         if (Copy(gsid, 1, LastDelimiter('-', gsid) - 1) <> SambaAccount.DomainSID) and
            (MessageDlg(stGidNotSamba, mtWarning, [mbYes, mbNo], 0) = mrNo) then Abort;
         SambaAccount.GidNumber := gidnr;
@@ -1134,7 +1130,7 @@ begin
   end;
 end;
 
-procedure TUserDlg.SetText(Edit: TCustomEdit; Value: string);
+procedure TUserDlg.SetText(Edit: TCustomEdit; Value: RawUtf8);
 begin
   Edit.Text := Value;
   Edit.Modified := true;
@@ -1256,7 +1252,7 @@ end;
 
 procedure TUserDlg.EditChange(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   if not PageSetup then with Sender as TCustomEdit do
   begin
@@ -1365,12 +1361,12 @@ var
   TabSheet: TTabSheet;
   TemplatePanel: TTemplatePanel;
   i, j: Integer;
-  s: string;
+  s: RawUtf8;
 
-  function SafeDelete(const name: string): boolean;
+  function SafeDelete(const name: RawUtf8): boolean;
   var
     i: Integer;
-    s: string;
+    s: RawUtf8;
   begin
     Result := false;
     s := lowercase(name);

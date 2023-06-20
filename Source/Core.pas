@@ -27,7 +27,7 @@ unit Core;
 
 interface
 
-uses PropertyObject, LDAPClasses, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}Classes;
+uses PropertyObject, LDAPClasses, Classes, mormot.core.base;
 
 const
     eCn                  = 0;
@@ -40,7 +40,7 @@ const
     eOwner               = 7;
     eSeeAlso             = 8;
 
-  PropAttrNames: array[eCn..eSeeAlso] of string = (
+  PropAttrNames: array[eCn..eSeeAlso] of RawUtf8 = (
     'cn',
     'uniqueMember',
     'member',
@@ -55,33 +55,33 @@ const
 type
   TGroupOfUniqueNames = class(TPropertyObject)
   protected
-    function  GetMember(Index: Integer): string; virtual;
+    function  GetMember(Index: Integer): RawUtf8; virtual;
     function  GetMemberCount: integer; virtual;
   public
     constructor Create(const Entry: TLdapEntry); override;
-    procedure AddMember(const AMember: string); virtual;
-    procedure RemoveMember(const AMember: string); virtual;
+    procedure AddMember(const AMember: RawUtf8); virtual;
+    procedure RemoveMember(const AMember: RawUtf8); virtual;
     procedure New; override;
-    property Cn: string index eCn read GetString write SetString;
-    property Description: string index eDescription read GetString write SetString;
-    property BusinessCategory: string index eBusinessCategory read GetString write SetString;
-    property OrganizationName: string index eOrganizationName read GetString write SetString;
-    property OuName: string index eOuName read GetString write SetString;
-    property Owner: string index eOwner read GetString write SetString;
-    property SeeAlso: string index eSeeAlso read GetString write SetString;
-    property Members[Index: Integer]: string read GetMember;
+    property Cn: RawUtf8 index eCn read GetString write SetString;
+    property Description: RawUtf8 index eDescription read GetString write SetString;
+    property BusinessCategory: RawUtf8 index eBusinessCategory read GetString write SetString;
+    property OrganizationName: RawUtf8 index eOrganizationName read GetString write SetString;
+    property OuName: RawUtf8 index eOuName read GetString write SetString;
+    property Owner: RawUtf8 index eOwner read GetString write SetString;
+    property SeeAlso: RawUtf8 index eSeeAlso read GetString write SetString;
+    property Members[Index: Integer]: RawUtf8 read GetMember;
     property MembersCount: Integer read GetMemberCount;
   end;
 
   TGroupOfNames = class(TGroupOfUniqueNames)
   protected
-    function GetMember(Index: Integer): string; override;
+    function GetMember(Index: Integer): RawUtf8; override;
     function GetMemberCount: Integer; override;
   public
     constructor Create(const Entry: TLdapEntry); override;
-    procedure AddMember(const AMember: string); override;
-    procedure RemoveMember(const AMember: string); override;
-    property Members[Index: Integer]: string read GetMember;
+    procedure AddMember(const AMember: RawUtf8); override;
+    procedure RemoveMember(const AMember: RawUtf8); override;
+    property Members[Index: Integer]: RawUtf8 read GetMember;
     property MembersCount: Integer read GetMemberCount;
   end;
 
@@ -90,7 +90,7 @@ implementation
 
 { TGroupOfUniqueNames }
 
-function TGroupOfUniqueNames.GetMember(Index: Integer): string;
+function TGroupOfUniqueNames.GetMember(Index: Integer): RawUtf8;
 begin
   Result := GetMultiString(Index, eUniqueMember);
 end;
@@ -105,12 +105,12 @@ begin
   inherited Create(Entry, 'groupOfUniqueNames', @PropAttrNames);
 end;
 
-procedure TGroupOfUniqueNames.AddMember(const AMember: string);
+procedure TGroupOfUniqueNames.AddMember(const AMember: RawUtf8);
 begin
   AddToMultiString(eUniqueMember, AMember);
 end;
 
-procedure TGroupOfUniqueNames.RemoveMember(const AMember: string);
+procedure TGroupOfUniqueNames.RemoveMember(const AMember: RawUtf8);
 begin
   RemoveFromMultiString(eUniqueMember, AMember);
 end;
@@ -123,7 +123,7 @@ end;
 
 { TGroupOfNames }
 
-function TGroupOfNames.GetMember(Index: Integer): string;
+function TGroupOfNames.GetMember(Index: Integer): RawUtf8;
 begin
   Result := GetMultiString(Index, eMember);
 end;
@@ -138,12 +138,12 @@ begin
   inherited Create(Entry, 'groupOfNames', @PropAttrNames);
 end;
 
-procedure TGroupOfNames.AddMember(const AMember: string);
+procedure TGroupOfNames.AddMember(const AMember: RawUtf8);
 begin
   AddToMultiString(eMember, AMember);
 end;
 
-procedure TGroupOfNames.RemoveMember(const AMember: string);
+procedure TGroupOfNames.RemoveMember(const AMember: RawUtf8);
 begin
   RemoveFromMultiString(eMember, AMember);
 end;

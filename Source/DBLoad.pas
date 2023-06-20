@@ -29,12 +29,7 @@ interface
 
 
 uses
-{$IFnDEF FPC}
-  Windows, 
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
-  Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  LCLIntf, LCLType, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, StdCtrls, Connection;
 
 type

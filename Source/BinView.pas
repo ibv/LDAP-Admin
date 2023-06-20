@@ -28,13 +28,8 @@ unit BinView;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  ExtCtrls, Grids, StdCtrls, Menus;
+  LCLIntf, LCLType, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ExtCtrls, Grids, StdCtrls, Menus, mormot.core.base;
 
 const
   scTopRow           = 0;
@@ -150,7 +145,7 @@ var
   Offset: Cardinal;
   Value: Byte;
 
-  function Bin(x: Byte): string;
+  function Bin(x: Byte): RawUtf8;
   var
     i: Integer;
   begin

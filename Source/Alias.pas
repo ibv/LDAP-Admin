@@ -28,13 +28,9 @@ unit Alias;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
-  SysUtils, Messages, Classes, Graphics, Controls, EncodedDn,
-  StdCtrls, ExtCtrls, Forms, LDAPClasses, Connection, Constant;
+  LCLIntf, LCLType,
+  SysUtils, Classes, Graphics, Controls, EncodedDn,
+  StdCtrls, ExtCtrls, Forms, LDAPClasses, Connection, Constant, mormot.core.base;
 
 type
   TAliasDlg = class(TForm)
@@ -61,7 +57,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure edObjectDNChange(Sender: TObject);
   private
-    fdn:         string;
+    fdn:         RawUtf8;
     fObjectDn:   TEncodedDn;
     fAliasDir:   TEncodedDn;
     fAliasDn:    TEncodedDn;
@@ -70,7 +66,7 @@ type
     fEntry:      TLdapEntry;
     fOnWrite:    TNotifyEvent;
   public
-    constructor Create(AOwner: TComponent; dn: string; Connection: TConnection; Mode: TEditMode; ObjectPath: Boolean = false); reintroduce;
+    constructor Create(AOwner: TComponent; dn: RawUtf8; Connection: TConnection; Mode: TEditMode; ObjectPath: Boolean = false); reintroduce;
     property    OnWrite: TNotifyEvent read fOnWrite write fOnWrite;
   end;
 
@@ -83,7 +79,7 @@ uses Main;
 
 {$R *.dfm}
 
-constructor TAliasDlg.Create(AOwner: TComponent; dn: string; Connection: TConnection; Mode: TEditMode; ObjectPath: Boolean = false);
+constructor TAliasDlg.Create(AOwner: TComponent; dn: RawUtf8; Connection: TConnection; Mode: TEditMode; ObjectPath: Boolean = false);
 var
   i, j: Integer;
 begin
@@ -123,7 +119,7 @@ end;
 
 procedure TAliasDlg.btnObjDNClick(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := MainFrm.PickEntry(cSelectEntry);
   if s <> '' then
@@ -132,7 +128,7 @@ end;
 
 procedure TAliasDlg.btnAliasDirClick(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := MainFrm.PickEntry(cSelectAliasDir);
   if s <> '' then

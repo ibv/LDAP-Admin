@@ -27,7 +27,7 @@ unit Shadow;
 
 interface
 
-uses PropertyObject, LDAPClasses;
+uses PropertyObject, LDAPClasses, mormot.core.base;
 
 const
     SHADOW_FLAG          = 0;
@@ -49,7 +49,7 @@ const
     eShadowLastChange    = 7;
     eShadowExpire        = 8;
 
-  PropAttrNames: array[eUserPassword..eShadowExpire] of string = (
+  PropAttrNames: array[eUserPassword..eShadowExpire] of RawUtf8 = (
     'userPassword',
     'description',
     'shadowFlag',
@@ -67,8 +67,8 @@ type
     constructor Create(const Entry: TLdapEntry); override;
     procedure New; override;
     procedure Remove; override;
-    property UserPassword: string index 0 read GetString write SetString;
-    property Description: string index 1 read GetString write SetString;
+    property UserPassword: RawUtf8 index 0 read GetString write SetString;
+    property Description: RawUtf8 index 1 read GetString write SetString;
     property ShadowFlag: Integer index 2 read GetInt write SetInt;
     property ShadowMin: Integer index 3 read GetInt write SetInt;
     property ShadowMax: Integer index 4 read GetInt write SetInt;

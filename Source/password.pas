@@ -27,20 +27,20 @@ unit Password;
 
 interface
 
-uses {LdapClasses,} Hash, md4, md5, sha1, rmd160;
+uses {LdapClasses,} Hash, md4, md5, sha1, rmd160, mormot.core.base;
 
 type
   THashType = (chText, chCrypt, chMd5Crypt, chMd4, chMd5, chSha1, chSMD5, chSSHA, chSha256, chSha512, chRipemd);
 
 const
-  IdStrings: array [chText..chRipemd] of string = (
+  IdStrings: array [chText..chRipemd] of RawUtf8 = (
   '','{CRYPT}','{CRYPT}','{MD4}','{MD5}','{SHA}','{SMD5}','{SSHA}','{CRYPT}','{CRYPT}','{RMD160}');
 
-function GetPasswordString(const HashType: THashType; const Password: string): string;
+function GetPasswordString(const HashType: THashType; const Password: RawUtf8): RawUtf8;
 
 implementation
 
-uses Sysutils, Unixpass, md5crypt, ShaCrypt, WinBase64;
+uses Sysutils, Unixpass, md5crypt, ShaCrypt, mormot.core.buffers;
 
 function GetSalt(Len: Integer): AnsiString;
 const
@@ -55,7 +55,7 @@ begin
     Result[i] := SaltChars[Random(64)];
 end;
 
-function Digest(const HashType: THashType; const Password: AnsiString): String;
+function Digest(const HashType: THashType; const Password: AnsiString): RawUtf8;
 var
   md4Digest: TMD5Digest;
   md5Digest: TMD5Digest;
@@ -65,24 +65,24 @@ begin
   case HashType of
     chMd4:    begin
                 MD4Full(TMD4Digest(md4Digest), @Password[1], Length(Password));
-                Result := Base64Encode(md4Digest, SizeOf(md4Digest));
+                Result := BinToBase64(PAnsiChar(@md4Digest[0]), SizeOf(md4Digest));
               end;
     chMd5:    begin
                 MD5Full(md5Digest, @Password[1], Length(Password));
-                Result := Base64Encode(md5Digest, SizeOf(md5Digest));
+                Result := BinToBase64(PAnsiChar(@md5Digest[0]), SizeOf(md5Digest));
               end;
     chSha1:   begin
                 SHA1Full(sha1Digest, @Password[1], Length(Password));
-                Result := Base64Encode(sha1Digest, SizeOf(sha1Digest));
+                Result := BinToBase64(PAnsiChar(@sha1Digest[0]), SizeOf(sha1Digest));
               end;
     chRipemd: begin
                 RMD160Full(rmd160Digest, @Password[1], Length(Password));
-                Result := Base64Encode(rmd160Digest, SizeOf(rmd160Digest));
+                Result := BinToBase64(PAnsiChar(@rmd160Digest[0]), SizeOf(rmd160Digest));
               end;
   end;
 end;
 
-function SaltedDigest(const HashType: THashType; const Password: string): string;
+function SaltedDigest(const HashType: THashType; const Password: RawUtf8): RawUtf8;
 var
   Salt, SaltedKey, Hash: AnsiString;
   ///HashContext: THashContext;
@@ -101,12 +101,12 @@ begin
                 SetString(Hash, PAnsiChar(@sha1Digest), sizeof(sha1Digest));
               end;
   end;
-  Result := Base64Encode(Hash + Salt);
+  Result := BinToBase64(Hash + Salt);
 end;
 
-function GetPasswordString(const HashType: THashType; const Password: string): string;
+function GetPasswordString(const HashType: THashType; const Password: RawUtf8): RawUtf8;
 var
-  passwd: string;
+  passwd: RawUtf8;
 begin
   case HashType of
     chText:      passwd := Password;

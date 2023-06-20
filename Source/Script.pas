@@ -33,13 +33,9 @@ interface
 
 
 uses
-{$IFnDEF FPC}
-  ComObj, ActiveX, Windows,
-{$ELSE}
   LCLIntf, LCLType, Types,
-{$ENDIF}
    SysUtils, Classes, TypInfo,
-  ScriptIntf, Contnrs, Controls;
+  ScriptIntf, Contnrs, Controls, mormot.core.base;
 
 {$IFDEF VER130}
 type
@@ -61,42 +57,42 @@ type
   private
     FPosition: Integer;
     FLine: Cardinal;
-    FErr1: string;
-    FErr2: string;
-    FCode: string;
+    FErr1: RawUtf8;
+    FErr2: RawUtf8;
+    FCode: RawUtf8;
     FScriptError: IInterface;
-    function GetIdentifier: string;
+    function GetIdentifier: RawUtf8;
   public
-    constructor Create(AError: IInterface; const Code: string);
+    constructor Create(AError: IInterface; const Code: RawUtf8);
     property Line: Cardinal read FLine;
     property Position: Integer read FPosition;
-    property Identifier: string read GetIdentifier;
-    property Message: string read FErr1;
-    property Message2: string read FErr2;
-    property Code: string read FCode;
+    property Identifier: RawUtf8 read GetIdentifier;
+    property Message: RawUtf8 read FErr1;
+    property Message2: RawUtf8 read FErr2;
+    property Code: RawUtf8 read FCode;
   end;
 
   TScriptError = record
     Details: IInterface;
-    Error: string;
-    Error2: string;
+    Error: RawUtf8;
+    Error2: RawUtf8;
     Line: Cardinal;
     Position: Integer;
    end;
 
-  TScriptActionEvent = procedure(Sender: TObject; const Action: string; var Allow: Boolean) of object;
+  TScriptActionEvent = procedure(Sender: TObject; const Action: RawUtf8; var Allow: Boolean) of object;
   TScriptContinueEvent = procedure(Sender: TObject; var Allow: Boolean) of object;
   TScriptErrorEvent = procedure(Sender: TObject; const ScriptError: TScriptError) of object;
   TScriptStateEvent = procedure(Sender: TObject; State: TScriptState) of object;
-  TScriptTextEvent = procedure(Sender: TObject; const Text: string) of object;
+  TScriptTextEvent = procedure(Sender: TObject; const Text: RawUtf8) of object;
 
 { IScriptlet }
 
   IScriptlet = interface
     ['{268DC9F1-522D-45DD-B3C2-A3E4286E674F}']
-    function GetName: string;
-    procedure SetName(const Value: string);
-    property Name: string read GetName write SetName;
+    function GetName: RawUtf8;
+    procedure SetName(const Value: RawUtf8);
+    property Name: RawUtf8 read GetName write SetName;
   end;
 
 { IHostScriptlet }
@@ -152,20 +148,20 @@ type
       fDispatch:  IDispatch;
       fDispId:    Integer;
       fOldProc:   TMethod;
-      fEventName: string;
-      fProcName:  string;
+      fEventName: RawUtf8;
+      fProcName:  RawUtf8;
       fEvProcAddr: Pointer;
-      procedure   SetEvent(const EventName: string);
-      function    GetEvent: string;
-      procedure   SetProcName(const ProcName: string);
+      procedure   SetEvent(const EventName: RawUtf8);
+      function    GetEvent: RawUtf8;
+      procedure   SetProcName(const ProcName: RawUtf8);
       function    GetObject: TObject;
       function    GetDispID: Integer;
       procedure   DispatchCall(Params: array of Variant);
     public
       constructor Create(Script: TCustomScript; Scriptlet: IObjectScriptlet; Dispatch: IDispatch = nil);
       destructor  Destroy; override;
-      property    EventName: string read GetEvent write SetEvent;
-      property    ProcName: string read fProcName write SetProcName;
+      property    EventName: RawUtf8 read GetEvent write SetEvent;
+      property    ProcName: RawUtf8 read fProcName write SetProcName;
       property    ObjectInstance: TObject read GetObject;
       property    EventProcAddr: Pointer read fEvProcAddr;
     published     { must be published so that RTTI knows about them }
@@ -197,9 +193,9 @@ type
     FScript:     TCustomScript;
     FMethods:    TStrings;
     FProperties: TPropertyList;
-    FName:       string;
+    FName:       RawUtf8;
   protected
-    function     PropertySearch(const PropName: string): Boolean; virtual;
+    function     PropertySearch(const PropName: RawUtf8): Boolean; virtual;
     ///function     OnMethod(MethodIndex: Integer; const Args: TArgList): OleVariant; virtual;
     ///function     OnGetProperty(PropIndex: Integer; const Args: TArgList): OleVariant; virtual;
     ///procedure    OnSetProperty(PropIndex: Integer; const Args: TArgList; const Value: OleVariant); virtual;
@@ -214,8 +210,8 @@ type
     ///function     Invoke(DispID: Integer; const IID: TGUID; LocaleID: Integer;
     ///             Flags: Word; var Params; VarResult, ExcepInfo, ArgErr: Pointer): HResult; stdcall;
     { IScriptlet }
-    function     GetName: string;
-    procedure    SetName(const Value: string);
+    function     GetName: RawUtf8;
+    procedure    SetName(const Value: RawUtf8);
     public
     constructor  Create(Script: TCustomScript);
     destructor   Destroy; override;
@@ -236,8 +232,8 @@ type
     FOnLeave: TNotifyEvent;
     FOnQueryContinue: TScriptContinueEvent;
     FOnStateChange: TScriptStateEvent;
-    function FindScriptlet(const Name: string): IScriptlet;
-    function FindEventHandler(AObject: TObject; AEventName: string): TScriptletEventHandler;
+    function FindScriptlet(const Name: RawUtf8): IScriptlet;
+    function FindEventHandler(AObject: TObject; AEventName: RawUtf8): TScriptletEventHandler;
     function GetLines: TStrings;
     procedure SetLines(Value: TStrings);
     function GetScript: IDispatch;
@@ -255,9 +251,9 @@ type
     destructor Destroy; override;
     procedure AddScriptlet(Scriptlet: IScriptlet);
     procedure RemoveScriptlet(Scriptlet: IScriptlet);
-    procedure AddEventHandler(Scriptlet: IObjectScriptlet; EventName, ProcName: string);
-    procedure AddEventHandlerCode(Scriptlet: IObjectScriptlet; EventName, EventCode: string);
-    procedure RemoveEventHandler(AObject: TObject; EventName: string);
+    procedure AddEventHandler(Scriptlet: IObjectScriptlet; EventName, ProcName: RawUtf8);
+    procedure AddEventHandlerCode(Scriptlet: IObjectScriptlet; EventName, EventCode: RawUtf8);
+    procedure RemoveEventHandler(AObject: TObject; EventName: RawUtf8);
     procedure Execute;
     procedure Terminate;
     property Script: IDispatch read GetScript;
@@ -290,26 +286,26 @@ type
 { Scriptlet creation routines }
 
 function CreateHostScriptlet(Script: TCustomScript; Alert, Echo: TScriptTextEvent): IHostScriptlet;
-function CreateComponentScriptlet(Script: TCustomScript; Component: TComponent; const Name: string = ''): IComponentScriptlet;
-function CreateWinControlScriptlet(Script: TCustomScript; Control: TWinControl; const Name: string = ''): IWinControlScriptlet;
-function CreateScriptlet(Script: TCustomScript; AObject: TObject; const Name: string): IScriptlet;
+function CreateComponentScriptlet(Script: TCustomScript; Component: TComponent; const Name: RawUtf8 = ''): IComponentScriptlet;
+function CreateWinControlScriptlet(Script: TCustomScript; Control: TWinControl; const Name: RawUtf8 = ''): IWinControlScriptlet;
+function CreateScriptlet(Script: TCustomScript; AObject: TObject; const Name: RawUtf8): IScriptlet;
 
 implementation
 
 {$I LdapAdmin.inc}
 
 uses {$IFDEF VARIANTS} variants, {$ENDIF} LdapClasses, Misc, Dialogs, Constant,
-     Connection, StdCtrls {$IFDEF VER_XEH}, System.Types{$ENDIF};
+     StdCtrls {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 var
-  lastScriptExceptionMessage: string;
+  lastScriptExceptionMessage: RawUtf8;
 
 type
   EIntScriptException = class(Exception)
   private
     FErrCode: Integer;
   public
-    constructor Create(const AErrCode: Integer; AErrMessage: string);
+    constructor Create(const AErrCode: Integer; AErrMessage: RawUtf8);
     property ErrCode: Integer read FErrCode;
   end;
 
@@ -341,7 +337,7 @@ end;
 
 { EScriptException }
 
-function EScriptException.GetIdentifier: string;
+function EScriptException.GetIdentifier: RawUtf8;
 var
   i, l: Integer;
 begin
@@ -366,7 +362,7 @@ begin
   Result := Copy(FCode, i + Position, l-i);
 end;
 
-constructor EScriptException.Create(AError: IInterface; const Code: string);
+constructor EScriptException.Create(AError: IInterface; const Code: RawUtf8);
 var
   ///I: TExcepInfo;
   C: Cardinal;
@@ -389,7 +385,7 @@ end;
 
 { EIntScriptException }
 
-constructor EIntScriptException.Create(const AErrCode: Integer; AErrMessage: string);
+constructor EIntScriptException.Create(const AErrCode: Integer; AErrMessage: RawUtf8);
 begin
   inherited Create(AErrMessage);
   FErrCode := AErrCode;
@@ -398,18 +394,18 @@ end;
 
 { TScriptletEventHandler }
 
-function TScriptletEventHandler.GetEvent: string;
+function TScriptletEventHandler.GetEvent: RawUtf8;
 begin
   Result := fEventName;
 end;
 
-procedure TScriptletEventHandler.SetProcName(const ProcName: string);
+procedure TScriptletEventHandler.SetProcName(const ProcName: RawUtf8);
 begin
   fProcName := ProcName;
   fDispId := GetDispID;
 end;
 
-procedure TScriptletEventHandler.SetEvent(const EventName: string);
+procedure TScriptletEventHandler.SetEvent(const EventName: RawUtf8);
 var
   newMethod : TMethod;
   PropInfo: PPropInfo;
@@ -643,7 +639,7 @@ end;
 function TScriptSite.GetItemInfo(Name: PWideChar; ReturnMask: DWORD; out unkItem: IUnknown; out Info: ITypeInfo): HResult;
 var
   Item: IScriptlet;
-  S: string;
+  S: RawUtf8;
 begin
   Result := TYPE_E_ELEMENTNOTFOUND;
   if ReturnMask and SCRIPTINFO_IUNKNOWN = SCRIPTINFO_IUNKNOWN then
@@ -845,7 +841,7 @@ begin
   inherited Destroy;
 end;
 
-function TScriptlet.PropertySearch(const PropName: string): Boolean;
+function TScriptlet.PropertySearch(const PropName: RawUtf8): Boolean;
 begin
   Result := False;
 end;
@@ -968,12 +964,12 @@ end;
 }
 { TScriptlet.IScriptlet }
 
-function TScriptlet.GetName: string;
+function TScriptlet.GetName: RawUtf8;
 begin
   Result := FName;
 end;
 
-procedure TScriptlet.SetName(const Value: string);
+procedure TScriptlet.SetName(const Value: RawUtf8);
 begin
   FName := Value;
 end;
@@ -995,7 +991,7 @@ begin
   inherited Destroy;
 end;
 
-function TCustomScript.FindScriptlet(const Name: string): IScriptlet;
+function TCustomScript.FindScriptlet(const Name: RawUtf8): IScriptlet;
 var
   S: IScriptlet;
   I: Integer;
@@ -1029,7 +1025,7 @@ end;
 
 { Finds en event handler attached to the control. If the event handler was externally
   detached, it will not be returned as it is not connected to the object any more }
-function TCustomScript.FindEventHandler(AObject: TObject; AEventName: string): TScriptletEventHandler;
+function TCustomScript.FindEventHandler(AObject: TObject; AEventName: RawUtf8): TScriptletEventHandler;
 var
   i: Integer;
   M: TMethod;
@@ -1045,7 +1041,7 @@ begin
     end;
 end;
 
-procedure TCustomScript.AddEventHandler(Scriptlet: IObjectScriptlet; EventName, ProcName: string);
+procedure TCustomScript.AddEventHandler(Scriptlet: IObjectScriptlet; EventName, ProcName: RawUtf8);
 var
   sh: TScriptletEventHandler;
 begin
@@ -1062,7 +1058,7 @@ begin
   end;
 end;
 
-procedure TCustomScript.AddEventHandlerCode(Scriptlet: IObjectScriptlet; EventName, EventCode: string);
+procedure TCustomScript.AddEventHandlerCode(Scriptlet: IObjectScriptlet; EventName, EventCode: RawUtf8);
 var
   Parse: IActiveScriptParseProcedure2;
   sh: TScriptletEventHandler;
@@ -1096,7 +1092,7 @@ end;
 { Removes and destroys event handler attached to the control.
   If event handler was externaly detached, it will not be removed since it's
   removing would brake the event chain }
-procedure TCustomScript.RemoveEventHandler(AObject: TObject; EventName: string);
+procedure TCustomScript.RemoveEventHandler(AObject: TObject; EventName: RawUtf8);
 var
   sh: TScriptletEventHandler;
 begin
@@ -1245,11 +1241,11 @@ type
     FOnAlert: TScriptTextEvent;
     FOnCreateObject: TScriptActionEvent;
     FOnEcho: TScriptTextEvent;
-    procedure Alert(const S: string);
-    function CreateObject(const S: string): IDispatch;
-    procedure Echo(const S: string);
-    function ReadText(const FileName: string): string;
-    procedure WriteText(const FileName, Value: string);
+    procedure Alert(const S: RawUtf8);
+    function CreateObject(const S: RawUtf8): IDispatch;
+    procedure Echo(const S: RawUtf8);
+    function ReadText(const FileName: RawUtf8): RawUtf8;
+    procedure WriteText(const FileName, Value: RawUtf8);
   protected
     ///function OnMethod(MethodIndex: Integer; const Args: TArgList): OleVariant; override;
     { IHostScriptlet }
@@ -1294,7 +1290,7 @@ begin
   end;
 end;
 }
-procedure THostScriptlet.Alert(const S: string);
+procedure THostScriptlet.Alert(const S: RawUtf8);
 begin
   if Assigned(FOnAlert) then
     FOnAlert(Self, S)
@@ -1302,7 +1298,7 @@ begin
     ShowMessage(CStrToString(S));
 end;
 
-function THostScriptlet.CreateObject(const S: string): IDispatch;
+function THostScriptlet.CreateObject(const S: RawUtf8): IDispatch;
 var
   ClassID: TCLSID;
   Allow: Boolean;
@@ -1316,18 +1312,18 @@ begin
   ///    CLSCTX_LOCAL_SERVER, IDispatch, Result);
 end;
 
-procedure THostScriptlet.Echo(const S: string);
+procedure THostScriptlet.Echo(const S: RawUtf8);
 begin
   if Assigned(FOnEcho) then
     FOnEcho(Self, S);
 end;
 
-function THostScriptlet.ReadText(const FileName: string): string;
+function THostScriptlet.ReadText(const FileName: RawUtf8): RawUtf8;
 begin
   Result := FileReadString(FileName);
 end;
 
-procedure THostScriptlet.WriteText(const FileName, Value: string);
+procedure THostScriptlet.WriteText(const FileName, Value: RawUtf8);
 begin
   FileWriteString(FileName, Value);
 end;
@@ -1375,7 +1371,7 @@ type
     FObject: TObject;
     FOwnsObject: Boolean;
   protected
-    function PropertySearch(const PropName: string): Boolean; override;
+    function PropertySearch(const PropName: RawUtf8): Boolean; override;
     ///function OnGetProperty(PropIndex: Integer; const Args: TArgList): OleVariant; override;
     ///function GetProperty(PropIndex: Integer; const Args: TArgList): OleVariant; virtual;
     ///procedure OnSetProperty(PropIndex: Integer; const Args: TArgList; const Value: OleVariant); override;
@@ -1403,7 +1399,7 @@ begin
   inherited;
 end;
 
-function TObjectScriptlet.PropertySearch(const PropName: string): Boolean;
+function TObjectScriptlet.PropertySearch(const PropName: RawUtf8): Boolean;
 begin
   Result := False;
   if FObject = nil then
@@ -1426,7 +1422,7 @@ end;
 
 function TObjectScriptlet.GetProperty(PropIndex: Integer; const Args: TArgList): OleVariant;
 var
-  PropName: string;
+  PropName: RawUtf8;
 begin
   PropName := Properties[PropIndex];
 
@@ -1438,12 +1434,12 @@ end;
 
 procedure TObjectScriptlet.OnSetProperty(PropIndex: Integer; const Args: TArgList; const Value: OleVariant);
 var
-  PropName: string;
+  PropName: RawUtf8;
   PropInfo: PPropInfo;
 
-  function GetProcName(Code: string): string;
+  function GetProcName(Code: RawUtf8): RawUtf8;
   var
-    S: string;
+    S: RawUtf8;
   begin
     S := Copy(Code, Pos(' ', Code) + 1, MaxInt);
     Result := Copy(S, 1, Pos('(', S) - 1);
@@ -1494,8 +1490,8 @@ end;
 type
   TComponentScriptlet = class(TObjectScriptlet, IComponentScriptlet)
   protected
-    function FindComponent(const Name: string): TComponent; virtual;
-    function PropertySearch(const PropName: string): Boolean; override;
+    function FindComponent(const Name: RawUtf8): TComponent; virtual;
+    function PropertySearch(const PropName: RawUtf8): Boolean; override;
     ///function GetProperty(PropIndex: Integer; const Args: TArgList): OleVariant; override;
     { IComponentScriptlet }
     procedure SetComponent(Value: TComponent);
@@ -1503,9 +1499,9 @@ type
     property Component: TComponent read GetComponent;
   end;
 
-function TComponentScriptlet.FindComponent(const Name: string): TComponent;
+function TComponentScriptlet.FindComponent(const Name: RawUtf8): TComponent;
 var
-  S: string;
+  S: RawUtf8;
   I: Integer;
 begin
   Result := nil;
@@ -1521,7 +1517,7 @@ begin
     end;
 end;
 
-function TComponentScriptlet.PropertySearch(const PropName: string): Boolean;
+function TComponentScriptlet.PropertySearch(const PropName: RawUtf8): Boolean;
 begin
   Result := False;
   if Component = nil then
@@ -1533,7 +1529,7 @@ end;
 {
 function TComponentScriptlet.GetProperty(PropIndex: Integer; const Args: TArgList): OleVariant;
 var
-  PropName: string;
+  PropName: RawUtf8;
   C: TComponent;
 begin
   PropName := Properties[PropIndex];
@@ -1564,7 +1560,7 @@ type
   private
     ///function CreateControl(const Args: TArgList): IScriptlet;
   protected
-    function FindComponent(const Name: string): TComponent; override;
+    function FindComponent(const Name: RawUtf8): TComponent; override;
     ///function GetProperty(PropIndex: Integer; const Args: TArgList): OleVariant; override;
     ///function OnMethod(MethodIndex: Integer; const Args: TArgList): OleVariant; override;
     { IControlScriptlet }
@@ -1590,12 +1586,12 @@ begin
     Result := TComponentScriptlet.Create(FScript, wc) as IScriptlet;
 end;
 }
-function TWinControlScriptlet.FindComponent(const Name: string): TComponent;
+function TWinControlScriptlet.FindComponent(const Name: RawUtf8): TComponent;
 var
   c: TControl;
 
   { Recursive find all sub-controls }
-  function FindControl(Control: TWinControl; const Name: string): TControl;
+  function FindControl(Control: TWinControl; const Name: RawUtf8): TControl;
   var
     I: Integer;
   begin
@@ -1627,7 +1623,7 @@ end;
 {
 function TWinControlScriptlet.GetProperty(PropIndex: Integer; const Args: TArgList): OleVariant;
 var
-  PropName: string;
+  PropName: RawUtf8;
   C: TComponent;
 begin
   PropName := Properties[PropIndex];
@@ -1672,13 +1668,13 @@ type
   TStringsScriptlet = class(TObjectScriptlet, IObjectScriptlet)
   private
     FStrings: TStrings;
-    function  Add(const Value: string): Integer;
+    function  Add(const Value: RawUtf8): Integer;
     procedure Delete(const Index: Integer);
-    procedure Insert(Index: Integer; const S: string);
-    function  IndexOf(const S: string): Integer;
-    function  IndexOfName(const Name: string): Integer;
+    procedure Insert(Index: Integer; const S: RawUtf8);
+    function  IndexOf(const S: RawUtf8): Integer;
+    function  IndexOfName(const Name: RawUtf8): Integer;
   protected
-    function  PropertySearch(const PropName: string): Boolean; override;
+    function  PropertySearch(const PropName: RawUtf8): Boolean; override;
     ///function  GetProperty(PropIndex: Integer; const Args: TArgList): OleVariant; override;
     ///procedure OnSetProperty(PropIndex: Integer; const Args: TArgList; const Value: OleVariant); override;
     ///function  OnMethod(MethodIndex: Integer; const Args: TArgList): OleVariant; override;
@@ -1686,7 +1682,7 @@ type
     constructor Create(Script: TCustomScript; Strings: TStrings);
   end;
 
-function TStringsScriptlet.Add(const Value: string): Integer;
+function TStringsScriptlet.Add(const Value: RawUtf8): Integer;
 begin
   Result := FStrings.Add(Value);
 end;
@@ -1696,22 +1692,22 @@ begin
   FStrings.Delete(Index);
 end;
 
-procedure TStringsScriptlet.Insert(Index: Integer; const S: string);
+procedure TStringsScriptlet.Insert(Index: Integer; const S: RawUtf8);
 begin
   FStrings.Insert(Index, S);
 end;
 
-function TStringsScriptlet.IndexOf(const S: string): Integer;
+function TStringsScriptlet.IndexOf(const S: RawUtf8): Integer;
 begin
   Result := FStrings.IndexOf(S);
 end;
 
-function TStringsScriptlet.IndexOfName(const Name: string): Integer;
+function TStringsScriptlet.IndexOfName(const Name: RawUtf8): Integer;
 begin
   Result := FStrings.IndexOfName(Name);
 end;
 
-function TStringsScriptlet.PropertySearch(const PropName: string): Boolean;
+function TStringsScriptlet.PropertySearch(const PropName: RawUtf8): Boolean;
 begin
   Result := (PropName = 'TEXT') or (PropName = 'COMMATEXT') or
             (PropName = 'COUNT') or IsNumber(PropName);
@@ -1719,7 +1715,7 @@ end;
 {
 function TStringsScriptlet.GetProperty(PropIndex: Integer; const Args: TArgList): OleVariant;
 var
-  PropName: string;
+  PropName: RawUtf8;
 
 begin
   PropName := Properties[PropIndex];
@@ -1739,7 +1735,7 @@ end;
 
 procedure TStringsScriptlet.OnSetProperty(PropIndex: Integer; const Args: TArgList; const Value: OleVariant);
 var
-  PropName: string;
+  PropName: RawUtf8;
 begin
   if not Assigned(FStrings) or (Args.Count <> 1) then
     Exit;
@@ -1791,19 +1787,19 @@ end;
 type
   TLdapEntryListScriptlet = class(TObjectScriptlet, IObjectScriptlet)
   protected
-    function PropertySearch(const PropName: string): Boolean; override;
+    function PropertySearch(const PropName: RawUtf8): Boolean; override;
     ///function GetProperty(PropIndex: Integer; const Args: TArgList): OleVariant; override;
     ///procedure OnSetProperty(PropIndex: Integer; const Args: TArgList; const Value: OleVariant); override;
   end;
 
-function TLdapEntryListScriptlet.PropertySearch(const PropName: string): Boolean;
+function TLdapEntryListScriptlet.PropertySearch(const PropName: RawUtf8): Boolean;
 begin
   Result := (PropName = 'COUNT') or IsNumber(PropName);
 end;
 {
 function TLdapEntryListScriptlet.GetProperty(PropIndex: Integer; const Args: TArgList): OleVariant;
 var
-  PropName: string;
+  PropName: RawUtf8;
 begin
   PropName := Properties[PropIndex];
 
@@ -1824,7 +1820,7 @@ end;
 type
   TLdapAttributeScriptlet = class(TObjectScriptlet, IObjectScriptlet)
   protected
-    function PropertySearch(const PropName: string): Boolean; override;
+    function PropertySearch(const PropName: RawUtf8): Boolean; override;
     ///function GetProperty(PropIndex: Integer; const Args: TArgList): OleVariant; override;
     ///function OnMethod(MethodIndex: Integer; const Args: TArgList): OleVariant; override;
     ///procedure OnSetProperty(PropIndex: Integer; const Args: TArgList; const Value: OleVariant); override;
@@ -1832,7 +1828,7 @@ type
     constructor Create(Script: TCustomScript; Attribute: TLdapAttribute);
   end;
 
-function TLdapAttributeScriptlet.PropertySearch(const PropName: string): Boolean;
+function TLdapAttributeScriptlet.PropertySearch(const PropName: RawUtf8): Boolean;
 begin
   Result := (PropName = 'VALUE') or (PropName = 'VALUES')
             or IsNumber(PropName) or inherited PropertySearch(PropName);
@@ -1840,7 +1836,7 @@ end;
 {
 function TLdapAttributeScriptlet.GetProperty(PropIndex: Integer; const Args: TArgList): OleVariant;
 var
-  PropName: string;
+  PropName: RawUtf8;
 begin
   PropName := Properties[PropIndex];
 
@@ -1858,7 +1854,7 @@ end;
 
 procedure TLdapAttributeScriptlet.OnSetProperty(PropIndex: Integer; const Args: TArgList; const Value: OleVariant);
 var
-  PropName: string;
+  PropName: RawUtf8;
 begin
   if not Assigned(_Object) or (Args.Count <> 1) then
     Exit;
@@ -1877,10 +1873,10 @@ function TLdapAttributeScriptlet.OnMethod(MethodIndex: Integer; const Args: TArg
 begin
   VarClear(Result);
   case MethodIndex of
-    0: TLdapAttribute(_Object).AddValue(string(ArgParam(Args, 0)));
-    1: TLdapAttribute(_Object).DeleteValue(string(ArgParam(Args, 0)));
+    0: TLdapAttribute(_Object).AddValue(RawUtf8(ArgParam(Args, 0)));
+    1: TLdapAttribute(_Object).DeleteValue(RawUtf8(ArgParam(Args, 0)));
     2: TLdapAttribute(_Object).Values[ArgParam(Args, 0)].Delete;
-    3: TLdapAttribute(_Object).IndexOf(string(ArgParam(Args, 0)));
+    3: TLdapAttribute(_Object).IndexOf(RawUtf8(ArgParam(Args, 0)));
   end;
 end;
 }
@@ -1898,19 +1894,19 @@ end;
 type
   TLdapAttributeListScriptlet = class(TObjectScriptlet, IObjectScriptlet)
   protected
-    function PropertySearch(const PropName: string): Boolean; override;
+    function PropertySearch(const PropName: RawUtf8): Boolean; override;
     ///function GetProperty(PropIndex: Integer; const Args: TArgList): OleVariant; override;
     ///procedure OnSetProperty(PropIndex: Integer; const Args: TArgList; const Value: OleVariant); override;
   end;
 
-function TLdapAttributeListScriptlet.PropertySearch(const PropName: string): Boolean;
+function TLdapAttributeListScriptlet.PropertySearch(const PropName: RawUtf8): Boolean;
 begin
   Result := (GetName = 'ATTRIBUTESBYNAME') or (PropName = 'COUNT') or IsNumber(PropName);
 end;
 {
 function TLdapAttributeListScriptlet.GetProperty(PropIndex: Integer; const Args: TArgList): OleVariant;
 var
-  PropName: string;
+  PropName: RawUtf8;
 begin
   PropName := Properties[PropIndex];
 
@@ -1929,7 +1925,7 @@ begin
   raise EIntScriptException.Create(DISP_E_EXCEPTION, stWritePropRO);
 end;
 }
-function CreateLdapAttributeListScriptlet(Script: TCustomScript; Entry: TLdapEntry; const Name: string): IScriptlet;
+function CreateLdapAttributeListScriptlet(Script: TCustomScript; Entry: TLdapEntry; const Name: RawUtf8): IScriptlet;
 begin
   Result := TLdapAttributeListScriptlet.Create(Script, Entry) as IScriptlet;
   Result.Name := Name;
@@ -1940,14 +1936,14 @@ end;
 type
   TLdapEntryScriptlet = class(TObjectScriptlet, IObjectScriptlet)
   protected
-    function PropertySearch(const PropName: string): Boolean; override;
+    function PropertySearch(const PropName: RawUtf8): Boolean; override;
     ///function GetProperty(PropIndex: Integer; const Args: TArgList): OleVariant; override;
     ///function OnMethod(MethodIndex: Integer; const Args: TArgList): OleVariant; override;
   public
     constructor Create(Script: TCustomScript; Entry: TLdapEntry);
   end;
 
-function TLdapEntryScriptlet.PropertySearch(const PropName: string): Boolean;
+function TLdapEntryScriptlet.PropertySearch(const PropName: RawUtf8): Boolean;
 begin
   Result := (PropName = 'ATTRIBUTES') or (PropName = 'ATTRIBUTESBYNAME') or
             inherited PropertySearch(PropName);
@@ -1955,7 +1951,7 @@ end;
 {
 function TLdapEntryScriptlet.GetProperty(PropIndex: Integer; const Args: TArgList): OleVariant;
 var
-  PropName: string;
+  PropName: RawUtf8;
 begin
   PropName := Properties[PropIndex];
 
@@ -1990,7 +1986,7 @@ type
   private
     FSession: TLdapSession;
   ///function Search(const Args: TArgList): IScriptlet;
-  ///function Lookup(const Args: TArgList): string;
+  ///function Lookup(const Args: TArgList): RawUtf8;
   ///function CreateEntry(const Args: TArgList): IScriptlet;
   protected
     ///function  OnMethod(MethodIndex: Integer; const Args: TArgList): OleVariant; override;
@@ -2023,7 +2019,7 @@ begin
       until len = 0;
     end;
     Entries := TLdapEntryList.Create;
-    FSession.Search(string(ArgParam(Args, 0)), string(ArgParam(Args, 1)), Integer(ArgParam(Args, 2)), attrs, false, Entries);
+    FSession.Search(RawUtf8(ArgParam(Args, 0)), RawUtf8(ArgParam(Args, 1)), Integer(ArgParam(Args, 2)), attrs, false, Entries);
     es := TLdapEntryListScriptlet.Create(FScript, Entries);
     es.OwnsObject := true;
     Result := es as IScriptlet;
@@ -2033,10 +2029,10 @@ begin
   end;
 end;
 
-function TLdapSessionScriptlet.Lookup(const Args: TArgList): string;
+function TLdapSessionScriptlet.Lookup(const Args: TArgList): RawUtf8;
 begin
   CheckArgumentCount(Args, 4, 4);
-  Result := FSession.Lookup(string(ArgParam(Args, 0)), string(ArgParam(Args, 1)), string(ArgParam(Args, 2)), Integer(ArgParam(Args, 3)));
+  Result := FSession.Lookup(RawUtf8(ArgParam(Args, 0)), RawUtf8(ArgParam(Args, 1)), RawUtf8(ArgParam(Args, 2)), Integer(ArgParam(Args, 3)));
 end;
 
 function TLdapSessionScriptlet.CreateEntry(const Args: TArgList): IScriptlet;
@@ -2045,7 +2041,7 @@ var
   es: TLdapEntryScriptlet;
 begin
   CheckArgumentCount(Args, 1, 1);
-  Entry := TLdapEntry.Create(FSession, string(ArgParam(Args, 0)));
+  Entry := TLdapEntry.Create(FSession, RawUtf8(ArgParam(Args, 0)));
   try
     es := TLdapEntryScriptlet.Create(FScript, Entry);
     es.OwnsObject := true;
@@ -2088,7 +2084,7 @@ begin
   Result.OnEcho := Echo;
 end;
 
-function CreateComponentScriptlet(Script: TCustomScript; Component: TComponent; const Name: string = ''): IComponentScriptlet;
+function CreateComponentScriptlet(Script: TCustomScript; Component: TComponent; const Name: RawUtf8 = ''): IComponentScriptlet;
 begin
   Result := TComponentScriptlet.Create(Script, Component) as IComponentScriptlet;
   if Name <> '' then
@@ -2097,7 +2093,7 @@ begin
     Result.Name := Component.Name;
 end;
 
-function CreateWinControlScriptlet(Script: TCustomScript; Control: TWinControl; const Name: string = ''): IWinControlScriptlet;
+function CreateWinControlScriptlet(Script: TCustomScript; Control: TWinControl; const Name: RawUtf8 = ''): IWinControlScriptlet;
 begin
   Result := TWinControlScriptlet.Create(Script, Control) as IWinControlScriptlet;
   if Name <> '' then
@@ -2106,7 +2102,7 @@ begin
     Result.Name := Control.Name;
 end;
 
-function CreateScriptlet(Script: TCustomScript; AObject: TObject; const Name: string): IScriptlet;
+function CreateScriptlet(Script: TCustomScript; AObject: TObject; const Name: RawUtf8): IScriptlet;
 begin
   if AObject is TStrings then
     Result := TStringsScriptlet.Create(Script, TStrings(AObject)) as IScriptlet

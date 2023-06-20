@@ -28,12 +28,8 @@ unit IControls;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, LCLMessageGlue,
-{$ENDIF}
-  Controls, Messages, Classes, LDAPClasses, Grids, StdCtrls;
+  LCLIntf, LCLType, LCLMessageGlue,
+  Controls, Messages, Classes, LDAPClasses, Grids, StdCtrls, mormot.core.base;
 
 type
 
@@ -53,9 +49,9 @@ type
     fSchemaTag: Boolean;
     procedure SetVisible(AValue: Boolean);
     procedure SetControlVisible(AValue: Boolean);
-    procedure SetControlData(AValue: string); virtual; abstract;
-    function GetControlData: string; virtual; abstract;
-    function GetCellData: string; virtual;
+    procedure SetControlData(AValue: RawUtf8); virtual; abstract;
+    function GetControlData: RawUtf8; virtual; abstract;
+    function GetCellData: RawUtf8; virtual;
     procedure DoExit; override;
     procedure ControlChange(Sender: TObject); virtual;
   public
@@ -66,7 +62,7 @@ type
     procedure DisplayControl(const ACol, ARow: Integer); virtual;
     procedure Draw(StringGrid: TStringGrid; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState); virtual;
     property Value: TLdapAttributeData read fValue;
-    property CellData: string read GetCellData;
+    property CellData: RawUtf8 read GetCellData;
     property Visible: Boolean read fVisible write SetVisible;
     property ControlVisible: Boolean read fControlVisible write SetControlVisible;
     property Required: Boolean read fRequired write fRequired;
@@ -99,8 +95,8 @@ type
   private
     function GetControl: TComboBoxEx;
   protected
-    procedure SetControlData(AValue: string); override;
-    function GetControlData: string; override;
+    procedure SetControlData(AValue: RawUtf8); override;
+    function GetControlData: RawUtf8; override;
   public
     constructor Create(AOwner: TComponent; AValue: TLdapAttributeData); override;
     procedure Draw(StringGrid: TStringGrid; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState); override;
@@ -111,8 +107,8 @@ type
   private
     function GetControl: TMemo;
   protected
-    procedure SetControlData(AValue: string); override;
-    function GetControlData: string; override;
+    procedure SetControlData(AValue: RawUtf8); override;
+    function GetControlData: RawUtf8; override;
   public
     procedure DisplayControl(const ACol, ARow: Integer); override;
     constructor Create(AOwner: TComponent; AValue: TLdapAttributeData); override;
@@ -122,7 +118,7 @@ type
 
 implementation
 
-uses Graphics, Misc; ///, LAControls;
+uses Graphics, Misc, ADObjects; ///, LAControls;
 
 { TInplaceAttribute }
 
@@ -176,7 +172,7 @@ begin
   inherited Visible := AValue;
 end;
 
-function TInplaceAttribute.GetCellData: string;
+function TInplaceAttribute.GetCellData: RawUtf8;
 begin
   with fValue do
   begin
@@ -189,7 +185,7 @@ end;
 
 procedure TInplaceAttribute.DoExit;
 var
-  s: string;
+  s: RawUtf8;
 begin
   with Owner as TStringGrid do
   begin
@@ -260,7 +256,7 @@ begin
   Parent := StringGrid.Parent;
   
   { In case it's triggerd by mouse down event we simulate mouse up
-    because string grid is about to lose the focus to inplace control }
+    because RawUtf8 grid is about to lose the focus to inplace control }
   ///mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
   LCLSendMouseDownMsg((Parent as TControl),0,0, mbLeft);
 
@@ -281,8 +277,10 @@ end;
 procedure TComboBoxEx.CNCommand(var Message: TWMCommand);
 begin
   inherited;
+  {$ifdef WINDOWS}
   if (Message.NotifyCode = CBN_CLOSEUP) and Assigned(fOnCloseup) then
     fOnCloseUp(Self);
+  {$endif}
 end;
 
 {procedure TComboBoxEx.SetAutoComplete(Value: Boolean);
@@ -334,12 +332,12 @@ begin
   Result := TComboBoxEx(fControl);
 end;
 
-procedure TInplaceComboBox.SetControlData(AValue: string);
+procedure TInplaceComboBox.SetControlData(AValue: RawUtf8);
 begin
   Control.Text := AValue;
 end;
 
-function TInplaceComboBox.GetControlData: string;
+function TInplaceComboBox.GetControlData: RawUtf8;
 begin
   Result := Control.Text;
 end;
@@ -376,12 +374,12 @@ begin
   Result := TMemo(fControl);
 end;
 
-procedure TInplaceMemo.SetControlData(AValue: string);
+procedure TInplaceMemo.SetControlData(AValue: RawUtf8);
 begin
   Control.Text := AValue;
 end;
 
-function TInplaceMemo.GetControlData: string;
+function TInplaceMemo.GetControlData: RawUtf8;
 begin
   Result := Control.Text;
 end;

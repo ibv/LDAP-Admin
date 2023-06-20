@@ -28,12 +28,7 @@ unit Ldif;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, Base64,
-{$ENDIF}
-  LDAPClasses, TextFile, Classes, SysUtils;
+  LCLIntf, LCLType, LDAPClasses, TextFile, Classes, SysUtils, mormot.core.base;
 
 const
   SafeChar:     set of AnsiChar = [#$01..#09, #$0B..#$0C, #$0E..#$7F];
@@ -64,12 +59,12 @@ type
     FGenerateComments: Boolean;
   protected
     function  IsSafe(const Buffer: PBytes; DataSize: Cardinal): Boolean;
-    function  ReadLine: string; virtual; abstract;
-    procedure WriteLine(const Line: string); virtual; abstract;
-    procedure PutLine(const attrib: string; const Buffer: PBytes; const DataSize: Cardinal);
+    function  ReadLine: RawUtf8; virtual; abstract;
+    procedure WriteLine(const Line: RawUtf8); virtual; abstract;
+    procedure PutLine(const attrib: RawUtf8; const Buffer: PBytes; const DataSize: Cardinal);
     procedure FetchRecord; virtual;
     procedure ParseRecord(Entry: TLdapEntry); virtual;
-    procedure ReadFromURL(url: string; Value: TLdapAttributeData);
+    procedure ReadFromURL(url: RawUtf8; Value: TLdapAttributeData);
   public
     procedure ReadRecord(Entry: TLdapEntry = nil); virtual;
     procedure WriteRecord(Entry: TLdapEntry); virtual;
@@ -91,10 +86,10 @@ type
     function  GetFileEncoding: TFileEncode;
     procedure SetFileEncoding(AEncoding: TFileEncode);
   protected
-    function  ReadLine: string; override;
-    procedure WriteLine(const Line: string); override;
+    function  ReadLine: RawUtf8; override;
+    procedure WriteLine(const Line: RawUtf8); override;
   public
-    constructor Create(const FileName: string; const Mode: TLdifMode); reintroduce; overload;
+    constructor Create(const FileName: RawUtf8; const Mode: TLdifMode); reintroduce; overload;
     destructor Destroy; override;
     property NumRead: Integer read GetNumRead;
     property UnixWrite: Boolean read GetUnixWrite write SetUnixWrite;
@@ -106,8 +101,8 @@ type
     fLines: TStringList;
     fCurrentLine: Integer;
   protected
-    function  ReadLine: string; override;
-    procedure WriteLine(const Line: string); override;
+    function  ReadLine: RawUtf8; override;
+    procedure WriteLine(const Line: RawUtf8); override;
   public
     constructor Create(const Lines: TStringList; const Mode: TLdifMode); reintroduce; overload;
     property CurrentLine: Integer read fCurrentLine;
@@ -115,7 +110,7 @@ type
 
 implementation
 
-uses Constant,Misc, WinBase64;
+uses Constant, mormot.core.buffers;
 
 { TLDIF }
 
@@ -133,7 +128,7 @@ end;
 
 procedure TLDIF.FetchRecord;
 var
-  Line: string;
+  Line: RawUtf8;
 begin
   if fEof then
     raise Exception.Create(stLdifEof);
@@ -159,10 +154,11 @@ end;
 procedure TLDIF.ParseRecord(Entry: TLdapEntry);
 var
   i, po: Integer;
-  Line, s, url: string;
-  atName, atValue: string;
+  Line, s, url: RawUtf8;
+  atName: RawUtf8;
   ChangeType: TAttributeOpMode;
   OpType: TValueOpMode;
+  atValue: RawByteString;
 
 function GetNextLine: Boolean;
 begin
@@ -203,11 +199,7 @@ begin
       atValue := ''
     else
     if Line[po + 1] = ':' then
-    {$ifdef mswindows}
-      atValue := Base64Decode(TrimLeft(Copy(Line, po + 2, MaxInt)))
-    {$else}
-      atValue:=DecodeStringBase64(TrimLeft(Copy(Line, po + 2, MaxInt)))
-    {$endif}
+      atValue := Base64ToBin(TrimLeft(Copy(Line, po + 2, MaxInt)))
     else
     if Line[po + 1] = '<' then
       url := TrimLeft(Copy(Line, po + 2, MaxInt))
@@ -323,7 +315,7 @@ begin
   end;
 end;
 
-procedure TLDIF.ReadFromURL(url: string; Value: TLdapAttributeData);
+procedure TLDIF.ReadFromURL(url: RawUtf8; Value: TLdapAttributeData);
 var
   i: Integer;
   fs: TFileStream;
@@ -371,12 +363,12 @@ begin
   end;
 end;
 
-{ If neccessary encodes data to base64 coding and dumps the string to file
+{ If neccessary encodes data to base64 coding and dumps the RawUtf8 to file
   wrapping the line so that max length doesn't exceed Wrap count of chars }
-procedure TLDIF.PutLine(const attrib: string; const Buffer: PBytes; const DataSize: Cardinal);
+procedure TLDIF.PutLine(const attrib: RawUtf8; const Buffer: PBytes; const DataSize: Cardinal);
 var
   p1, len: Integer;
-  line, s: string;
+  line, s: RawUtf8;
 begin
 
   line := attrib + ':';
@@ -391,12 +383,7 @@ begin
     end
     else
     begin
-      {$ifdef mswindows}
-      s := string(Base64Encode(Pointer(Buffer)^, DataSize));
-      {$else}
-      SetString(s, PChar(Buffer), DataSize);
-      s:=EncodeStringBase64(s);
-      {$endif}
+      s := BinToBase64(PAnsiChar(Buffer), DataSize);
       line := line + ': ' + s;
     end;
   end;
@@ -468,18 +455,18 @@ begin
   F.Encoding := AEncoding;
 end;
 
-function TLDIFFile.ReadLine: string;
+function TLDIFFile.ReadLine: RawUtf8;
 begin
   Result := F.ReadLn;
   fEof := F.Eof;
 end;
 
-procedure TLDIFFile.WriteLine(const Line: string);
+procedure TLDIFFile.WriteLine(const Line: RawUtf8);
 begin
   F.WriteLn(Line);
 end;
 
-constructor TLDIFFile.Create(const FileName: string; const Mode: TLdifMode);
+constructor TLDIFFile.Create(const FileName: RawUtf8; const Mode: TLdifMode);
 begin
   inherited Create;
   fMode := Mode;
@@ -509,13 +496,13 @@ end;
 
 { TLDIFStringList }
 
-function TLDIFStringList.ReadLine: string;
+function TLDIFStringList.ReadLine: RawUtf8;
 begin
   Result := fLines[fCurrentLine];
   inc(fCurrentLine);
 end;
 
-procedure TLDIFStringList.WriteLine(const Line: string);
+procedure TLDIFStringList.WriteLine(const Line: RawUtf8);
 begin
   fLines.Add(Line);
 end;

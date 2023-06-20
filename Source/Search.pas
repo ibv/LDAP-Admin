@@ -31,20 +31,16 @@ interface
 
 uses
     {$IFDEF VER_D7H}
-{$IFnDEF FPC}
-  Windows, WinLDAP,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   Themes,{$ENDIF}
     Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
     ComCtrls, StdCtrls, LDAPClasses, Menus, ExtCtrls, Sorter,
     ImgList, ActnList, Buttons, Schema, Contnrs, Connection, Xml,
-    DlgWrap, TextFile, EncodedDn,
+    DlgWrap, TextFile, EncodedDn, mormot.core.base, mormot.net.ldap
     {$IFDEF REGEXPR}
     { Note: If you want to compile templates with regex support you'll need }
     { Regexpr.pas unit from TRegeExpr library (http://www.regexpstudio.com) }
-    Regexpr
+    ,Regexpr
     {$ENDIF};
 
 const
@@ -82,7 +78,9 @@ type
     procedure     SearchCallback(Sender: TLdapEntryList; var AbortSearch: Boolean);
   protected
   public
-    constructor   Create(Session: TLdapSession; ABase, AFilter, AAttributes: string; ASearchLevel, ADerefAliases: Integer; AStatusBar: TStatusBar);
+    constructor Create(Session: TLdapSession; ABase, AFilter, AAttributes: RawUtf8;
+      ASearchLevel: TLdapsearchScope; ADerefAliases: Integer;
+  AStatusBar: TStatusBar);
     destructor    Destroy; override;
     property      Attributes: TStringList read FAttributes;
     property      Entries: TLdapEntryList read FEntries;
@@ -101,9 +99,9 @@ type
   TModifyOp = class
   private
     LdapOperation: Integer;
-    AttributeName: string;
-    Value1:        string;
-    Value2:        string;
+    AttributeName: RawUtf8;
+    Value1:        RawUtf8;
+    Value2:        RawUtf8;
   end;
 
   TModifyBox = class(TScrollBox)
@@ -130,9 +128,9 @@ type
     destructor    Destroy; override;
     procedure     New;
     procedure     Run;
-    procedure     Save(const Filename: string; Encoding: TFileEncode);
-    procedure     Load(const Filename: string);
-    procedure     SaveResults(const Filename: string; Encoding: TFileEncode);
+    procedure     Save(const Filename: RawUtf8; Encoding: TFileEncode);
+    procedure     Load(const Filename: RawUtf8);
+    procedure     SaveResults(const Filename: RawUtf8; Encoding: TFileEncode);
     property      SearchList: TSearchList read fSearchList write fSearchList;
     property      State: TModBoxState read fState;
   end;
@@ -146,11 +144,11 @@ type
     procedure     ListViewData(Sender: TObject; Item: TListItem);
     procedure     GetSelection(List: TStringList);
     procedure     RemoveFromList(List: TStringList);
-    procedure     AdjustPaths(List: TStringList; TargetDn, TargetRdn: string);
+    procedure     AdjustPaths(List: TStringList; TargetDn, TargetRdn: RawUtf8);
   public
     constructor   Create(AOwner: TComponent); override;
     destructor    Destroy; override;
-    procedure     CopySelection(TargetSession: TLdapSession; TargetDn, TargetRdn: string; Move: Boolean); reintroduce;
+    procedure     CopySelection(TargetSession: TLdapSession; TargetDn, TargetRdn: RawUtf8; Move: Boolean); reintroduce;
     procedure     DeleteSelection;
     property      SearchList: TSearchList read fSearchList write SetSearchList;
   end;
@@ -162,24 +160,24 @@ type
     FListView:    TSearchListView;
     FCloseButtonRect: TRect;
     FCloseBtnState: TTabBtnState;
-    function      GetCaption: string;
-    procedure     SetCaption(Value: string);
+    function      GetCaption: RawUtf8;
+    procedure     SetCaption(Value: RawUtf8);
   public
     constructor   Create(AOwner: TComponent); override;
     destructor    Destroy; override;
     property      ListView: TSearchListView read FListView;
-    property      Caption: string read GetCaption write SetCaption;
+    property      Caption: RawUtf8 read GetCaption write SetCaption;
   end;
 
   TResultPageControl = class(TPageControl)
   private
-    FTabBtnPad:   string;
+    FTabBtnPad:   RawUtf8;
     FMouseTab:    TResultTabSheet;
     procedure     CMMouseLeave(var Message: TMessage); message CM_MOUSELEAVE;
     function      GetActiveListView: TSearchListView;
     function      GetActivePage: TResultTabSheet;
     procedure     SetActivePage(Value: TResultTabSheet);
-    function      GetTabPadding: string;
+    function      GetTabPadding: RawUtf8;
   protected
     procedure     MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
     procedure     MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
@@ -192,33 +190,33 @@ type
     procedure     RemovePage(Page: TResultTabSheet);
     property      ActiveList: TSearchListView read GetActiveListView;
     property      ActivePage: TResultTabSheet read GetActivePage write SetActivePage;
-    property      TabPadding: string read GetTabPadding write FTabBtnPad;
+    property      TabPadding: RawUtf8 read GetTabPadding write FTabBtnPad;
   end;
 
   {$IFDEF REGEXPR}
   TRegStatement = class
   private
     fRegex:      TRegExpr;
-    fArgument:   string;
+    fArgument:   RawUtf8;
     fNegate:     Boolean;
   public
     constructor Create;
     destructor  Destroy; override;
     property    Regex: TRegExpr read fRegex;
-    property    Argument: string read fArgument write fArgument;
+    property    Argument: RawUtf8 read fArgument write fArgument;
     property    Negate: Boolean read fNegate write fNegate;
   end;
 
   TSimpleParser = class(TObjectList)
   private
-    fStatement: string;
+    fStatement: RawUtf8;
     function      GetItem(Index: Integer): TRegStatement;
-    procedure     SetStatement(Value: string);
-    function      GetNextExpression(Content: PChar; var Expression: string): Integer;
-    procedure     ParseExpression(Expression: string);
-    procedure     ParseStatement(Statement: string);
+    procedure     SetStatement(Value: RawUtf8);
+    function      GetNextExpression(Content: PChar; var Expression: RawUtf8): Integer;
+    procedure     ParseExpression(Expression: RawUtf8);
+    procedure     ParseStatement(Statement: RawUtf8);
   public
-    property Statement: string read fStatement write SetStatement;
+    property Statement: RawUtf8 read fStatement write SetStatement;
     property Items[Index: Integer]: TRegStatement read GetItem; default;
   end;
   {$ENDIF}
@@ -351,25 +349,25 @@ type
     Connection: TConnection;
     ResultPages: TResultPageControl;
     ModifyBox: TModifyBox;
-    fSearchFilter: string;
+    fSearchFilter: RawUtf8;
     fEncodedBasePath: TEncodedDn;
     {$IFDEF REGEXPR}
     fSimpleParser: TSimpleParser;
     {$ENDIF}
     SaveDialog: TSaveDialogWrapper;
-    procedure Search(const Filter, Attributes: string);
-    procedure Modify(const Filter, Attributes: string);
+    procedure Search(const Filter, Attributes: RawUtf8);
+    procedure Modify(const Filter, Attributes: RawUtf8);
     {$IFDEF REGEXPR}
     procedure EvaluateRegex(SearchList: TSearchList);
     {$ENDIF}
-    procedure SaveItem(Combo: TComboBox; const RegPath, Content: string);
-    procedure DeleteItem(Combo: TComboBox; const RegPath: string);
-    procedure ComboDropDown(Combo: TComboBox; const RegPath: string);
-    procedure ComboChange(Combo: TComboBox; const RegPath: string; SaveBtn, DeleteBtn: TButton; Edit: TCustomEdit);
-    function  GetCustomFilter(var ACaption, AFilter: string): Boolean;
-    procedure HandleCustomChange(Btn: TSpeedButton; lbl: TLabel; edInput, edContent: TEdit; RestoreCaption: string);
+    procedure SaveItem(Combo: TComboBox; const RegPath, Content: RawUtf8);
+    procedure DeleteItem(Combo: TComboBox; const RegPath: RawUtf8);
+    procedure ComboDropDown(Combo: TComboBox; const RegPath: RawUtf8);
+    procedure ComboChange(Combo: TComboBox; const RegPath: RawUtf8; SaveBtn, DeleteBtn: TButton; Edit: TCustomEdit);
+    function  GetCustomFilter(var ACaption, AFilter: RawUtf8): Boolean;
+    procedure HandleCustomChange(Btn: TSpeedButton; lbl: TLabel; edInput, edContent: TEdit; RestoreCaption: RawUtf8);
   public
-    constructor Create(AOwner: TComponent; const dn: string; AConnection: TConnection); reintroduce;
+    constructor Create(AOwner: TComponent; const dn: RawUtf8; AConnection: TConnection); reintroduce;
     procedure   SessionDisconnect(Sender: TObject);
     procedure   ShowModify;
     procedure CopyMove(Move: Boolean);
@@ -402,10 +400,10 @@ end;
 
 { TSearch }
 
-constructor TSearchList.Create(Session: TLdapSession; ABase, AFilter, AAttributes: string; ASearchLevel, ADerefAliases: Integer; AStatusBar: TStatusBar);
+constructor TSearchList.Create(Session: TLdapSession; ABase, AFilter, AAttributes: RawUtf8; ASearchLevel: TLdapsearchScope; ADerefAliases: Integer; AStatusBar: TStatusBar);
 var
   i: integer;
-  attrs: array of string;
+  attrs: array of RawUtf8;
   CallBackProc: TSearchCallback;
   sdref: Integer;
 begin
@@ -478,7 +476,7 @@ end;
 
 procedure TModifyPanel.Load(Node: TXmlNode);
 var
-  s: string;
+  s: RawUtf8;
   vNode: TXmlNode;
 begin
   if Node.Name <> CMOD_XML_LDAPOP then
@@ -538,7 +536,7 @@ procedure TModifyBox.OpComboChange(Sender: TObject);
 var
   i, l: Integer;
 
-  function NewControl(AControl: TControlClass; ACaption: string): TControl;
+  function NewControl(AControl: TControlClass; ACaption: RawUtf8): TControl;
   var
     i: Integer;
     p: TWinControl;
@@ -661,13 +659,13 @@ var
   op: TModifyOp;
   StopOnError: Boolean;
 
-  procedure Add(Entry: TLdapEntry; AName, AValue: string);
+  procedure Add(Entry: TLdapEntry; AName, AValue: RawUtf8);
   begin
     if AValue <> '' then
       Entry.AttributesByName[AName].AddValue(AValue);
   end;
 
-  procedure Replace(Entry: TLdapEntry; AName, OldValue, NewValue: string);
+  procedure Replace(Entry: TLdapEntry; AName, OldValue, NewValue: RawUtf8);
   var
     i: Integer;
   begin
@@ -678,7 +676,7 @@ var
         Values[i].AsString := NewValue;
   end;
 
-  procedure Delete(Entry: TLdapEntry; AName, AValue: string);
+  procedure Delete(Entry: TLdapEntry; AName, AValue: RawUtf8);
   var
     i: Integer;
   begin
@@ -759,7 +757,7 @@ begin
   fCloseButton.Caption := cOk;
 end;
 
-procedure TModifyBox.Save(const Filename: string; Encoding: TFileEncode);
+procedure TModifyBox.Save(const Filename: RawUtf8; Encoding: TFileEncode);
 var
   xmlTree: TXmlTree;
   i: Integer;
@@ -776,7 +774,7 @@ begin
   end;
 end;
 
-procedure TModifyBox.Load(const Filename: string);
+procedure TModifyBox.Load(const Filename: RawUtf8);
 var
   xmlTree: TXmlTree;
   i: Integer;
@@ -794,7 +792,7 @@ begin
   end;
 end;
 
-procedure TModifyBox.SaveResults(const Filename: string; Encoding: TFileEncode);
+procedure TModifyBox.SaveResults(const Filename: RawUtf8; Encoding: TFileEncode);
 begin
   {$IFDEF VER_XEH}
   fMemo.Lines.SaveToFile(FileName, FileEncodingToEncodingClass(Encoding));
@@ -898,7 +896,7 @@ begin
   inherited ActivePage := Value;
 end;
 
-function TResultPageControl.GetTabPadding: string;
+function TResultPageControl.GetTabPadding: RawUtf8;
 var
   cnt: Integer;
 begin
@@ -1124,7 +1122,7 @@ begin
   end;
 end;
 
-procedure TSearchListView.CopySelection(TargetSession: TLdapSession; TargetDn, TargetRdn: string; Move: Boolean);
+procedure TSearchListView.CopySelection(TargetSession: TLdapSession; TargetDn, TargetRdn: RawUtf8; Move: Boolean);
 var
   List: TStringList;
 begin
@@ -1210,7 +1208,7 @@ procedure TSearchListView.RemoveFromList(List: TStringList);
 var
   i, idx: Integer;
 
-  procedure RemoveEntry(var EndIndex: Integer; Value: string);
+  procedure RemoveEntry(var EndIndex: Integer; Value: RawUtf8);
   var
     i: Integer;
   begin
@@ -1242,14 +1240,14 @@ begin
   Repaint;
 end;
 
-procedure TSearchListView.AdjustPaths(List: TStringList; TargetDn, TargetRdn: string);
+procedure TSearchListView.AdjustPaths(List: TStringList; TargetDn, TargetRdn: RawUtf8);
 var
   i, idx: Integer;
 
-  procedure AdjustItem(var StartIndex: Integer; Value: string);
+  procedure AdjustItem(var StartIndex: Integer; Value: RawUtf8);
   var
     i: Integer;
-    rdn: string;
+    rdn: RawUtf8;
   begin
     with SearchList.Entries do
       for i := StartIndex to Count - 1 do with Items[i] do
@@ -1274,12 +1272,12 @@ end;
 
 { TResultTabSheet }
 
-function TResultTabSheet.GetCaption: string;
+function TResultTabSheet.GetCaption: RawUtf8;
 begin
   Result := TTabSheet(Self).Caption;
 end;
 
-procedure TResultTabSheet.SetCaption(Value: string);
+procedure TResultTabSheet.SetCaption(Value: RawUtf8);
 begin
   if PageControl is TResultPageControl then
     TTabSheet(Self).Caption := Value + TResultPageControl(PageControl).TabPadding
@@ -1324,14 +1322,14 @@ begin
   Result := TRegStatement(TObjectList(Self).Items[Index]);
 end;
 
-procedure TSimpleParser.SetStatement(Value: string);
+procedure TSimpleParser.SetStatement(Value: RawUtf8);
 begin
   fStatement := Value;
   Clear;
   ParseStatement(Value);
 end;
 
-function TSimpleParser.GetNextExpression(Content: PChar; var Expression: string): Integer;
+function TSimpleParser.GetNextExpression(Content: PChar; var Expression: RawUtf8): Integer;
 var
   p, p1: PChar;
   Compound: Boolean;
@@ -1342,32 +1340,32 @@ begin
   p := Content;
   Compound := false;
 
-  while p^ in [' ', #13, #10] do p := CharNext(p);
+  while p^ in [' ', #13, #10] do p := p + 1;
   if p^ = '(' then
   begin
     Compound := true;
-    p := CharNext(p);
+    p := p + 1;
   end;
 
-  while p^ in [' ', #13, #10] do p := CharNext(p);
+  while p^ in [' ', #13, #10] do p := p + 1;
 
   while not (p^ in [#0, #13, #10, '(', ')']) do
   begin
     if p^ = '\' then
     begin
-      p1 := CharNext(p);
+      p1 := p + 1;
       if p1^ in ['(', ')'] then
         p := p1;
     end;
     Expression := Expression + p^;
-    p := CharNext(p);
+    p := p + 1;
   end;
 
   if p^ = ')' then
   begin
     if not Compound then
       raise Exception.CreateFmt(stRegexError, [Expression + p^, stNoOpeningParenthesis]);
-    p := CharNext(p);
+    p := p + 1;
   end
   else if Compound then
     raise Exception.CreateFmt(stRegexError, ['(' + Expression, stNoClosingParenthesis]);
@@ -1375,11 +1373,11 @@ begin
   Result := p - Content;
 end;
 
-procedure TSimpleParser.ParseExpression(Expression: string);
+procedure TSimpleParser.ParseExpression(Expression: RawUtf8);
 var
   Head, Tail, Cut: PChar;
   RegStatement: TRegStatement;
-  s: string;
+  s: RawUtf8;
 begin
   Head := PChar(Expression);
   Tail := Head;
@@ -1392,7 +1390,7 @@ begin
       '!': begin
              RegStatement.Negate := true;
              Cut := Tail;
-             Tail := CharNext(Tail);
+             Tail := Tail + 1;
              if Tail^ <> '=' then
                raise Exception.CreateFmt(stRegexError, [Head^, stExpectedButReceived + Tail^ + '"']);
              Continue;
@@ -1403,40 +1401,40 @@ begin
              if Cut = Head then
                raise Exception.CreateFmt(stRegexError, [Head, stEmptyArg]);
              { Right trim }
-             Cut := CharPrev(Head, Cut);
-             if Cut <> Head then
-               while Cut^ = ' ' do Cut := CharPrev(Head, Cut);
+             //Cut := CharPrev(Head, Cut);
+             //if Cut <> Head then
+             //  while Cut^ = ' ' do Cut := CharPrev(Head, Cut);
              SetString(RegStatement.fArgument, Head, Cut - Head + 1);
-             Tail := CharNext(Tail);
+             Tail := Tail + 1;
              break;
            end;
       ' ': begin
-             Tail := CharNext(Tail);
-             while Tail^ = ' ' do Tail := CharNext(Tail);
+             Tail := Tail + 1;
+             while Tail^ = ' ' do Tail := Tail + 1;
              if (Tail^ <> '!') and (Tail^ <> '=') then
                raise Exception.CreateFmt(stInvalidOperator, [Tail^]);
              Continue;
            end;
     end;
-    Tail := CharNext(Tail);
+    Tail := Tail + 1;
   end;
 
   if Tail^ = #0 then
     raise Exception.CreateFmt(stRegexError, [Head, stMissingOperator]);
 
-  while Tail^ in [' ', #13, #10, '('] do Tail := CharNext(Tail);
+  while Tail^ in [' ', #13, #10, '('] do Tail := Tail + 1;
   Head := Tail;
-  while not (Tail^ in [#0, #13, #10]) do Tail := CharNext(Tail);
+  while not (Tail^ in [#0, #13, #10]) do Tail := Tail + 1;
   
   SetString(s, Head, Tail - Head);
   RegStatement.Regex.Expression := s;
   RegStatement.Regex.Compile;
 end;
 
-procedure TSimpleParser.ParseStatement(Statement: string);
+procedure TSimpleParser.ParseStatement(Statement: RawUtf8);
 var
   LastPos, Pos: Integer;
-  s: string;
+  s: RawUtf8;
 begin
   Pos := 1;
   LastPos := Pos;
@@ -1452,7 +1450,7 @@ end;
 
 { TSearchForm }
 
-procedure TSearchFrm.Search(const Filter, Attributes: string);
+procedure TSearchFrm.Search(const Filter, Attributes: RawUtf8);
 var
   Page: TResultTabSheet;
   SearchList: TSearchList;
@@ -1468,7 +1466,7 @@ begin
                                      fEncodedBasePath.Encoded,
                                      Filter,
                                      Attributes,
-                                     cbSearchLevel.ItemIndex,
+                                     TLdapSearchScope(cbSearchLevel.ItemIndex),
                                      cbDerefAliases.ItemIndex,
                                      StatusBar);
     {$IFDEF REGEXPR}
@@ -1483,14 +1481,14 @@ begin
   end;
 end;
 
-procedure TSearchFrm.Modify(const Filter, Attributes: string);
+procedure TSearchFrm.Modify(const Filter, Attributes: RawUtf8);
 var
-  attrs: string;
+  attrs: RawUtf8;
   i: Integer;
 
-  procedure ExtractParams(var attrs: string; p: PChar);
+  procedure ExtractParams(var attrs: RawUtf8; p: PChar);
   var
-    s: string;
+    s: RawUtf8;
   begin
     repeat
       s := GetParameter(p);
@@ -1524,7 +1522,7 @@ begin
                                                fEncodedBasePath.Encoded,
                                                Filter,
                                                attrs,
-                                               cbSearchLevel.ItemIndex,
+                                               TLdapSearchScope(cbSearchLevel.ItemIndex),
                                                cbDerefAliases.ItemIndex,
                                                StatusBar);
     {$IFDEF REGEXPR}
@@ -1542,12 +1540,12 @@ end;
 procedure TSearchFrm.EvaluateRegex(SearchList: TSearchList);
 var
   i: Integer;
-  s: string;
+  s: RawUtf8;
 
   function RegMatch(Entry: TLdapEntry): Boolean;
   var
     i, j: Integer;
-    Attr: TLdapAttribute;
+    Attr: LdapClasses.TLdapAttribute;
     t: Boolean;
   begin
     Result := true;
@@ -1585,7 +1583,7 @@ begin
 end;
 {$ENDIF}
 
-procedure TSearchFrm.SaveItem(Combo: TComboBox; const RegPath, Content: string);
+procedure TSearchFrm.SaveItem(Combo: TComboBox; const RegPath, Content: RawUtf8);
 var
   idx: Integer;
 begin
@@ -1598,7 +1596,7 @@ begin
   end;
 end;
 
-procedure TSearchFrm.DeleteItem(Combo: TComboBox; const RegPath: string);
+procedure TSearchFrm.DeleteItem(Combo: TComboBox; const RegPath: RawUtf8);
 var
   idx: Integer;
 begin
@@ -1612,7 +1610,7 @@ begin
   end;
 end;
 
-procedure TSearchFrm.ComboDropDown(Combo: TComboBox; const RegPath: string);
+procedure TSearchFrm.ComboDropDown(Combo: TComboBox; const RegPath: RawUtf8);
 var
   FilterNames: TStrings;
   i: Integer;
@@ -1631,7 +1629,7 @@ begin
   end;
 end;
 
-procedure TSearchFrm.ComboChange(Combo: TComboBox; const RegPath: string; SaveBtn, DeleteBtn: TButton; Edit: TCustomEdit);
+procedure TSearchFrm.ComboChange(Combo: TComboBox; const RegPath: RawUtf8; SaveBtn, DeleteBtn: TButton; Edit: TCustomEdit);
 var
   idx: Integer;
 begin
@@ -1644,7 +1642,7 @@ begin
   end;
 end;
 
-function TSearchFrm.GetCustomFilter(var ACaption, AFilter: string): Boolean;
+function TSearchFrm.GetCustomFilter(var ACaption, AFilter: RawUtf8): Boolean;
 var
   sl: TStrings;
   i: Integer;
@@ -1686,7 +1684,7 @@ begin
        CopySelection(TargetData.Connection, TargetData.Dn, TargetData.Rdn, Move);
 end;
 
-constructor TSearchFrm.Create(AOwner: TComponent; const dn: string; AConnection: TConnection);
+constructor TSearchFrm.Create(AOwner: TComponent; const dn: RawUtf8; AConnection: TConnection);
 begin
   inherited Create(AOwner);
 
@@ -1784,7 +1782,7 @@ end;
 
 procedure TSearchFrm.PathBtnClick(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := MainFrm.PickEntry(cSearchBase);
   if s <> '' then
@@ -1793,10 +1791,10 @@ end;
 
 procedure TSearchFrm.ActStartExecute(Sender: TObject);
 var
-  RawFilter1, RawFilter2, Filter, Attributes: string;
+  RawFilter1, RawFilter2, Filter, Attributes: RawUtf8;
   i: Integer;
 
-  function Prepare(const Filter: string): string;
+  function Prepare(const Filter: RawUtf8): RawUtf8;
   var
     len: Integer;
   begin
@@ -1822,7 +1820,7 @@ var
     end;
   end;
 
-  function CleanWildcards(s: string): string;
+  function CleanWildcards(s: RawUtf8): RawUtf8;
   var
     p: PChar;
   begin
@@ -1835,13 +1833,13 @@ var
         Result := Result + p^;
         while p^ = '*' do
         begin
-          p := CharNext(p);
+          p := p + 1;
           if p^ = #0 then
             exit;
         end;
       end;
       Result := Result + p^;
-      p := CharNext(p);
+      p := p + 1;
     end;
   end;
 
@@ -1968,7 +1966,7 @@ var
   var
     i: Integer;
     csvList: TStringList;
-    s: string;
+    s: RawUtf8;
   begin
     csvList := TStringList.Create;
     with ResultPages.ActivePage.ListView do
@@ -2272,9 +2270,9 @@ begin
     ResultPages.ActiveList.DeleteSelection;
 end;
 
-procedure TSearchFrm.HandleCustomChange(Btn: TSpeedButton; lbl: TLabel; edInput, edContent: TEdit; RestoreCaption: string);
+procedure TSearchFrm.HandleCustomChange(Btn: TSpeedButton; lbl: TLabel; edInput, edContent: TEdit; RestoreCaption: RawUtf8);
 var
-  Caption, Filter: string;
+  Caption, Filter: RawUtf8;
 begin
   if Btn.Down and GetCustomFilter(Caption, Filter) then
   begin

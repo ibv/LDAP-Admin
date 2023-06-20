@@ -28,66 +28,58 @@ unit Misc;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, Unix, lazutf8, strutils, types,
-{$ENDIF}
+  LCLIntf, LCLType, lazutf8, types,
   LDAPClasses, Classes, SysUtils, Forms, Dialogs, Controls,
-     ExtCtrls, ComCtrls, Graphics;
+     ExtCtrls, ComCtrls, Graphics, mormot.core.base;
 
 type
   TStreamProcedure = procedure(Stream: TStream) of object;
 
-{ String conversion routines }
+{ RawUtf8 conversion routines }
 function  UTF8ToStringLen(const src: PAnsiChar; const Len: Integer): widestring;
 function  StringToUTF8Len(const src: PChar; const Len: Integer): AnsiString;
 function  WideStringToUtf8Len(const src: PWideChar; const Len: Integer): AnsiString;
 function  StringToWide(const S: AnsiString): WideString;
-function  CStrToString(cstr: String): String;
-function  GetValueAsText(Value: TLdapAttributeData): string;
+function  CStrToString(cstr: RawUtf8): RawUtf8;
+function  GetValueAsText(Value: TLdapAttributeData): RawUtf8;
 { Time conversion routines }
 function  DateTimeToUnixTime(const AValue: TDateTime): Int64;
 function  UnixTimeToDateTime(const AValue: Int64): TDateTime;
-function  GTZToDateTime(AValue: string): TDateTime;
+function  GTZToDateTime(AValue: RawUtf8): TDateTime;
 function  LocalDateTimeToUTC(DateTime: TDateTime): TDateTime;
 function  UTCToLocalDateTime(const UTCDateTime: TDateTime): TDateTime;
-{ String handling routines }
-function  IsNumber(const S: string): Boolean;
-procedure Split(Source: string; Result: TStrings; Separator: Char);
-function  FormatMemoInput(const Text: string): string;
-function  FormatMemoOutput(const Text: string): string;
-function  FileReadString(const FileName: TFileName): String;
-procedure FileWriteString(const FileName: TFileName; const Value: string);
-function  Matches(Wildcard, Text: string; CaseSensitive: boolean = false): Boolean;
+{ RawUtf8 handling routines }
+function  IsNumber(const S: RawUtf8): Boolean;
+procedure Split(Source: RawUtf8; Result: TStrings; Separator: Char);
+function  FormatMemoInput(const Text: RawUtf8): RawUtf8;
+function  FormatMemoOutput(const Text: RawUtf8): RawUtf8;
+function  FileReadString(const FileName: TFileName): RawUtf8;
+procedure FileWriteString(const FileName: TFileName; const Value: RawUtf8);
+function  Matches(Wildcard, Text: RawUtf8; CaseSensitive: boolean = false): Boolean;
 { URL handling routines }
-procedure ParseURL(const URL: string; var proto, user, password, host, path: string; var port, version: integer; var auth: TLdapAuthMethod);
+procedure ParseURL(const URL: RawUtf8; var proto, user, password, host, path: RawUtf8; var port, version: integer; var auth: TLdapAuthMethod);
 { Some handy dialogs }
-function  CheckedMessageDlg(const Msg: string; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons; CbCaption: string; var CbChecked: Boolean): TModalResult;
-function  ComboMessageDlg(const Msg: string; const csItems: string; var Text: string): TModalResult;
-function  CreateMessageDlgEx(const Msg: string; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons; Captions: array of string; Events: array of TNotifyEvent; MinTextWidth: Integer = 0): TForm;
-function  MessageDlgEx(const Msg: string; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons; Captions: array of string; Events: array of TNotifyEvent): TModalResult;
-function  CheckedMessageDlgEx(const Msg: string; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons; Captions: array of string; Events: array of TNotifyEvent; CbCaption: string; var CbChecked: Boolean): TModalResult;
+function  CheckedMessageDlg(const Msg: RawUtf8; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons; CbCaption: RawUtf8; var CbChecked: Boolean): TModalResult;
+function  ComboMessageDlg(const Msg: RawUtf8; const csItems: RawUtf8; var Text: RawUtf8): TModalResult;
+function  CreateMessageDlgEx(const Msg: RawUtf8; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons; Captions: array of RawUtf8; Events: array of TNotifyEvent; MinTextWidth: Integer = 0): TForm;
+function  MessageDlgEx(const Msg: RawUtf8; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons; Captions: array of RawUtf8; Events: array of TNotifyEvent): TModalResult;
+function  CheckedMessageDlgEx(const Msg: RawUtf8; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons; Captions: array of RawUtf8; Events: array of TNotifyEvent; CbCaption: RawUtf8; var CbChecked: Boolean): TModalResult;
 { Tree sort procedure }
-{$ifdef mswindows}
-function TreeSortProc(Node1, Node2: TTreeNode; Data: Integer): Integer; stdcall;
-{$else}
 function TreeSortProc(Node1, Node2: TTreeNode): Integer;
 function CharNext(lpsz: PChar): PChar;
 function CharPrev(lpsz,lpsc: PChar): PChar;
-{$endif}
 { everything else :-) }
-function  GetTextExtent(Text: string; Font: TFont): TSize;
-function  CenterWithSpaces(Font: TFont; s: string;  BorderSize: Integer): string;
-function  HexMem(P: Pointer; Count: Integer; Ellipsis: Boolean): string;
+function  GetTextExtent(Text: RawUtf8; Font: TFont): TSize;
+function  CenterWithSpaces(Font: TFont; s: RawUtf8;  BorderSize: Integer): RawUtf8;
+function  HexMem(P: Pointer; Count: Integer; Ellipsis: Boolean): RawUtf8;
 procedure StreamCopy(pf, pt: TStreamProcedure);
 procedure LockControl(c: TWinControl; bLock: Boolean);
 function  PeekKey: Integer;
 procedure RevealWindow(Form: TForm; MoveLeft, MoveTop: Boolean);
-function  CreateComponent(const ClassName: string; Owner: TComponent): TComponent;
+function  CreateComponent(const ClassName: RawUtf8; Owner: TComponent): TComponent;
 procedure OnScrollTimer(ScrollTimer: TTimer; TreeView: TTreeView; ScrollAccMargin: Integer);
-function  LoadBase64(const FileName: string): AnsiString;
-function  DragDropQuery(Source: TObject; Destination: string; var Move: Boolean): Boolean;
+function  LoadBase64(const FileName: RawUtf8): AnsiString;
+function  DragDropQuery(Source: TObject; Destination: RawUtf8; var Move: Boolean): Boolean;
 
 const
   mrCustom   = 1000;
@@ -96,14 +88,11 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses StdCtrls, Messages, Constant, Config {$IFDEF VARIANTS} ,variants {$ENDIF},
-     WinBase64, DateUtils, Math, Buttons;
+uses StdCtrls, Messages, Constant, Config, StrUtils, {$IFDEF VARIANTS} ,variants {$ENDIF}
+     DateUtils, Math, Buttons, HtmlMisc, mormot.core.text, mormot.core.buffers,
+     mormot.core.unicode {$ifdef WINDOWS}, Windows {$else} ,Unix, LMessages {$endif};
 
-{$ifdef mswindows}
-function TreeSortProc(Node1, Node2: TTreeNode; Data: Integer): Integer; stdcall;
-{$else}
 function TreeSortProc(Node1, Node2: TTreeNode): Integer;
-{$endif}
 var
   n1, n2: Integer;
 begin
@@ -119,7 +108,7 @@ begin
     Result := AnsiCompareText(Node1.Text, Node2.Text);
 end;
 
-{ String conversion routines }
+{ RawUtf8 conversion routines }
 
 { Note: these functions ignore conversion errors }
 {$IFDEF MSWINDOWS}
@@ -181,7 +170,7 @@ function StringToUTF8Len(const src: PChar; const Len: Integer): AnsiString;
 var
   bsiz: Integer;
   {$IFNDEF UNICODE}
-  Temp: string;
+  Temp: RawUtf8;
   {$ENDIF}
 begin
   {$IFDEF MSWINDOWS}
@@ -226,7 +215,7 @@ begin
   {$ENDIF}
 end;
 
-function CStrToString(cstr: String): String;
+function CStrToString(cstr: RawUtf8): RawUtf8;
 var
   lpesc:      Array [0..2] of Byte;
   cbytes:     Integer;
@@ -243,7 +232,7 @@ begin
   l:=Length(cstr)+1;
   i:=1;
 
-  // Iterate the c style string
+  // Iterate the c style RawUtf8
   while (i < l) do
   begin
      // Check for escape sequence
@@ -317,12 +306,12 @@ begin
 
 end;
 
-function GetValueAsText(Value: TLdapAttributeData): string;
+function GetValueAsText(Value: TLdapAttributeData): RawUtf8;
 begin
   if Value.DataType = dtText then
     Result := Value.AsString
   else
-    Result := Base64Encode(Pointer(Value.Data)^, Value.DataSize)
+    Result := BinToBase64(PAnsiChar(Value.Data), Value.DataSize);
 end;
 
 { Time conversion routines }
@@ -337,15 +326,15 @@ begin
   Result := AValue / 86400 + 25569.0;
 end;
 
-function GTZToDateTime(AValue: string): TDateTime;
+function GTZToDateTime(AValue: RawUtf8): TDateTime;
 var
   Fail, UTC, NegativeDiff: Boolean;
   Year, Month, Day, Hour, Minutes, Seconds, Miliseconds, Fraction, Err: Integer;
-  AVal: string;
+  AVal: RawUtf8;
   DiffHr, DiffMin: Integer;
   gDiff: TDateTime;
 
-  function GetValue(var Val: string; Len: Integer; out Value, Fraction: Integer): Boolean;
+  function GetValue(var Val: RawUtf8; Len: Integer; out Value, Fraction: Integer): Boolean;
   begin
     if Length(Val) < Len then
     begin
@@ -388,11 +377,7 @@ begin
   else
   begin
     UTC := false;
-    {$ifdef mswindows}
-    if AValue.EndsWith('Z', true) then
-    {$else}
-    if AnsiEndsStr('Z', AValue) then
-    {$endif}
+    if EndWithExact(AValue, 'Z') then
     begin
       UTC := true;
       Delete(AValue, Length(AValue), 1);
@@ -466,7 +451,6 @@ begin
       inc(Bias, tzi.DayLightBias);
     Result := DateTime + Bias * 60 / 86400;
   end;
-end;
   {$ELSE}
   d := (DateTime - UnixDateDelta) * 86400;
   TV.tv_sec := trunc(d);
@@ -503,10 +487,10 @@ end;
 
 { URL handling routines }
 
-procedure ParseLAURL(const URL: string; var proto, user, password, host, path: string; var port: integer);
+procedure ParseLAURL(const URL: RawUtf8; var proto, user, password, host, path: RawUtf8; var port: integer);
 var
   n1, n2: integer;
-  AUrl: string;
+  AUrl: RawUtf8;
 begin
   //URL format <proto>://<user>:<password>@<host>:<port>/<path>
   AUrl:=Url;
@@ -573,17 +557,17 @@ function LeftStr(
 {$ENDIF}
 
 
-procedure ParseRFCURL(const URL: string; var proto, user, password, host, path: string; var port, version: integer; var auth: TLdapAuthMethod);
+procedure ParseRFCURL(const URL: RawUtf8; var proto, user, password, host, path: RawUtf8; var port, version: integer; var auth: TLdapAuthMethod);
 var
   n1, n2: integer;
-  AUrl: string;
+  AUrl: RawUtf8;
   p: PChar;
   Extensions: TStringList;
 
-  function DecodeURL(const Src: string): string;
+  function DecodeURL(const Src: RawUtf8): RawUtf8;
   var
     p, p1: PChar;
-    rg: string;
+    rg: RawUtf8;
   begin
     Result := '';
     p := PChar(Src);
@@ -603,9 +587,9 @@ var
     end;
   end;
 
-  procedure ParseExtensions(const ExtStr: string);
+  procedure ParseExtensions(const ExtStr: RawUtf8);
   var
-    val: string;
+    val: RawUtf8;
   begin
     if ExtStr = '' then Exit;
     try
@@ -683,7 +667,7 @@ begin
   end;
 end;
 
-procedure ParseURL(const URL: string; var proto, user, password, host, path: string; var port, version: integer; var auth: TLdapAuthMethod);
+procedure ParseURL(const URL: RawUtf8; var proto, user, password, host, path: RawUtf8; var port, version: integer; var auth: TLdapAuthMethod);
 begin
   if Pos('@',URL) > 0 then // old LdapAdmin style
     ParseLAURL(URL, proto, user, password, host, path, port)
@@ -691,7 +675,7 @@ begin
     ParseRFCURL(URL, proto, user, password, host, path, port, version, auth);
 end;
 
-function HexMem(P: Pointer; Count: Integer; Ellipsis: Boolean): string;
+function HexMem(P: Pointer; Count: Integer; Ellipsis: Boolean): RawUtf8;
 var
   i, cnt: Integer;
 begin
@@ -708,9 +692,9 @@ begin
     Result := Result + '...';
 end;
 
-{ String handling routines }
+{ RawUtf8 handling routines }
 
-function IsNumber(const S: string): Boolean;
+function IsNumber(const S: RawUtf8): Boolean;
 var
   P: PChar;
 begin
@@ -724,10 +708,10 @@ begin
   Result := True;
 end;
 
-procedure Split(Source: string; Result: TStrings; Separator: Char);
+procedure Split(Source: RawUtf8; Result: TStrings; Separator: Char);
 var
   p0, p: PChar;
-  s: string;
+  s: RawUtf8;
 begin
   p0 := PChar(Source);
   p := p0;
@@ -745,7 +729,7 @@ end;
 
 { Address fields take $ sign as newline tag so we have to convert this to LF/CR }
 
-function FormatMemoInput(const Text: string): string;
+function FormatMemoInput(const Text: RawUtf8): RawUtf8;
 var
   p: PChar;
 begin
@@ -760,7 +744,7 @@ begin
   end;
 end;
 
-function FormatMemoOutput(const Text: string): string;
+function FormatMemoOutput(const Text: RawUtf8): RawUtf8;
 var
   p, p1: PChar;
 begin
@@ -779,7 +763,7 @@ begin
   end;
 end;
 
-function FileReadString(const FileName: TFileName): String;
+function FileReadString(const FileName: TFileName): RawUtf8;
 var
   sl: TStringList;
 begin
@@ -792,7 +776,7 @@ begin
     end;
 end;
 
-procedure FileWriteString(const FileName: TFileName; const Value: string);
+procedure FileWriteString(const FileName: TFileName; const Value: RawUtf8);
 var
   sl: TStringList;
 begin
@@ -805,7 +789,7 @@ begin
 end;
 
 { Check if Wildcard matches Text. Wildcard may contain multiple wildcards '*' }
-function Matches(Wildcard, Text: string; CaseSensitive: boolean = false): Boolean;
+function Matches(Wildcard, Text: RawUtf8; CaseSensitive: boolean = false): Boolean;
 var
   pw, pt, pa: PChar;
   c: Char;
@@ -902,10 +886,10 @@ var
   msg: TMsg;
 begin
   {$IFDEF MSWINDOWS}
-  PeekMessage(msg, 0, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE);
-  if msg.Message = WM_KEYDOWN then
-    Result := msg.WParam
-  else
+  //PeekMessage(msg, 0, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE);
+  //if msg.Message = WM_KEYDOWN then
+  //  Result := msg.WParam
+  //else
     Result := 0;
   {$ELSE}
   PeekMessage(msg, 0, LM_KEYFIRST, LM_KEYLAST, PM_REMOVE);
@@ -918,11 +902,11 @@ begin
 
 end;
 
-function GetTextExtent(Text: string; Font: TFont): TSize;
+function GetTextExtent(Text: RawUtf8; Font: TFont): types.TSize;
 var
-  c: TBitmap;
+  c: Graphics.TBitmap;
 begin
-  c := TBitmap.Create;
+  c := Graphics.TBitmap.Create;
   try
     c.Canvas.Font.Assign(Font);
     Result := c.Canvas.TextExtent(Text);
@@ -934,45 +918,7 @@ end;
 { Centers lines of text (denoted by #10 character) by padding space characters
   from the left. The BorderSize can be used to pad the longist line with spaces
   from both side to create a spaced border for better readability }
-{$ifdef mswindows}
-function CenterWithSpaces(Font: TFont; s: string;  BorderSize: Integer): string;
-var
-  i, c, MaxWidth, SpaceWidth: Integer;
-  Lines: TArray<string>;
-  Widths: array of Integer;
-begin
-  Lines := s.Split([#10]);
-  SetLength(Widths, Length(Lines));
-  MaxWidth := 0;
-  for i := 0 to High(Lines) do
-  begin
-    c := GetTextExtent(Lines[i], Font).cx;
-    Widths[i] := c;
-    MaxWidth := Max(MaxWidth, c);
-  end;
-  SpaceWidth := GetTextExtent(#32, Font).cx;
-  for i := 0 to High(Lines) do
-  begin
-    c := MaxWidth - Widths[i];
-    if c = 0 then
-    begin
-      if BorderSize > 0 then
-      begin
-        c := Lines[i].Length + BorderSize;
-        Lines[i] := Lines[i].PadLeft(c);
-        Lines[i] := Lines[i].PadRight(c + BorderSize);
-      end;
-      continue;
-    end;
-    c := (c shr 1) div SpaceWidth;
-    inc(c, BorderSize); // compensate for border spaces
-    inc(c, Lines[i].Length);
-    Lines[i] := Lines[i].PadLeft(c);
-  end;
-  Result := Result.Join(#10, Lines);
-end;
-{$else}
-function CenterWithSpaces(Font: TFont; s: string;  BorderSize: Integer): string;
+function CenterWithSpaces(Font: TFont; s: RawUtf8;  BorderSize: Integer): RawUtf8;
 var
   i, c, MaxWidth, SpaceWidth: Integer;
   Lines: TStringList;
@@ -1013,10 +959,7 @@ begin
   Lines.Free;
 end;
 
-
-{$endif}
-
-function ComboMessageDlg(const Msg: string; const csItems: string; var Text: string): TModalResult;
+function ComboMessageDlg(const Msg: RawUtf8; const csItems: RawUtf8; var Text: RawUtf8): TModalResult;
 var
   Form: TForm;
   i: integer;
@@ -1071,8 +1014,8 @@ begin
 end;
 
 { Uses Caption array to replace captions and Events array to assign OnClick event to buttons}
-function CreateMessageDlgEx(const Msg: string; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons;
-         Captions: array of string; Events: array of TNotifyEvent; MinTextWidth: Integer = 0): TForm;
+function CreateMessageDlgEx(const Msg: RawUtf8; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons;
+         Captions: array of RawUtf8; Events: array of TNotifyEvent; MinTextWidth: Integer = 0): TForm;
 const
   cbBtnSpacing = 4;
   cbDlgMargin  = 8;
@@ -1114,11 +1057,11 @@ begin
           if Captions[ci] <> '' then
           begin
             Caption := Captions[ci];
-            TextRect := Rect(0,0,0,0);
+            TextRect := TRect.Create(0,0,0,0);
             {$IFDEF MSWINDOWS}
             windows.DrawText( canvas.handle, PChar(Captions[ci]), -1, TextRect,
-                              DT_CALCRECT or DT_LEFT or DT_SINGLELINE or
-                              DrawTextBiDiModeFlagsReadingOnly);
+                              DT_CALCRECT or DT_LEFT or DT_SINGLELINE);
+            //or  DrawTextBiDiModeFlagsReadingOnly);
             {$ELSE}
             DrawText( canvas.handle, PChar(Captions[ci]), -1, TextRect,
                               DT_CALCRECT or DT_LEFT or DT_SINGLELINE );
@@ -1160,8 +1103,8 @@ begin
   end;
 end;
 
-function MessageDlgEx(const Msg: string; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons;
-         Captions: array of string; Events: array of TNotifyEvent): TModalResult;
+function MessageDlgEx(const Msg: RawUtf8; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons;
+         Captions: array of RawUtf8; Events: array of TNotifyEvent): TModalResult;
 var
   Form: TForm;
 begin
@@ -1173,9 +1116,9 @@ begin
   end;
 end;
 
-function CheckedMessageDlgEx(const Msg: string; DlgType: TMsgDlgType;
-         Buttons: TMsgDlgButtons; Captions: array of string; Events: array of TNotifyEvent;
-         CbCaption: string; var CbChecked: Boolean): TModalResult;
+function CheckedMessageDlgEx(const Msg: RawUtf8; DlgType: TMsgDlgType;
+         Buttons: TMsgDlgButtons; Captions: array of RawUtf8; Events: array of TNotifyEvent;
+         CbCaption: RawUtf8; var CbChecked: Boolean): TModalResult;
 var
   Form: TForm;
   i: integer;
@@ -1245,8 +1188,8 @@ begin
   end;
 end;
 
-function CheckedMessageDlg(const Msg: string; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons;
-                           CbCaption: string; var CbChecked: Boolean): TModalResult;
+function CheckedMessageDlg(const Msg: RawUtf8; DlgType: TMsgDlgType; Buttons: TMsgDlgButtons;
+                           CbCaption: RawUtf8; var CbChecked: Boolean): TModalResult;
 begin
   Result := CheckedMessageDlgEx(Msg, DlgType, Buttons, [], [], cbCaption, cbChecked);
 end;
@@ -1315,7 +1258,7 @@ begin
     ToBottom;
 end;
 
-function CreateComponent(const ClassName: string; Owner: TComponent): TComponent;
+function CreateComponent(const ClassName: RawUtf8; Owner: TComponent): TComponent;
 const
   //CONTROLS_CLASSES: array[0..37] of TComponentClass = (TLabel,
   CONTROLS_CLASSES: array[0..30] of TComponentClass = (TLabel,
@@ -1368,7 +1311,7 @@ const
                                                        //TMediaPlayer,
                                                        //--TPaintBox);
 
-  function ClassByName(const ClassName: string): TComponentClass;
+  function ClassByName(const ClassName: RawUtf8): TComponentClass;
   var
     i: Integer;
   begin
@@ -1419,7 +1362,7 @@ begin
   end;
 end;
 
-function LoadBase64(const FileName: string): AnsiString;
+function LoadBase64(const FileName: RawUtf8): AnsiString;
 var
   ms: TMemoryStream;
 begin
@@ -1427,15 +1370,15 @@ begin
   try
     ms.LoadFromFile(FileName);
     ms.Position := 0;
-    Result := Base64Encode(ms.Memory^, ms.Size);
+    Result := BinToBase64(PChar(ms.Memory), ms.Size);
   finally
     ms.free;
   end;
 end;
 
-function DragDropQuery(Source: TObject; Destination: string; var Move: Boolean): Boolean;
+function DragDropQuery(Source: TObject; Destination: RawUtf8; var Move: Boolean): Boolean;
 var
-  msg: String;
+  msg: RawUtf8;
 begin
   Move := GetKeyState(VK_CONTROL) >= 0;
   if Move then

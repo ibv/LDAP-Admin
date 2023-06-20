@@ -28,13 +28,10 @@ unit ConnProp;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows, Validator,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Messages, Buttons, ExtCtrls, Config, ComCtrls, LDAPClasses,Constant, Connection;
+  Messages, Buttons, ExtCtrls, Config, ComCtrls, LDAPClasses,Constant,
+  mormot.core.base;
 
 type
 
@@ -117,33 +114,33 @@ type
     procedure     ActiveControlChanged(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
-    FUser:        string;
-    FPass:        string;
+    FUser:        RawUtf8;
+    FPass:        RawUtf8;
     FPassEnable:  boolean;
     FFolder:      TAccountFolder;
     FEditMode:    TEditMode;
     ///FNameValidator: TValidateInput;
     ///FHostValidator: TValidateInput;
     //FBase:        TEncodedDn; ???
-    function      GetBase: string;
-    procedure     SetBase(const Value: string);
+    function      GetBase: RawUtf8;
+    procedure     SetBase(const Value: RawUtf8);
     function      GetLdapVersion: integer;
     procedure     SetLdapVersion(const Value: integer);
     function      GetAuthMethod: TLdapAuthMethod;
     procedure     SetAuthMethod(const Value: TLdapAuthMethod);
-    function      GetUser: string;
-    procedure     SetUser(const Value: string);
-    function      GetPassword: string;
-    procedure     SetPassword(const Value: string);
-    function      GetPort: integer;
-    procedure     SetPort(const Value: integer);
-    function      GetServer: string;
-    procedure     SetServer(const Value: string);
+    function      GetUser: RawUtf8;
+    procedure     SetUser(const Value: RawUtf8);
+    function      GetPassword: RawUtf8;
+    procedure     SetPassword(const Value: RawUtf8);
+    function      GetPort: RawUtf8;
+    procedure     SetPort(const Value: RawUtf8);
+    function      GetServer: RawUtf8;
+    procedure     SetServer(const Value: RawUtf8);
     function      GetSSL: boolean;
     procedure     SetSSL(const Value: boolean);
     function      GetTLS: boolean;
     procedure     SetTLS(const Value: boolean);
-    function      GetName: string;
+    function      GetName: RawUtf8;
     function      GetTimeLimit: Integer;
     procedure     SetTimeLimit(const Value: Integer);
     function      GetSizeLimit: Integer;
@@ -158,9 +155,9 @@ type
     procedure     SetReferrals(const Value: boolean);
     function      GetReferralHops: Integer;
     procedure     SetReferralHops(const Value: Integer);
-    function      GetOperationalAttrs: string;
-    procedure     SetOperationalAttrs(const Value: string);
-    procedure     SetConnectionName(const Value: string);
+    function      GetOperationalAttrs: RawUtf8;
+    procedure     SetOperationalAttrs(const Value: RawUtf8);
+    procedure     SetConnectionName(const Value: RawUtf8);
     procedure     SetPassEnable(const Value: boolean);
     function      GetDirectoryType: TDirectoryType;
     procedure     SetDirectoryType(Value: TDirectoryType);
@@ -169,16 +166,16 @@ type
     procedure     DoShow; override;
   public
     constructor   Create(AOwner: TComponent; AFolder: TAccountFolder; EditMode: TEditMode); reintroduce;
-    property      Name: string read GetName write SetConnectionName;
+    property      Name: RawUtf8 read GetName write SetConnectionName;
     property      SSL: boolean read GetSSL write SetSSL;
     property      TLS: boolean read GetTLS write SetTLS;
-    property      Port: integer read GetPort write SetPort;
+    property      Port: RawUtf8 read GetPort write SetPort;
     property      LdapVersion: integer read GetLdapVersion write SetLdapVersion;
     property      AuthMethod: TLdapAuthMethod read GetAuthMethod write SetAuthMethod;
-    property      User: string read GetUser write SetUser;
-    property      Server: string read GetServer write SetServer;
-    property      Base: string read GetBase write SetBase;
-    property      Password: string read GetPassword write SetPassword;
+    property      User: RawUtf8 read GetUser write SetUser;
+    property      Server: RawUtf8 read GetServer write SetServer;
+    property      Base: RawUtf8 read GetBase write SetBase;
+    property      Password: RawUtf8 read GetPassword write SetPassword;
     property      PasswordEnable: boolean read FPassEnable write SetPassEnable;
     property      TimeLimit: Integer read GetTimeLimit write SetTimeLimit;
     property      SizeLimit: Integer read GetSizeLimit write SetSizeLimit;
@@ -187,7 +184,7 @@ type
     property      DereferenceAliases: Integer read GetDerefAliases write SetDerefAliases;
     property      ChaseReferrals: Boolean read GetReferrals write SetReferrals;
     property      ReferralHops: Integer read GetReferralHops write SetReferralHops;
-    property      OperationalAttrs: string read GetOperationalAttrs write SetOperationalAttrs;
+    property      OperationalAttrs: RawUtf8 read GetOperationalAttrs write SetOperationalAttrs;
     property      DirectoryType: TDirectoryType read GetDirectoryType write SetDirectoryType;
   end;
 
@@ -196,7 +193,7 @@ var
 
 implementation
 
-uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Math, Dialogs, Misc;
+uses LinLDAP, Math, Dialogs, Misc, mormot.net.ldap;
 
 {$R *.dfm}
 
@@ -251,52 +248,52 @@ begin
   inherited;
 end;
 
-function TConnPropDlg.GetName: string;
+function TConnPropDlg.GetName: RawUtf8;
 begin
   result := Trim(NameEd.Text);
 end;
 
-procedure TConnPropDlg.SetConnectionName(const Value: string);
+procedure TConnPropDlg.SetConnectionName(const Value: RawUtf8);
 begin
   NameEd.Text := Trim(Value);
 end;
 
-function TConnPropDlg.GetServer: string;
+function TConnPropDlg.GetServer: RawUtf8;
 begin
   result:=ServerEd.Text;
 end;
 
-procedure TConnPropDlg.SetServer(const Value: string);
+procedure TConnPropDlg.SetServer(const Value: RawUtf8);
 begin
   ServerEd.Text := Trim(Value);
 end;
 
-function TConnPropDlg.GetBase: string;
+function TConnPropDlg.GetBase: RawUtf8;
 begin
   result:=BaseEd.Text;
 end;
 
-procedure TConnPropDlg.SetBase(const Value: string);
+procedure TConnPropDlg.SetBase(const Value: RawUtf8);
 begin
   BaseEd.Text := Trim(Value);
 end;
 
-function TConnPropDlg.GetUser: string;
+function TConnPropDlg.GetUser: RawUtf8;
 begin
   result:=UserEd.Text;
 end;
 
-procedure TConnPropDlg.SetUser(const Value: string);
+procedure TConnPropDlg.SetUser(const Value: RawUtf8);
 begin
   UserEd.Text:=Value;
 end;
 
-function TConnPropDlg.GetPassword: string;
+function TConnPropDlg.GetPassword: RawUtf8;
 begin
   result:=PasswordEd.Text;
 end;
 
-procedure TConnPropDlg.SetPassword(const Value: string);
+procedure TConnPropDlg.SetPassword(const Value: RawUtf8);
 begin
   PasswordEd.Text:=Value;
 end;
@@ -337,14 +334,14 @@ begin
   MethodChange(nil);
 end;
 
-function TConnPropDlg.GetPort: integer;
+function TConnPropDlg.GetPort: RawUtf8;
 begin
-  result:=StrToInt(PortEd.Text);
+  result:=PortEd.Text;
 end;
 
-procedure TConnPropDlg.SetPort(const Value: integer);
+procedure TConnPropDlg.SetPort(const Value: RawUtf8);
 begin
-  PortEd.Text:=IntToStr(Value);
+  PortEd.Text:=Value;
 end;
 
 function TConnPropDlg.GetSSL: boolean;
@@ -441,12 +438,12 @@ begin
   edReferralHops.Text := IntToStr(Value);
 end;
 
-function TConnPropDlg.GetOperationalAttrs: string;
+function TConnPropDlg.GetOperationalAttrs: RawUtf8;
 begin
   Result := lbxAttributes.Items.CommaText;
 end;
 
-procedure TConnPropDlg.SetOperationalAttrs(const Value: string);
+procedure TConnPropDlg.SetOperationalAttrs(const Value: RawUtf8);
 begin
   lbxAttributes.Items.CommaText := Value;
 end;
@@ -532,7 +529,7 @@ begin
 
   try
     ASession.Connect;
-    ASession.Search('objectClass=*','',LDAP_SCOPE_BASE,['namingContexts'],false,AList);
+    ASession.Search('objectClass=*','',lssBaseObject,['namingContexts'],false,AList);
     for i:=0 to AList.Count-1 do
       for j:=0 to AList[i].AttributesByName['namingContexts'].ValueCount-1 do
         BaseEd.Items.Add(AList[i].AttributesByName['namingContexts'].Values[j].AsString);
@@ -684,7 +681,7 @@ end;
 
 procedure TConnPropDlg.btnAddClick(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := InputBox(cAddAttribute, cAttributeName, '');
   if s <> '' then
@@ -717,7 +714,7 @@ begin
     cbTLS.Checked := false;
   end
   else
-    PortEd.Text := IntToStr(LDAP_PORT);
+    PortEd.Text := LDAP_PORT;
 end;
 
 procedure TConnPropDlg.cbSASLClick(Sender: TObject);
@@ -738,7 +735,7 @@ end;
 function TConnPropDlg.CustomValidate(Control: TCustomEdit): Integer;
 var
   i: Integer;
-  s, InvalidChars: string;
+  s, InvalidChars: RawUtf8;
 begin
   Result := 0;
   s := Trim(Control.Text);

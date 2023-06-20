@@ -27,7 +27,8 @@ unit Samba;
 
 interface
 
-uses Classes, PropertyObject, Posix, LDAPClasses, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}Constant, Connection, Variants ;
+uses Classes, PropertyObject, Posix, LDAPClasses, Constant, Connection, Variants,
+   mormot.core.base;
 
 const
   WKRids: array[0..4] of Integer  = (
@@ -48,10 +49,10 @@ type
   private
     fSession: TConnection;
   public
-    DomainDn: string;
+    DomainDn: RawUtf8;
     AlgorithmicRIDBase: Integer;
-    DomainName: string;
-    SID: string;
+    DomainName: RawUtf8;
+    SID: RawUtf8;
     constructor Create(Session: TConnection);
     function    GetNextUnixIdPoolRid: Integer;
     function    GetRidFromUid(uid: Integer): Integer;
@@ -97,7 +98,7 @@ const
     eInetOrgDisplayName        = 23;
 
 const
-  Prop3AttrNames: array[eSambaSid..eInetOrgDisplayName] of string = (
+  Prop3AttrNames: array[eSambaSid..eInetOrgDisplayName] of RawUtf8 = (
     'sambaSID',
     'sambaPrimaryGroupSID',
     'sambaPwdMustChange',
@@ -142,37 +143,37 @@ type
     procedure SetDomainRec(tdr: TDomainRec);
     procedure SetFlag(Index: Integer; Value: Boolean);
     function  GetFlag(Index: Integer): Boolean;
-    function  GetDomainSid: string;
-    function  GetRid: string;
-    function  GetDomainName: string;
+    function  GetDomainSid: RawUtf8;
+    function  GetRid: RawUtf8;
+    function  GetDomainName: RawUtf8;
   public
     constructor Create(const Entry: TLdapEntry); override;
     procedure New; override;
     procedure Remove; override;
-    procedure SetUserPassword(const Password: string); virtual;
+    procedure SetUserPassword(const Password: RawUtf8); virtual;
     property DomainData: TDomainRec write SetDomainRec;
     property UidNumber: Integer read GetUidNumber write SetUidNumber;
     property GidNumber: Integer read GetGidNumber write SetGidNumber;
-    property Sid: string index eSambaSID read GetString;// write SetString;
-    property DomainSID: string read GetDomainSid;
-    property Rid: string read GetRid;
-    property GroupSID: string index eSambaPrimaryGroupSID read GetString write SetString;
+    property Sid: RawUtf8 index eSambaSID read GetString;// write SetString;
+    property DomainSID: RawUtf8 read GetDomainSid;
+    property Rid: RawUtf8 read GetRid;
+    property GroupSID: RawUtf8 index eSambaPrimaryGroupSID read GetString write SetString;
     property PwdMustChange: Boolean read GetPwdMustChange write SetPwdMustChange;
     property PwdCanChange: Boolean index eSambaPwdCanChange read GetBool write SetBool;
     property PwdLastSet: TDateTime index eSambaPwdLastSet read GetFromUnixTime;
     property KickoffTime: TDateTime index eSambaKickoffTime read GetFromUnixTime write SetAsUnixTime;
     property LogonTime: Integer index eSambaLogonTime read GetInt;
     property LogoffTime: Integer index eSambaLogoffTime read GetInt;
-    property AcctFlags: string index eSambaAcctFlags read GetString;// write Properties[eSambaAcctFlags];
-    property NTPassword: string index eSambaNTPassword read GetString;
-    property LMPassword: string index eSambaLMPassword read GetString;
-    property HomeDrive: string index eSambaHomeDrive read GetString write SetString;
-    property HomePath: string index eSambaHomePath read GetString write SetString;
-    property LogonScript: string index eSambaLogonScript read GetString write SetString;
-    property ProfilePath: string index eSambaProfilePath read GetString write SetString;
-    property UserWorkstations: string index eSambaUserWorkstations read GetString write SetString;
-    property DomainName: string read GetDomainName;
-    property GroupType: string index eSambaGroupType read GetString write SetString;
+    property AcctFlags: RawUtf8 index eSambaAcctFlags read GetString;// write Properties[eSambaAcctFlags];
+    property NTPassword: RawUtf8 index eSambaNTPassword read GetString;
+    property LMPassword: RawUtf8 index eSambaLMPassword read GetString;
+    property HomeDrive: RawUtf8 index eSambaHomeDrive read GetString write SetString;
+    property HomePath: RawUtf8 index eSambaHomePath read GetString write SetString;
+    property LogonScript: RawUtf8 index eSambaLogonScript read GetString write SetString;
+    property ProfilePath: RawUtf8 index eSambaProfilePath read GetString write SetString;
+    property UserWorkstations: RawUtf8 index eSambaUserWorkstations read GetString write SetString;
+    property DomainName: RawUtf8 read GetDomainName;
+    property GroupType: RawUtf8 index eSambaGroupType read GetString write SetString;
     property UserAccount: Boolean Index Ord('U') read GetFlag write SetFlag;
     property ComputerAccount: Boolean Index Ord('W') read GetFlag write SetFlag;
     property DomainTrust: Boolean Index Ord('I') read GetFlag write SetFlag;
@@ -186,36 +187,36 @@ type
 
   TSamba3Computer = class(TSamba3Account)
   private
-    function  GetUid: string;
-    procedure SetUid(Value: string);
-    function  GetDescription: string;
-    procedure SetDescription(Value: string);
+    function  GetUid: RawUtf8;
+    procedure SetUid(Value: RawUtf8);
+    function  GetDescription: RawUtf8;
+    procedure SetDescription(Value: RawUtf8);
   public
     procedure New; override;
-    property ComputerName: string read GetUid write SetUid;
-    property Description: string read GetDescription write SetDescription;
+    property ComputerName: RawUtf8 read GetUid write SetUid;
+    property Description: RawUtf8 read GetDescription write SetDescription;
   end;
 
   TSamba3Group = class(TPropertyObject)
   private
-    function GetDomainSid: string;
-    function GetRid: string;
+    function GetDomainSid: RawUtf8;
+    function GetRid: RawUtf8;
   public
     constructor Create(const Entry: TLdapEntry); override;
     procedure New; override;
     procedure Remove; override;
     property GroupType: Integer index eSambaGroupType read GetInt write SetInt;
-    property Sid: string index eSambaSID read GetString write SetString;
-    property DomainSID: string read GetDomainSid;
-    property Rid: string read GetRid;
-    property DisplayName: string index eInetOrgDisplayName read GetString write SetString;
+    property Sid: RawUtf8 index eSambaSID read GetString write SetString;
+    property DomainSID: RawUtf8 read GetDomainSid;
+    property Rid: RawUtf8 read GetRid;
+    property DisplayName: RawUtf8 index eInetOrgDisplayName read GetString write SetString;
   end;
 
 implementation
 
 {$I LdapAdmin.inc}
 
-uses {$IFDEF VARIANTS} variants, {$ENDIF} md4Samba, smbdes, Sysutils, Misc, Config;
+uses {$IFDEF VARIANTS} variants, {$ENDIF} md4Samba, smbdes, Sysutils, Misc, Config, mormot.net.ldap;
 
 const
   CT_ALGORITHMIC_RID   = 0;
@@ -245,7 +246,7 @@ begin
                     0x41 0x00 0x00 0x00 }
 end;
 
-function HashToHex(Hash: PByteArray; len: Integer): string;
+function HashToHex(Hash: PByteArray; len: Integer): RawUtf8;
 var
   i: Integer;
 begin
@@ -319,24 +320,19 @@ end;
 { TDomainList}
 
 constructor TDomainList.Create(Session: TLDAPSession);
+const
+  Attrs: array [0..2] of RawByteString = ('sambaDomainName', 'sambaAlgorithmicRIDBase', 'sambaSID');
 var
   tDom: TDomainRec;
-  attrs: PCharArray;
   EntryList: TLdapEntryList;
   i: Integer;
 begin
   inherited Create;
   fSession := Session;
-  // set result fields
-  SetLength(attrs, 4);
-  attrs[0] := 'sambaDomainName';
-  attrs[1] := 'sambaAlgorithmicRIDBase';
-  attrs[2] := 'sambaSID';
-  attrs[3] := nil;
   EntryList := TLdapEntryList.Create;
   try
-    Session.Search('(objectclass=sambadomain)', Session.Base, LDAP_SCOPE_SUBTREE,
-                   attrs, false, EntryList);
+    Session.Search('(objectclass=sambadomain)', Session.Base, lssWholeSubtree,
+                   Attrs, false, EntryList);
     for i := 0 to EntryList.Count - 1 do with EntryList[i] do
     begin
       tDom := TDomainRec.Create(Session as TConnection);
@@ -344,15 +340,15 @@ begin
       with tDom do
       begin
         DomainDn := dn;
-        DomainName := AttributesByName[attrs[0]].AsString;
+        DomainName := AttributesByName[Attrs[0]].AsString;
         try
-          AlgorithmicRidBase := StrToInt(AttributesByName[attrs[1]].AsString);
+          AlgorithmicRidBase := StrToInt(AttributesByName[Attrs[1]].AsString);
         except
           on E:EConvertError do
             AlgorithmicRidBase := 1000;
           else raise;
         end;
-        SID := AttributesByName[attrs[2]].AsString;
+        SID := AttributesByName[Attrs[2]].AsString;
       end;
     end;
   finally
@@ -412,7 +408,7 @@ end;
 procedure TSamba3Account.SetGidNumber(Value: Integer);
 begin
   if Assigned(fDomainData) then
-     SetString(eSambaPrimaryGroupSID, fEntry.Session.Lookup(fEntry.Session.Base, Format(sGROUPBYGID, [Value]), 'sambasid', LDAP_SCOPE_SUBTREE))
+     SetString(eSambaPrimaryGroupSID, fEntry.Session.Lookup(fEntry.Session.Base, Format(sGROUPBYGID, [Value]), 'sambasid', lssWholeSubtree))
   else
     SetString(eSambaPrimaryGroupSID, '');
   fPosixAccount.GidNumber := Value;
@@ -431,7 +427,7 @@ end;
 procedure TSamba3Account.SetFlag(Index: Integer; Value: Boolean);
 var
   i: Integer;
-  s: string;
+  s: RawUtf8;
 begin
   s := GetString(eSambaAcctFlags);
   i := Pos(Char(Index), s);
@@ -447,7 +443,7 @@ begin
   SetString(eSambaAcctFlags, s);
 end;
 
-function TSamba3Account.GetDomainSid: string;
+function TSamba3Account.GetDomainSid: RawUtf8;
 var
   p: Integer;
 begin
@@ -455,7 +451,7 @@ begin
   Result := System.Copy(Sid, 1, p - 1);
 end;
 
-function TSamba3Account.GetRid: string;
+function TSamba3Account.GetRid: RawUtf8;
 var
   p: Integer;
 begin
@@ -463,7 +459,7 @@ begin
   Result := PChar(@Sid[p + 1]);
 end;
 
-function TSamba3Account.GetDomainName: string;
+function TSamba3Account.GetDomainName: RawUtf8;
 var
   i: Integer;
 begin
@@ -481,7 +477,7 @@ begin
   end;
 end;
 
-procedure TSamba3Account.SetUserPassword(const Password: string);
+procedure TSamba3Account.SetUserPassword(const Password: RawUtf8);
 var
   Passwd: array[0..255] of Byte;
   Hash: array[0..16] of Byte;
@@ -550,12 +546,12 @@ end;
 
 { TSamba3Computer }
 
-function TSamba3Computer.GetUid: string;
+function TSamba3Computer.GetUid: RawUtf8;
 begin
   Result := fPosixAccount.uid;
 end;
 
-procedure TSamba3Computer.SetUid(Value: string);
+procedure TSamba3Computer.SetUid(Value: RawUtf8);
 begin
   Value := UpperCase(Value);
   if Value[Length(Value)] <> '$' then
@@ -564,12 +560,12 @@ begin
   fPosixAccount.Cn := Value;
 end;
 
-function TSamba3Computer.GetDescription: string;
+function TSamba3Computer.GetDescription: RawUtf8;
 begin
   Result := fPosixAccount.Description;
 end;
 
-procedure TSamba3Computer.SetDescription(Value: string);
+procedure TSamba3Computer.SetDescription(Value: RawUtf8);
 begin
   fPosixAccount.Description := Value;
 end;
@@ -586,7 +582,7 @@ end;
 
 { TSamba3Group }
 
-function TSamba3Group.GetDomainSid: string;
+function TSamba3Group.GetDomainSid: RawUtf8;
 var
   p: Integer;
 begin
@@ -594,7 +590,7 @@ begin
   Result := System.Copy(Sid, 1, p - 1);
 end;
 
-function TSamba3Group.GetRid: string;
+function TSamba3Group.GetRid: RawUtf8;
 var
   p: Integer;
 begin

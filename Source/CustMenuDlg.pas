@@ -28,14 +28,9 @@ unit CustMenuDlg;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, LCLProc,
-{$ENDIF}
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  LCLIntf, LCLType, LCLProc, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ComCtrls, Menus, ImgList, ActnList, ExtCtrls, StdCtrls, CustomMenus,
-  ToolWin, Connection;
+  Connection, mormot.core.base;
 
 const
   CB_ICON_INDENT =  4;
@@ -93,11 +88,7 @@ type
     cbShift: TCheckBox;
     cbAlt: TCheckBox;
     btnReset: TButton;
-    {$ifdef mswindows}
-    ApplicationEvents1: TApplicationEvents;
-    {$else}
     ApplicationEvents1: TApplicationProperties;
-    {$endif}
     procedure TreeViewChange(Sender: TObject; Node: TTreeNode);
     procedure rbClick(Sender: TObject);
     procedure edCaptionChange(Sender: TObject);
@@ -137,7 +128,7 @@ type
     fActMenu: TCustomActionMenu;
     fSaveStatus: TSaveStatus;
     procedure ActionItemToTreeView(ActionItem: TCustomActionItem; TreeView: TTreeview);
-    procedure AddItem(const ActionIndex: Integer; const Caption: string);
+    procedure AddItem(const ActionIndex: Integer; const Caption: RawUtf8);
     procedure SetNodeIcon(Node: TTreeNode; Item: TCustomActionItem);
     procedure SetOverlayImage(node: TTreeNode; const OverlayIndex: Integer);
     function  ValidateInput: Boolean;
@@ -203,7 +194,7 @@ begin
   end;
 end;
 
-procedure TCustomMenuDlg.AddItem(const ActionIndex: Integer; const Caption: string);
+procedure TCustomMenuDlg.AddItem(const ActionIndex: Integer; const Caption: RawUtf8);
 var
   ParentItem, NewItem: TCustomActionItem;
   Node: TTreeNode;
@@ -598,7 +589,7 @@ end;
 
 procedure TCustomMenuDlg.mbDeleteClick(Sender: TObject);
 var
-  msg: string;
+  msg: RawUtf8;
 
   procedure PreserveStandardItems(Node: TTreeNode);
   var

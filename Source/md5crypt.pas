@@ -28,7 +28,10 @@ unit md5crypt;
 
 interface
 
-function md5_crypt_s(pw, salt: AnsiString): String;
+uses
+  mormot.core.base;
+
+function md5_crypt_s(pw, salt: AnsiString): RawUtf8;
 
 implementation
 
@@ -39,7 +42,7 @@ const
 	'./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
  magic: AnsiString = '$1$';	                 {
-				 * This string is magic for
+				 * This RawUtf8 is magic for
 				 * this algorithm.  Having
 				 * it this way, we can get
 				 * get better later on
@@ -158,9 +161,9 @@ begin
 	Result := magic + salt + '$' + passwd;
 end;
 
-function md5_crypt_s(pw, salt: AnsiString): String;
+function md5_crypt_s(pw, salt: AnsiString): RawUtf8;
 begin
-  Result := string(md5_crypt(PAnsiChar(pw), PAnsiChar(salt)));
+  Result := RawUtf8(md5_crypt(PAnsiChar(pw), PAnsiChar(salt)));
 end;
 
 end.

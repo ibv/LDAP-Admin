@@ -29,14 +29,10 @@ unit MailGroup;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls, ExtCtrls, Samba, Posix, LDAPClasses, Config, Postfix,
-  Constant;
+  Constant, mormot.core.base;
 
 type
   TMailGroupDlg = class(TForm)
@@ -94,7 +90,7 @@ var
 
 implementation
 
-uses Pickup, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}Input, Main;
+uses Pickup, Input;
 
 {$R *.dfm}
 
@@ -278,7 +274,7 @@ end;
 
 procedure TMailGroupDlg.AddMailBtnClick(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := '';
   if InputDlg(cAddAddress, cSmtpAddress, s) then
@@ -292,7 +288,7 @@ end;
 
 procedure TMailGroupDlg.EditMailBtnClick(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := mail.Items[mail.ItemIndex];
   if InputDlg(cEditAddress, cSmtpAddress, s) then

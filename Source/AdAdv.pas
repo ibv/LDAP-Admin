@@ -24,11 +24,10 @@ unit AdAdv;
 interface
 
 uses
-  {$ifdef mswindows}
-  Windows, Vcl.Grids, System.UITypes,
-  {$else}
-  LCLIntf, LCLType,
+  {$ifdef WINDOWS}
+  Windows,
   {$endif}
+  LCLIntf, LCLType,
   Grids,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, ComCtrls, LdapClasses, ImgList ;
@@ -93,7 +92,7 @@ var
 
 implementation
 
-uses Pickup, Main, Misc, Constant, DateUtils;
+uses Pickup, Main, Constant, DateUtils;
 
 {$R *.dfm}
 
@@ -213,7 +212,6 @@ var
   i, tp, te: Integer;
   s: string;
   ///tzi: TTimeZoneInformation;
-  err: DWORD;
 begin
   { Get time zone bias. This bias does not change with Daylight Savings Time. }
   ///fillchar(tzi, 0, SizeOf(tzi));

@@ -51,11 +51,9 @@ uses
   SysUtils;
 
 
-{$ifndef windows}
 const
      CLR_NONE    = $1fffffff;
      CLR_DEFAULT = $20000000;
-{$endif}
 
 { TDisabledImageList }
 

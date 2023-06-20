@@ -29,17 +29,12 @@ unit Main;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows, Tabs, WinLDAP,System.Actions, Generics.Collections
-{$ELSE}
-  LCLIntf, LCLType, LinLDAP, LCLTranslator, fgl, LCLVersion,
-{$ENDIF}
+  LCLIntf, LCLType, LinLDAP, LCLTranslator, LCLVersion,
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ComCtrls, Menus, ImgList, StdCtrls, ExtCtrls, Clipbrd, ActnList,
-  Config, Connection, contnrs,
-  Sorter, ToolWin, Posix, Samba,
+  Config, Connection, Sorter, Posix, Samba,
   LDAPClasses,  uSchemaDlg,    Schema,
-  uBetaImgLists, GraphicHint, CustomMenus,  ObjectInfo;
+  uBetaImgLists, GraphicHint, CustomMenus,  ObjectInfo, mormot.core.base;
 
 
 type
@@ -49,7 +44,7 @@ type
     FTreeView:  TTreeView;
     FRootIndex: Integer;
     FTreeHistory: TTreeHistory;
-    FSelected:  string;
+    FSelected:  RawUtf8;
     FLVSorter:  TListViewSorter;
     procedure   SetRootNode(Value: TTreeNode);
     function    GetRootNode: TTreeNode;
@@ -58,13 +53,13 @@ type
     destructor  Destroy; override;
     property    Connection: TConnection read FConnection;
     property    History: TTreeHistory read FTreeHistory;
-    property    Selected: string read FSelected write FSelected;
+    property    Selected: RawUtf8 read FSelected write FSelected;
     property    LVSorter: TListViewSorter read FLVSorter write FLVSorter;
     property    TreeView: TTreeView read FTreeView write FTreeView;
     property    RootNode: TTreeNode read GetRootNode write SetRootNode;
   end;
 
-  TConnectionList = TFPGObjectList<TConnectionNode>;
+  TConnectionObjArray = array of TConnectionNode;
 
   { TMainFrm }
 
@@ -248,12 +243,6 @@ type
       var DragObject: TDragObject);
     procedure LDAPTreeEndDrag(Sender, Target: TObject; X, Y: Integer);
     procedure ScrollTimerTimer(Sender: TObject);
-    procedure ValueListViewAdvancedCustomDrawItem(Sender: TCustomListView;
-      Item: TListItem; State: TCustomDrawState; Stage: TCustomDrawStage;
-      var DefaultDraw: Boolean);
-    procedure ValueListViewAdvancedCustomDrawSubItem(Sender: TCustomListView;
-      Item: TListItem; SubItem: Integer; State: TCustomDrawState;
-      Stage: TCustomDrawStage; var DefaultDraw: Boolean);
     procedure ActConnectExecute(Sender: TObject);
     procedure ActExitExecute(Sender: TObject);
     procedure ActDisconnectExecute(Sender: TObject);
@@ -299,7 +288,9 @@ type
     procedure ListPopupPopup(Sender: TObject);
     procedure pbViewCertClick(Sender: TObject);
     procedure pbViewPictureClick(Sender: TObject);
-    procedure ValueListViewInfoTip(Sender: TObject; Item: TListItem;var InfoTip: String);
+    procedure ValueListViewCustomDrawItem(Sender: TCustomListView;
+      Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure ValueListViewInfoTip(Sender: TObject; Item: TListItem;var InfoTip: RawUtf8);
     procedure ActEditValueExecute(Sender: TObject);
     procedure ActAliasExecute(Sender: TObject);
     procedure ActCustomizeMenuExecute(Sender: TObject);
@@ -309,10 +300,11 @@ type
     procedure TabControl1Change(Sender: TObject);
     procedure TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
     procedure ActOpenFileExecute(Sender: TObject);
+    procedure ValueListViewShowHint(Sender: TObject; HintInfo: PHintInfo);
   private
     Root: TTreeNode;
     fCmdLineAccount: TFakeAccount;
-    fConnections: TConnectionList;
+    fConnections: TConnectionObjArray;
     FConnection: TConnection;
     fViewSplitterPos: Integer;
     fLdapTreeWidth: Integer;
@@ -323,7 +315,7 @@ type
     fIdObject: Boolean;
     fEnforceContainer: Boolean;
     fLocatedEntry: Integer;
-    fQuickSearchFilter: string;
+    fQuickSearchFilter: RawUtf8;
     fTemplateProperties: Boolean;
     fTreeHistory: TTreeHistory;
     fDisabledImages: TBetaDisabledImageList;
@@ -343,7 +335,7 @@ type
     procedure RefreshTree;
     procedure RefreshValueListView(Node: TTreeNode);
     procedure RefreshEntryListView(Node: TTreeNode);
-    procedure CopySelection(TargetSession: TLdapSession; TargetDn, TargetRdn: string; Move: Boolean);
+    procedure CopySelection(TargetSession: TLdapSession; TargetDn, TargetRdn: RawUtf8; Move: Boolean);
     procedure GetSelection(List: TStringList);
     procedure RemoveNodes(List: TStringList);
     procedure CopyMove(Move: Boolean);
@@ -362,11 +354,11 @@ type
     //--
 
     procedure ExpandNode(Node: TTreeNode; Session: TLDAPSession; TView: TTreeView);
-    procedure DoCopyMove(List: TStringList; TargetSession: TLdapSession; TargetDn, TargetRdn: string; Move: Boolean);
+    procedure DoCopyMove(List: TStringList; TargetSession: TLdapSession; TargetDn, TargetRdn: RawUtf8; Move: Boolean);
     procedure DoDelete(List: TStringList);
     function  ShowSchema: TSchemaDlg;
-    function  PickEntry(const ACaption: string): string;
-    function  LocateEntry(const dn: string; const Select: Boolean): TTreeNode;
+    function  PickEntry(const ACaption: RawUtf8): RawUtf8;
+    function  LocateEntry(const dn: RawUtf8; const Select: Boolean): TTreeNode;
     procedure EditProperty(AOwner: TControl; ObjectInfo: TObjectInfo);
     procedure ServerConnect(Account: TAccount);
     procedure ServerDisconnect;
@@ -384,16 +376,12 @@ implementation
 {$I LdapAdmin.inc}
 
 uses
-{$IFnDEF FPC}
-  Shellapi,AdPrefs,
-{$ELSE}
   strutils,
-{$ENDIF}
   ADObjects,
   EditEntry, ConnList, Search, LdapOp, Constant, Export, Import, Prefs, Misc,
-  LdapCopy, BinView, Input, ConfigDlg, Templates, TemplateCtrl,
-  Cert, PicView, About, Alias, SizeGrip, CustMenuDlg, Lang, Bookmarks, DBLoad
-  {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+  LdapCopy, BinView, ConfigDlg, Templates, TemplateCtrl,
+  Cert, PicView, About, Alias, SizeGrip, CustMenuDlg, Lang, Bookmarks, DBLoad,
+  mormot.core.os, mormot.net.ldap;
 
 
 
@@ -460,7 +448,7 @@ procedure TMainFrm.EntryWrite(Sender: TObject);
 var
  Node: TTreeNode;
  Entry: TLdapEntry;
- tgtDn: string;
+ tgtDn: RawUtf8;
 begin
   Node := LdapTree.Selected;
   if Assigned(Node) then
@@ -554,9 +542,9 @@ end;
 procedure TMainFrm.InitLanguageMenu;
 var
   i: Integer;
-  CurrentLanguage: string;
+  CurrentLanguage: RawUtf8;
 
-  procedure AddMenuItem(const ACaption: string; ATag: Integer; AChecked: Boolean = false);
+  procedure AddMenuItem(const ACaption: RawUtf8; ATag: Integer; AChecked: Boolean = false);
   var
     MenuItem: TMenuItem;
   begin
@@ -601,7 +589,7 @@ begin
       AddMenuItem(Languages[i], i);
 end;
 
-function TMainFrm.PickEntry(const ACaption: string): string;
+function TMainFrm.PickEntry(const ACaption: RawUtf8): RawUtf8;
 var
   DirDlg: TForm;
   ddTree: TTreeView;
@@ -670,62 +658,9 @@ begin
 
 end;
 
-{$ifdef mswindows}
-function TMainFrm.LocateEntry(const dn: string; const Select: Boolean): TTreeNode;
+function TMainFrm.LocateEntry(const dn: RawUtf8; const Select: Boolean): TTreeNode;
 var
-  sdn: string;
-  comp: PPChar;
-  i: Integer;
-  Parent: TTreeNode;
-begin
-  Parent := Root;
-  Result := Parent;
-  Parent.Expand(false);
-  sdn := System.Copy(dn, 1, Length(dn) - Length(FConnection.Base));
-  comp := ldap_explode_dn(PChar(sdn), 0);
-  try
-    if Assigned(comp) then
-    begin
-      i := 0;
-      while PCharArray(comp)[i] <> nil do inc(i);
-      while (i > 0) do
-      begin
-        dec(i);
-        Result := Parent.GetFirstChild;
-        while Assigned(Result) do
-        begin
-          if AnsiCompareText(Result.Text, DecodeLdapString(PCharArray(comp)[i])) = 0 then
-          begin
-            Parent := Result;
-            if Select then
-              Result.Expand(false);
-            break;
-          end;
-          Result := Result.GetNextChild(Result);
-        end;
-      end;
-    end;
-    if Select then
-    begin
-      if Assigned(Result) then
-      begin
-        Result.Selected := true;
-        Result.MakeVisible;
-      end
-      else begin
-        Parent.Selected := true;
-        Parent.MakeVisible;
-      end;
-    end;
-  finally
-    ldap_value_free(comp);
-  end;
-end;
-{$else}
-
-function TMainFrm.LocateEntry(const dn: string; const Select: Boolean): TTreeNode;
-var
-  sdn: string;
+  sdn: RawUtf8;
   comp: TStringList;
   i: Integer;
   Parent: TTreeNode;
@@ -736,7 +671,7 @@ begin
   sdn := System.Copy(dn, 1, Length(dn) - Length(FConnection.Base) - 1);
   comp:=TStringList.Create;
   try
-    if ldap_explode_dn(sdn, 0, comp) then
+    if ldap_explode_dn(sdn, comp) then
     begin
       for i:=comp.Count-1 Downto 0 do
       begin
@@ -772,7 +707,6 @@ begin
     comp.free;
   end;
 end;
-{$endif}
 
 procedure TMainFrm.ServerConnect(Account: TAccount);
 var
@@ -814,7 +748,7 @@ begin
     ConnectionNode := TConnectionNode.Create(NewConnection);
     if fCacheTreeViews then
       fTreeHistory := ConnectionNode.History;
-    fConnections.Add(ConnectionNode);
+    ObjArrayAdd(FConnections, ConnectionNode);
     ActionMenu.TemplateMenu := fTemplateMenu;
     ActionMenu.OnClick := NewClick;
     TabControl1.Tabs.Add(ExtractFileName(Account.Name));
@@ -831,7 +765,7 @@ begin
 
   LDAPTree.PopupMenu := EditPopup;
 
-  if fConnections.Count > 1 then Exit;
+  if Length(fConnections) > 1 then Exit;
 
   EntryListView.PopupMenu := EditPopup;
   ListPopup.AutoPopup := true;
@@ -872,11 +806,7 @@ begin
   if idx >= 0 then
   begin
     FConnection.Disconnect;
-    {$ifdef mswindows}
-    fConnections.Delete(idx);
-    {$else}
-    fConnections.Delete(idx-1);
-    {$endif}
+    ObjArrayDelete(fConnections, idx);
     FConnection := nil;
     TabControl1.Tabs.Delete(idx);
     dec(idx);
@@ -884,7 +814,7 @@ begin
     { force onchange event }
     TabControl1Change(nil);
   end;
-  if fConnections.Count = 0 then
+  if Length(fConnections) = 0 then
   begin
     LDAPTree.PopupMenu := nil;
     ListPopup.AutoPopup := false;
@@ -905,7 +835,7 @@ end;
 
 procedure TMainFrm.InitStatusBar;
 var
- s: string;
+ s: RawUtf8;
 begin
   if (FConnection <> nil) and (FConnection.Connected) then begin
     s := Format(cServer, [FConnection.Server]);
@@ -956,7 +886,7 @@ end;
 
 procedure TMainFrm.RefreshStatusBar;
 var
-  s3, s4: string;
+  s3, s4: RawUtf8;
 begin
   if StatusBar.Tag <> 0 then Exit;
   s4 := '';
@@ -1031,16 +961,12 @@ procedure TMainFrm.ExpandNode(Node: TTreeNode; Session: TLDAPSession; TView: TTr
 var
   CNode: TTreeNode;
   i: Integer;
-  attrs: PCharArray;
   Entry: TLDapEntry;
   ObjectInfo: TObjectInfo;
 begin
   FTickCount := GetTickCount64 + 500;
   try
-    SetLength(attrs, 2);
-    attrs[0] := 'objectclass';
-    attrs[1] := nil;
-    Session.Search(sAnyClass, TObjectInfo(Node.Data).dn, LDAP_SCOPE_ONELEVEL, attrs, false, fSearchList, SearchCallback);
+    Session.Search(sAnyClass, TObjectInfo(Node.Data).dn, lssSingleLevel, ['objectClass'], false, fSearchList, SearchCallback);
     for i := 0 to fSearchList.Count - 1 do
     begin
       Entry := fSearchList[i];
@@ -1101,11 +1027,11 @@ procedure TMainFrm.RefreshValueListView(Node: TTreeNode);
 var
   ListItem: TListItem;
 
-  procedure ShowAttrs(Attributes: TLdapAttributeList);
+  procedure ShowAttrs(Attributes: LDAPClasses.TLdapAttributeList);
   var
-    i, j: Integer;
+    i, j, k: Integer;
 
-    function DataTypeToText(const AType: TDataType): string;
+    function DataTypeToText(const AType: TDataType): RawUtf8;
     begin
       case AType of
         dtText: Result := cText;
@@ -1119,27 +1045,35 @@ var
 
   begin
     for i := 0 to Attributes.Count - 1 do with Attributes[i] do
-    for j := 0 to ValueCount - 1 do
-    begin
-      ListItem := ValueListView.Items.Add;
-      ListItem.Caption := Name;
-      with Values[j] do
+      for j := 0 to ValueCount - 1 do
       begin
-        if DataType = dtText then
-          ListItem.SubItems.Add(AsString)
-        else
-          ListItem.SubItems.Add(HexMem(Data, DataSize, true));
-        ListItem.SubItems.Add(DataTypeToText(DataType));
-        ListItem.SubItems.Add(IntToStr(DataSize));
+        ListItem := ValueListView.Items.Add;
+        ListItem.Caption := Name;
+        with Values[j] do
+        begin
+          if DataType = dtText then
+            ListItem.SubItems.Add(AsString)
+          else
+            ListItem.SubItems.Add(HexMem(Data, DataSize, true));
+          ListItem.SubItems.Add(DataTypeToText(DataType));
+          ListItem.SubItems.Add(IntToStr(DataSize));
+
+          with fConnections[TabControl1.TabIndex].Connection do
+            if Schema.Loaded then
+              for k := 0 to Schema.ObjectClasses.Count - 1 do
+              begin
+                SchemaAttribute := Schema.ObjectClasses[k].Must.ByName[Attribute.Name];
+                if SchemaAttribute <> nil then
+                  Break;
+              end;
+        end;
+        ListItem.Data := Attributes[i].Values[j];
       end;
-      ListItem.Data := Attributes[i].Values[j];
-    end;
   end;
 
 begin
-  {$ifndef mswindows}
-  if Node = nil then exit;
-  {$endif}
+  if Node = nil then
+    exit;
   with TObjectInfo(Node.Data).Entry do
   begin
     Read;
@@ -1158,7 +1092,7 @@ end;
 
 procedure TMainFrm.RefreshEntryListView(Node: TTreeNode);
 var
-  s: string;
+  s: RawUtf8;
   ListItem: TListItem;
   ANode: TTreeNode;
 begin
@@ -1190,7 +1124,7 @@ begin
   fDisabledImages := TBetaDisabledImageList.Create(self);
   fDisabledImages.MasterImages := ImageList;
   ToolBar.DisabledImages := fDisabledImages;
-  fConnections := TConnectionList.Create;
+  fConnections := nil;
   fSearchList := TLdapEntryList.Create(false);
   fLocateList := TLdapEntryList.Create;
   if not fCacheTreeViews then
@@ -1210,7 +1144,7 @@ begin
   GlobalConfig.WriteInteger(rMwViewSplit, ViewSplitter.Top);
   GlobalConfig.WriteInteger(rEvViewStyle, Ord(EntryListView.ViewStyle));
   fDisabledImages.Free;
-  fConnections.Free;
+  ObjArrayClear(fConnections);
   fSearchList.Free;
   fLocateList.Free;
   if not fCacheTreeViews then
@@ -1296,10 +1230,8 @@ begin
     if List.Objects[i] <> LDAP_OP_SUCCESS then
       Continue;
     Node := LocateEntry(List[i], false);
-    {$ifndef mswindows}
     // for treeview event onchange
     Node.Parent.Selected:=true;
-    {$endif}
     if Assigned(Node) and (TObjectInfo(Node.Data).dn = List[i]) then
     begin
       if EntryListView.Visible then
@@ -1335,7 +1267,7 @@ begin
   end;
 end;
 
-procedure TMainFrm.CopySelection(TargetSession: TLdapSession; TargetDn, TargetRdn: string; Move: Boolean);
+procedure TMainFrm.CopySelection(TargetSession: TLdapSession; TargetDn, TargetRdn: RawUtf8; Move: Boolean);
 var
   List: TStringList;
 begin
@@ -1348,10 +1280,10 @@ begin
   end;
 end;
 
-procedure TMainFrm.DoCopyMove(List: TStringList; TargetSession: TLdapSession; TargetDn, TargetRdn: string; Move: Boolean);
+procedure TMainFrm.DoCopyMove(List: TStringList; TargetSession: TLdapSession; TargetDn, TargetRdn: RawUtf8; Move: Boolean);
 var
   Node: TTreeNode;
-  dstdn, seldn: string;
+  dstdn, seldn: RawUtf8;
   ep: TLVCustomDrawItemEvent;
   i: Integer;
 
@@ -1451,7 +1383,7 @@ end;
 
 procedure TMainFrm.DoDelete(List: TStringList);
 var
-  msg: string;
+  msg: RawUtf8;
 begin
   if List.Count > 1 then
     msg := Format(stConfirmMultiDel, [List.Count])
@@ -1493,7 +1425,7 @@ end;
 
 procedure TMainFrm.LDAPTreeEdited(Sender: TObject; Node: TTreeNode; var S: String);
 var
-  newdn, pdn, temp: string;
+  newdn, pdn, temp: RawUtf8;
   i: Integer;
 
   function ConfirmRename: Boolean;
@@ -1555,7 +1487,7 @@ see DragDrop.info
 }
 procedure TMainFrm.LDAPTreeDragOver(Sender, Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
 var
-  srcdn, dstdn: string;
+  srcdn, dstdn: RawUtf8;
 begin
 
   with LdapTree do
@@ -1602,114 +1534,6 @@ procedure TMainFrm.ScrollTimerTimer(Sender: TObject);
 begin
   OnScrollTimer(ScrollTimer, LdapTree, ScrollAccMargin);
 end;
-
-
-procedure TMainFrm.ValueListViewAdvancedCustomDrawItem(Sender: TCustomListView;
-  Item: TListItem; State: TCustomDrawState; Stage: TCustomDrawStage;
-  var DefaultDraw: Boolean);
-var
-  i: Integer;
-  mRect: TRect;
-begin
-  Sender.Canvas.Font.Style := [];
-  Sender.Canvas.Font.Color := clWindowText;
-
-  with TLdapAttributeData(Item.Data), Font do
-  begin
-    if lowercase(Attribute.Name) = 'objectclass' then
-    begin
-      Sender.Canvas.Font.Style := [fsBold];
-      Sender.Canvas.Font.Color := clNavy;
-    end
-    else
-    if Attribute.Entry.OperationalAttributes.AttributeOf(Item.Caption) = Attribute then
-      Sender.Canvas.Font.Color := clDkGray
-    else
-    ///if TabControl1.TabIndex <> -1 then
-    ///with TConnection(fConnections[TabControl1.TabIndex]) do
-    if TabControl1.TabIndex > 0 then
-    with fConnections[TabControl1.TabIndex-1].Connection do
-    try
-      if Schema.Loaded then
-      begin
-       for i := 0 to Schema.ObjectClasses.Count - 1 do
-         if Schema.ObjectClasses[i].Must.ByName[Attribute.Name] <> nil then
-         begin
-           Sender.Canvas.Font.Style := [fsBold];
-           Break;
-         end;
-      end;
-    except
-    end;
-  end;
-  mRect := Item.DisplayRect(drBounds);
-  Sender.Canvas.TextRect(mRect,mRect.Left + 3,mRect.Top,Item.Caption);
-  DefaultDraw := false;
-end;
-
-procedure TMainFrm.ValueListViewAdvancedCustomDrawSubItem(
-  Sender: TCustomListView; Item: TListItem; SubItem: Integer;
-  State: TCustomDrawState; Stage: TCustomDrawStage; var DefaultDraw: Boolean);
-var mRect: TRect;
-      i,j: Integer;
-      lcver: Integer;
-      S,st: String;
-begin
-    with Sender.Canvas do
-    begin
-      {with TLdapAttributeData(Item.Data), Font do
-      begin
-        Style := [];
-        Font.Color := clWindowText;
-        if (lowercase(Attribute.Name) = 'objectclass') then
-        begin
-          Style := [fsBold];
-          Color := clNavy;
-        end
-        else
-        if Attribute.Entry.OperationalAttributes.AttributeOf(Item.Caption) = Attribute then
-          Color := clDkGray
-        else
-        if TabCOntrol1.TabIndex > 0 then
-        with fConnections[TabControl1.TabIndex-1].Connection do
-        try
-          if Schema.Loaded then
-          begin
-           for i := 0 to Schema.ObjectClasses.Count - 1 do
-             if Schema.ObjectClasses[i].Must.ByName[Attribute.Name] <> nil then
-             begin
-               Style := [fsBold];
-               Break;
-             end;
-          end;
-        except
-        end;
-      end;}
-      mRect := Item.DisplayRect(drlabel);
-      s := Item.SubItems[SubItem-1];
-      j:=1;
-      // for Lazarus > 1.7 index is 0
-      st:= lcl_version;
-      st:=StringReplace(st,'.','',[rfReplaceAll]);
-      if st<>'' then
-        lcver:=StrToInt(st);
-      if lcver >= 1800 then j:=0;
-      ///if (lcl_major >= 1)  and (lcl_minor > 7) then j:=0 ;
-      for i := j to SubItem-1 do
-      begin
-        mRect.Left := mRect.Left + Sender.Column[i].Width;
-        mRect.Right := mRect.Right + Sender.Column[i].Width + TextWidth(s);
-      end;
-      if SubItem <> 3 then
-        TextRect(mRect,mRect.Left + 3 , mRect.Top , s)
-      else
-        TextRect(mRect,mRect.left + 120 - TextWidth(s) , mRect.Top, s);
-
-    end;
-    DefaultDraw := false;
-end;
-
-
 
 procedure TMainFrm.NewClick(Sender: TObject);
 begin
@@ -1848,9 +1672,6 @@ procedure TMainFrm.ActPreferencesExecute(Sender: TObject);
 begin
   case FConnection.DirectoryType of
     dtPosix: TPrefDlg.Create(Self, FConnection).ShowModal;
-    {$ifdef mswindows}
-    dtActiveDirectory: TAdPrefDlg.Create(Self, FConnection).ShowModal;
-    {$endif}
   end;
 end;
 
@@ -1936,7 +1757,7 @@ begin
   end;
 end;
 
-function TMainFrm.IsActPropertiesEnable: boolean;
+function TMainFrm.IsActPropertiesEnable: Boolean;
 var
   Node: TTreeNode;
 begin
@@ -2108,10 +1929,10 @@ end;
 
 procedure TMainFrm.FormShow(Sender: TObject);
 var
-  aproto, auser, apassword, ahost, abase: string;
+  aproto, auser, apassword, ahost, abase: RawUtf8;
   aport, aversion, i,j:     integer;
   auth: TLdapAuthMethod;
-  SessionName, StorageName: string;
+  SessionName, StorageName: RawUtf8;
   AStorage: TConfigStorage;
 begin
   InitTemplateMenu;
@@ -2121,7 +1942,7 @@ begin
   if ParamCount <> 0 then
   begin
     aproto:='ldap';
-    aport:=LDAP_PORT;
+    aport:=StrToInt(LDAP_PORT);
     auser:='';
     apassword:='';
     auth:=AUTH_SIMPLE;
@@ -2131,7 +1952,7 @@ begin
     with fCmdLineAccount do
     begin
       Server := ahost;
-      Port := aport;
+      Port := IntToStr(aport);
       Base := abase;
       User := auser;
       Password := apassword;
@@ -2178,6 +1999,17 @@ begin
   end;
 end;
 
+procedure TMainFrm.ValueListViewShowHint(Sender: TObject; HintInfo: PHintInfo);
+var
+  item: TListItem;
+  ControlPoint: TPoint;
+begin
+  ControlPoint := ValueListView.ScreenToClient(Mouse.CursorPos);
+  item := (Sender as TListView).GetItemAt(ControlPoint.X, ControlPoint.Y);
+  if Assigned(item) then
+    HintInfo^.HintStr :=  TLdapAttributeData(item.Data).AsString ;
+end;
+
 procedure TMainFrm.ActOptionsExecute(Sender: TObject);
 begin
   if TConfigDlg.Create(Self, FConnection).ShowModal = mrOk then
@@ -2204,18 +2036,18 @@ end;
 
 procedure TMainFrm.edSearchKeyPress(Sender: TObject; var Key: Char);
 
-  function Parse(const Param, Val: string): string;
+  function Parse(const Param, Val: RawUtf8): RawUtf8;
   var
     p, p1: PChar;
   begin
     Result := '';
     p := PChar(Param);
     while p^ <> #0 do begin
-      p1 := CharNext(p);
+      p1 := p + 1;
       if (p^ = '%') and ((p1^ = 's') or (p1^ = 'S')) then
       begin
         Result := Result + Val;
-        p1 := CharNext(p1);
+        p1 := p1 + 1;
       end
       else
         Result := Result + p^;
@@ -2236,7 +2068,7 @@ begin
     end;
     if fLocatedEntry = -1 then
     begin
-      FConnection.Search(Parse(fQuickSearchFilter, edSearch.Text), PChar(FConnection.Base), LDAP_SCOPE_SUBTREE, ['objectclass'], false, fLocateList, SearchCallback);
+      FConnection.Search(Parse(fQuickSearchFilter, edSearch.Text), PChar(FConnection.Base), lssWholeSubtree, ['objectclass'], false, fLocateList, SearchCallback);
       fLocateList.Sort(EntrySortProc, true);
     end;
     if fLocateList.Count > 0 then
@@ -2318,7 +2150,7 @@ end;
 
 procedure TMainFrm.ActFindInSchemaExecute(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   if ValueListView.Selected <> nil then
   begin
@@ -2333,10 +2165,9 @@ procedure TMainFrm.TabControl1Change(Sender: TObject);
 var
   ConnectionNode: TConnectionNode;
 begin
-  ///if TabControl1.TabIndex = -1 then exit;
-  if TabControl1.TabIndex < 1 then exit;
+  if TabControl1.TabIndex = -1 then exit;
 
-  ConnectionNode := fConnections[TabControl1.TabIndex-1];
+  ConnectionNode := fConnections[TabControl1.TabIndex];
   FConnection := ConnectionNode.Connection;
   if fCacheTreeViews then
     fTreeHistory := ConnectionNode.History
@@ -2402,7 +2233,7 @@ end;
 
 procedure TMainFrm.TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
 begin
-  if TabControl1.TabIndex > 0 then with fConnections[TabControl1.TabIndex-1] do
+  if TabControl1.TabIndex <> -1 then with fConnections[TabControl1.TabIndex] do
   begin    
     Selected := TObjectInfo(LDAPTree.Selected.Data).dn;
     LVSorter.ListView := nil;
@@ -2471,7 +2302,7 @@ procedure TMainFrm.ListPopupPopup(Sender: TObject);
 var
   Value: TLdapAttributeData;
 
-  function IsReadOnly(Attribute: TLdapAttribute): Boolean;
+  function IsReadOnly(Attribute: LDAPClasses.TLdapAttribute): Boolean;
   const
     OID_STRUCTIRAL_OBJECTCLASS = '2.5.21.9';
   begin
@@ -2516,18 +2347,65 @@ begin
     end;
 end;
 
+procedure TMainFrm.ValueListViewCustomDrawItem(Sender: TCustomListView;
+  Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+var
+  AttributeData: TLdapAttributeData;
+  SubItem: Integer;
+  Content: RawUtf8;
+  mRect: TRect;
+begin
+  DefaultDraw := False;
+  Sender.Canvas.Font.Style := [];
+  Sender.Canvas.Font.Color := clWindowText;
 
+  AttributeData := TLdapAttributeData(Item.Data);
+  with AttributeData do
+  begin
+    if lowercase(Attribute.Name) = 'objectclass' then
+    begin
+      Sender.Canvas.Font.Style := [fsBold];
+      Sender.Canvas.Font.Color := clNavy;
+    end
+    else
+    if Attribute.Entry.OperationalAttributes.AttributeOf(Item.Caption) = Attribute then
+      Sender.Canvas.Font.Color := clDkGray
+    else if (TabControl1.TabIndex <> -1) and (SchemaAttribute <> nil) then
+      Sender.Canvas.Font.Style := [fsBold];
 
-procedure TMainFrm.ValueListViewInfoTip(Sender: TObject; Item: TListItem; var InfoTip: String);
+    for SubItem := 0 to item.SubItems.Count do
+    begin
+      if SubItem = 0 then
+      begin
+         Content := item.Caption;
+         mRect := item.DisplayRect(drLabel);
+      end else
+      begin
+        Content := item.SubItems[SubItem - 1];
+        mRect := item.DisplayRectSubItem(SubItem, drLabel);
+      end;
+
+      if State * [cdsFocused] <> [] then
+      begin
+        sender.Canvas.Brush.Color := clHighlight;
+        sender.Canvas.Font.Color := clHighlightText;
+      end;
+      Sender.Canvas.FillRect(mRect);
+      Sender.Canvas.TextRect(mRect, mRect.Left + 2, mRect.Top, Content);
+    end;
+  end;
+end;
+
+procedure TMainFrm.ValueListViewInfoTip(Sender: TObject; Item: TListItem; var InfoTip: RawUtf8);
 const
-  Partials: array[0..8] of string = ('time', 'expires', 'logon', 'logoff', 'last', 'created', 'modify', 'modified', 'change');
+  Partials: array[0..8] of RawUtf8 = ('time', 'expires', 'logon', 'logoff', 'last', 'created', 'modify', 'modified', 'change');
 var
   n: Int64;
   c: Integer;
-  s, Value: string;
+  s, Value: RawUtf8;
   ///ST: SystemTime;
 
-  function PartialMatch(const m: string): Boolean;
+  function PartialMatch(const m: RawUtf8): Boolean;
   var
     i: Integer;
   begin
@@ -2553,11 +2431,7 @@ begin
   try
     Value := Item.SubItems[0];
     s := lowercase(Item.Caption);
-    {$ifdef mswindows}
-    if s.Contains('guid') then
-    {$else}
-    if AnsiContainsStr(S,'guid') then
-    {$endif}
+    if PosEx(s, 'guid') <> 0 then
     begin
       InfoTip := GuidToString(PGUID(TLdapAttributeData(Item.Data).Data)^);
       exit;
@@ -2566,7 +2440,7 @@ begin
     begin
       if s = 'objectsid' then
       begin
-        InfoTip := ObjectSidToString(PSidRec(TLdapAttributeData(Item.Data).Data));
+        InfoTip := SidToText(PSid(TLdapAttributeData(Item.Data).Data));
         exit;
       end;
       if s ='useraccountcontrol' then
@@ -2603,7 +2477,7 @@ end;
 procedure TMainFrm.ActEditValueExecute(Sender: TObject);
 var
   Value: TLdapAttributeData;
-  s: string;
+  s: String;
 begin
   if ValueListView.Selected=nil then exit;
   if ValueListView.Selected.SubItems.Count=0 then exit;
@@ -2631,7 +2505,7 @@ end;
 
 procedure TMainFrm.ActCustomizeMenuExecute(Sender: TObject);
 var
-  Selected: string;
+  Selected: RawUtf8;
 begin
   if CustomizeMenu(Self, ImageList, FConnection) then
   try
@@ -2671,7 +2545,7 @@ end;
 
 procedure TMainFrm.ActBookmarkExecute(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := '';
   if Assigned(LDAPTree.Selected) then
@@ -2696,7 +2570,7 @@ end;
 
 function  TMainFrm.GetConnectionCount: Integer;
 begin
-  Result := fConnections.Count;
+  Result := Length(fConnections);
 end;
 
 end.

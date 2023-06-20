@@ -28,13 +28,8 @@ unit Host;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, LDAPClasses, Constant;
+  LCLIntf, LCLType, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, LDAPClasses, Constant, mormot.core.base;
 
 type
   THostDlg = class(TForm)
@@ -72,7 +67,7 @@ var
 
 implementation
 
-uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Input;
+uses Input;
 
 {$R *.dfm}
 
@@ -140,7 +135,7 @@ end;
 
 procedure THostDlg.AddHostBtnClick(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := '';
   if InputDlg(cAddHost, cHostName, s) and (s <> '') then
@@ -153,7 +148,7 @@ end;
 
 procedure THostDlg.EditHostBtnClick(Sender: TObject);
 var
-  s: string;
+  s: RawUtf8;
 begin
   s := cnList.Items[cnList.ItemIndex];
   if InputDlg(cEditHost, cHostName, s) then

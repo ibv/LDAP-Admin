@@ -28,13 +28,9 @@ unit LdapOp;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows, WinLDAP,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, LinLDAP,
-{$ENDIF}
-  SysUtils, Messages, Classes, Graphics, Controls,
-  StdCtrls, ExtCtrls, Forms, ComCtrls, LDAPClasses, Posix;
+  LCLIntf, LCLType,
+  SysUtils, Classes, Graphics, Controls,
+  StdCtrls, ExtCtrls, Forms, ComCtrls, LDAPClasses, Posix, mormot.core.base;
 
 const
   LDAP_OP_SUCCESS = Pointer(1);
@@ -52,19 +48,19 @@ type
     fSmartDelete: Boolean;
     fDeleteAll: Boolean;
     fSkipOnOverlap: Boolean;
-    function  CheckPathOverlap(const SourceDn, DestDn: string): Boolean;
+    function  CheckPathOverlap(const SourceDn, DestDn: RawUtf8): Boolean;
     procedure SetShowProgress(Value: Boolean);
     function  GetDstSession: TLDAPSession;
-    procedure Prepare(const dn: string); overload;
+    procedure Prepare(const dn: RawUtf8); overload;
     procedure Prepare(List: TStringList); overload;
     procedure DeleteLeaf(const Entry: TLdapEntry);
-    procedure DeleteChildren(const dn: string);
-    procedure Copy(const SourceDn, TargetDn: string; Move: Boolean);
+    procedure DeleteChildren(const dn: RawUtf8);
+    procedure Copy(const SourceDn, TargetDn: RawUtf8; Move: Boolean);
   public
     constructor Create(AOwner: TComponent; ASession: TLDAPSession); reintroduce;
-    procedure CopyTree(const dn, pdn, rdn: string; Move: Boolean); overload;
-    procedure CopyTree(List: TStringList; const DestDn: string; Move: Boolean); overload;
-    procedure DeleteTree(const adn: string); overload;
+    procedure CopyTree(const dn, pdn, rdn: RawUtf8; Move: Boolean); overload;
+    procedure CopyTree(List: TStringList; const DestDn: RawUtf8; Move: Boolean); overload;
+    procedure DeleteTree(const adn: RawUtf8); overload;
     procedure DeleteTree(List: TStringList); overload;
     property SourceSession: TLDAPSession read fSrcSession;
     property DestSession: TLDAPSession read GetDstSession write fDstSession;
@@ -80,9 +76,9 @@ implementation
 {$R *.dfm}
 {$I LdapAdmin.inc}
 
-uses Misc, Dialogs, Config, Constant{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+uses Misc, Dialogs, Config, Constant, mormot.net.ldap{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
 
-function TLdapOpDlg.CheckPathOverlap(const SourceDn, DestDn: string): Boolean;
+function TLdapOpDlg.CheckPathOverlap(const SourceDn, DestDn: RawUtf8): Boolean;
 begin
   Result := (SourceSession <> DestSession) or (System.Copy(DestDn, Length(DestDn) - Length(SourceDn) + 1, MaxInt) <> SourceDn);
   if not (Result or fSkipOnOverlap) then
@@ -107,7 +103,7 @@ begin
     Result := fSrcSession
 end;
 
-procedure TLdapOpDlg.Prepare(const dn: string);
+procedure TLdapOpDlg.Prepare(const dn: RawUtf8);
 var
   EntryList: TLdapEntryList;
 begin
@@ -118,7 +114,7 @@ begin
   EntryList := TLdapEntryList.Create;
   try
     Screen.Cursor := crAppStart;
-    SourceSession.Search(sANYCLASS, dn, LDAP_SCOPE_SUBTREE, ['objectclass'], false, EntryList{, SearchCallback});
+    SourceSession.Search(sANYCLASS, dn, lssWholeSubtree, ['objectclass'], false, EntryList{, SearchCallback});
     if ModalResult = mrCancel then
       Abort;
     ProgressBar.Max := EntryList.Count;
@@ -143,7 +139,7 @@ begin
     c := 0;
     for i := 0 to List.Count - 1 do
     begin
-      SourceSession.Search(sANYCLASS, List[i], LDAP_SCOPE_SUBTREE, ['objectclass'], false, EntryList{, SearchCallback});
+      SourceSession.Search(sANYCLASS, List[i], lssWholeSubtree, ['objectclass'], false, EntryList{, SearchCallback});
       if ModalResult = mrCancel then
         Abort;
       inc(c, EntryList.Count);
@@ -158,12 +154,12 @@ end;
 
 { This procedure copies entire subtree to a different location (dn). If Move is
   set to true then the source entries are deleted, effectivly moving the tree }
-procedure TLdapOpDlg.Copy(const SourceDn, TargetDn: string; Move: Boolean);
+procedure TLdapOpDlg.Copy(const SourceDn, TargetDn: RawUtf8; Move: Boolean);
 var
   EntryList: TLdapEntryList;
   srcEntry, dstEntry: TLDAPEntry;
   i, j: Integer;
-  Attr: TLdapAttribute;
+  Attr: LDAPClasses.TLdapAttribute;
 begin
 
   { Copy base entry }
@@ -198,7 +194,7 @@ begin
     if SourceSession = DestSession then
       { Adjust group references to new dn }
       SourceSession.ModifySet( Format(sMY_DN_GROUPS,[SourceDn]),
-                               SourceSession.Base, LDAP_SCOPE_SUBTREE,
+                               SourceSession.Base, lssWholeSubtree,
                                ['member', 'uniqueMember'],
                                [SourceDn, SourceDn],
                                [TargetDn, TargetDn],
@@ -206,7 +202,7 @@ begin
     else
       { Remove group references }
       SourceSession.ModifySet( Format(sMY_DN_GROUPS,[SourceDn]),
-                               SourceSession.Base, LDAP_SCOPE_SUBTREE,
+                               SourceSession.Base, lssWholeSubtree,
                                ['member', 'uniqueMember'],
                                [SourceDn, SourceDn],
                                [TargetDn, TargetDn],
@@ -219,7 +215,7 @@ begin
   { Copy subentries }
   EntryList := TLdapEntryList.Create;
   try
-    SourceSession.Search(sANYCLASS, SourceDn, LDAP_SCOPE_ONELEVEL, nil, false, EntryList);
+    SourceSession.Search(sANYCLASS, SourceDn, lssSingleLevel, nil, false, EntryList);
 
     if not Visible and  (EntryList.Count > 0) then
       Show;
@@ -249,8 +245,8 @@ end;
 procedure TLdapOpDlg.DeleteLeaf(const Entry: TLdapEntry);
 var
   i: Cardinal;
-  uid: string;
-  oc: TLdapAttribute;
+  uid: RawUtf8;
+  oc: LDAPClasses.TLdapAttribute;
 begin
   Entry.Delete;
   if fSmartDelete then
@@ -263,7 +259,7 @@ begin
         { Remove any references to uid from groups before deleting user itself; }
         //TODO: Entry := TPosixAccount.Create(SourceSession, dn);
         uid := GetNameFromDN(Entry.dn);
-        ModifySet(Format(sMY_GROUPS,[uid, Entry.dn]), Base, LDAP_SCOPE_SUBTREE,
+        ModifySet(Format(sMY_GROUPS,[uid, Entry.dn]), Base, lssWholeSubtree,
                   ['memberUid', 'uniqueMember', 'member'],
                   [uid, Entry.dn, Entry.dn], [], LdapOpDelete);
         break;
@@ -277,14 +273,14 @@ end;
 
 { This procedure checks for leaf's children and deletes them recursively if
   boolean fDeleteAll is set to true. Otherwise, user is prompted to delete }
-procedure TLdapOpDlg.DeleteChildren(const dn: string);
+procedure TLdapOpDlg.DeleteChildren(const dn: RawUtf8);
 var
   EntryList: TLdapEntryList;
   i: Integer;
 begin
   EntryList := TLdapEntryList.Create;
   try
-    SourceSession.Search(sANYCLASS, dn, LDAP_SCOPE_ONELEVEL, ['objectclass'], false, EntryList);
+    SourceSession.Search(sANYCLASS, dn, lssSingleLevel, ['objectclass'], false, EntryList);
     if not fDeleteAll and (EntryList.Count > 0) then
     begin
       if CheckedMessageDlg(PChar(Format(stDeleteAll, [dn])), mtWarning, [mbYes, mbNo], cSmartDelete, fSmartDelete) <> mrYes then
@@ -320,9 +316,9 @@ begin
   fSmartDelete := GlobalConfig.ReadBool(rSmartDelete, true);
 end;
 
-procedure TLdapOpDlg.CopyTree(const dn, pdn, rdn: string; Move: Boolean);
+procedure TLdapOpDlg.CopyTree(const dn, pdn, rdn: RawUtf8; Move: Boolean);
 var
-  tgtdn: string;
+  tgtdn: RawUtf8;
 begin
   if rdn = '' then
     tgtdn := GetRdnFromDn(dn) + ',' + pdn
@@ -344,7 +340,7 @@ begin
     SourceSession.DeleteEntry(dn);
     if rdn <> '' then // base entry renamed, adjust posix group references
       with SourceSession do try
-      ModifySet(Format(sMY_POSIX_GROUPS,[GetNameFromDn(dn)]), Base, LDAP_SCOPE_SUBTREE,
+      ModifySet(Format(sMY_POSIX_GROUPS,[GetNameFromDn(dn)]), Base, lssWholeSubtree,
                 ['memberUid'],
                 [GetNameFromDn(dn)],
                 [GetNameFromDn(rdn)], LdapOpReplace);
@@ -357,10 +353,10 @@ begin
   end;
 end;
 
-procedure TLdapOpDlg.CopyTree(List: TStringList; const DestDn: string; Move: Boolean);
+procedure TLdapOpDlg.CopyTree(List: TStringList; const DestDn: RawUtf8; Move: Boolean);
 var
   i: Integer;
-  tgtdn: string;
+  tgtdn: RawUtf8;
 begin
   Prepare(List);
   if Move then
@@ -383,7 +379,7 @@ begin
   end;
 end;
 
-procedure TLdapOpDlg.DeleteTree(const adn: string);
+procedure TLdapOpDlg.DeleteTree(const adn: RawUtf8);
 var
   Entry: TLdapEntry;
 begin

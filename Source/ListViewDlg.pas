@@ -28,13 +28,9 @@ unit ListViewDlg;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, ComCtrls, LDAPClasses, ImgList, Sorter, Math;
+  Buttons, ExtCtrls, ComCtrls, ImgList, Sorter, mormot.core.base;
 
 type
   TListViewDlg = class(TForm)
@@ -51,8 +47,8 @@ type
     procedure         SetImages(const Value: TCustomImageList);
     function          GetMultiSelect: boolean;
     procedure         SetMultiSelect(const Value: boolean);
-    function          GetColumnNames: string;
-    procedure         SetColumnNames(AValue: string);
+    function          GetColumnNames: RawUtf8;
+    procedure         SetColumnNames(AValue: RawUtf8);
   protected
     FSorter:          TListViewSorter;
     FColumnNames:     TStringList;
@@ -64,14 +60,14 @@ type
     property          Images: TCustomImageList read GetImages write SetImages;
     property          Columns: TListColumns read GetColumns;
     property          MultiSelect: boolean read GetMultiSelect write SetMultiSelect;
-    property          ColumnNames: string read GetColumnNames write SetColumnNames;
+    property          ColumnNames: RawUtf8 read GetColumnNames write SetColumnNames;
   end;
 
 implementation
 
 {$R *.dfm}
 
-uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Constant, Main, Connection, SizeGrip;
+uses SizeGrip;
 
 constructor TListViewDlg.Create(AOwner: TComponent);
 begin
@@ -130,12 +126,12 @@ begin
   OkBtn.Enabled := ListView.SelCount>0;
 end;
 
-function TListViewDlg.GetColumnNames: string;
+function TListViewDlg.GetColumnNames: RawUtf8;
 begin
   Result := FColumnNames.CommaTExt;
 end;
 
-procedure TListViewDlg.SetColumnNames(AValue: string);
+procedure TListViewDlg.SetColumnNames(AValue: RawUtf8);
 begin
   FColumnNames.CommaText := AValue;
 end;

@@ -53,11 +53,7 @@ unit SizeGrip;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, Types,
-{$ENDIF}
+  LCLIntf, LCLType, Types,
   Dialogs, Messages, SysUtils, Classes, Graphics, Controls;
 
 type
@@ -103,9 +99,6 @@ uses
 {$ENDIF}
   Themes{$IFDEF VER_XEH}, System.Types{$ENDIF};
 {$ENDIF}
-
-type
-  TWinControlAccess = class(TWinControl);
 
 const
   CEmptyRect: TRect = ( Left: 0; Top: 0; Right: 0; Bottom: 0; );

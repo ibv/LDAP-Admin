@@ -27,11 +27,7 @@ unit LAControls;
 
 interface
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
   Messages, Controls, StdCtrls, Classes, Graphics;
 
 type
@@ -147,8 +143,6 @@ Math;
 procedure DrawComboBtn(Canvas: TCanvas; Rect: TRect; BtnState: TBtnState);
 var
   uState: Cardinal;
-  PaintRect: TRect;
-  Details: TThemedElementDetails;
 begin
   {$IFDEF XPSTYLE}
   if ThemeServices.ThemesEnabled then begin
@@ -193,13 +187,8 @@ var
 begin
   with Message.DrawItemStruct^ do
   begin
-    {$ifdef mswindows}
-    State := TOwnerDrawState(LongRec(itemState).Lo);
-    Canvas.Handle := hDC;
-    {$else}
     State := TOwnerDrawState(itemState);
     Canvas.Handle :=  GetDC(0);
-    {$endif}
     Canvas.Font := Font;
     Canvas.Brush := Brush;
     Sel:=(Integer(itemID) >= 0) and (odSelected in State);
@@ -241,7 +230,7 @@ begin
 end;
 
 
-procedure TPopupList.WMMouseMove(var Message: TWMMouseMove);
+procedure TPopupList.WMMouseMove(var Message: TLMMouseMove);
 begin
   inherited;
   ItemIndex:= ItemAtPos(point(Message.XPos, Message.YPos), true);

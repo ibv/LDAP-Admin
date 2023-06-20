@@ -9,11 +9,7 @@ interface
 implementation
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
   Messages, Controls, Dialogs;
 
 // WMDrawItem fails under WOW64, see http://qc.codegear.com/wc/qcmain.aspx?d=19859

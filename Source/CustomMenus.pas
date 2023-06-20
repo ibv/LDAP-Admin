@@ -27,7 +27,8 @@ unit CustomMenus;
 
 interface
 
-uses Classes, Contnrs, Menus, Templates, Config, LDAPClasses, ObjectInfo, Constant;
+uses Classes, Contnrs, Menus, Templates, Config, LDAPClasses, Constant,
+    mormot.core.base;
 
 type
   PCtrlRec = ^TCtrlRec;
@@ -67,8 +68,8 @@ type
   private
     fParent:       TCustomActionItem;
     fItems:        TObjectList;
-    fTemplateName: string;
-    fCaption:      string;
+    fTemplateName: RawUtf8;
+    fCaption:      RawUtf8;
     fAction:       TBasicAction;
     fShortCut:     TShortCut;
     fEnabled:      Boolean;
@@ -80,7 +81,7 @@ type
     function       GetCount: Integer;
     function       GetImageIndex: Integer;
     procedure      SetActionId(Value: Integer);
-    procedure      SetTemplateName(Value: string);
+    procedure      SetTemplateName(Value: RawUtf8);
   public
     constructor    Create(AParent: TCustomActionItem);
     destructor     Destroy; override;
@@ -95,8 +96,8 @@ type
     property       Parent: TCustomActionItem read fParent;
     property       Items[Index: Integer]: TCustomActionItem read GetItem; default;
     property       Count: Integer read GetCount;
-    property       TemplateName: string read fTemplateName write SetTemplateName; //fTemplateName;
-    property       Caption: string read fCaption write fCaption;
+    property       TemplateName: RawUtf8 read fTemplateName write SetTemplateName; //fTemplateName;
+    property       Caption: RawUtf8 read fCaption write fCaption;
     property       Action: TBasicAction read fAction write fAction;
     property       ShortCut: TShortCut read fShortCut write fShortCut;
     property       Enabled: Boolean read fEnabled write fEnabled;
@@ -126,7 +127,7 @@ type
     procedure      Reset(Save: Boolean = false);
     function       Clone: TCustomActionMenu; overload;
     procedure      Clone(ActionMenu: TCustomActionMenu); overload;
-    procedure      AddMenuItem(ACaption: string; AActionId: Integer = -1; AShortCut: PCtrlRec = nil);
+    procedure      AddMenuItem(ACaption: RawUtf8; AActionId: Integer = -1; AShortCut: PCtrlRec = nil);
     procedure      AssignItems(MenuItem: TMenuItem);
     function       GetActionId(const ObjectID: Integer): Integer;
     function       GetActionTemplate(Entry: TLdapEntry): TTemplate;
@@ -151,12 +152,12 @@ type
 
   TCustomMenuItem = class(TMenuItem)
   private
-    fTemplateName:  string;
+    fTemplateName:  RawUtf8;
     fActionId:      Integer;
-    procedure       SetTemplateName(Value: string);
+    procedure       SetTemplateName(Value: RawUtf8);
   public
     procedure       Clone(MenuItem: TCustomMenuItem);
-    property        TemplateName: string read fTemplateName write SetTemplateName;
+    property        TemplateName: RawUtf8 read fTemplateName write SetTemplateName;
     property        ActionId: Integer read fActionId;
   end;
 
@@ -251,7 +252,7 @@ end;
 
 { TCustomMenuItem }
 
-procedure TCustomMenuItem.SetTemplateName(Value: string);
+procedure TCustomMenuItem.SetTemplateName(Value: RawUtf8);
 var
   i: Integer;
 begin
@@ -327,7 +328,7 @@ begin
     fOnActionChange(Self);
 end;
 
-procedure TCustomActionItem.SetTemplateName(Value: string);
+procedure TCustomActionItem.SetTemplateName(Value: RawUtf8);
 begin
   if fActionId <> aidTemplate then
     exit;
@@ -492,7 +493,7 @@ begin
 
 end;
 
-procedure TCustomActionMenu.AddMenuItem(ACaption: string; AActionId: Integer = -1; AShortCut: PCtrlRec = nil);
+procedure TCustomActionMenu.AddMenuItem(ACaption: RawUtf8; AActionId: Integer = -1; AShortCut: PCtrlRec = nil);
 var
   NewItem: TCustomActionItem;
 begin
@@ -532,12 +533,12 @@ end;
 
 function TCustomActionMenu.Load: Boolean;
 
-  function ReadItem(ActionItem: TCustomActionItem; ItemPath: string): Boolean;
+  function ReadItem(ActionItem: TCustomActionItem; ItemPath: RawUtf8): Boolean;
   var
     i: integer;
     names: TStrings;
     NewItem: TCustomActionItem;
-    valPath: string;
+    valPath: RawUtf8;
   begin
 
     names := TStringList.Create;
@@ -579,7 +580,7 @@ procedure TCustomActionMenu.Save;
 var
   i: Integer;
 
-  procedure WriteItem(ActionItem: TCustomActionItem; ItemPath: string);
+  procedure WriteItem(ActionItem: TCustomActionItem; ItemPath: RawUtf8);
   var
     i: integer;
   begin

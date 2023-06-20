@@ -10,9 +10,9 @@ unit Unixpass;
 
 Interface
 uses
-  SysUtils;
+  SysUtils, mormot.core.base;
 
-function UnixCrypt(salt, key: AnsiString): string;
+function UnixCrypt(salt, key: AnsiString): RawUtf8;
 
 implementation
 type unsigned = shortint;
@@ -325,7 +325,7 @@ begin
 end;
 
 
-function UnixCrypt(Salt, Key: AnsiString): string;
+function UnixCrypt(Salt, Key: AnsiString): RawUtf8;
 begin
   mycrypt(PAnsiChar(key), PAnsiChar(salt), Passwd);
   Result := Passwd;

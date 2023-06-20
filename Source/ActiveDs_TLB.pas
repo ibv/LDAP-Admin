@@ -26,7 +26,7 @@ unit ActiveDs_TLB;
 //   (1) v2.0 stdole, (C:\WINDOWS\system32\STDOLE2.TLB)
 //   (2) v4.0 StdVCL, (C:\WINDOWS\system32\stdvcl40.dll)
 // Fehler
-//   Hinweis: Element 'String' von '_ADS_CASEIGNORE_LIST' geändert zu 'String_'
+//   Hinweis: Element 'RawUtf8' von '_ADS_CASEIGNORE_LIST' geändert zu 'String_'
 //   Hinweis: Element 'Type' von '__MIDL___MIDL_itf_ads_0000_0005' geändert zu 'Type_'
 //   Hinweis: Element 'Type' von '__MIDL___MIDL_itf_ads_0000_0014' geändert zu 'Type_'
 //   Hinweis: Element 'Class' von 'IADs' geändert zu 'Class_'
@@ -39,11 +39,8 @@ unit ActiveDs_TLB;
 interface
 
 uses
-{$IFnDEF FPC}
-  ActiveX, OleServer, OleCtrls, StdVCL, Windows,
-{$ELSE}
+  ActiveX, OleServer,
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
   Classes, Graphics;
 
 // *********************************************************************//
@@ -211,16 +208,16 @@ const
   ADS_AUTH_RESERVED = $80000000;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0000_0019
-///type
-///  __MIDL___MIDL_itf_ads_0000_0019 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0000_0019 = TOleEnum;
 const
   ADS_STATUS_S_OK = $00000000;
   ADS_STATUS_INVALID_SEARCHPREF = $00000001;
   ADS_STATUS_INVALID_SEARCHPREFVALUE = $00000002;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0000_0020
-///type
-///  __MIDL___MIDL_itf_ads_0000_0020 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0000_0020 = TOleEnum;
 const
   ADS_DEREF_NEVER = $00000000;
   ADS_DEREF_SEARCHING = $00000001;
@@ -228,16 +225,16 @@ const
   ADS_DEREF_ALWAYS = $00000003;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0000_0021
-///type
-///  __MIDL___MIDL_itf_ads_0000_0021 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0000_0021 = TOleEnum;
 const
   ADS_SCOPE_BASE = $00000000;
   ADS_SCOPE_ONELEVEL = $00000001;
   ADS_SCOPE_SUBTREE = $00000002;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0000_0022
-///type
-///  __MIDL___MIDL_itf_ads_0000_0022 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0000_0022 = TOleEnum;
 const
   ADSIPROP_ASYNCHRONOUS = $00000000;
   ADSIPROP_DEREF_ALIASES = $00000001;
@@ -254,15 +251,15 @@ const
   ADSIPROP_ADSIFLAG = $0000000C;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0000_0023
-///type
-///  __MIDL___MIDL_itf_ads_0000_0023 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0000_0023 = TOleEnum;
 const
   ADSI_DIALECT_LDAP = $00000000;
   ADSI_DIALECT_SQL = $00000001;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0000_0024
-///type
-///  __MIDL___MIDL_itf_ads_0000_0024 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0000_0024 = TOleEnum;
 const
   ADS_CHASE_REFERRALS_NEVER = $00000000;
   ADS_CHASE_REFERRALS_SUBORDINATE = $00000020;
@@ -270,8 +267,8 @@ const
   ADS_CHASE_REFERRALS_ALWAYS = $00000060;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0000_0025
-///type
-///  __MIDL___MIDL_itf_ads_0000_0025 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0000_0025 = TOleEnum;
 const
   ADS_SEARCHPREF_ASYNCHRONOUS = $00000000;
   ADS_SEARCHPREF_DEREF_ALIASES = $00000001;
@@ -292,8 +289,8 @@ const
   ADS_SEARCHPREF_SECURITY_MASK = $00000010;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0000_0026
-///type
-///  __MIDL___MIDL_itf_ads_0000_0026 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0000_0026 = TOleEnum;
 const
   ADS_PROPERTY_CLEAR = $00000001;
   ADS_PROPERTY_UPDATE = $00000002;
@@ -301,8 +298,8 @@ const
   ADS_PROPERTY_DELETE = $00000004;
 
 // Konstanten für enum tagTYPEKIND
-///type
-///  tagTYPEKIND = TOleEnum;
+type
+  tagTYPEKIND = TOleEnum;
 const
   TKIND_ENUM = $00000000;
   TKIND_RECORD = $00000001;
@@ -315,8 +312,8 @@ const
   TKIND_MAX = $00000008;
 
 // Konstanten für enum tagDESCKIND
-///type
-///  tagDESCKIND = TOleEnum;
+type
+  tagDESCKIND = TOleEnum;
 const
   DESCKIND_NONE = $00000000;
   DESCKIND_FUNCDESC = $00000001;
@@ -326,8 +323,8 @@ const
   DESCKIND_MAX = $00000005;
 
 // Konstanten für enum tagFUNCKIND
-///type
-///  tagFUNCKIND = TOleEnum;
+type
+  tagFUNCKIND = TOleEnum;
 const
   FUNC_VIRTUAL = $00000000;
   FUNC_PUREVIRTUAL = $00000001;
@@ -336,8 +333,8 @@ const
   FUNC_DISPATCH = $00000004;
 
 // Konstanten für enum tagINVOKEKIND
-///type
-///  tagINVOKEKIND = TOleEnum;
+type
+  tagINVOKEKIND = TOleEnum;
 const
   INVOKE_FUNC = $00000001;
   INVOKE_PROPERTYGET = $00000002;
@@ -345,8 +342,8 @@ const
   INVOKE_PROPERTYPUTREF = $00000008;
 
 // Konstanten für enum tagCALLCONV
-///type
-///  tagCALLCONV = TOleEnum;
+type
+  tagCALLCONV = TOleEnum;
 const
   CC_FASTCALL = $00000000;
   CC_CDECL = $00000001;
@@ -361,8 +358,8 @@ const
   CC_MAX = $00000009;
 
 // Konstanten für enum tagVARKIND
-///type
-///  tagVARKIND = TOleEnum;
+type
+  tagVARKIND = TOleEnum;
 const
   VAR_PERINSTANCE = $00000000;
   VAR_STATIC = $00000001;
@@ -370,8 +367,8 @@ const
   VAR_DISPATCH = $00000003;
 
 // Konstanten für enum tagSYSKIND
-///type
-///  tagSYSKIND = TOleEnum;
+type
+  tagSYSKIND = TOleEnum;
 const
   SYS_WIN16 = $00000000;
   SYS_WIN32 = $00000001;
@@ -379,8 +376,8 @@ const
   SYS_WIN64 = $00000003;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0125_0001
-///type
-///  __MIDL___MIDL_itf_ads_0125_0001 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0125_0001 = TOleEnum;
 const
   ADS_SYSTEMFLAG_DISALLOW_DELETE = $80000000;
   ADS_SYSTEMFLAG_CONFIG_ALLOW_RENAME = $40000000;
@@ -394,8 +391,8 @@ const
   ADS_SYSTEMFLAG_ATTR_IS_CONSTRUCTED = $00000004;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0131_0001
-///type
-///  __MIDL___MIDL_itf_ads_0131_0001 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0131_0001 = TOleEnum;
 const
   ADS_GROUP_TYPE_GLOBAL_GROUP = $00000002;
   ADS_GROUP_TYPE_DOMAIN_LOCAL_GROUP = $00000004;
@@ -430,8 +427,8 @@ const
   ADS_UF_TRUSTED_TO_AUTHENTICATE_FOR_DELEGATION = $01000000;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0153_0001
-///type
-///  __MIDL___MIDL_itf_ads_0153_0001 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0153_0001 = TOleEnum;
 const
   ADS_RIGHT_DELETE = $00010000;
   ADS_RIGHT_READ_CONTROL = $00020000;
@@ -454,8 +451,8 @@ const
   ADS_RIGHT_DS_CONTROL_ACCESS = $00000100;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0153_0002
-///type
-///  __MIDL___MIDL_itf_ads_0153_0002 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0153_0002 = TOleEnum;
 const
   ADS_ACETYPE_ACCESS_ALLOWED = $00000000;
   ADS_ACETYPE_ACCESS_DENIED = $00000001;
@@ -474,8 +471,8 @@ const
   ADS_ACETYPE_SYSTEM_ALARM_CALLBACK_OBJECT = $00000010;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0153_0003
-///type
-///  __MIDL___MIDL_itf_ads_0153_0003 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0153_0003 = TOleEnum;
 const
   ADS_ACEFLAG_INHERIT_ACE = $00000002;
   ADS_ACEFLAG_NO_PROPAGATE_INHERIT_ACE = $00000004;
@@ -486,15 +483,15 @@ const
   ADS_ACEFLAG_FAILED_ACCESS = $00000080;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0153_0004
-///type
-///  __MIDL___MIDL_itf_ads_0153_0004 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0153_0004 = TOleEnum;
 const
   ADS_FLAG_OBJECT_TYPE_PRESENT = $00000001;
   ADS_FLAG_INHERITED_OBJECT_TYPE_PRESENT = $00000002;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0153_0005
-///type
- /// __MIDL___MIDL_itf_ads_0153_0005 = TOleEnum;
+type
+ __MIDL___MIDL_itf_ads_0153_0005 = TOleEnum;
 const
   ADS_SD_CONTROL_SE_OWNER_DEFAULTED = $00000001;
   ADS_SD_CONTROL_SE_GROUP_DEFAULTED = $00000002;
@@ -511,14 +508,14 @@ const
   ADS_SD_CONTROL_SE_SELF_RELATIVE = $00008000;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0153_0006
-///type
-///  __MIDL___MIDL_itf_ads_0153_0006 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0153_0006 = TOleEnum;
 const
   ADS_SD_REVISION_DS = $00000004;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0154_0001
-///type
-///  __MIDL___MIDL_itf_ads_0154_0001 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0154_0001 = TOleEnum;
 const
   ADS_NAME_TYPE_1779 = $00000001;
   ADS_NAME_TYPE_CANONICAL = $00000002;
@@ -534,16 +531,16 @@ const
   ADS_NAME_TYPE_SID_OR_SID_HISTORY_NAME = $0000000C;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0154_0002
-///type
-///  __MIDL___MIDL_itf_ads_0154_0002 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0154_0002 = TOleEnum;
 const
   ADS_NAME_INITTYPE_DOMAIN = $00000001;
   ADS_NAME_INITTYPE_SERVER = $00000002;
   ADS_NAME_INITTYPE_GC = $00000003;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0168_0001
-///type
-///  __MIDL___MIDL_itf_ads_0168_0001 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0168_0001 = TOleEnum;
 const
   ADS_OPTION_SERVERNAME = $00000000;
   ADS_OPTION_REFERRALS = $00000001;
@@ -552,8 +549,8 @@ const
   ADS_OPTION_MUTUAL_AUTH_STATUS = $00000004;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0168_0002
-///type
-///  __MIDL___MIDL_itf_ads_0168_0002 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0168_0002 = TOleEnum;
 const
   ADS_SECURITY_INFO_OWNER = $00000001;
   ADS_SECURITY_INFO_GROUP = $00000002;
@@ -561,8 +558,8 @@ const
   ADS_SECURITY_INFO_SACL = $00000008;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0169_0001
-///type
-///  __MIDL___MIDL_itf_ads_0169_0001 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0169_0001 = TOleEnum;
 const
   ADS_SETTYPE_FULL = $00000001;
   ADS_SETTYPE_PROVIDER = $00000002;
@@ -570,8 +567,8 @@ const
   ADS_SETTYPE_DN = $00000004;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0169_0002
-///type
-///  __MIDL___MIDL_itf_ads_0169_0002 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0169_0002 = TOleEnum;
 const
   ADS_FORMAT_WINDOWS = $00000001;
   ADS_FORMAT_WINDOWS_NO_SERVER = $00000002;
@@ -586,15 +583,15 @@ const
   ADS_FORMAT_LEAF = $0000000B;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0169_0003
-///type
-///  __MIDL___MIDL_itf_ads_0169_0003 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0169_0003 = TOleEnum;
 const
   ADS_DISPLAY_FULL = $00000001;
   ADS_DISPLAY_VALUE_ONLY = $00000002;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0169_0004
-///type
-///  __MIDL___MIDL_itf_ads_0169_0004 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0169_0004 = TOleEnum;
 const
   ADS_ESCAPEDMODE_DEFAULT = $00000001;
   ADS_ESCAPEDMODE_ON = $00000002;
@@ -602,16 +599,16 @@ const
   ADS_ESCAPEDMODE_OFF_EX = $00000004;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0174_0001
-///type
-///  __MIDL___MIDL_itf_ads_0174_0001 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0174_0001 = TOleEnum;
 const
   ADS_PATH_FILE = $00000001;
   ADS_PATH_FILESHARE = $00000002;
   ADS_PATH_REGISTRY = $00000003;
 
 // Konstanten für enum __MIDL___MIDL_itf_ads_0174_0002
-///type
-///  __MIDL___MIDL_itf_ads_0174_0002 = TOleEnum;
+type
+  __MIDL___MIDL_itf_ads_0174_0002 = TOleEnum;
 const
   ADS_SD_FORMAT_IID = $00000001;
   ADS_SD_FORMAT_RAW = $00000002;
@@ -790,7 +787,8 @@ const
 
 // *********************************************************************// 
 // Deklaration von  Strukturen, Unions und Aliasen.                        
-// *********************************************************************// 
+// *********************************************************************//
+type
   PUserType1 = ^_ADS_CASEIGNORE_LIST; {*}
   PUserType2 = ^_ADS_OCTET_LIST; {*}
   PPWideChar1 = ^PWideChar; {*}
@@ -814,7 +812,8 @@ const
   PUserType16 = ^_ads_class_def; {*}
   PPUserType2 = ^PUserType16; {*}
 
-  ADSTYPEENUM = __MIDL___MIDL_itf_ads_0000_0001; 
+
+  ADSTYPEENUM = LongWord;// __MIDL___MIDL_itf_ads_0000_0001;
 
   __MIDL___MIDL_itf_ads_0000_0002 = packed record
     dwLength: LongWord;
@@ -985,7 +984,7 @@ const
       26: (pDNWithString: ^__MIDL___MIDL_itf_ads_0000_0016);
   end;
 
-  ADS_AUTHENTICATION_ENUM = __MIDL___MIDL_itf_ads_0000_0018; 
+  //ADS_AUTHENTICATION_ENUM = __MIDL___MIDL_itf_ads_0000_0018; 
 
   _ads_object_info = packed record
     pszRDN: PWideChar;
@@ -995,13 +994,14 @@ const
     pszClassName: PWideChar;
   end;
 
-  ADS_STATUSENUM = __MIDL___MIDL_itf_ads_0000_0019; 
-  ADS_DEREFENUM = __MIDL___MIDL_itf_ads_0000_0020; 
-  ADS_SCOPEENUM = __MIDL___MIDL_itf_ads_0000_0021; 
-  ADS_PREFERENCES_ENUM = __MIDL___MIDL_itf_ads_0000_0022; 
-  ADSI_DIALECT_ENUM = __MIDL___MIDL_itf_ads_0000_0023; 
-  ADS_CHASE_REFERRALS_ENUM = __MIDL___MIDL_itf_ads_0000_0024; 
-  ADS_SEARCHPREF_ENUM = __MIDL___MIDL_itf_ads_0000_0025; 
+  ADS_STATUSENUM = __MIDL___MIDL_itf_ads_0000_0019;
+  ADS_DEREFENUM = __MIDL___MIDL_itf_ads_0000_0020;
+  ADS_SCOPEENUM = __MIDL___MIDL_itf_ads_0000_0021;
+  ADS_PREFERENCES_ENUM = __MIDL___MIDL_itf_ads_0000_0022;
+  ADSI_DIALECT_ENUM = __MIDL___MIDL_itf_ads_0000_0023;
+  ADS_CHASE_REFERRALS_ENUM = __MIDL___MIDL_itf_ads_0000_0024;
+  ADS_SEARCHPREF_ENUM = __MIDL___MIDL_itf_ads_0000_0025;
+
 
   _adsvalue = packed record
     dwType: ADSTYPEENUM;
@@ -1041,7 +1041,7 @@ const
     lpContextID: ^Byte;
   end;
 
-  ADS_PROPERTY_OPERATION_ENUM = __MIDL___MIDL_itf_ads_0000_0026; 
+  ADS_PROPERTY_OPERATION_ENUM = LongWord; //__MIDL___MIDL_itf_ads_0000_0026;
 
   __MIDL_IOleAutomationTypes_0005 = record
     case Integer of
@@ -1196,6 +1196,8 @@ const
     cDims: Word;
     rgbounds: ^tagSAFEARRAYBOUND;
   end;
+
+
 
 
 // *********************************************************************//
@@ -3980,7 +3982,7 @@ const
 // *********************************************************************//
   CoPropertyEntry = class
     class function Create: IADsPropertyEntry;
-    class function CreateRemote(const MachineName: string): IADsPropertyEntry;
+    class function CreateRemote(const MachineName: RawUtf8): IADsPropertyEntry;
   end;
 
 // *********************************************************************//
@@ -3992,7 +3994,7 @@ const
 // *********************************************************************//
   CoPropertyValue = class
     class function Create: IADsPropertyValue;
-    class function CreateRemote(const MachineName: string): IADsPropertyValue;
+    class function CreateRemote(const MachineName: RawUtf8): IADsPropertyValue;
   end;
 
 // *********************************************************************//
@@ -4004,7 +4006,7 @@ const
 // *********************************************************************//
   CoAccessControlEntry = class
     class function Create: IADsAccessControlEntry;
-    class function CreateRemote(const MachineName: string): IADsAccessControlEntry;
+    class function CreateRemote(const MachineName: RawUtf8): IADsAccessControlEntry;
   end;
 
 // *********************************************************************//
@@ -4016,7 +4018,7 @@ const
 // *********************************************************************//
   CoAccessControlList = class
     class function Create: IADsAccessControlList;
-    class function CreateRemote(const MachineName: string): IADsAccessControlList;
+    class function CreateRemote(const MachineName: RawUtf8): IADsAccessControlList;
   end;
 
 // *********************************************************************//
@@ -4028,7 +4030,7 @@ const
 // *********************************************************************//
   CoSecurityDescriptor = class
     class function Create: IADsSecurityDescriptor;
-    class function CreateRemote(const MachineName: string): IADsSecurityDescriptor;
+    class function CreateRemote(const MachineName: RawUtf8): IADsSecurityDescriptor;
   end;
 
 // *********************************************************************//
@@ -4040,7 +4042,7 @@ const
 // *********************************************************************//
   CoLargeInteger = class
     class function Create: IADsLargeInteger;
-    class function CreateRemote(const MachineName: string): IADsLargeInteger;
+    class function CreateRemote(const MachineName: RawUtf8): IADsLargeInteger;
   end;
 
 // *********************************************************************//
@@ -4052,7 +4054,7 @@ const
 // *********************************************************************//
   CoNameTranslate = class
     class function Create: IADsNameTranslate;
-    class function CreateRemote(const MachineName: string): IADsNameTranslate;
+    class function CreateRemote(const MachineName: RawUtf8): IADsNameTranslate;
   end;
 
 // *********************************************************************//
@@ -4064,7 +4066,7 @@ const
 // *********************************************************************//
   CoCaseIgnoreList = class
     class function Create: IADsCaseIgnoreList;
-    class function CreateRemote(const MachineName: string): IADsCaseIgnoreList;
+    class function CreateRemote(const MachineName: RawUtf8): IADsCaseIgnoreList;
   end;
 
 // *********************************************************************//
@@ -4076,7 +4078,7 @@ const
 // *********************************************************************//
   CoFaxNumber = class
     class function Create: IADsFaxNumber;
-    class function CreateRemote(const MachineName: string): IADsFaxNumber;
+    class function CreateRemote(const MachineName: RawUtf8): IADsFaxNumber;
   end;
 
 // *********************************************************************//
@@ -4088,7 +4090,7 @@ const
 // *********************************************************************//
   CoNetAddress = class
     class function Create: IADsNetAddress;
-    class function CreateRemote(const MachineName: string): IADsNetAddress;
+    class function CreateRemote(const MachineName: RawUtf8): IADsNetAddress;
   end;
 
 // *********************************************************************//
@@ -4100,7 +4102,7 @@ const
 // *********************************************************************//
   CoOctetList = class
     class function Create: IADsOctetList;
-    class function CreateRemote(const MachineName: string): IADsOctetList;
+    class function CreateRemote(const MachineName: RawUtf8): IADsOctetList;
   end;
 
 // *********************************************************************//
@@ -4112,7 +4114,7 @@ const
 // *********************************************************************//
   CoEmail = class
     class function Create: IADsEmail;
-    class function CreateRemote(const MachineName: string): IADsEmail;
+    class function CreateRemote(const MachineName: RawUtf8): IADsEmail;
   end;
 
 // *********************************************************************//
@@ -4124,7 +4126,7 @@ const
 // *********************************************************************//
   CoPath = class
     class function Create: IADsPath;
-    class function CreateRemote(const MachineName: string): IADsPath;
+    class function CreateRemote(const MachineName: RawUtf8): IADsPath;
   end;
 
 // *********************************************************************//
@@ -4136,7 +4138,7 @@ const
 // *********************************************************************//
   CoReplicaPointer = class
     class function Create: IADsReplicaPointer;
-    class function CreateRemote(const MachineName: string): IADsReplicaPointer;
+    class function CreateRemote(const MachineName: RawUtf8): IADsReplicaPointer;
   end;
 
 // *********************************************************************//
@@ -4148,7 +4150,7 @@ const
 // *********************************************************************//
   CoTimestamp = class
     class function Create: IADsTimestamp;
-    class function CreateRemote(const MachineName: string): IADsTimestamp;
+    class function CreateRemote(const MachineName: RawUtf8): IADsTimestamp;
   end;
 
 // *********************************************************************//
@@ -4160,7 +4162,7 @@ const
 // *********************************************************************//
   CoPostalAddress = class
     class function Create: IADsPostalAddress;
-    class function CreateRemote(const MachineName: string): IADsPostalAddress;
+    class function CreateRemote(const MachineName: RawUtf8): IADsPostalAddress;
   end;
 
 // *********************************************************************//
@@ -4172,7 +4174,7 @@ const
 // *********************************************************************//
   CoBackLink = class
     class function Create: IADsBackLink;
-    class function CreateRemote(const MachineName: string): IADsBackLink;
+    class function CreateRemote(const MachineName: RawUtf8): IADsBackLink;
   end;
 
 // *********************************************************************//
@@ -4184,7 +4186,7 @@ const
 // *********************************************************************//
   CoTypedName = class
     class function Create: IADsTypedName;
-    class function CreateRemote(const MachineName: string): IADsTypedName;
+    class function CreateRemote(const MachineName: RawUtf8): IADsTypedName;
   end;
 
 // *********************************************************************//
@@ -4196,7 +4198,7 @@ const
 // *********************************************************************//
   CoHold = class
     class function Create: IADsHold;
-    class function CreateRemote(const MachineName: string): IADsHold;
+    class function CreateRemote(const MachineName: RawUtf8): IADsHold;
   end;
 
 // *********************************************************************//
@@ -4208,7 +4210,7 @@ const
 // *********************************************************************//
   CoPathname = class
     class function Create: IADsPathname;
-    class function CreateRemote(const MachineName: string): IADsPathname;
+    class function CreateRemote(const MachineName: RawUtf8): IADsPathname;
   end;
 
 // *********************************************************************//
@@ -4220,7 +4222,7 @@ const
 // *********************************************************************//
   CoADSystemInfo = class
     class function Create: IADsADSystemInfo;
-    class function CreateRemote(const MachineName: string): IADsADSystemInfo;
+    class function CreateRemote(const MachineName: RawUtf8): IADsADSystemInfo;
   end;
 
 // *********************************************************************//
@@ -4232,7 +4234,7 @@ const
 // *********************************************************************//
   CoWinNTSystemInfo = class
     class function Create: IADsWinNTSystemInfo;
-    class function CreateRemote(const MachineName: string): IADsWinNTSystemInfo;
+    class function CreateRemote(const MachineName: RawUtf8): IADsWinNTSystemInfo;
   end;
 
 // *********************************************************************//
@@ -4244,7 +4246,7 @@ const
 // *********************************************************************//
   CoDNWithBinary = class
     class function Create: IADsDNWithBinary;
-    class function CreateRemote(const MachineName: string): IADsDNWithBinary;
+    class function CreateRemote(const MachineName: RawUtf8): IADsDNWithBinary;
   end;
 
 // *********************************************************************//
@@ -4256,7 +4258,7 @@ const
 // *********************************************************************//
   CoDNWithString = class
     class function Create: IADsDNWithString;
-    class function CreateRemote(const MachineName: string): IADsDNWithString;
+    class function CreateRemote(const MachineName: RawUtf8): IADsDNWithString;
   end;
 
 // *********************************************************************//
@@ -4268,7 +4270,7 @@ const
 // *********************************************************************//
   CoADsSecurityUtility = class
     class function Create: IADsSecurityUtility;
-    class function CreateRemote(const MachineName: string): IADsSecurityUtility;
+    class function CreateRemote(const MachineName: RawUtf8): IADsSecurityUtility;
   end;
 
 implementation
@@ -4285,7 +4287,7 @@ begin
   Result := CreateComObject(CLASS_PropertyEntry) as IADsPropertyEntry;
 end;
 
-class function CoPropertyEntry.CreateRemote(const MachineName: string): IADsPropertyEntry;
+class function CoPropertyEntry.CreateRemote(const MachineName: RawUtf8): IADsPropertyEntry;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_PropertyEntry) as IADsPropertyEntry;
 end;
@@ -4295,7 +4297,7 @@ begin
   Result := CreateComObject(CLASS_PropertyValue) as IADsPropertyValue;
 end;
 
-class function CoPropertyValue.CreateRemote(const MachineName: string): IADsPropertyValue;
+class function CoPropertyValue.CreateRemote(const MachineName: RawUtf8): IADsPropertyValue;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_PropertyValue) as IADsPropertyValue;
 end;
@@ -4305,7 +4307,7 @@ begin
   Result := CreateComObject(CLASS_AccessControlEntry) as IADsAccessControlEntry;
 end;
 
-class function CoAccessControlEntry.CreateRemote(const MachineName: string): IADsAccessControlEntry;
+class function CoAccessControlEntry.CreateRemote(const MachineName: RawUtf8): IADsAccessControlEntry;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_AccessControlEntry) as IADsAccessControlEntry;
 end;
@@ -4315,7 +4317,7 @@ begin
   Result := CreateComObject(CLASS_AccessControlList) as IADsAccessControlList;
 end;
 
-class function CoAccessControlList.CreateRemote(const MachineName: string): IADsAccessControlList;
+class function CoAccessControlList.CreateRemote(const MachineName: RawUtf8): IADsAccessControlList;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_AccessControlList) as IADsAccessControlList;
 end;
@@ -4325,7 +4327,7 @@ begin
   Result := CreateComObject(CLASS_SecurityDescriptor) as IADsSecurityDescriptor;
 end;
 
-class function CoSecurityDescriptor.CreateRemote(const MachineName: string): IADsSecurityDescriptor;
+class function CoSecurityDescriptor.CreateRemote(const MachineName: RawUtf8): IADsSecurityDescriptor;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_SecurityDescriptor) as IADsSecurityDescriptor;
 end;
@@ -4335,7 +4337,7 @@ begin
   Result := CreateComObject(CLASS_LargeInteger) as IADsLargeInteger;
 end;
 
-class function CoLargeInteger.CreateRemote(const MachineName: string): IADsLargeInteger;
+class function CoLargeInteger.CreateRemote(const MachineName: RawUtf8): IADsLargeInteger;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_LargeInteger) as IADsLargeInteger;
 end;
@@ -4345,7 +4347,7 @@ begin
   Result := CreateComObject(CLASS_NameTranslate) as IADsNameTranslate;
 end;
 
-class function CoNameTranslate.CreateRemote(const MachineName: string): IADsNameTranslate;
+class function CoNameTranslate.CreateRemote(const MachineName: RawUtf8): IADsNameTranslate;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_NameTranslate) as IADsNameTranslate;
 end;
@@ -4355,7 +4357,7 @@ begin
   Result := CreateComObject(CLASS_CaseIgnoreList) as IADsCaseIgnoreList;
 end;
 
-class function CoCaseIgnoreList.CreateRemote(const MachineName: string): IADsCaseIgnoreList;
+class function CoCaseIgnoreList.CreateRemote(const MachineName: RawUtf8): IADsCaseIgnoreList;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_CaseIgnoreList) as IADsCaseIgnoreList;
 end;
@@ -4365,7 +4367,7 @@ begin
   Result := CreateComObject(CLASS_FaxNumber) as IADsFaxNumber;
 end;
 
-class function CoFaxNumber.CreateRemote(const MachineName: string): IADsFaxNumber;
+class function CoFaxNumber.CreateRemote(const MachineName: RawUtf8): IADsFaxNumber;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_FaxNumber) as IADsFaxNumber;
 end;
@@ -4375,7 +4377,7 @@ begin
   Result := CreateComObject(CLASS_NetAddress) as IADsNetAddress;
 end;
 
-class function CoNetAddress.CreateRemote(const MachineName: string): IADsNetAddress;
+class function CoNetAddress.CreateRemote(const MachineName: RawUtf8): IADsNetAddress;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_NetAddress) as IADsNetAddress;
 end;
@@ -4385,7 +4387,7 @@ begin
   Result := CreateComObject(CLASS_OctetList) as IADsOctetList;
 end;
 
-class function CoOctetList.CreateRemote(const MachineName: string): IADsOctetList;
+class function CoOctetList.CreateRemote(const MachineName: RawUtf8): IADsOctetList;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_OctetList) as IADsOctetList;
 end;
@@ -4395,7 +4397,7 @@ begin
   Result := CreateComObject(CLASS_Email) as IADsEmail;
 end;
 
-class function CoEmail.CreateRemote(const MachineName: string): IADsEmail;
+class function CoEmail.CreateRemote(const MachineName: RawUtf8): IADsEmail;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_Email) as IADsEmail;
 end;
@@ -4405,7 +4407,7 @@ begin
   Result := CreateComObject(CLASS_Path) as IADsPath;
 end;
 
-class function CoPath.CreateRemote(const MachineName: string): IADsPath;
+class function CoPath.CreateRemote(const MachineName: RawUtf8): IADsPath;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_Path) as IADsPath;
 end;
@@ -4415,7 +4417,7 @@ begin
   Result := CreateComObject(CLASS_ReplicaPointer) as IADsReplicaPointer;
 end;
 
-class function CoReplicaPointer.CreateRemote(const MachineName: string): IADsReplicaPointer;
+class function CoReplicaPointer.CreateRemote(const MachineName: RawUtf8): IADsReplicaPointer;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_ReplicaPointer) as IADsReplicaPointer;
 end;
@@ -4425,7 +4427,7 @@ begin
   Result := CreateComObject(CLASS_Timestamp) as IADsTimestamp;
 end;
 
-class function CoTimestamp.CreateRemote(const MachineName: string): IADsTimestamp;
+class function CoTimestamp.CreateRemote(const MachineName: RawUtf8): IADsTimestamp;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_Timestamp) as IADsTimestamp;
 end;
@@ -4435,7 +4437,7 @@ begin
   Result := CreateComObject(CLASS_PostalAddress) as IADsPostalAddress;
 end;
 
-class function CoPostalAddress.CreateRemote(const MachineName: string): IADsPostalAddress;
+class function CoPostalAddress.CreateRemote(const MachineName: RawUtf8): IADsPostalAddress;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_PostalAddress) as IADsPostalAddress;
 end;
@@ -4445,7 +4447,7 @@ begin
   Result := CreateComObject(CLASS_BackLink) as IADsBackLink;
 end;
 
-class function CoBackLink.CreateRemote(const MachineName: string): IADsBackLink;
+class function CoBackLink.CreateRemote(const MachineName: RawUtf8): IADsBackLink;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_BackLink) as IADsBackLink;
 end;
@@ -4455,7 +4457,7 @@ begin
   Result := CreateComObject(CLASS_TypedName) as IADsTypedName;
 end;
 
-class function CoTypedName.CreateRemote(const MachineName: string): IADsTypedName;
+class function CoTypedName.CreateRemote(const MachineName: RawUtf8): IADsTypedName;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_TypedName) as IADsTypedName;
 end;
@@ -4465,7 +4467,7 @@ begin
   Result := CreateComObject(CLASS_Hold) as IADsHold;
 end;
 
-class function CoHold.CreateRemote(const MachineName: string): IADsHold;
+class function CoHold.CreateRemote(const MachineName: RawUtf8): IADsHold;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_Hold) as IADsHold;
 end;
@@ -4475,7 +4477,7 @@ begin
   Result := CreateComObject(CLASS_Pathname) as IADsPathname;
 end;
 
-class function CoPathname.CreateRemote(const MachineName: string): IADsPathname;
+class function CoPathname.CreateRemote(const MachineName: RawUtf8): IADsPathname;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_Pathname) as IADsPathname;
 end;
@@ -4485,7 +4487,7 @@ begin
   Result := CreateComObject(CLASS_ADSystemInfo) as IADsADSystemInfo;
 end;
 
-class function CoADSystemInfo.CreateRemote(const MachineName: string): IADsADSystemInfo;
+class function CoADSystemInfo.CreateRemote(const MachineName: RawUtf8): IADsADSystemInfo;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_ADSystemInfo) as IADsADSystemInfo;
 end;
@@ -4495,7 +4497,7 @@ begin
   Result := CreateComObject(CLASS_WinNTSystemInfo) as IADsWinNTSystemInfo;
 end;
 
-class function CoWinNTSystemInfo.CreateRemote(const MachineName: string): IADsWinNTSystemInfo;
+class function CoWinNTSystemInfo.CreateRemote(const MachineName: RawUtf8): IADsWinNTSystemInfo;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_WinNTSystemInfo) as IADsWinNTSystemInfo;
 end;
@@ -4505,7 +4507,7 @@ begin
   Result := CreateComObject(CLASS_DNWithBinary) as IADsDNWithBinary;
 end;
 
-class function CoDNWithBinary.CreateRemote(const MachineName: string): IADsDNWithBinary;
+class function CoDNWithBinary.CreateRemote(const MachineName: RawUtf8): IADsDNWithBinary;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_DNWithBinary) as IADsDNWithBinary;
 end;
@@ -4515,7 +4517,7 @@ begin
   Result := CreateComObject(CLASS_DNWithString) as IADsDNWithString;
 end;
 
-class function CoDNWithString.CreateRemote(const MachineName: string): IADsDNWithString;
+class function CoDNWithString.CreateRemote(const MachineName: RawUtf8): IADsDNWithString;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_DNWithString) as IADsDNWithString;
 end;
@@ -4525,7 +4527,7 @@ begin
   Result := CreateComObject(CLASS_ADsSecurityUtility) as IADsSecurityUtility;
 end;
 
-class function CoADsSecurityUtility.CreateRemote(const MachineName: string): IADsSecurityUtility;
+class function CoADsSecurityUtility.CreateRemote(const MachineName: RawUtf8): IADsSecurityUtility;
 begin
   Result := CreateRemoteComObject(MachineName, CLASS_ADsSecurityUtility) as IADsSecurityUtility;
 end;

@@ -28,14 +28,10 @@ unit ConnList;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,System.Actions,ToolWin,System.Contnrs
-{$ELSE}
   LCLIntf, LCLType,Contnrs, Messages,
-{$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ComCtrls, StdCtrls, Menus, ImgList, ExtCtrls, Buttons, Config,
-  ActnList, DlgWrap;
+  ActnList, DlgWrap, mormot.core.base;
 
 type
   TPrepareMode = (pmExport, pmImport);
@@ -157,14 +153,14 @@ type
     FAccountAction: TCopyAction;
     procedure CopyAccount(ToFolder: TAccountFolder; Name: string; Src: TAccount; Move: Boolean);
     procedure CopyFolder(SourceFolder, DestFolder: TAccountFolder; Move: Boolean);
-    function  GetSelection(AStorages: TStorageList; TargetFolder: TAccountFolder; Items: TObjectList; PrepareMode: TPrepareMode; var IncludePasswords: Boolean): Boolean;
-    function  GetExportSelection(AStorages: TStorageList; Items: TObjectList; var IncludePasswords: Boolean): Boolean;
-    function  ImportSelection(AStorages: TStorageList; TargetFolder: TAccountFolder): Boolean;
+    function  GetSelection(AStorages: TConfigStorageObjArray; TargetFolder: TAccountFolder; Items: TObjectList; PrepareMode: TPrepareMode; var IncludePasswords: Boolean): Boolean;
+    function  GetExportSelection(AStorages: TConfigStorageObjArray; Items: TObjectList; var IncludePasswords: Boolean): Boolean;
+    function  ImportSelection(AStorages: TConfigStorageObjArray; TargetFolder: TAccountFolder): Boolean;
     function  GetSelPath(TreeView: TTreeView): string;
     procedure SetSelPath(TreeView: TTreeView; APath: string);
     procedure SetViewStyle(Style: integer);
     procedure RefreshAccountsView;
-    procedure RefreshStorageTree(AStorages: TStorageList; TreeView: TTreeView; ImageOffset: Integer; SelectedPath: string);
+    procedure RefreshStorageTree(AStorages: TConfigStorageObjArray; TreeView: TTreeView; ImageOffset: Integer; SelectedPath: string);
     function  GetAccount: TAccount;
     procedure GetAccountSelection(AList: TObjectList);
     function  GetCurrentFolder: TAccountFolder;
@@ -193,8 +189,7 @@ implementation
 {$R *.dfm}
 {$I LdapAdmin.inc}
 
-uses ConnProp, Constant, Math, uAccountCopyDlg, SizeGrip, Input, Misc, Connection
-     {$IFDEF VER_XEH}, System.Types, System.UITypes{$ENDIF};
+uses ConnProp, Constant, Math, uAccountCopyDlg, SizeGrip, Input, Misc;
 
 const
   CONF_ACCLV_STYLE = 'ConList\ViewStyle';
@@ -505,16 +500,18 @@ begin
   begin
     if not Assigned(NewFolder) then
       NewFolder := DestFolder.Items.AddFolder(AName, true);
-    for i := 0 to Folders.Count - 1 do
+    for i := 0 to length(Folders) - 1 do
       CopyFolder(Folders[i], NewFolder, Move);
-    for i := 0 to Accounts.Count - 1 do
+    for i := 0 to Length(Accounts) - 1 do
       CopyAccount(NewFolder, Accounts[i].Name, Accounts[i], false);
     if Move then
       ConfigGetFolder(SourceFolder.Parent).Items.DeleteItem(SourceFolder);
   end;
 end;
 
-function TConnListFrm.GetSelection(AStorages: TStorageList; TargetFolder: TAccountFolder; Items: TObjectList; PrepareMode: TPrepareMode; var IncludePasswords: Boolean): Boolean;
+function TConnListFrm.GetSelection(AStorages: TConfigStorageObjArray;
+  TargetFolder: TAccountFolder; Items: TObjectList; PrepareMode: TPrepareMode;
+  var IncludePasswords: Boolean): Boolean;
 var
   Dlg: TPrepareDialog;
   dSrcTree, dDstTree: TTreeView;
@@ -605,7 +602,7 @@ var
         if Assigned(Node.Data) and not (TObject(Node.Data) is TAccount) then
           with ConfigGetFolder(Node.Data).Items do
           begin
-            for i := 0 to Accounts.Count - 1 do
+            for i := 0 to Length(Accounts) - 1 do
               with tv.Items.AddChildObject(Node, Accounts[i].Name, Accounts[i]) do
               begin
                 ImageIndex := imComputer;
@@ -840,12 +837,14 @@ begin
   end;
 end;
 
-function TConnListFrm.GetExportSelection(AStorages: TStorageList; Items: TObjectList; var IncludePasswords: Boolean): Boolean;
+function TConnListFrm.GetExportSelection(AStorages: TConfigStorageObjArray;
+  Items: TObjectList; var IncludePasswords: Boolean): Boolean;
 begin
   Result := GetSelection(AStorages, nil, Items, pmExport, IncludePasswords);
 end;
 
-function  TConnListFrm.ImportSelection(AStorages: TStorageList; TargetFolder: TAccountFolder): Boolean;
+function TConnListFrm.ImportSelection(AStorages: TConfigStorageObjArray;
+  TargetFolder: TAccountFolder): Boolean;
 var
   IncludePasswords: Boolean;
 begin
@@ -871,11 +870,7 @@ end;
 procedure TConnListFrm.SetSelPath(TreeView: TTreeView; APath: string);
 var
   i: Integer;
-  {$ifdef mswindows}
-  Splitted: TArray<String>;
-  {$else}
   Splitted: TStringList;
-  {$endif}
   Node, Parent: TTreeNode;
 
   function GetNextRootNode(ANode: TTreeNode): TTreeNode;
@@ -893,15 +888,11 @@ var
   end;
 
 begin
-  {$ifdef mswindows}
-  Splitted := APath.Split(['\']);
-  {$else}
   Splitted:=TStringList.Create;
   //ExtractStrings(['/'], [], PChar(APath), Splitted);
   Splitted.Delimiter := '\';
   Splitted.DelimitedText := APath;
   //split(APath, Splitted, '/');
-  {$endif}
   if not Assigned(Splitted) then
     exit;
   Node := TreeView.Items.GetFirstNode;
@@ -1073,19 +1064,18 @@ end;
 
 procedure TConnListFrm.Import(AFileName: string);
 var
-  StorageList: TStorageList;
+  StorageList: TConfigStorageObjArray;
 begin
   if AFileName = '' then
     exit;
-  StorageList := TStorageList.Create;
+  StorageList := nil;
   try
     Screen.Cursor := crHourGlass;
-    StorageList.Add(TXmlConfigStorage.Create(AFileName));
+    ObjArrayAdd(StorageList, TXmlConfigStorage.Create(AFileName));
     if ImportSelection(StorageList, GetCurrentFolder) then
       RefreshStorageTree(GlobalConfig.Storages, TreeView, FImageOffset, GetSelPath(TreeView));
   finally
     Screen.Cursor := crDefault;
-    StorageList.Free;
   end;
 end;
 
@@ -1093,6 +1083,8 @@ procedure TConnListFrm.RefreshAccountsView;
 var
   i: integer;
   SelData: pointer;
+  items: TConfigList;
+  folder: TAccountFolder;
 begin
   AccountsView.Items.BeginUpdate;
 
@@ -1112,27 +1104,35 @@ begin
       ImageIndex := imNewAccount;
     end;
 
-    with GetCurrentFolder.Items do
-    for i := 0 to Accounts.Count - 1 do
-      with AccountsView.Items.Add do
+    folder := GetCurrentFolder;
+    if Assigned(folder) then
+    begin
+      items := folder.Items;
+      if Assigned(items) and Assigned(items.Accounts) then
       begin
-        Caption := Accounts[i].Name;
-        Data := Accounts[i];
-        SubItems.Add(Accounts[i].Server);
-        SubItems.Add(Accounts[i].Base);
-        if Accounts[i].User = '' then
-          SubItems.Add('anonymous')
-        else
-          SubItems.Add(Accounts[i].User);
-        ImageIndex := imComputer;
-        Selected := (Data = SelData);
+        for i := 0 to Length(items.Accounts) - 1 do
+          with AccountsView.Items.Add do
+          begin
+            Caption := items.Accounts[i].Name;
+            Data := items.Accounts[i];
+            SubItems.Add(items.Accounts[i].Server);
+            SubItems.Add(items.Accounts[i].Base);
+            if items.Accounts[i].User = '' then
+              SubItems.Add('anonymous')
+            else
+              SubItems.Add(items.Accounts[i].User);
+            ImageIndex := imComputer;
+            Selected := (Data = SelData);
+          end;
       end;
+    end;
 
   end;
   AccountsView.Items.EndUpdate;
 end;
 
-procedure TConnListFrm.RefreshStorageTree(AStorages: TStorageList; TreeView: TTreeView; ImageOffset: Integer; SelectedPath: string);
+procedure TConnListFrm.RefreshStorageTree(AStorages: TConfigStorageObjArray;
+  TreeView: TTreeView; ImageOffset: Integer; SelectedPath: string);
 var
   i, img: Integer;
   Node: TTreeNode;
@@ -1149,12 +1149,12 @@ var
       NewNode := TreeView.Items.AddChildObject(ANode, AFolder.Name, AFolder);
       NewNode.ImageIndex := imFolderOpen + ImageOffset;
       NewNode.SelectedIndex := imFolderOpen + ImageOffset;
-      for i := 0 to AFolder.Items.Folders.Count - 1 do
+      for i := 0 to Length(AFolder.Items.Folders) - 1 do
         AddFolder(AFolder.Items.Folders[i], NewNode);
     end;
 
   begin
-    for i := 0 to AStorage.RootFolder.Items.Folders.Count - 1 do
+    for i := 0 to Length(AStorage.RootFolder.Items.Folders) - 1 do
       AddFolder(AStorage.RootFolder.Items.Folders[i], ANode);
   end;
 
@@ -1162,7 +1162,7 @@ begin
   TreeView.Items.BeginUpdate;
   TreeView.Items.Clear;
 
-  for i := 0 to AStorages.Count - 1 do
+  for i := 0 to Length(AStorages) - 1 do
   begin
     Node := TreeView.Items.AddObject(nil, AStorages[i].Name, AStorages[i]);
     if Astorages[i] is TRegistryConfigStorage then
@@ -1179,6 +1179,8 @@ begin
   TreeView.Items.EndUpdate;
   Sleep(1);
   Application.ProcessMessages;
+  if not Assigned(FStorage) then
+    FStorage := TConfigStorage(TreeView.Items.GetFirstNode.Data);
   RefreshAccountsView;
 end;
 
@@ -1249,7 +1251,7 @@ begin
       Account.LdapVersion        := LdapVersion;
       Account.User               := User;
       Account.Server             := Server;
-      Account.Password           := Password;
+      Account.Password           := Password + #0;
       Account.TimeLimit          := Timelimit;
       Account.SizeLimit          := SizeLimit;
       Account.PagedSearch        := PagedSearch;
@@ -1270,7 +1272,7 @@ procedure TConnListFrm.ActNewFolderExecute(Sender: TObject);
 var
   NewFolder: TAccountFolder;
   Node: TTreeNode;
-  s: string;
+  s: RawUtf8;
 begin
   s := '';
   Node := TreeView.Selected;
@@ -1326,7 +1328,7 @@ begin
   AConfig := TConfig(TreeView.Selected.Data);
   if (AConfig is TAccountFolder) then with TAccountFolder(AConfig) do
   begin
-    if ((Items.Folders.Count > 0) or (Items.Accounts.Count > 0)) then
+    if ((Length(Items.Folders) > 0) or (Length(Items.Accounts) > 0)) then
       Msg := stFolderNotEmpty
     else
       Msg := stDeleteFolder;
@@ -1491,7 +1493,7 @@ begin
       Account.LdapVersion        := LdapVersion;
       Account.User               := User;
       Account.Server             := Server;
-      Account.Password           := Password;
+      Account.Password           := Password + #0;
       Account.TimeLimit          := Timelimit;
       Account.SizeLimit          := SizeLimit;
       Account.PagedSearch        := PagedSearch;
@@ -1513,7 +1515,7 @@ var
   i: integer;
 begin
   if SaveDialog.Execute then begin
-    for i:=1 to GlobalConfig.Storages.Count-1 do begin
+    for i:=1 to Length(GlobalConfig.Storages) - 1 do begin
       if (GlobalConfig.Storages[i] is TXmlConfigStorage) and
          (TXmlConfigStorage(GlobalConfig.Storages[i]).FileName=SaveDialog.FileName) then
       begin
@@ -1537,7 +1539,7 @@ var
   i: integer;
 begin
   if OpenDialog.Execute then begin
-    for i:=1 to GlobalConfig.Storages.Count-1 do begin
+    for i:=1 to Length(GlobalConfig.Storages) - 1 do begin
       if (GlobalConfig.Storages[i] is TXmlConfigStorage) and
          (TXmlConfigStorage(GlobalConfig.Storages[i]).FileName=OpenDialog.FileName) then begin
         FStorage:=GlobalConfig.Storages[i];
@@ -1557,7 +1559,7 @@ var
 begin
   if FStorage is TXmlConfigStorage then
   begin
-  for i := 0 to GlobalConfig.Storages.Count - 1 do
+  for i := 0 to Length(GlobalConfig.Storages) - 1 do
     if GlobalConfig.Storages[i] = FStorage then begin
       GlobalConfig.DeleteStorage(i);
       break;

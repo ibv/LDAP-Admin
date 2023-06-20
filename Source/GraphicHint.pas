@@ -29,11 +29,7 @@ unit GraphicHint;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   Controls, Classes, Graphics, Forms;
 
 type
@@ -43,7 +39,7 @@ type
     FInheritedPaint: Boolean;
     FBitmap: TBitmap;
   public
-    procedure ActivateHint(Rect: TRect; const AHint: string); override;
+    procedure ActivateHint(Rect: TRect; const AHint: String); override;
   protected
     procedure Paint; override;
   public
@@ -55,10 +51,6 @@ type
 implementation
 
 uses
-{$IFnDEF FPC}
-  jpeg,
-{$ELSE}
-{$ENDIF}
   SysUtils, LDAPClasses, Misc;
 
 constructor TGraphicHintWindow.Create(AOwner: TComponent);
@@ -78,7 +70,7 @@ begin
   end;
 end;
 
-procedure TGraphicHintWindow.ActivateHint(Rect: TRect; const AHint: string);
+procedure TGraphicHintWindow.ActivateHint(Rect: TRect; const AHint: String);
 var
   h: Integer;
   Value: TLdapAttributeData;

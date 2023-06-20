@@ -14,13 +14,8 @@ unit ScriptIntf;
 
 interface
 
-{$IFnDEF FPC}
 uses
-  ActiveX, Windows;
-{$ELSE}
-uses
-  LCLIntf, LCLType, LMessages;
-{$ENDIF}
+  LCLIntf, LCLType;
 
 
 const

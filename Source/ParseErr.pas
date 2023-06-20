@@ -28,13 +28,9 @@ unit ParseErr;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls;
+  StdCtrls, ExtCtrls, mormot.core.base;
 
 type
   TParseErrDlg = class(TForm)
@@ -49,20 +45,17 @@ type
   private
     fLine: Integer;
     fPosition: Integer;
-    fIdentifier: string;
+    fIdentifier: RawUtf8;
     procedure HighlightText;
   end;
 
-procedure ParseError(AType: TMsgDlgType; AOwner: TComponent; const FileName, Err1, Err2, Code, Identifier: string; LineNr, Pos: Integer);
+procedure ParseError(AType: TMsgDlgType; AOwner: TComponent; const FileName, Err1, Err2, Code, Identifier: RawUtf8; LineNr, Pos: Integer);
 
 implementation
 
 uses
-{$IFnDEF FPC}
-  MMSystem,
-{$ELSE}
-{$ENDIF}
-  Misc, Constant;
+  {$ifdef WINDOWS} MMSystem, Windows, {$endif}
+  Misc, Constant, HtmlMisc;
 
 {$R *.dfm}
 
@@ -145,9 +138,9 @@ begin
 end;
 
 
-procedure ParseError(AType: TMsgDlgType; AOwner: TComponent; const FileName, Err1, Err2, Code, Identifier: string; LineNr, Pos: Integer);
+procedure ParseError(AType: TMsgDlgType; AOwner: TComponent; const FileName, Err1, Err2, Code, Identifier: RawUtf8; LineNr, Pos: Integer);
 var
-  typeMsg: string;
+  typeMsg: RawUtf8;
 begin
   with TParseErrDlg.Create(AOwner) do
   try
@@ -155,24 +148,12 @@ begin
     case AType of
       mtError: begin
                  typeMsg := cError;
-                 {$ifdef windows}
-                 Handle := LoadIcon(0, IDI_ERROR);
-                 {$else}
-                 {$endif}
                end;
       mtWarning: begin
                    typeMsg := cWarning;
-                   {$ifdef windows}
-                   Handle := LoadIcon(0, IDI_WARNING);
-                   {$else}
-                   {$endif}
                  end;
       mtInformation: begin
                        typeMsg := cInformation;
-                       {$ifdef windows}
-                       Handle := LoadIcon(0, IDI_INFORMATION);
-                       {$else}
-                       {$endif}
                      end;
     else
       typeMsg := '';

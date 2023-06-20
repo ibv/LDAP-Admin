@@ -43,12 +43,8 @@ unit Xml;
 interface
 
 uses
-{$IFnDEF FPC}
-  windows,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
-  sysutils, Classes, TextFile, Contnrs;
+  sysutils, Classes, TextFile, Contnrs, mormot.core.base;
 
 
 type
@@ -58,29 +54,29 @@ type
   private
     FPosition: Integer;
     FLine: Integer;
-    FTagName: string;
-    FMessage: string;
-    FMessage2: string;
-    FText: string;
+    FTagName: RawUtf8;
+    FMessage: RawUtf8;
+    FMessage2: RawUtf8;
+    FText: RawUtf8;
   public
-    constructor Create(Stream: TStream; const TagName, ErrMsg: string; CharSize: Integer);
+    constructor Create(Stream: TStream; const TagName, ErrMsg: RawUtf8; CharSize: Integer);
     property Line: Integer read FLine;
     property Position: Integer read FPosition;
-    property Tag: string read FTagName;
-    property Message: string read FMessage;
-    property Message2: string read FMessage2;
-    property XmlText: string read FText;
+    property Tag: RawUtf8 read FTagName;
+    property Message: RawUtf8 read FMessage;
+    property Message2: RawUtf8 read FMessage2;
+    property XmlText: RawUtf8 read FText;
   end;
 
 
   TXmlNode=class
   private
-    FName:      string;
+    FName:      RawUtf8;
     FAttrs:     TStringList;
     FNodes:     TObjectList;
     FParent:    TXmlNode;
-    FContent:   string;
-    FComment:   string;
+    FContent:   RawUtf8;
+    FComment:   RawUtf8;
     FCaseSens:  boolean;
     function    GetNodes(Index: integer): TXmlNode;
     function    GetCount: integer;
@@ -92,16 +88,16 @@ type
     property    Attributes: TStringList read FAttrs;
     property    Nodes[Index: integer]: TXmlNode read GetNodes; default;
     property    Count: integer read GetCount;
-    property    Name: string read FName write FName;
+    property    Name: RawUtf8 read FName write FName;
     property    Parent: TXmlNode read FParent write SetParent;
-    property    Content: string read FContent write FContent;
+    property    Content: RawUtf8 read FContent write FContent;
     property    CaseSensitive: boolean read GetCaseSens;
-    function    Add(const AName: string=''; const AContent: string=''; const AAttributes: TstringList=nil): TXmlNode;
+    function    Add(const AName: RawUtf8=''; const AContent: RawUtf8=''; const AAttributes: TstringList=nil): TXmlNode;
     function    Clone(Parent: TXmlNode; const Recurse: boolean): TxmlNode;
     procedure   Delete(Index: integer);
-    function    NodeByName(AName: string; CaseSensitive: boolean=true; Lang: string=''): TXmlNode;
+    function    NodeByName(AName: RawUtf8; CaseSensitive: boolean=true; Lang: RawUtf8=''): TXmlNode;
     procedure   Sort(Compare: TListSortCompare; Recurse: Boolean);
-    property    Comment: string read FComment write FComment;
+    property    Comment: RawUtf8 read FComment write FComment;
   end;
 
   TStreamCallback = procedure (Node: TXmlNode) of object;
@@ -114,13 +110,13 @@ type
     {$IFNDEF UNICODE}
     FBuffer:    WideString;
     {$ELSE}
-    FBuffer:    string;
+    FBuffer:    RawUtf8;
     {$ENDIF}
     FCurrBufferPos: Integer;
-    function    GetNextTag(Stream: TTextStream; var PrevContent, TagName, Attrs: string; var TagType: TTagType): boolean;
-    procedure   ParseAttributes(S: string; Attributes: TStringList);
-    function    ClearContent(S: string): string;
-    procedure   ParsePath(const Path: string; Result: TStrings);
+    function    GetNextTag(Stream: TTextStream; var PrevContent, TagName, Attrs: RawUtf8; var TagType: TTagType): boolean;
+    procedure   ParseAttributes(S: RawUtf8; Attributes: TStringList);
+    function    ClearContent(S: RawUtf8): RawUtf8;
+    procedure   ParsePath(const Path: RawUtf8; Result: TStrings);
     function    DoGetNode(var Path: TStrings): TXmlNode;
     procedure   SetCaseSens(const Value: boolean);
     function    GetCaseSens: boolean;
@@ -130,11 +126,11 @@ type
     property    Root: TXmlNode read FRoot;
     procedure   LoadFromStream(const Stream: TTextStream); virtual;
     procedure   SaveToStream(const Stream: TTextStream; StreamCallback: TStreamCallback = nil); virtual;
-    procedure   LoadFromFile(const FileName: string);
-    procedure   SaveToFile(const FileName: string; StreamCallback: TStreamCallback = nil);
+    procedure   LoadFromFile(const FileName: RawUtf8);
+    procedure   SaveToFile(const FileName: RawUtf8; StreamCallback: TStreamCallback = nil);
     procedure   Sort(Compare: TListSortCompare);
-    function    ByPath(const APath: string): TXmlNode;
-    function    Exist(const Path: string): boolean;
+    function    ByPath(const APath: RawUtf8): TXmlNode;
+    function    Exist(const Path: RawUtf8): boolean;
     property    CaseSensitive: boolean read GetCaseSens write SetCaseSens;
     property    Encoding: TFileEncode read FEncoding write FEncoding; //SetEncoding;
     property    Markups: Boolean read FMarkups write FMarkups;
@@ -149,11 +145,10 @@ uses Misc, Cp, Constant {$IFDEF VER_XEH}, System.Types{$ENDIF};
 
 const
   TAB  = '   ';//#9;
-  CRLF = #13#10;
 
 { EXmlException }
 
-constructor EXmlException.Create(Stream: TStream; const TagName, ErrMsg: string; CharSize: Integer);
+constructor EXmlException.Create(Stream: TStream; const TagName, ErrMsg: RawUtf8; CharSize: Integer);
   procedure CountLines(var Lines, Pos: Integer);
   var
     i, il, iend: Integer;
@@ -225,7 +220,7 @@ begin
   result:=FNodes.Count;
 end;
 
-function TXmlNode.Add(const AName, AContent: string; const AAttributes: TstringList): TXmlNode;
+function TXmlNode.Add(const AName, AContent: RawUtf8; const AAttributes: TstringList): TXmlNode;
 begin
   result:=TXmlNode.Create(self);
   result.Name:=AName;
@@ -233,13 +228,13 @@ begin
   if AAttributes<>nil then result.Attributes.Assign(AAttributes);
 end;
 
-function TXmlNode.NodeByName(AName: string; CaseSensitive: boolean=true; Lang: string=''): TXmlNode;
+function TXmlNode.NodeByName(AName: RawUtf8; CaseSensitive: boolean=true; Lang: RawUtf8=''): TXmlNode;
 type
-  TCompareProc=function(const AText, AOther: string): Boolean;
+  TCompareProc=function(const AText, AOther: String): Boolean;
 var
   i: integer;
   proc: TCompareProc;
-  l: string;
+  l: RawUtf8;
 begin
   result:=nil;
   if CaseSensitive then proc:=AnsiSameStr
@@ -327,7 +322,7 @@ begin
   inherited;
 end;
 
-function TXmlTree.GetNextTag(Stream: TTextStream; var PrevContent, TagName, Attrs: string; var TagType: TTagType): boolean;
+function TXmlTree.GetNextTag(Stream: TTextStream; var PrevContent, TagName, Attrs: RawUtf8; var TagType: TTagType): boolean;
 type
   TState=(tsContent, tsScriptContent, tsTag, tsScriptTag, tsAttrs, tsEnd, tsSkip, tsComment, tsMarkup);
 var
@@ -335,9 +330,9 @@ var
   State: TState;
   quota: boolean;
   CommentState: byte;
-  Markup: string;
+  Markup: RawUtf8;
 
-  function DecodeMarkup(const s: string): string;
+  function DecodeMarkup(const s: RawUtf8): RawUtf8;
   begin
     try
       if (s <> '') and (s[1] = '#') then Result := Chr(StrToInt(Copy(S, 2, MaxInt))) else
@@ -462,15 +457,15 @@ end;
 
 procedure TXmlTree.LoadFromStream(const Stream: TTextStream);
 var
-  PrevContent, TagName: string;
+  PrevContent, TagName: RawUtf8;
   TagType: TTagType;
   Node:   TXmlNode;
-  Attrs:  string;
+  Attrs:  RawUtf8;
 
   procedure CheckEncoding;
   var
     s: TStringList;
-    val: string;
+    val: RawUtf8;
   begin
     if not GetNextTag(Stream, PrevContent, TagName, Attrs, TagType) then
      raise EXmlException.Create(Stream, TagName, XML_NO_OPENING_TAG, Stream.CharSize);
@@ -536,13 +531,13 @@ begin
   end;
 end;
 
-procedure TXmlTree.ParseAttributes(S: string; Attributes: TStringList);
+procedure TXmlTree.ParseAttributes(S: RawUtf8; Attributes: TStringList);
 type
   TState=(s_name, s_value);
 var
   i: integer;
   State: TState;
-  name, value: string;
+  name, value: RawUtf8;
 begin
   name:=''; value:='';
   State:=s_name;
@@ -575,7 +570,7 @@ begin
 end;
 
 
-function TXmlTree.ClearContent(S: string):string;
+function TXmlTree.ClearContent(S: RawUtf8):RawUtf8;
 var
   b, e: integer;
 begin
@@ -595,7 +590,7 @@ end;
 
 procedure TXmlTree.SaveToStream(const Stream: TTextStream; StreamCallback: TStreamCallback = nil);
 
-  function GetEncodingString: string;
+  function GetEncodingString: RawUtf8;
   begin
     case Stream.Encoding of
       feAnsi:       Result := GetCodePageName;
@@ -606,7 +601,7 @@ procedure TXmlTree.SaveToStream(const Stream: TTextStream; StreamCallback: TStre
     end;
   end;
 
-  function EncodeMarkups(const s: string): string;
+  function EncodeMarkups(const s: RawUtf8): RawUtf8;
   var
     i: Integer;
   begin
@@ -623,10 +618,10 @@ procedure TXmlTree.SaveToStream(const Stream: TTextStream; StreamCallback: TStre
       end;
   end;
 
-  procedure WriteNode(Node: TXmlNode; Indent: string);
+  procedure WriteNode(Node: TXmlNode; Indent: RawUtf8);
   var
     i: integer;
-    Line, encName: string;
+    Line, encName: RawUtf8;
   begin
     if fMarkups then
       encName := EncodeMarkups(Node.Name)
@@ -686,7 +681,7 @@ begin
     Root.Sort(Compare, true);
 end;
 
-procedure TXmlTree.LoadFromFile(const FileName: string);
+procedure TXmlTree.LoadFromFile(const FileName: RawUtf8);
 var
   FStream: TTextFile;
 begin
@@ -699,7 +694,7 @@ begin
   end;
 end;
 
-procedure TXmlTree.SaveToFile(const FileName: string; StreamCallback: TStreamCallback = nil);
+procedure TXmlTree.SaveToFile(const FileName: RawUtf8; StreamCallback: TStreamCallback = nil);
 var
   FStream: TTextFile;
 begin
@@ -712,7 +707,7 @@ begin
   end;
 end;
 
-procedure TXmlTree.ParsePath(const Path: string; Result: TStrings);
+procedure TXmlTree.ParsePath(const Path: RawUtf8; Result: TStrings);
 var
   i, n: integer;
 begin
@@ -746,7 +741,7 @@ begin
   end;
 end;
 
-function TXmlTree.Exist(const Path: string): boolean;
+function TXmlTree.Exist(const Path: RawUtf8): boolean;
 var
   strs: TStrings;
 begin
@@ -757,7 +752,7 @@ begin
   strs.Free;
 end;
 
-function TXmlTree.ByPath(const APath: string): TXmlNode;
+function TXmlTree.ByPath(const APath: RawUtf8): TXmlNode;
 var
   strs: TStrings;
   i: integer;

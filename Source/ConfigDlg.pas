@@ -29,13 +29,9 @@ unit ConfigDlg;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows, LAControls,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, Dialogs, LDAPClasses, ComCtrls,  Grids, Connection ;
+  Buttons, ExtCtrls, Dialogs, LDAPClasses, ComCtrls,  Grids, Connection, mormot.core.base ;
 
 type
   TConfigDlg = class(TForm)
@@ -87,7 +83,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure SetDefBtnClick(Sender: TObject);
     procedure TranscodingTableSetEditText(Sender: TObject; ACol,
-      ARow: Integer; const Value: String);
+      ARow: Integer; const Value: RawUtf8);
     procedure btnAddLangClick(Sender: TObject);
     procedure btnDelLangClick(Sender: TObject);
     procedure ListMouseMove(Sender: TObject; Shift: TShiftState; X,Y: Integer);
@@ -106,7 +102,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses FileCtrl, Config, Templates, Constant, Misc, Main, Lang
+uses Config, Templates, Constant, Misc, Main, Lang
 {$IFDEF VER_XEH}, System.Types, System.UITypes{$ENDIF};
 
 {$R *.dfm}
@@ -114,7 +110,7 @@ uses FileCtrl, Config, Templates, Constant, Misc, Main, Lang
 constructor TConfigDlg.Create(AOwner: TComponent; ASession: TLdapSession);
 var
   i, j: Integer;
-  s: string;
+  s: RawUtf8;
   names: TStrings;
 
   procedure DoAddFolder(AFolder: TAccountFolder);
@@ -123,9 +119,9 @@ var
   begin
     with cbStartupConnection.Items, AFolder.Items do begin
       AddObject(AFolder.Name, AFolder);
-      for i := 0 to Accounts.Count - 1 do
+      for i := 0 to Length(Accounts) - 1 do
         AddObject(Accounts[i].Name, Accounts[i]);
-      for i := 0 to Folders.Count - 1 do
+      for i := 0 to Length(Folders) - 1 do
         DoAddFolder(Folders[i]);
     end;
   end;
@@ -150,12 +146,12 @@ begin
     OnDrawItem := cbStartupConnectionDrawItem;
     ///OnCanCloseUp := cbStartupConnectionCloseUp;
   end;
-  for i:=0 to GlobalConfig.Storages.Count-1 do with GlobalConfig.Storages[i] do
+  for i:=0 to Length(GlobalConfig.Storages) - 1 do with GlobalConfig.Storages[i] do
   begin
     cbStartupConnection.Items.AddObject(Name, GlobalConfig.Storages[i]);
-    for j:=0 to RootFolder.Items.Accounts.Count-1 do
+    for j:=0 to Length(RootFolder.Items.Accounts) - 1 do
       cbStartupConnection.Items.AddObject(RootFolder.Items.Accounts[j].Name, RootFolder.Items.Accounts[j]);
-    for j := 0 to RootFolder.Items.Folders.Count - 1 do
+    for j := 0 to Length(RootFolder.Items.Folders) - 1 do
         DoAddFolder(RootFolder.Items.Folders[j]);
   end;
   with GlobalConfig do begin
@@ -211,7 +207,7 @@ end;
 
 procedure TConfigDlg.btnAddClick(Sender: TObject);
 var
-  Dir: string;
+  Dir: String;
 begin
   if SelectDirectory('','',Dir) then
     TemplateList.Items.Add(Dir);
@@ -258,7 +254,7 @@ procedure TConfigDlg.FormClose(Sender: TObject; var Action: TCloseAction);
 var
   Account: TAccount;
   i: Integer;
-  s: string;
+  s: RawUtf8;
 begin
   Action := caFree;
   if ModalResult = mrOk then with GlobalConfig do
@@ -314,7 +310,7 @@ end;
 procedure TConfigDlg.cbStartupConnectionDrawItem(Control: TWinControl;
   Index: Integer; Rect: TRect; State: TOwnerDrawState);
 var
-  s: string;
+  s: RawUtf8;
   ///ImageIndex: Integer;
   ImageIndex, Indent: Integer;
 {begin
@@ -391,7 +387,7 @@ begin
   {$endif}
 end;
 
-procedure TConfigDlg.TranscodingTableSetEditText(Sender: TObject; ACol, ARow: Integer; const Value: String);
+procedure TConfigDlg.TranscodingTableSetEditText(Sender: TObject; ACol, ARow: Integer; const Value: RawUtf8);
 begin
   with TranscodingTable do
   if (ARow = RowCount - 1) and (Cells[ACol, ARow] <> '') then
@@ -403,7 +399,7 @@ end;
 
 procedure TConfigDlg.btnAddLangClick(Sender: TObject);
 var
-  Dir: string;
+  Dir: String;
 begin
   if SelectDirectory('','',Dir) then
     LanguageList.Items.Add(Dir);
@@ -432,7 +428,7 @@ end;
 
 procedure TConfigDlg.btnEditLangClick(Sender: TObject);
 var
-  Dir: string;
+  Dir: String;
 begin
   with LanguageList do
   begin

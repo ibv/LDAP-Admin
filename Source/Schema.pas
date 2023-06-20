@@ -28,7 +28,7 @@ unit Schema;
 
 interface
 
-uses Classes, LDAPClasses, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}SysUtils, Contnrs;
+uses Classes, LDAPClasses, LinLDAP, SysUtils, Contnrs, mormot.core.base, mormot.net.ldap;
 
 type
   TAttributeUsage=(au_userApplications, au_directoryOperation, au_distributedOperation, au_dSAOperation);
@@ -43,16 +43,16 @@ type
   TLdapSchemaItem=class
   private
     FSchema:      TLDAPSchema;
-    FOid:         string;
+    FOid:         RawUtf8;
     FName:        TStringList;
-    FDescription: string;
+    FDescription: RawUtf8;
   protected
-    procedure     Load(const LDAPString: string); virtual; abstract;
+    procedure     Load(const LDAPString: RawUtf8); virtual; abstract;
   public
-    constructor   Create(const ASchema: TLdapSchema; const LDAPString: string); reintroduce; virtual;
+    constructor   Create(const ASchema: TLdapSchema; const LDAPString: RawUtf8); reintroduce; virtual;
     destructor    Destroy; override;
-    property      Oid: string read FOid;
-    property      Description: string read FDescription;
+    property      Oid: RawUtf8 read FOid;
+    property      Description: RawUtf8 read FDescription;
     property      Name: TStringList read FName;
   end;
 
@@ -64,12 +64,12 @@ type
     function      GetItems(Index: integer): TLdapSchemaItem;
   protected
     function      GetItemClass: TLdapSchemaItemClass; virtual; abstract;
-    procedure     Load(const Attribute: TLdapAttribute);
-    procedure     SliceByName(const Str: string; result: TLdapSchemaItems);
+    procedure     Load(const Attribute: LDAPClasses.TLdapAttribute);
+    procedure     SliceByName(const Str: RawUtf8; result: TLdapSchemaItems);
   public
     constructor   Create(const ASchema: TLdapSchema; AOwnsObjects: Boolean=true); reintroduce;
     property      Schema: TLDAPSchema read FSchema;
-    function      IndexOf(const Name: string): integer; reintroduce;
+    function      IndexOf(const Name: RawUtf8): integer; reintroduce;
     property      Items[Index: integer]: TLdapSchemaItem read GetItems; default;
   end;
 
@@ -80,13 +80,13 @@ type
     FSingleValue:         boolean;
     FObsolete:            boolean;
     FLength:              integer;
-    FSyntaxAsStr:         string;
-    FSuperiorAsStr:       string;
+    FSyntaxAsStr:         RawUtf8;
+    FSuperiorAsStr:       RawUtf8;
     FSuperior:            TLdapSchemaAttribute;
     FUsage:               TAttributeUsage;
-    FOrderingAsStr:       string;
-    FEqualityAsStr:       string;
-    FSubstrAsStr:         string;
+    FOrderingAsStr:       RawUtf8;
+    FEqualityAsStr:       RawUtf8;
+    FSubstrAsStr:         RawUtf8;
     FOrdering:            TLDAPSchemaMatchingRuleUse;
     FEquality:            TLDAPSchemaMatchingRuleUse;
     FSubstr:              TLDAPSchemaMatchingRule;
@@ -101,21 +101,21 @@ type
     function              GetEquality: TLDAPSchemaMatchingRuleUse;
 
   public
-    constructor           Create(const Schema: TLdapSchema; const LDAPString: string); override;
+    constructor           Create(const Schema: TLdapSchema; const LDAPString: RawUtf8); override;
     destructor            Destroy; override;
     property              Obsolete: boolean read FObsolete;
-    property              SuperiorAsStr: string read FSuperiorAsStr;
+    property              SuperiorAsStr: RawUtf8 read FSuperiorAsStr;
     property              Superior: TLdapSchemaAttribute read GetSuperior;
 
-    property              EqualityAsStr: string read FEqualityAsStr;
-    property              OrderingAsStr: string read FOrderingAsStr;
-    property              SubstrAsStr: string read FSubstrAsStr;
+    property              EqualityAsStr: RawUtf8 read FEqualityAsStr;
+    property              OrderingAsStr: RawUtf8 read FOrderingAsStr;
+    property              SubstrAsStr: RawUtf8 read FSubstrAsStr;
     property              Ordering: TLDAPSchemaMatchingRuleUse read GetOrdering;
     property              Equality: TLDAPSchemaMatchingRuleUse read GetEquality;
     property              Substr: TLDAPSchemaMatchingRule read GetSubstr;
 
     property              Syntax: TLDAPSchemaSyntax read GetSyntax;
-    property              SyntaxAsStr: string read FSyntaxAsStr;
+    property              SyntaxAsStr: RawUtf8 read FSyntaxAsStr;
     property              SingleValue: boolean read FSingleValue;
     property              Collective: boolean read FCollective;
     property              NoUserModification: boolean read FNoUserModification;
@@ -130,9 +130,9 @@ type
   private
     FObsolete:            boolean;
     FKind:                TLDAPClassKind;
-    FSuperiorAsStr:       string;
-    FMustStr:             string;
-    FMayStr:              string;
+    FSuperiorAsStr:       RawUtf8;
+    FMustStr:             RawUtf8;
+    FMayStr:              RawUtf8;
     FMay:                 TLDAPSchemaAttributes;
     FMust:                TLDAPSchemaAttributes;
     FSuperior:            TLdapSchemaClass;
@@ -140,11 +140,11 @@ type
     function              GetMay: TLDAPSchemaAttributes;
     function              GetSuperior: TLdapSchemaClass;
   public
-    constructor           Create(const ASchema: TLdapSchema; const LDAPString: string); override;
+    constructor           Create(const ASchema: TLdapSchema; const LDAPString: RawUtf8); override;
     destructor            Destroy; override;
     property              Obsolete: boolean read FObsolete;
     property              Superior: TLdapSchemaClass read GetSuperior;
-    property              SuperiorAsStr: string read FSuperiorAsStr;
+    property              SuperiorAsStr: RawUtf8 read FSuperiorAsStr;
     property              Kind: TLDAPClassKind read FKind;
     property              Must: TLDAPSchemaAttributes read GetMust;
     property              May: TLDAPSchemaAttributes read GetMay;
@@ -152,32 +152,32 @@ type
 
   TLDAPSchemaSyntax=class(TLDAPSchemaItem)
   public
-    constructor           Create(const ASchema: TLdapSchema; const LDAPString: string); override;
+    constructor           Create(const ASchema: TLdapSchema; const LDAPString: RawUtf8); override;
   end;
 
   TLDAPSchemaMatchingRule=class(TLDAPSchemaItem)
   private
     FObsolete:            boolean;
-    FSyntaxAsStr:         string;
+    FSyntaxAsStr:         RawUtf8;
     FSyntax:              TLdapSchemaSyntax;
     function              GetSyntax: TLdapSchemaSyntax;
   public
-    constructor           Create(const ASchema: TLdapSchema; const LDAPString: string); override;
+    constructor           Create(const ASchema: TLdapSchema; const LDAPString: RawUtf8); override;
     property              Obsolete: boolean read FObsolete;
-    property              SyntaxAsStr: string read FSyntaxAsStr;
+    property              SyntaxAsStr: RawUtf8 read FSyntaxAsStr;
     property              Syntax: TLdapSchemaSyntax read GetSyntax;
   end;
 
   TLDAPSchemaMatchingRuleUse=class(TLDAPSchemaItem)
   private
     FObsolete:            boolean;
-    FAppliesStr:          string;
+    FAppliesStr:          RawUtf8;
     FApplies:             TLDAPSchemaAttributes;
     function              GetApplies: TLDAPSchemaAttributes;
   public
-    constructor           Create(const ASchema: TLdapSchema; const LDAPString: string); override;
+    constructor           Create(const ASchema: TLdapSchema; const LDAPString: RawUtf8); override;
     destructor            Destroy; override;
-    property              Description: string read FDescription;
+    property              Description: RawUtf8 read FDescription;
     property              Obsolete: boolean read FObsolete;
     property              Applies: TLDAPSchemaAttributes read GetApplies;
   end;
@@ -185,23 +185,23 @@ type
   TLDAPSchemaAttributes=class(TLdapSchemaItems)
   private
     function              GetItems(Index: Integer): TLDAPSchemaAttribute;
-    function              GetByName(Name: string): TLDAPSchemaAttribute;
+    function              GetByName(Name: RawUtf8): TLDAPSchemaAttribute;
   protected
     function              GetItemClass: TLdapSchemaItemClass; override;
   public
     property              Items[Index: integer]: TLDAPSchemaAttribute read GetItems; default;
-    property              ByName[Index: string]: TLDAPSchemaAttribute read GetByName;
+    property              ByName[Index: RawUtf8]: TLDAPSchemaAttribute read GetByName;
   end;
 
   TLDAPSchemaClasses=class(TLdapSchemaItems)
   private
     function              GetItems(Index: Integer): TLDAPSchemaClass;
-    function              GetByName(Index: string): TLdapSchemaClass;
+    function              GetByName(Index: RawUtf8): TLdapSchemaClass;
   protected
     function              GetItemClass: TLdapSchemaItemClass; override;
   public
     property              Items[Index: integer]: TLDAPSchemaClass read GetItems; default;
-    property              ByName[Index: string]: TLDAPSchemaClass read GetByName;
+    property              ByName[Index: RawUtf8]: TLDAPSchemaClass read GetByName;
   end;
 
   TLDAPSchemaSyntaxes=class(TLdapSchemaItems)
@@ -240,14 +240,14 @@ type
     FMatchingRules:       TLDAPSchemaMatchingRules;
     FMatchingRuleUses:    TLDAPSchemaMatchingRuleUses;
     FLoaded:              boolean;
-    FDn:                  string;
+    FDn:                  RawUtf8;
     procedure             Load;
   public
     constructor           Create(const ASession: TLDAPSEssion); reintroduce;
     destructor            Destroy; override;
     procedure             Clear;
     property              Session: TLDAPSession read FSession;
-    property              DN: string read Fdn;
+    property              DN: RawUtf8 read Fdn;
     property              ObjectClasses: TLDAPSchemaClasses read FObjectClasses;
     property              Attributes: TLDAPSchemaAttributes read FAttributes;
     property              Syntaxes: TLDAPSchemaSyntaxes read FSyntaxes;
@@ -264,7 +264,7 @@ uses TypInfo, Constant;
 
 { Procedures }
 
-function PosChar(const Pattern: char; S: string; Offset: cardinal=1): integer;
+function PosChar(const Pattern: char; S: RawUtf8; Offset: cardinal=1): integer;
 var
   i: integer;
 begin
@@ -276,7 +276,7 @@ begin
   result:=0;
 end;
 
-function GetOid(const S: string): string;
+function GetOid(const S: RawUtf8): RawUtf8;
 var
   n: integer;
 begin
@@ -284,7 +284,7 @@ begin
   result:=copy(S,3,n-3);
 end;
 
-function GetString(const S, Name: string): string;
+function GetString(const S, Name: RawUtf8): RawUtf8;
 var
   n1,n2: integer;
   EndChar: char;
@@ -317,14 +317,14 @@ begin
   end;
 end;
 
-function GetBoolean(const S, Name: string): boolean;
+function GetBoolean(const S, Name: RawUtf8): boolean;
 begin
   result:=Pos(' '+name+' ',S)>0;
 end;
 
 { TLDAPSchemaItem }
 
-constructor TLDAPSchemaItem.Create(const ASchema: TLdapSchema; const LDAPString: string);
+constructor TLDAPSchemaItem.Create(const ASchema: TLdapSchema; const LDAPString: RawUtf8);
 begin
   inherited Create;
   FSchema:=ASchema;
@@ -343,10 +343,10 @@ end;
 
 { TLDAPSchemaAttribute }
 
-constructor TLDAPSchemaAttribute.Create(const Schema: TLdapSchema; const LDAPString: string);
+constructor TLDAPSchemaAttribute.Create(const Schema: TLdapSchema; const LDAPString: RawUtf8);
 var
   n: integer;
-  s: string;
+  s: RawUtf8;
 begin
   inherited;
 
@@ -455,7 +455,7 @@ end;
 
 { TLDAPSchemaClass }
 
-constructor TLDAPSchemaClass.Create(const ASchema: TLdapSchema; const LDAPString: string);
+constructor TLDAPSchemaClass.Create(const ASchema: TLdapSchema; const LDAPString: RawUtf8);
 begin
   inherited;
   FObsolete:=GetBoolean(LDAPString,'OBSOLETE');
@@ -508,7 +508,7 @@ end;
 
 { TLDAPSchemaSyntax }
 
-constructor TLDAPSchemaSyntax.Create(const ASchema: TLdapSchema; const LDAPString: string);
+constructor TLDAPSchemaSyntax.Create(const ASchema: TLdapSchema; const LDAPString: RawUtf8);
 begin
   inherited;
   Name.Text:=Oid;
@@ -517,7 +517,7 @@ end;
 
 { TLDAPSchemaMatchingRule }
 
-constructor TLDAPSchemaMatchingRule.Create(const ASchema: TLdapSchema; const LDAPString: string);
+constructor TLDAPSchemaMatchingRule.Create(const ASchema: TLdapSchema; const LDAPString: RawUtf8);
 begin
   inherited;
   FObsolete:=GetBoolean(LDAPString,'OBSOLETE');
@@ -537,7 +537,7 @@ end;
 
 { TLDAPSchemaMatchingRuleUse }
 
-constructor TLDAPSchemaMatchingRuleUse.Create(const ASchema: TLdapSchema; const LDAPString: string);
+constructor TLDAPSchemaMatchingRuleUse.Create(const ASchema: TLdapSchema; const LDAPString: RawUtf8);
 begin
   inherited;
   FAppliesStr:=GetString(LDAPString,'APPLIES');
@@ -596,7 +596,7 @@ end;
 
 procedure TLDAPSchema.Load;
 var
-//  SubschemaSubentry: string;
+//  SubschemaSubentry: RawUtf8;
   SearchResult: TLdapEntryList;
 begin
   FLoaded:=false;
@@ -607,7 +607,7 @@ begin
   SearchResult:=TLdapEntryList.Create;
   try
     // Search path to schema ///////////////////////////////////////////////////
-    FSession.Search('(objectclass=*)','',LDAP_SCOPE_BASE,['subschemaSubentry'],false,SearchResult);
+    FSession.Search('(objectclass=*)','',lssBaseObject,['subschemaSubentry'],false,SearchResult);
     if SearchResult.Count = 0 then Abort;   // Added, 23.06.2016, T.Karlovic
     FDn:=SearchResult[0].AttributesByName['subschemaSubentry'].AsString;
     if FDn='' then raise Exception.Create(stSchemaNoSubentry);
@@ -615,7 +615,7 @@ begin
 
     // Get schema values ///////////////////////////////////////////////////////
     SearchResult.Clear;
-    FSession.Search('(objectClass=*)', FDn, LDAP_SCOPE_BASE,
+    FSession.Search('(objectClass=*)', FDn, lssBaseObject,
                     ['ldapSyntaxes', 'attributeTypes', 'objectclasses', 'matchingRules', 'matchingRuleUse'],
                     false, SearchResult);
 
@@ -641,7 +641,7 @@ end;
 
 { TLdapSchemaItems }
 
-function TLdapSchemaItems.IndexOf(const Name: string): integer;
+function TLdapSchemaItems.IndexOf(const Name: RawUtf8): integer;
 begin
   if Name='' then begin
     result:=-1;
@@ -674,7 +674,7 @@ begin
 end;
 
 
-procedure TLdapSchemaItems.Load(const Attribute: TLdapAttribute);
+procedure TLdapSchemaItems.Load(const Attribute: LDAPClasses.TLdapAttribute);
 var
   i: integer;
   AClass: TLdapSchemaItemClass;
@@ -685,7 +685,7 @@ begin
     Add(AClass.Create(Schema, Attribute.Values[i].AsString));
 end;
 
-procedure TLdapSchemaItems.SliceByName(const Str: string; result: TLdapSchemaItems);
+procedure TLdapSchemaItems.SliceByName(const Str: RawUtf8; result: TLdapSchemaItems);
 var
   i, idx: integer;
   Strs: TStringList;
@@ -711,7 +711,7 @@ begin
   result:= TLDAPSchemaClass(inherited GetItem(Index));
 end;
 
-function TLDAPSchemaClasses.GetByName(Index: string): TLdapSchemaClass;
+function TLDAPSchemaClasses.GetByName(Index: RawUtf8): TLdapSchemaClass;
 var
   i, j: Integer;
 begin
@@ -738,7 +738,7 @@ begin
   result:= TLDAPSchemaAttribute(inherited GetItem(Index));
 end;
 
-function TLDAPSchemaAttributes.GetByName(Name: string): TLDAPSchemaAttribute;
+function TLDAPSchemaAttributes.GetByName(Name: RawUtf8): TLDAPSchemaAttribute;
 var
   i: integer;
 begin

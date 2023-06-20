@@ -28,14 +28,10 @@ unit LdapCopy;
 interface
 
 uses
-{$IFnDEF FPC}
-  CommCtrl, Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, ComCtrls, LDAPClasses, {$ifdef mswindows}WinLDAP,LAControls,{$else} LinLDAP,{$endif}
-  ImgList, Connection;
+  Buttons, ExtCtrls, ComCtrls, LDAPClasses,
+  ImgList, Connection, mormot.core.base;
 
 type
 
@@ -71,7 +67,7 @@ type
   private
     ///cbConnections: TLAComboBox;
     cbConnections: TComboBox;
-    RdnAttribute: string;
+    RdnAttribute: RawUtf8;
     MainConnectionIdx: Integer;
     fExpandNode: TExpandNodeProc;
     ///fSortProc: TTVCompare;
@@ -100,7 +96,7 @@ implementation
 
 {$R *.dfm}
 
-uses Registry, Config, SizeGrip, Constant, ObjectInfo, Misc, Main;
+uses Config, SizeGrip, Constant, ObjectInfo, Main;
 
 function ExecuteCopyDialog(Owner: TComponent; dn: string; Count: Integer; Move: Boolean; Connection: TConnection; out TargetData: TTargetData): Boolean;
 begin
@@ -158,7 +154,7 @@ constructor TCopyDlg.Create(AOwner: TComponent;
                             Move: Boolean;
                             Connection: TConnection);
 var
-  v, tgt: string;
+  v, tgt: RawUtf8;
   i,j: integer;
 
   procedure DoAddFolder(AFolder: TAccountFolder);
@@ -167,9 +163,9 @@ var
   begin
     with cbConnections.Items, AFolder.Items do begin
       AddObject(AFolder.Name, AFolder);
-      for i := 0 to Accounts.Count - 1 do
+      for i := 0 to Length(Accounts) - 1 do
         AddObject(Accounts[i].Name, Accounts[i]);
-      for i := 0 to Folders.Count - 1 do
+      for i := 0 to Length(Folders) - 1 do
         DoAddFolder(Folders[i]);
     end;
   end;
@@ -210,12 +206,12 @@ begin
   end;
 
   with GlobalConfig do
-  for i := 0 to Storages.Count - 1 do with Storages[i] do
+  for i := 0 to Length(Storages) - 1 do with Storages[i] do
   begin
     cbConnections.Items.AddObject(Name, Storages[i]);
-    for j := 0 to RootFolder.Items.Accounts.Count -1 do
+    for j := 0 to Length(RootFolder.Items.Accounts) -1 do
       cbConnections.Items.AddObject(RootFolder.Items.Accounts[j].Name, RootFolder.Items.Accounts[j]);
-    for j := 0 to RootFolder.Items.Folders.Count - 1 do
+    for j := 0 to Length(RootFolder.Items.Folders) - 1 do
       DoAddFolder(RootFolder.Items.Folders[j]);
   end;
 

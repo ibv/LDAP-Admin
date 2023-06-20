@@ -8,12 +8,7 @@ interface
 
 uses
 
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, getvers,
-{$ENDIF}
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  LCLIntf, LCLType, getvers, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls;
 
 
@@ -45,6 +40,9 @@ var
 
 implementation
 
+uses
+  mormot.core.base;
+
 {$IFnDEF FPC}
 uses
   Shellapi;
@@ -53,43 +51,10 @@ uses
 
 {$R *.dfm}
 
-function GetVersionInfo: string;
-type
-  PLandCodepage = ^TLandCodepage;
-  TLandCodepage = record
-    wLanguage,
-    wCodePage: word;
-  end;
-var
-  dummy,
-  len: cardinal;
-  buf, pntr: pointer;
-  lang: string;
+function GetVersionInfo: String;
 begin
   result:='n/a';
-  {$ifdef mswindows}
-  len := GetFileVersionInfoSize(PChar(Application.ExeName), dummy);
-  if len = 0 then
-    RaiseLastOSError;
-  GetMem(buf, len);
-  try
-    if not GetFileVersionInfo(PChar(Application.ExeName), 0, len, buf) then
-      RaiseLastOSError;
-
-    if not VerQueryValue(buf, '\VarFileInfo\Translation\', pntr, len) then
-      RaiseLastOSError;
-
-    lang := Format('%.4x%.4x', [PLandCodepage(pntr)^.wLanguage, PLandCodepage(pntr)^.wCodePage]);
-
-    if VerQueryValue(buf, PChar('\StringFileInfo\' + lang + '\FileVersion'), pntr, len){ and (@len <> nil)} then
-      result := PChar(pntr);
-  finally
-    FreeMem(buf);
-  end;
-  {$else}
-  GetProgramVersion (Result);
-  {$endif}
-
+  GetProgramVersion(Result);
 end;
 
 procedure TAboutDlg.FormClose(Sender: TObject; var Action: TCloseAction);

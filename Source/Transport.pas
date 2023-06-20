@@ -28,13 +28,9 @@ unit Transport;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, LDAPClasses, Constant;
+  Buttons, ExtCtrls, LDAPClasses, Constant, mormot.core.base;
 
 type
   TTransportDlg = class(TForm)
@@ -49,10 +45,10 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
   private
-    dn: string;
+    dn: RawUtf8;
     Entry: TLDAPEntry;
   public
-    constructor Create(AOwner: TComponent; dn: string; Session: TLDAPSession; Mode: TEditMode); reintroduce;
+    constructor Create(AOwner: TComponent; dn: RawUtf8; Session: TLDAPSession; Mode: TEditMode); reintroduce;
   end;
 
 var
@@ -62,9 +58,7 @@ implementation
 
 {$R *.dfm}
 
-uses {$ifdef mswindows}WinLDAP{$else} LinLDAP{$endif};
-
-constructor TTransportDlg.Create(AOwner: TComponent; dn: string; Session: TLDAPSession; Mode: TEditMode);
+constructor TTransportDlg.Create(AOwner: TComponent; dn: RawUtf8; Session: TLDAPSession; Mode: TEditMode);
 begin
   inherited Create(AOwner);
   Self.dn := dn;

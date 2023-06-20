@@ -24,12 +24,8 @@ unit AdContainer;
 interface
 
 uses
-  {$ifdef mswindows}
-  Winapi.Windows, System.Variants,
-  {$else}
-  LCLIntf, LCLType,
-  {$endif}
-  Messages, SysUtils, Classes, Graphics,
+  Variants,
+  LCLIntf, LCLType, SysUtils, Classes, Graphics,
   Controls, Forms, Dialogs, StdCtrls, Connection, LdapClasses, Constant;
 
 type

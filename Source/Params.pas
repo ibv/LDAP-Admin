@@ -27,11 +27,11 @@ unit Params;
 
 interface
 
-uses SysUtils, LDAPClasses, Constant;
+uses SysUtils, LDAPClasses, Constant, mormot.core.base;
 
-function GetParameter(var P: PChar): string;
-function IsParametrized(s: string): Boolean;
-function FormatValue(const AValue: string; Entry: TLdapEntry): string;
+function GetParameter(var P: PChar): RawUtf8;
+function IsParametrized(s: RawUtf8): Boolean;
+function FormatValue(const AValue: RawUtf8; Entry: TLdapEntry): RawUtf8;
 
 implementation
 
@@ -51,7 +51,7 @@ begin
   end;
 end;
 
-function RemoveEsc(const s: string): string;
+function RemoveEsc(const s: RawUtf8): RawUtf8;
 var
   p, p1, p2: PChar;
 begin
@@ -74,7 +74,7 @@ begin
   SetLength(Result, p2 - p);
 end;
 
-function GetParameter(var P: PChar): string;
+function GetParameter(var P: PChar): RawUtf8;
 var
   p1: PChar;
 begin
@@ -92,7 +92,7 @@ begin
   end;
 end;
 
-function IsParametrized(s: string): Boolean;
+function IsParametrized(s: RawUtf8): Boolean;
 var
   p: PChar;
 begin
@@ -100,10 +100,10 @@ begin
   Result := GetParameter(p) <> '';
 end;
 
-function FormatValue(const AValue: string; Entry: TLdapEntry): string;
+function FormatValue(const AValue: RawUtf8; Entry: TLdapEntry): RawUtf8;
 var
   p0, p1, p2: PChar;
-  name, val, s: string;
+  name, val, s: RawUtf8;
 begin
   Result := '';
   p0 := PChar(AValue);

@@ -28,13 +28,9 @@ unit ADPassDlg;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls, Buttons,
-  LDAPClasses;
+  LDAPClasses, mormot.core.base;
 
 type
   TADPassDlg = class(TForm)
@@ -64,16 +60,9 @@ implementation
 
 
 uses
-{$IFDEF USE_ADSIE}
-  ActiveDs_TLB, adsie,
-{$ELSE}
-  AdObjects,
-  {$IFnDEF FPC}
-  WinLdap
-  {$ENDIF}
-  LinLDAP,
-{$ENDIF}
-  Constant {$IFNDEF UNICODE}, Misc{$ENDIF};
+  ADObjects,
+  LinLDAP, mormot.net.ldap,
+  Constant;
 
 constructor TADPassDlg.Create(AOwner: TComponent; Entry: TLdapEntry);
 begin
@@ -108,7 +97,7 @@ begin
 end;
 {$ELSE}
 var
-  uacValue: string;
+  uacValue: RawUtf8;
   uacFlags: Cardinal;
 begin
   if (ModalResult = mrOk) then
@@ -120,15 +109,11 @@ begin
 
     if cbxPwdNeverExpires.Checked then
     begin
-      uacValue := fEntry.Session.Lookup(fEntry.dn, 'objectclass=user', 'userAccountControl', LDAP_SCOPE_BASE);
+      uacValue := fEntry.Session.Lookup(fEntry.dn, 'objectclass=user', 'userAccountControl', lssBaseObject);
       uacFlags := UF_DONT_EXPIRE_PASSWORD;
       if uacValue <> '' then
         uacFlags := uacFlags or StrToInt(uacValue);
-      {$ifdef mswindows}
-      fEntry.AttributesByName['userAccountControl'].AsString := UIntToStr(uacFlags);
-  		{$else}
       fEntry.AttributesByName['userAccountControl'].AsString := IntToStr(uacFlags);
- 			{$endif}
     end;
 
     if cbxPwdMustChange.Checked then with fEntry.AttributesByName['pwdLastSet'] do
@@ -142,8 +127,7 @@ begin
       fEntry.Write;
     except
       on E: ERRLdap do
-        if (E.ErrorCode = LDAP_UNWILLING_TO_PERFORM) {$ifdef mswindows} and
-           (E.ExtErrorCode = ERROR_GEN_FAILURE) {$endif} then with fEntry do
+        if (E.ErrorCode = LDAP_UNWILLING_TO_PERFORM) then with fEntry do
         begin
           if not (Session.SSL or Session.TLS or (Session.AuthMethod = AUTH_GSS_SASL)) then
             raise Exception.Create(stPwdNoEncryption)

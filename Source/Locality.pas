@@ -28,13 +28,8 @@ unit Locality;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, LDAPClasses, Constant;
+  LCLIntf, LCLType, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, LDAPClasses, Constant, mormot.core.base;
 
 type
   TLocalityDlg = class(TForm)
@@ -55,7 +50,7 @@ type
     Entry: TLDAPEntry;
     procedure Save;
   public
-    constructor Create(AOwner: TComponent; dn: string; Session: TLDAPSession; Mode: TEditMode); reintroduce;
+    constructor Create(AOwner: TComponent; dn: RawUtf8; Session: TLDAPSession; Mode: TEditMode); reintroduce;
   end;
 
 var
@@ -63,7 +58,7 @@ var
 
 implementation
 
-uses Misc, {$ifdef mswindows}WinLDAP{$else} LinLDAP{$endif};
+uses Misc;
 
 {$R *.dfm}
 
@@ -88,7 +83,7 @@ begin
 end;
 
 
-constructor TLocalityDlg.Create(AOwner: TComponent; dn: string; Session: TLDAPSession; Mode: TEditMode);
+constructor TLocalityDlg.Create(AOwner: TComponent; dn: RawUtf8; Session: TLDAPSession; Mode: TEditMode);
 begin
   inherited Create(AOwner);
   Entry := TLDAPEntry.Create(Session, dn);

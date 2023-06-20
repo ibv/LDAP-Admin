@@ -25,7 +25,7 @@ interface
 
 uses
   SysUtils, Controls, Forms, LDAPClasses, Constant, Connection, AdObjects,
-  ComCtrls, StdCtrls, Classes {$ifdef mswindows},Vcl.AppEvnts, Vcl.ExtCtrls{$else}, ExtCtrls{$endif};
+  ComCtrls, StdCtrls, Classes, ExtCtrls;
 
 type
   TAdComputerDlg = class(TForm)
@@ -141,11 +141,7 @@ begin
     FFlags := FFlags or UF_TRUSTED_FOR_DELEGATION
   else
     FFlags := FFlags and not UF_TRUSTED_FOR_DELEGATION;
-  {$ifdef mswindows}
-  Entry.AttributesByName['userAccountControl'].AsString := UIntToStr(FFlags);
-  {$else}
   Entry.AttributesByName['userAccountControl'].AsString := IntToStr(FFlags);
-  {$endif}
 end;
 
 procedure TAdComputerDlg.cnChange(Sender: TObject);
@@ -199,11 +195,7 @@ begin
       FFlags := FFlags or UF_SERVER_TRUST_ACCOUNT
     else
       FFlags := FFlags or UF_WORKSTATION_TRUST_ACCOUNT;
-    {$ifdef mswindows}
-    Entry.AttributesByName['userAccountControl'].AsString := UIntToStr(FFlags);
-    {$else}
     Entry.AttributesByName['userAccountControl'].AsString := IntToStr(FFlags);
-    {$endif}
   end;
 
   if cbxNTAccount.Checked then

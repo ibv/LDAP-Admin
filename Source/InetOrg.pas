@@ -33,7 +33,7 @@ uses
 {$ELSE}
   graphics,  ExtCtrls,
 {$ENDIF}
-  PropertyObject, LDAPClasses;
+  PropertyObject, LDAPClasses, mormot.core.base;
 
 const
      eCity                          = 00;
@@ -56,7 +56,7 @@ const
      eCn                            = 17;
      eSn                            = 18;
 
-   PropAttrNames: array [eCity..eSn] of string = (
+   PropAttrNames: array [eCity..eSn] of RawUtf8 = (
      'l',
      'facsimileTelephoneNumber',
      'homePostalAddress',
@@ -86,34 +86,32 @@ type
     procedure SetImage(const Image: TImage);
   public
     constructor Create(const Entry: TLdapEntry); override;
-    procedure AddMailAddress(Address: string);
-    procedure RemoveMailAddress(Address: string);
-    property Pager: string index ePager read GetString write SetString;
-    property PostalAddress: string index ePostalAddress read GetString write SetString;
-    property State: string index eState read GetString write SetString;
-    property IPPhone: string index eIPPhone read GetString write SetString;
-    property TelephoneNumber: string index eTelephoneNumber read GetString write SetString;
-    property PostalCode: string index ePostalCode read GetString write SetString;
-    property PhysicalDeliveryOfficeName: string index ePhysicalDeliveryOfficeName read GetString write SetString;
-    property Title: string index eTitle read GetString write SetString;
-    property Organization: string index eOrganization read GetString write SetString;
-    property FacsimileTelephoneNumber: string index eFacsimileTelephoneNumber read GetString write SetString;
-    property Citty: string index eCity read GetString write SetString;
-    property HomePostalAddress: string index eHomePostalAddress read GetString write SetString;
-    property HomePhone: string index eHomePhone read GetString write SetString;
-    property Mobile: string index eMobile read GetString write SetString;
+    procedure AddMailAddress(Address: RawUtf8);
+    procedure RemoveMailAddress(Address: RawUtf8);
+    property Pager: RawUtf8 index ePager read GetString write SetString;
+    property PostalAddress: RawUtf8 index ePostalAddress read GetString write SetString;
+    property State: RawUtf8 index eState read GetString write SetString;
+    property IPPhone: RawUtf8 index eIPPhone read GetString write SetString;
+    property TelephoneNumber: RawUtf8 index eTelephoneNumber read GetString write SetString;
+    property PostalCode: RawUtf8 index ePostalCode read GetString write SetString;
+    property PhysicalDeliveryOfficeName: RawUtf8 index ePhysicalDeliveryOfficeName read GetString write SetString;
+    property Title: RawUtf8 index eTitle read GetString write SetString;
+    property Organization: RawUtf8 index eOrganization read GetString write SetString;
+    property FacsimileTelephoneNumber: RawUtf8 index eFacsimileTelephoneNumber read GetString write SetString;
+    property Citty: RawUtf8 index eCity read GetString write SetString;
+    property HomePostalAddress: RawUtf8 index eHomePostalAddress read GetString write SetString;
+    property HomePhone: RawUtf8 index eHomePhone read GetString write SetString;
+    property Mobile: RawUtf8 index eMobile read GetString write SetString;
     property Photo: TImage read GetImage write SetImage;
-    property Mail: string index eMail read GetCommaText write SetCommaText;
-    property DisplayName: string index eDisplayName read GetString write SetString;
-    property Cn: string index eCn read GetString write SetString;
-    property Sn: string index eSn read GetString write SetString;
+    property Mail: RawUtf8 index eMail read GetCommaText write SetCommaText;
+    property DisplayName: RawUtf8 index eDisplayName read GetString write SetString;
+    property Cn: RawUtf8 index eCn read GetString write SetString;
+    property Sn: RawUtf8 index eSn read GetString write SetString;
   end;
 
 implementation
 
-uses Misc,
-     Classes
-     ;
+uses Classes;
 
 { TInetOrgPerson }
 
@@ -122,12 +120,12 @@ begin
   inherited Create(Entry, 'inetOrgPerson', @PropAttrNames);
 end;
 
-procedure TInetOrgPerson.AddMailAddress(Address: string);
+procedure TInetOrgPerson.AddMailAddress(Address: RawUtf8);
 begin
   AddToMultiString(eMail, Address);
 end;
 
-procedure TInetOrgPerson.RemoveMailAddress(Address: string);
+procedure TInetOrgPerson.RemoveMailAddress(Address: RawUtf8);
 begin
   RemoveFromMultiString(eMail, Address);
 end;

@@ -25,10 +25,11 @@ unit Cp;
 
 interface
 
-{$IFnDEF FPC}
+{$ifdef WINDOWS}
 uses
   Windows;
-{$ENDIF}
+{$endif}
+
 
 function GetCodepageName: string;
 

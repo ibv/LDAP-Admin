@@ -28,13 +28,10 @@ unit Input;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,Validator,
-{$ELSE}
-  LCLIntf, LCLType, LMessages, strutils,
-{$ENDIF}
+  Validator,
+  LCLIntf, LCLType,
   Messages,SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls;
+  Buttons, ExtCtrls, mormot.core.base;
 
 type
   TInputDlg = class(TForm)
@@ -50,22 +47,20 @@ type
     procedure WMActivateApp(var AMessage: TMessage); message WM_ACTIVATE;
     {$endif}
   private
-    {$ifdef mswindows}
     FValidator: TValidateInput;
-    {$endif}
   public
     { Public declarations }
   end;
 
-function InputDlg(ACaption, APrompt: string; var AValue: string; PasswordChar: Char=#0; AcceptEmpty:Boolean=False; InvalidChars: string = ''): Boolean;
+function InputDlg(ACaption, APrompt: RawUtf8; var AValue: RawUtf8; PasswordChar: Char=#0; AcceptEmpty:Boolean=False; InvalidChars: RawUtf8 = ''): Boolean;
 
 implementation
 
 {$R *.dfm}
-uses Misc, Constant {$ifdef mswindows},MMSystem{$endif};
+uses mormot.core.unicode;
 
 
-function InputDlg(ACaption, APrompt: string; var AValue: string; PasswordChar: Char=#0; AcceptEmpty:Boolean=False; InvalidChars: string = ''): Boolean;
+function InputDlg(ACaption, APrompt: RawUtf8; var AValue: RawUtf8; PasswordChar: Char=#0; AcceptEmpty:Boolean=False; InvalidChars: RawUtf8 = ''): Boolean;
 begin
   Result := false;
   with TInputDlg.Create(Application) do
@@ -74,17 +69,11 @@ begin
       Edit.OnChange := nil
     else
       OKBtn.Enabled := false;
-    {$ifdef mswindows}
     FValidator.Attach(Edit);
     FValidator.InvalidChars := InvalidChars;
     FValidator.Caption := APrompt;
-    {$endif}
     Caption := ACaption;
-    {$ifdef mswindows}
-    if not APrompt.EndsWith(':') then
-    {$else}
-    if AnsiEndsStr(':', APrompt) then
-    {$endif}
+    if not EndWithExact(APrompt, ':') then
       APrompt := APrompt + ':';
     Prompt.Caption := APrompt;
     Edit.PasswordChar := PasswordChar;
@@ -100,16 +89,12 @@ end;
 
 procedure TInputDlg.WMActivateApp(var AMessage: TMessage);
 begin
-  {$ifdef mswindows}
   FValidator.HideHint;
-  {$endif}
   inherited;
 end;
 procedure TInputDlg.WMWindowPosChanged(var AMessage: TMessage);
 begin
-  {$ifdef mswindows}
   FValidator.HideHint;
-  {$endif}
   inherited;
 end;
 

@@ -27,7 +27,7 @@ unit ObjectInfo;
 
 interface
 
-uses LDAPClasses, Templates;
+uses LDAPClasses, Templates, mormot.core.base;
 
 const
   idUninitialized = -2;
@@ -43,14 +43,14 @@ type
     FTemplate:  TTemplate;
     function    GetObjectID: Integer;
     function    GetImageIndex: Integer;
-    function    GetDN: string;
+    function    GetDN: RawUtf8;
     function    GetIsContainer: Boolean;
     function    GetActionId: Integer;
     function    GetSupported: Boolean;
   public
     constructor Create(Entry: TLdapEntry; const OwnsEntry: Boolean = true);
     destructor  Destroy; override;
-    property    dn: string read GetDN;
+    property    dn: RawUtf8 read GetDN;
     property    Entry: TLdapEntry read FEntry;
     property    ObjectID: Integer read GetObjectId;
     property    ActionId: Integer  read GetActionId;
@@ -148,7 +148,7 @@ begin
   Result := FImageIndex;
 end;
 
-function TObjectInfo.GetDN: string;
+function TObjectInfo.GetDN: RawUtf8;
 begin
   Result := FEntry.DN;
 end;

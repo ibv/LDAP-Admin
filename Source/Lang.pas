@@ -31,7 +31,7 @@ uses
     {$ifdef FPC}
     DelphiReader,
     {$endif}
-    Forms, Xml, XmlLoader, Classes;
+    Forms, Xml, XmlLoader, Classes, mormot.core.base;
 
 const
   { The MAX_STRING_ID is compiler dependent. It can be determined with DRC
@@ -44,24 +44,20 @@ const
   LANG_EXT      = 'llf';
 
 type
-  {$ifdef mswindows}
-  TMyReader = class(TReader);
-  {$else}
   TMyReader = class(TDelphiReader);
-  {$endif}
 
 
 type
   PResStringRec = ^TResStringRec;
   {
   TResStringRec = record
-    DefStr: string;
-    NewStr: string;
+    DefStr: RawUtf8;
+    NewStr: RawUtf8;
   end;
   }
   TResStringRec = packed record
     Module: ^LongInt;       // resource module
-    Identifier: Integer;    // string table resource identifier
+    Identifier: Integer;    // RawUtf8 table resource identifier
   end;
 
   PPatchBlock = ^TPatchBlock;
@@ -91,32 +87,32 @@ type
     fXmlForms:    TXmlNode;
     fXmlStrings:  TXmlNode;
     fStringTable: array[1..MAX_STRING_ID] of Integer;
-    fName:        string;
+    fName:        RawUtf8;
     fRedirectStr: TRedirectCode;
     fRedirectForm:TRedirectCode;
-    function      GetString(Index: Integer): string;
+    function      GetString(Index: Integer): RawUtf8;
   public
     procedure     Enable;
     procedure     Disable;
     procedure     TranslateForm(Form: TCustomForm);
     procedure     RestoreForm(Form: TCustomForm);
-    procedure     LoadFromFile(const FileName: string); // test
+    procedure     LoadFromFile(const FileName: RawUtf8); // test
     constructor   Create;
     destructor    Destroy; override;
-    property      Name: string read fName;
+    property      Name: RawUtf8 read fName;
   end;
 
   TLangLoader =   class(TXmlLoader)
   private
     fCurrentLanguage: Integer;
     fTranslator:  TTranslator;
-    function      GetLanguageName(Index: Integer): string;
+    function      GetLanguageName(Index: Integer): RawUtf8;
     procedure     SetCurrentLanguage(Value: Integer);
   public
     constructor   Create; override;
     procedure     Clear; override;
-    function      Parse(const FileName: string): TObject; override;
-    property      Languages[Index: Integer]: string read GetLanguageName;
+    function      Parse(const FileName: RawUtf8): TObject; override;
+    property      Languages[Index: Integer]: RawUtf8 read GetLanguageName;
     property      CurrentLanguage: Integer read fCurrentLanguage write SetCurrentLanguage;
     property      Translator: TTranslator read fTranslator;
   end;
@@ -129,25 +125,12 @@ implementation
 {$I LdapAdmin.inc}
 
 uses
-{$IFnDEF FPC}
- {$IFDEF VER130}ComConst,{$ENDIF}{$IFDEF D6UP} RTLConsts, ComConst,
-     WinHelpViewer, {$ENDIF}
-  Consts, OleConst, ComStrs, jconsts, Windows,
-{$ELSE}
   LCLIntf, LCLType, RtlConsts,
-{$ENDIF}
-  Constant, {Consts, ComStrs, SysConst, ComConst,}
   TypInfo, Config, SysUtils,
   Dialogs, Graphics,
-  ComCtrls, ExtCtrls, StdCtrls, Math, Misc{$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+  ComCtrls, ExtCtrls, StdCtrls, Math, Misc;
 
-
-
-
-
-
-
-function HookLoadResString(ResStringRec: PResStringRec):string;
+function HookLoadResString(ResStringRec: PResStringRec):RawUtf8;
 var
   Buffer: array [0..2047] of Char;
 begin
@@ -222,7 +205,7 @@ end;
 
 { TTranslator }
 
-function TTranslator.GetString(Index: Integer): string;
+function TTranslator.GetString(Index: Integer): RawUtf8;
 var
   Node: TXmlNode;
 begin
@@ -330,11 +313,7 @@ begin
         begin
           nj := Nodes[j];
           PropInfo := GetPropInfo(ct, nj.Name);
-          {$ifdef mswindows}
-          if Assigned(PropInfo) and (PropInfo^.PropType^^.Kind = tkClass) then
-          {$else}
           if Assigned(PropInfo) and (PropInfo^.PropType^.Kind = tkClass) then
-          {$endif}
           begin
             obj := TObject(Integer(GetPropValue(ct, nj.Name)));
             if obj is TStrings then
@@ -359,18 +338,14 @@ procedure TTranslator.RestoreForm(Form: TCustomForm);
 var
   rs: TResourceStream;
   Node: TXmlNode;
-  {$ifdef mswindows}
-  Reader: TReader;
-  {$else}
   Reader: TDelphiReader;
-  {$endif}
   Flags: TFilerFlags;
   Pos: Integer;
-  ComponentName: string;
+  ComponentName: RawUtf8;
 
   procedure RestoreProperty(ct: TPersistent; Node: TXmlNode); forward;
 
-  procedure RestoreValue(ct: TPersistent; Node: TXmlNode; const PropName: string);
+  procedure RestoreValue(ct: TPersistent; Node: TXmlNode; const PropName: RawUtf8);
   var
     i: Integer;
   begin
@@ -422,7 +397,7 @@ var
 
   procedure RestoreProperty(ct: TPersistent; Node: TXmlNode);
   var
-    PropertyName: string;
+    PropertyName: RawUtf8;
     i: Integer;
   begin
     PropertyName := Reader.ReadStr;
@@ -497,7 +472,7 @@ begin
 end;
 
 
-procedure TTranslator.LoadFromFile(const FileName: string);
+procedure TTranslator.LoadFromFile(const FileName: RawUtf8);
 var
   i: Integer;
 begin
@@ -2156,7 +2131,7 @@ begin
   end;
 end;
 
-function TLangLoader.GetLanguageName(Index: Integer): string;
+function TLangLoader.GetLanguageName(Index: Integer): RawUtf8;
 begin
   Result := TTranslator(fFiles.Objects[Index]).Name;
 end;
@@ -2168,7 +2143,7 @@ begin
   inherited;
 end;
 
-function TLangLoader.Parse(const FileName: string): TObject;
+function TLangLoader.Parse(const FileName: RawUtf8): TObject;
 begin
   Result := TTranslator.Create;
   TTranslator(Result).LoadFromFile(FileName);
@@ -2187,11 +2162,7 @@ initialization
   try
     FileExtension := LANG_EXT;
     Paths := GlobalConfig.ReadString('LanguageDir');
-    {$ifdef mswindows}
-    AddPath(ExtractFileDir(application.ExeName) + '\*.' + LANG_EXT);
-    {$else}
-    AddPath(ExtractFileDir(application.ExeName) + '/*.' + LANG_EXT);
-    {$endif}
+    AddPath(ExtractFileDir(application.ExeName) + PathDelim + '*.' + LANG_EXT);
   except
     on E: Exception do
       MessageDlg(E.Message, mtError, [mbOK], 0);

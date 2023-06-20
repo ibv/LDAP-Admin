@@ -34,12 +34,11 @@ interface
 
 uses 
   SysUtils,
-  {$IFDEF MSWINDOWS}
+  {$ifdef WINDOWS}
    Windows,
-  {$ELSE}
+  {$endif}
    Types, Printers,
-  {$ENDIF}
-  LclIntf, LMessages, LclType, LclProc, InterfaceBase,
+  LclIntf, LMessages, LclType, LclProc,
   GraphType, Graphics, Controls;
    {Important: Be sure to list LclType after SysUtils and Classes 
      in order to use LclType's THandle declaration (32 or 64 bits)
@@ -135,7 +134,7 @@ type
   tagXFORM = XFORM;
   TXForm = tagXFORM;
 
-  TGCPResultsW = GCP_RESULTS;
+  //TGCPResultsW = GCP_RESULTS;
 
   OSVERSIONINFO = _OSVERSIONINFO;
 
@@ -1159,7 +1158,7 @@ begin
 end;
 
 
-initialization
-  ExpectsUTF8 := WidgetSet.LCLPlatform in [lpCarbon, lpQt, lpGTK2, lpWin32];
+//initialization
+//  ExpectsUTF8 := WidgetSet.LCLPlatform in [lpCarbon, lpQt, lpGTK2, lpWin32];
 
 end.

@@ -28,18 +28,14 @@ unit Pickup;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  LCLIntf, LCLType,
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, ComCtrls, LDAPClasses, ImgList, Sorter, Math,
-  ListViewDlg;
+  ListViewDlg, mormot.core.base;
 
 type
   TPopulateColumn = record
-    Attribute: string;
+    Attribute: RawUtf8;
     DataType:  TLdapAttributeSortType;
   end;
 
@@ -63,7 +59,7 @@ type
     FImageIndex:      integer;
     procedure         FillListView;
     procedure         DoSort(SortColumn:  TListColumn; SortAsc: boolean);
-    function          GetText(Index: integer; Entry: TLdapEntry): string;
+    function          GetText(Index: integer; Entry: TLdapEntry): RawUtf8;
     function          GetSelCount: integer;
     function          GetSelected(Index: integer): TLdapEntry;
   protected
@@ -71,7 +67,8 @@ type
   public
     constructor       Create(AOwner: TComponent); override;
     destructor        Destroy; override;
-    procedure         Populate(const Session: TLDAPSession; const Filter: string; const Attributes: array of string; const Base: string = '');
+    procedure Populate(const Session: TLDAPSession; const Filter: RawUtf8;
+      const Attributes: TRawByteStringDynArray; const Base: RawUtf8='');
 
     property          Entries:  TLdapEntryList read FEntries;
     property          ImageIndex: integer read FImageIndex write FImageIndex;
@@ -84,7 +81,7 @@ implementation
 
 {$R *.dfm}
 
-uses {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif} Constant, Main, Connection, SizeGrip;
+uses Main, Connection, mormot.net.ldap;
 
 constructor TPickupDlg.Create(AOwner: TComponent);
 begin
@@ -112,13 +109,12 @@ begin
   FSorter.OnSort:=DoSort;
 end;
 
-procedure TPickupDlg.Populate(const Session: TLDAPSession; const Filter: string; const Attributes: array of string; const Base: string = '');
+procedure TPickupDlg.Populate(const Session: TLDAPSession; const Filter: RawUtf8; const Attributes: TRawByteStringDynArray; const Base: RawUtf8 = '');
 var
   i: integer;
   popIdx: integer;
-  attrs: PCharArray;
-  len: Integer;
-  aBase: string;
+  attrs: TRawByteStringDynArray;
+  aBase: RawUtf8;
 begin
   popIdx:=length(FPopulates);
   setlength(FPopulates, popIdx+1);
@@ -141,29 +137,17 @@ begin
     EndUpdate;
   end;
 
-  attrs := nil;
-  len := Length(Attributes);
+  attrs := Attributes;
   if ImageIndex = -1 then
-    inc(len);
-  if Len > 0 then
   begin
-    SetLength(attrs, len + 1);
-    attrs[len] := nil;
-    if ImageIndex = -1 then
-    begin
-      dec(len);
-      attrs[len] := 'objectclass';
-    end;
-    repeat
-      dec(len);
-      attrs[len] := PChar(Attributes[len]);
-    until len = 0;
+    SetLength(Attrs, Length(attrs) + 1);
+    attrs[Length(attrs) - 1] := 'objectclass';
   end;
   if Base = '' then
     aBase := Session.Base
   else
     aBase := Base;
-  Session.Search(Filter, aBase, LDAP_SCOPE_SUBTREE, attrs, false, FEntries);
+  Session.Search(Filter, aBase, lssWholeSubtree, attrs, false, FEntries);
 end;
 
 procedure TPickupDlg.FilterEditChange(Sender: TObject);
@@ -171,10 +155,10 @@ begin
   FillListView;
 end;
 
-function  TPickupDlg.GetText(Index: integer; Entry: TLdapEntry): string;
+function  TPickupDlg.GetText(Index: integer; Entry: TLdapEntry): RawUtf8;
 var
   i: integer;
-  s: string;
+  s: RawUtf8;
 begin
   result:='';
   for i:=0 to length(FPopulates)-1 do begin
@@ -219,7 +203,7 @@ var
   function Match(Entry: TLdapEntry): boolean;
   var
     i : integer;
-    s: string;
+    s: RawUtf8;
   begin
     if sl.Count=0 then begin
       result:=true;
@@ -263,7 +247,7 @@ end;
 
 procedure TPickupDlg.DoSort(SortColumn: TListColumn; SortAsc: boolean);
 var
-  Attrs: array of string;
+  Attrs: array of RawUtf8;
   i,n : integer;
 
 begin

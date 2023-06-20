@@ -28,26 +28,26 @@ unit XmlLoader;
 
 interface
 
-uses Classes, FileUtil;
+uses Classes, FileUtil, mormot.core.base;
 
 type
 
   TXmlLoader = class
   private
-    fFileExtension: string;
+    fFileExtension: RawUtf8;
     function        GetCount: Integer;
-    procedure       SetCommaPaths(Value: string);
+    procedure       SetCommaPaths(Value: RawUtf8);
   protected
     fFiles:         TStringList;
   public
     constructor     Create; virtual;
     destructor      Destroy; override;
     procedure       Clear; virtual;
-    function        Parse(const FileName: string): TObject; virtual; abstract;
-    procedure       AddPath(Path: string);
+    function        Parse(const FileName: RawUtf8): TObject; virtual; abstract;
+    procedure       AddPath(Path: RawUtf8);
     property        Count: Integer read GetCount;
-    property        Paths: string write SetCommaPaths;
-    property        FileExtension: string read fFileExtension write fFileExtension;
+    property        Paths: RawUtf8 write SetCommaPaths;
+    property        FileExtension: RawUtf8 read fFileExtension write fFileExtension;
   end;
 
 implementation
@@ -69,9 +69,6 @@ end;
 
 destructor TXmlLoader.Destroy;
 begin
-  {$ifdef mswindows}
-  Clear;
-  {$endif}
   fFiles.Free;
   inherited;
 end;
@@ -87,12 +84,12 @@ begin
   end;
 end;
 
-procedure TXmlLoader.AddPath(Path: string);
+procedure TXmlLoader.AddPath(Path: RawUtf8);
 var
   sr: TSearchRec;
-  Dir: string;
+  Dir: RawUtf8;
 
-  procedure AddFile(name: string);
+  procedure AddFile(name: RawUtf8);
   begin
     try
       fFiles.AddObject(name, Parse(name));
@@ -113,11 +110,7 @@ begin
   {$endif}
   if FindFirst(Path,faArchive,sr) { *Converted from FindFirst* } = 0 then
   begin
-    {$ifdef mswindows}
-    Dir := ExtractFileDir(Path) + '\';
-    {$else}
-    Dir := ExtractFileDir(Path) + '/';
-    {$endif}
+    Dir := ExtractFileDir(Path) + PathDelim;
     with fFiles do
     try
       AddFile(Dir + sr.Name);
@@ -134,7 +127,7 @@ begin
   Result := fFiles.Count;
 end;
 
-procedure TXmlLoader.SetCommaPaths(Value: string);
+procedure TXmlLoader.SetCommaPaths(Value: RawUtf8);
 var
   List: TStringList;
   i: Integer;

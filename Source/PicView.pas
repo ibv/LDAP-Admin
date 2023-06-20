@@ -28,13 +28,8 @@ unit PicView;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  ExtDlgs, ExtCtrls, ComCtrls, ToolWin, ImgList, LDAPClasses, ActnList,
+  LCLIntf, LCLType, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ExtDlgs, ExtCtrls, ComCtrls, ImgList, LDAPClasses, ActnList,
   FileUtil;
 
 type

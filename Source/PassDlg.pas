@@ -28,13 +28,9 @@ unit PassDlg;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   SysUtils, Classes, Graphics, Forms, Controls, StdCtrls, Buttons,
-     LDAPClasses, Password, Samba, ExtCtrls;
+     LDAPClasses, Password, Samba, ExtCtrls, mormot.core.base;
 
 const
   sUserPassword = 'userPassword';
@@ -56,10 +52,10 @@ type
   private
     fEntry: TLdapEntry;
     fSamba: TSamba3Account;
-    fPasswordAttribute: string;
+    fPasswordAttribute: RawUtf8;
     fDefaultHashType: Integer;
   public
-    constructor Create(AOwner: TComponent; Entry: TLdapEntry; const AttributeName: string = sUserPassword); reintroduce;
+    constructor Create(AOwner: TComponent; Entry: TLdapEntry; const AttributeName: RawUtf8 = sUserPassword); reintroduce;
   end;
 
 var
@@ -71,7 +67,7 @@ implementation
 
 uses Config, Constant, Connection;
 
-constructor TPasswordDlg.Create(AOwner: TComponent; Entry: TLdapEntry; const AttributeName: string = sUserPassword);
+constructor TPasswordDlg.Create(AOwner: TComponent; Entry: TLdapEntry; const AttributeName: RawUtf8 = sUserPassword);
 begin
   inherited Create(AOwner);
   if Entry.Attributes.Count <= 1 then

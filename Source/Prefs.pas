@@ -28,11 +28,7 @@ unit Prefs;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls, ExtCtrls, Constant, Samba, LDAPClasses, Connection;
 
@@ -117,8 +113,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses Pickup, {$ifdef mswindows}WinLDAP,{$else} LinLDAP,{$endif}PrefWiz, Main, Config
-     {$IFDEF VER_XEH}, System.UITypes{$ENDIF};
+uses Pickup, PrefWiz, Main, Config, mormot.core.base, mormot.net.ldap;
 
 {$R *.dfm}
 
@@ -177,7 +172,7 @@ begin
     WriteString (rinetDisplayName,    edDisplayName.Text);
     WriteString (rposixHomeDir,       edHomeDir.Text);
     WriteString (rposixLoginShell,    edLoginShell.Text);
-    WriteInteger(rposixGroup,         StrToIntDef(Connection.Lookup(edGroup.Text, sANYCLASS, 'gidNumber', LDAP_SCOPE_BASE), NO_GROUP));
+    WriteInteger(rposixGroup,         StrToIntDef(Connection.Lookup(edGroup.Text, sANYCLASS, 'gidNumber', lssBaseObject), NO_GROUP));
     WriteString (rsambaNetbiosName,   edNetbios.Text);
     WriteString (rsambaDomainName,    cbDomain.Text);
     WriteString (rsambaHomeShare,     edHomeShare.Text);
@@ -254,7 +249,7 @@ end;
 
 procedure TPrefDlg.IDGroupClick(Sender: TObject);
 var
-  Msg: string;
+  Msg: RawUtf8;
 begin
   Case gbId.ItemIndex of
     0: Msg := stNoPosixID;

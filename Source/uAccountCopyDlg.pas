@@ -30,13 +30,9 @@ unit uAccountCopyDlg;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Buttons, Config, ImgList;
+  Dialogs, StdCtrls, Buttons, Config, ImgList, mormot.core.base;
 
 type
   TAccountCopyDlg = class(TForm)
@@ -52,17 +48,17 @@ type
   private
     function    GetTarget: TAccountFolder;
     procedure   SetTarget(const Value: TAccountFolder);
-    function    GetAccountName: string;
-    procedure   SetAccountName(const Value: string);
+    function    GetAccountName: RawUtf8;
+    procedure   SetAccountName(const Value: RawUtf8);
   public
     constructor Create(AOwner: TComponent); override;
     property    TargetFolder: TAccountFolder read GetTarget write SetTarget;
-    property    AccountName: string read GetAccountName write SetAccountName;
+    property    AccountName: RawUtf8 read GetAccountName write SetAccountName;
   end;
 
 implementation
 
-uses Math, Constant;
+uses Constant;
 
 {$R *.dfm}
 
@@ -77,27 +73,27 @@ var
     i: Integer;
   begin
     StorageCbx.Items.AddObject(AFolder.Name, AFolder);
-    for i := 0 to AFolder.Items.Folders.Count - 1 do
+    for i := 0 to Length(AFolder.Items.Folders) - 1 do
       AddFolder(AFolder.Items.Folders[i]);
   end;
 
 begin
   inherited;
   with GlobalConfig do
-  for i := 0 to Storages.Count - 1 do with Storages[i] do
+  for i := 0 to Length(Storages) - 1 do with Storages[i] do
   begin
     StorageCbx.Items.AddObject(Name, Storages[i]);
-    for j := 0 to RootFolder.Items.Folders.Count - 1 do
+    for j := 0 to Length(RootFolder.Items.Folders) - 1 do
       AddFolder(RootFolder.Items.Folders[j]);
   end;
 end;
 
-function TAccountCopyDlg.GetAccountName: string;
+function TAccountCopyDlg.GetAccountName: RawUtf8;
 begin
   result:=NameEd.Text;
 end;
 
-procedure TAccountCopyDlg.SetAccountName(const Value: string);
+procedure TAccountCopyDlg.SetAccountName(const Value: RawUtf8);
 begin
   NameEd.Text:=Value;
 end;

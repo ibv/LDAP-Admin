@@ -28,14 +28,10 @@ unit TemplateCtrl;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType,
-{$ENDIF}
   Script,
   Classes, Forms, Controls, ComCtrls, StdCtrls, ExtCtrls, Templates, LDAPClasses,
-     Graphics, Contnrs, Constant ;
+     Graphics, Contnrs, Constant, mormot.core.base ;
 
 type
   TEventHandler = class
@@ -147,14 +143,14 @@ type
     fEntry: TLdapEntry;
     fEventHandler: TEventHandler;
     fTemplatePanels: TList;
-    fRdn: string;
+    fRdn: RawUtf8;
     procedure OKBtnClick(Sender: TObject);
     procedure CancelBtnClick(Sender: TObject);
   protected
     procedure KeyPress(var Key: Char); override;
   public
     PageControl: TPageControl;
-    constructor Create(AOwner: TComponent; adn: string; ASession: TLDAPSession; Mode: TEditMode); reintroduce;
+    constructor Create(AOwner: TComponent; adn: RawUtf8; ASession: TLDAPSession; Mode: TEditMode); reintroduce;
     destructor  Destroy; override;
     procedure   AddTemplate(ATemplate: TTemplate);
     procedure   LoadMatching;
@@ -166,8 +162,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
-uses SysUtils, Misc, Config, Grids, ParseErr, Dialogs
-     {$IFDEF VER_XEH}, System.Types{$ENDIF};
+uses SysUtils, Misc, Config, Grids, Dialogs;
 
 { TEventHandler }
 
@@ -226,7 +221,7 @@ begin
       Remove(j);
 end;
 
-procedure TEventHandler.HandleEvent(Attribute: TLdapAttribute; Event: TEMPLATES.TEventType);
+procedure TEventHandler.HandleEvent(Attribute: LDapClasses.TLdapAttribute; Event: TEMPLATES.TEventType);
 ///procedure TEventHandler.HandleEvent(Attribute: TLdapAttribute; Event: TEventType);
 var
   idx, i: Integer;
@@ -812,7 +807,7 @@ procedure TTemplateForm.OKBtnClick(Sender: TObject);
 var
   i, j: Integer;
   S: TStringList;
-  ardn, aval: string;
+  ardn, aval: RawUtf8;
 begin
   try
     if esNew in fEntry.State then
@@ -873,7 +868,7 @@ begin
   end;
 end;
 
-constructor TTemplateForm.Create(AOwner: TComponent; adn: string; ASession: TLDAPSession; Mode: TEditMode);
+constructor TTemplateForm.Create(AOwner: TComponent; adn: RawUtf8; ASession: TLDAPSession; Mode: TEditMode);
 var
   Panel: TPanel;
   Btn : TButton;
