@@ -30,7 +30,7 @@ unit LinLDAP;
 interface
 
 uses
-  SysUtils, Classes, LazFileUtils, mormot.net.ldap ,
+  SysUtils, Classes, LazFileUtils, mormot.net.ldap , mormot.lib.openssl11,
   LCLIntf, LCLType, mormot.core.base;
 
 {$HPPEMIT '#ifndef LDAP_CLIENT_DEFINED'}
