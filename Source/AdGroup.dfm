@@ -12,11 +12,11 @@ object AdGroupDlg: TAdGroupDlg
   OnDestroy = FormDestroy
   ParentFont = True
   Position = poMainFormCenter
-  LCLVersion = '2.2.2.0'
+  LCLVersion = '2.2.6.0'
   object Label1: TLabel
     Left = 16
     Height = 15
-    Top = 11
+    Top = 7
     Width = 79
     Caption = 'Group &name:'
     ParentColor = False
@@ -24,23 +24,23 @@ object AdGroupDlg: TAdGroupDlg
   object Label2: TLabel
     Left = 16
     Height = 15
-    Top = 54
+    Top = 52
     Width = 72
     Caption = 'D&escription:'
     ParentColor = False
   end
   object cn: TEdit
     Left = 16
-    Height = 26
-    Top = 27
+    Height = 31
+    Top = 23
     Width = 377
     OnChange = cnChange
     TabOrder = 0
   end
   object description: TEdit
     Left = 16
-    Height = 26
-    Top = 70
+    Height = 31
+    Top = 67
     Width = 377
     OnChange = EditChange
     TabOrder = 1
@@ -76,7 +76,7 @@ object AdGroupDlg: TAdGroupDlg
     OnChange = PageControlChange
     object MemberSheet: TTabSheet
       Caption = '&Members'
-      ClientHeight = 307
+      ClientHeight = 305
       ClientWidth = 383
       object MemberList: TListView
         Left = 8
@@ -90,11 +90,12 @@ object AdGroupDlg: TAdGroupDlg
           end        
           item
             Caption = 'Path'
-            Width = 227
+            Width = 234
           end>
         HideSelection = False
         MultiSelect = True
         RowSelect = True
+        ScrollBars = ssAutoBoth
         TabOrder = 0
         ViewStyle = vsReport
         OnColumnClick = ListViewColumnClick
@@ -122,13 +123,13 @@ object AdGroupDlg: TAdGroupDlg
     end
     object OptionsSheet: TTabSheet
       Caption = '&Options'
-      ClientHeight = 307
+      ClientHeight = 305
       ClientWidth = 383
       ImageIndex = 2
       object Label5: TLabel
         Left = 8
         Height = 15
-        Top = 10
+        Top = 8
         Width = 58
         Caption = 'NT name:'
         ParentColor = False
@@ -136,7 +137,7 @@ object AdGroupDlg: TAdGroupDlg
       object Label3: TLabel
         Left = 8
         Height = 15
-        Top = 54
+        Top = 53
         Width = 39
         Caption = 'E-Mail:'
         ParentColor = False
@@ -151,16 +152,16 @@ object AdGroupDlg: TAdGroupDlg
       end
       object samAccountName: TEdit
         Left = 8
-        Height = 26
-        Top = 26
+        Height = 31
+        Top = 24
         Width = 366
         OnChange = EditChange
         TabOrder = 0
       end
       object mail: TEdit
         Left = 8
-        Height = 26
-        Top = 69
+        Height = 31
+        Top = 67
         Width = 366
         OnChange = EditChange
         TabOrder = 1
@@ -184,9 +185,9 @@ object AdGroupDlg: TAdGroupDlg
         TabOrder = 3
         object rbLocal: TRadioButton
           Left = 16
-          Height = 21
+          Height = 23
           Top = 12
-          Width = 101
+          Width = 103
           Caption = 'Domain &local'
           Checked = True
           TabOrder = 0
@@ -194,17 +195,17 @@ object AdGroupDlg: TAdGroupDlg
         end
         object rbGlobal: TRadioButton
           Left = 16
-          Height = 21
+          Height = 23
           Top = 35
-          Width = 61
+          Width = 63
           Caption = '&Global'
           TabOrder = 1
         end
         object rbUniversal: TRadioButton
           Left = 16
-          Height = 21
+          Height = 23
           Top = 58
-          Width = 79
+          Width = 81
           Caption = '&Universal'
           TabOrder = 2
         end
@@ -220,9 +221,9 @@ object AdGroupDlg: TAdGroupDlg
         TabOrder = 4
         object rbSecurity: TRadioButton
           Left = 16
-          Height = 21
+          Height = 23
           Top = 12
-          Width = 74
+          Width = 76
           Caption = '&Security'
           Checked = True
           OnClick = rbSecurityClick
@@ -231,9 +232,9 @@ object AdGroupDlg: TAdGroupDlg
         end
         object rbDistribution: TRadioButton
           Left = 16
-          Height = 21
+          Height = 23
           Top = 36
-          Width = 94
+          Width = 96
           Caption = '&Distribution'
           OnClick = rbSecurityClick
           TabOrder = 1
@@ -242,7 +243,7 @@ object AdGroupDlg: TAdGroupDlg
     end
     object MembershipSheet: TTabSheet
       Caption = 'Membership'
-      ClientHeight = 307
+      ClientHeight = 305
       ClientWidth = 383
       ImageIndex = 2
       object Label34: TLabel
@@ -268,6 +269,7 @@ object AdGroupDlg: TAdGroupDlg
             Width = 220
           end>
         HideSelection = False
+        ScrollBars = ssAutoBoth
         TabOrder = 0
         ViewStyle = vsReport
         OnColumnClick = ListViewColumnClick
