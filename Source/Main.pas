@@ -290,6 +290,9 @@ type
     procedure pbViewPictureClick(Sender: TObject);
     procedure ValueListViewCustomDrawItem(Sender: TCustomListView;
       Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure ValueListViewCustomDrawSubItem(Sender: TCustomListView;
+      Item: TListItem; SubItem: Integer; State: TCustomDrawState;
+      var DefaultDraw: Boolean);
     procedure ValueListViewInfoTip(Sender: TObject; Item: TListItem;var InfoTip: RawUtf8);
     procedure ActEditValueExecute(Sender: TObject);
     procedure ActAliasExecute(Sender: TObject);
@@ -731,8 +734,8 @@ begin
     Base               := Account.Base;
     User               := Account.User;
     Password           := Account.Password;
-    SSL                := Account.SSL;
     TLS                := Account.TLS;
+    SSL                := TLS;
     Port               := Account.Port;
     Version            := Account.LdapVersion;
     TimeLimit          := Account.TimeLimit;
@@ -2358,6 +2361,7 @@ begin
   DefaultDraw := False;
   Sender.Canvas.Font.Style := [];
   Sender.Canvas.Font.Color := clWindowText;
+  if odd(Item.Index) then Sender.Canvas.Brush.Color:=$00f0f0f0;
 
   AttributeData := TLdapAttributeData(Item.Data);
   with AttributeData do
@@ -2390,9 +2394,35 @@ begin
         sender.Canvas.Brush.Color := clHighlight;
         sender.Canvas.Font.Color := clHighlightText;
       end;
-      Sender.Canvas.FillRect(mRect);
+      ///Sender.Canvas.FillRect(mRect);
       Sender.Canvas.TextRect(mRect, mRect.Left + 2, mRect.Top, Content);
     end;
+  end;
+end;
+
+procedure TMainFrm.ValueListViewCustomDrawSubItem(Sender: TCustomListView;
+  Item: TListItem; SubItem: Integer; State: TCustomDrawState;
+  var DefaultDraw: Boolean);
+var
+    mRect: TRect;
+    Content: RawUtf8;
+    i: Integer;
+
+begin
+  DefaultDraw := false;
+  with Sender.Canvas do
+  begin
+    mRect := Item.DisplayRect(drlabel);
+    Content := Item.SubItems[SubItem-1];
+    for i := 0 to SubItem-1 do
+    begin
+      mRect.Left := mRect.Left + Sender.Column[i].Width;
+      mRect.Right := mRect.Right + Sender.Column[i].Width + TextWidth(Content);
+    end;
+    if SubItem <> 3 then
+      TextRect(mRect,mRect.Left + 3 , mRect.Top , Content)
+    else
+      TextRect(mRect,mRect.left + 120 - TextWidth(Content) , mRect.Top, Content);
   end;
 end;
 
