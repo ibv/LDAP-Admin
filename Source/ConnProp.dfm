@@ -12,7 +12,7 @@ object ConnPropDlg: TConnPropDlg
   Color = clBtnFace
   ParentFont = True
   Position = poOwnerFormCenter
-  LCLVersion = '2.2.2.0'
+  LCLVersion = '2.2.6.0'
   object Panel1: TPanel
     Left = 8
     Height = 34
@@ -33,7 +33,7 @@ object ConnPropDlg: TConnPropDlg
     end
     object NameEd: TEdit
       Left = 112
-      Height = 26
+      Height = 31
       Top = 2
       Width = 304
       Anchors = [akTop, akLeft, akRight]
@@ -61,7 +61,7 @@ object ConnPropDlg: TConnPropDlg
       TabOrder = 0
       object TabSheet1: TTabSheet
         Caption = 'General'
-        ClientHeight = 267
+        ClientHeight = 265
         ClientWidth = 408
         object AccountBox: TGroupBox
           Left = 8
@@ -91,14 +91,14 @@ object ConnPropDlg: TConnPropDlg
           end
           object UserEd: TEdit
             Left = 88
-            Height = 26
+            Height = 31
             Top = -2
             Width = 306
             TabOrder = 0
           end
           object PasswordEd: TEdit
             Left = 88
-            Height = 26
+            Height = 31
             Hint = 'This storage does not allow to keep the password'
             Top = 28
             Width = 306
@@ -110,9 +110,9 @@ object ConnPropDlg: TConnPropDlg
           end
           object cbAnonymous: TCheckBox
             Left = 8
-            Height = 21
+            Height = 23
             Top = 58
-            Width = 166
+            Width = 168
             Caption = 'Anonymous connection'
             OnClick = cbAnonymousClick
             TabOrder = 2
@@ -162,14 +162,14 @@ object ConnPropDlg: TConnPropDlg
           end
           object ServerEd: TEdit
             Left = 50
-            Height = 26
+            Height = 31
             Top = 2
             Width = 149
             TabOrder = 0
           end
           object PortEd: TEdit
             Left = 236
-            Height = 26
+            Height = 31
             Top = 1
             Width = 45
             OnExit = ValidateInput
@@ -201,7 +201,7 @@ object ConnPropDlg: TConnPropDlg
           end
           object BaseEd: TComboBox
             Left = 50
-            Height = 27
+            Height = 31
             Top = 34
             Width = 231
             ItemHeight = 0
@@ -210,9 +210,9 @@ object ConnPropDlg: TConnPropDlg
           end
           object rbSimpleAuth: TRadioButton
             Left = 50
-            Height = 21
+            Height = 23
             Top = 66
-            Width = 157
+            Width = 159
             Caption = 'Simple authentication'
             Checked = True
             OnClick = MethodChange
@@ -221,45 +221,36 @@ object ConnPropDlg: TConnPropDlg
           end
           object rbGssApi: TRadioButton
             Left = 50
-            Height = 21
+            Height = 23
             Top = 87
-            Width = 72
+            Width = 74
             Caption = 'GSS-API'
             OnClick = MethodChange
             TabOrder = 6
           end
-          object cbSSL: TCheckBox
-            Left = 224
-            Height = 21
-            Top = 66
-            Width = 47
-            Caption = 'SSL'
-            OnClick = cbSSLClick
-            TabOrder = 7
-          end
           object cbSASL: TCheckBox
             Left = 224
-            Height = 21
+            Height = 23
             Top = 87
-            Width = 55
+            Width = 57
             Caption = 'SASL'
             OnClick = cbSASLClick
-            TabOrder = 8
+            TabOrder = 7
           end
           object cbTLS: TCheckBox
-            Left = 286
-            Height = 21
+            Left = 224
+            Height = 23
             Top = 66
-            Width = 46
-            Caption = 'TLS'
+            Width = 75
+            Caption = 'TLS/SSL'
             OnClick = cbTLSClick
-            TabOrder = 9
+            TabOrder = 8
           end
         end
       end
       object TabSheet2: TTabSheet
         Caption = '&Options'
-        ClientHeight = 267
+        ClientHeight = 265
         ClientWidth = 408
         ImageIndex = 1
         object GroupBox1: TGroupBox
@@ -305,7 +296,7 @@ object ConnPropDlg: TConnPropDlg
           end
           object edTimeLimit: TEdit
             Left = 24
-            Height = 26
+            Height = 31
             Top = 15
             Width = 81
             OnExit = ValidateInput
@@ -313,7 +304,7 @@ object ConnPropDlg: TConnPropDlg
           end
           object edSizeLimit: TEdit
             Left = 24
-            Height = 26
+            Height = 31
             Top = 62
             Width = 81
             OnExit = ValidateInput
@@ -321,16 +312,16 @@ object ConnPropDlg: TConnPropDlg
           end
           object cbxPagedSearch: TCheckBox
             Left = 24
-            Height = 21
+            Height = 23
             Top = 93
-            Width = 105
+            Width = 107
             Caption = 'Paged search'
             OnClick = cbxPagedSearchClick
             TabOrder = 2
           end
           object edPageSize: TEdit
             Left = 24
-            Height = 26
+            Height = 31
             Top = 136
             Width = 81
             OnExit = ValidateInput
@@ -393,7 +384,7 @@ object ConnPropDlg: TConnPropDlg
           end
           object edReferralHops: TEdit
             Left = 16
-            Height = 26
+            Height = 31
             Top = 73
             Width = 81
             OnExit = ValidateInput
@@ -438,14 +429,14 @@ object ConnPropDlg: TConnPropDlg
       end
       object TabSheet3: TTabSheet
         Caption = '&Attributes'
-        ClientHeight = 267
+        ClientHeight = 265
         ClientWidth = 408
         ImageIndex = 2
         object cbxShowAttrs: TCheckBox
           Left = 16
-          Height = 21
+          Height = 23
           Top = 3
-          Width = 195
+          Width = 197
           Caption = '&Show operational attributes:'
           OnClick = cbxShowAttrsClick
           TabOrder = 0

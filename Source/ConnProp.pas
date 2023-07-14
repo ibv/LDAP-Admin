@@ -87,7 +87,6 @@ type
     btnRemove: TButton;
     rbSimpleAuth: TRadioButton;
     rbGssApi: TRadioButton;
-    cbSSL: TCheckBox;
     cbSASL: TCheckBox;
     cbTLS: TCheckBox;
     GroupBox3: TGroupBox;
@@ -104,7 +103,6 @@ type
     procedure     cbxShowAttrsClick(Sender: TObject);
     procedure     btnAddClick(Sender: TObject);
     procedure     btnRemoveClick(Sender: TObject);
-    procedure     cbSSLClick(Sender: TObject);
     procedure     cbSASLClick(Sender: TObject);
     procedure     cbTLSClick(Sender: TObject);
     procedure     FormClose(Sender: TObject; var Action: TCloseAction);
@@ -136,8 +134,6 @@ type
     procedure     SetPort(const Value: RawUtf8);
     function      GetServer: RawUtf8;
     procedure     SetServer(const Value: RawUtf8);
-    function      GetSSL: boolean;
-    procedure     SetSSL(const Value: boolean);
     function      GetTLS: boolean;
     procedure     SetTLS(const Value: boolean);
     function      GetName: RawUtf8;
@@ -167,7 +163,6 @@ type
   public
     constructor   Create(AOwner: TComponent; AFolder: TAccountFolder; EditMode: TEditMode); reintroduce;
     property      Name: RawUtf8 read GetName write SetConnectionName;
-    property      SSL: boolean read GetSSL write SetSSL;
     property      TLS: boolean read GetTLS write SetTLS;
     property      Port: RawUtf8 read GetPort write SetPort;
     property      LdapVersion: integer read GetLdapVersion write SetLdapVersion;
@@ -344,20 +339,12 @@ begin
   PortEd.Text:=Value;
 end;
 
-function TConnPropDlg.GetSSL: boolean;
-begin
-  result:= cbSSL.Checked;
-end;
 
 function TConnPropDlg.GetTLS: boolean;
 begin
   result:= cbTLS.Checked;
 end;
 
-procedure TConnPropDlg.SetSSL(const Value: boolean);
-begin
-  cbSSL.Checked:=Value;
-end;
 
 procedure TConnPropDlg.SetTLS(const Value: boolean);
 begin
@@ -457,7 +444,6 @@ procedure TConnPropDlg.MethodChange(Sender: TObject);
 begin
   if AuthMethod = AUTH_SIMPLE then
   begin
-    cbSSL.Enabled := true;
     cbTLS.Enabled := true;
     cbSASL.Checked := false;
     cbSASL.Enabled := false;
@@ -465,8 +451,6 @@ begin
   end
   else begin
     cbSASL.Enabled := true;
-    cbSSL.Enabled := false;
-    cbSSL.Checked := false;
     cbTLS.Enabled := false;
     cbTLS.Checked := false;
     cbAnonymous.Caption := cSASLCurrUser;
@@ -520,7 +504,6 @@ begin
   BaseEd.Items.Clear;
   Asession.Server := ServerEd.Text;
   Asession.TLS := TLS;
-  Asession.SSL := SSL;
   ASession.AuthMethod := AuthMethod;
   ASession.Port := Port;
   ASession.Version := LDAP_VERSION3;
@@ -583,7 +566,6 @@ begin
     ASession.User       := self.User;
     ASession.Password   := self.Password;
     ASession.AuthMethod := self.AuthMethod;
-    ASession.SSL        := Self.SSL;
     ASession.TLS        := Self.TLS;
 
     Screen.Cursor:=crHourGlass;
@@ -706,22 +688,11 @@ begin
   end;
 end;
 
-procedure TConnPropDlg.cbSSLClick(Sender: TObject);
-begin
-  if SSL then
-  begin
-    PortEd.Text := IntToStr(LDAP_SSL_PORT);
-    cbTLS.Checked := false;
-  end
-  else
-    PortEd.Text := LDAP_PORT;
-end;
 
 procedure TConnPropDlg.cbSASLClick(Sender: TObject);
 begin
   if cbSASL.Checked then
   begin
-    cbSSL.Checked := false;
     cbTLS.Checked := false;
   end;
 end;
@@ -729,7 +700,9 @@ end;
 procedure TConnPropDlg.cbTLSClick(Sender: TObject);
 begin
   if TLS then
-    cbSSL.Checked := false;
+    PortEd.Text := IntToStr(LDAP_SSL_PORT)
+  else
+    PortEd.Text := LDAP_PORT;
 end;
 
 function TConnPropDlg.CustomValidate(Control: TCustomEdit): Integer;

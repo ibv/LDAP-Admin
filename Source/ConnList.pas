@@ -1245,7 +1245,6 @@ begin
     begin
       Account := GetCurrentFolder.Items.AddAccount(Name, true);
       Account.Base               := Base;
-      Account.SSL                := SSl;
       Account.TLS                := TLS;
       Account.Port               := Port;
       Account.LdapVersion        := LdapVersion;
@@ -1465,7 +1464,6 @@ begin
   with TConnPropDlg.Create(Self, GetCurrentFolder, EM_MODIFY) do begin
     Name               := Account.Name;
     Base               := Account.Base;
-    SSL                := Account.SSl;
     TLS                := Account.TLS;
     Port               := Account.Port;
     LdapVersion        := Account.LdapVersion;
@@ -1487,7 +1485,6 @@ begin
     if ShowModal=mrOK then begin
       Account.Name               := Name;
       Account.Base               := Base;
-      Account.SSL                := SSl;
       Account.TLS                := TLS;
       Account.Port               := Port;
       Account.LdapVersion        := LdapVersion;
