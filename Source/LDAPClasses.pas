@@ -1195,7 +1195,9 @@ begin
       Password := tempPassword;
   end;
   if ldapSSL then
-    TLS := True;
+    TLS := True
+  else
+    ldappld.Settings.AllowUnsafePasswordBind:=true;
   ldappld.Connect;
   if Assigned(pld) then
   try
