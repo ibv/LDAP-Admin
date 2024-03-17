@@ -34,12 +34,20 @@ uses
   TextFile, mormot.core.base, mormot.net.ldap;
 
 type
+
+  { TExportDlg }
+
   TExportDlg = class(TForm)
+    edAttributes: TEdit;
+    Label7: TLabel;
+    Label8: TLabel;
     OKBtn: TButton;
     CancelBtn: TButton;
     Notebook: TNoteBook;
     Page1: TPage;
     Page2: TPage;
+    PageControl: TPageControl;
+    TabSheet1: TTabSheet;
     Bevel1: TBevel;
     Label1: TLabel;
     BrowseBtn: TSpeedButton;
@@ -55,6 +63,9 @@ type
     cbEncoding: TComboBox;
     Label6: TLabel;
     cbGenerateComments: TCheckBox;
+    TabSheet2: TTabSheet;
+    Memo1: TMemo;
+
     procedure BrowseBtnClick(Sender: TObject);
     procedure edFileNameChange(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
@@ -90,7 +101,7 @@ var
 
 implementation
 
-uses Ldif, Dsml, Constant;
+uses Ldif, Dsml, StrUtils, Constant;
 
 {$R *.dfm}
 
@@ -152,6 +163,7 @@ begin
   SubDirsCbk.Checked:=CanSubDirs;
   SubDirsCbk.Visible:=CanSubDirs;
   SubDirsCbkClick(nil);
+
 end;
 
 constructor TExportDlg.Create(const adn: RawUtf8; const ASession: TLDAPSession; AAttributes: array of RawUtf8; const CanSubDirs: boolean=true);
@@ -176,6 +188,7 @@ begin
     edFileName.Text := SaveDialog.FileName;
 end;
 
+
 procedure TExportDlg.cbEncodingChange(Sender: TObject);
 begin
   case cbEncoding.ItemIndex of
@@ -191,12 +204,29 @@ procedure TExportDlg.Prepare(const Filter: RawUtf8);
 var
   i: Integer;
   s: RawUtf8;
+  List: TStringList;
+  Str, Delim : String;
 begin
   fEntryList.Clear;
   fTickStep := 1000;
   fTickCount := GetTickCount64 + fTickStep;
   ProgressBar.Step := MaxInt div 30;
   ProgressBar.Max := MaxInt;
+  if edAttributes.Text <> '' then
+  begin
+    Delim:=',';
+    try
+      List := TStringList.Create;
+      List.Delimiter:=',';
+      List.DelimitedText:=edAttributes.Text;
+      setlength(FAttributes, List.Count);
+      for i:=0 to List.Count-1 do
+        FAttributes[i]:=RawUtf8(List[i]);
+      finally
+        List.Free;
+      end;
+   end;
+
   for i := 0 to fdnList.Count - 1 do
   begin
     s := fdnList[i];
@@ -223,7 +253,10 @@ begin
   ldif.Encoding := fEncoding;
   ldif.GenerateComments := cbGenerateComments.Checked;
   try
-    Prepare(sANYCLASS);
+    if Memo1.Text<> '' then
+       Prepare(Memo1.Text)
+    else
+       Prepare(sANYCLASS);
     fCount := 0;
     for i := 0 to fEntryList.Count - 1 do
     begin
