@@ -1230,7 +1230,8 @@ begin
               LdapCheck(ldap_set_option(ldappld,LDAP_OPT_ENCRYPT, LDAP_OPT_ON));
             if DnsQuery(Server, dnsRes) and (Length(dnsRes.Authority) > 0) then
               Settings.KerberosDN := dnsRes.Authority[0].QName;
-            ldappld.BindSaslKerberos;
+            if not ldappld.BindSaslKerberos then
+              raise Exception.CreateFmt(ldappld.ResultString, [ldappld.ResultCode]);
             res:=ldappld.ResultCode;
          end;
     else
