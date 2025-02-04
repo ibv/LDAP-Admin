@@ -211,10 +211,9 @@ function  GetNetBiosDomain: string;
 implementation
 
 {$I LdapAdmin.inc}
-
 uses
   Sysutils, Misc, Config,
-  Pickup, Dialogs, mormot.core.os, mormot.net.ldap;
+  Pickup, Dialogs, mormot.core.os, mormot.net.ldap, mormot.core.os.security ;
 
 type
   TSidIdent = (siEveryone, siSelf);

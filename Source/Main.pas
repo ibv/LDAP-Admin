@@ -384,7 +384,7 @@ uses
   EditEntry, ConnList, Search, LdapOp, Constant, Export, Import, Prefs, Misc,
   LdapCopy, BinView, ConfigDlg, Templates, TemplateCtrl,
   Cert, PicView, About, Alias, SizeGrip, CustMenuDlg, Lang, Bookmarks, DBLoad,
-  mormot.core.os, mormot.net.ldap;
+  mormot.core.os,  mormot.net.ldap, mormot.core.os.security ;
 
 
 

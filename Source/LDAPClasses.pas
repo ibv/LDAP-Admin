@@ -29,11 +29,12 @@ unit LDAPClasses;
 
 {$M+}
 
+
 interface
 
 uses
   LCLIntf, LCLType, LazUtils, LinLDAP, lazutf8, LazFileUtils,
-  Sysutils,  Classes, Events, Constant, mormot.net.ldap, mormot.core.base;
+  Sysutils,  Classes, Events, Constant, mormot.net.ldap, mormot.core.base, mormot.core.rtti ;
 
 const
   LdapOpRead            = $FFFFFFFF;
@@ -379,6 +380,7 @@ implementation
 
 {$I LdapAdmin.inc}
 
+
 uses Misc, Input, Dialogs, Cert, Gss, System.UITypes, mormot.net.dns;
 
 { Name handling routines }
@@ -664,7 +666,8 @@ procedure TLDAPSession.SetLdapSettings(AValue: PLdapClientSettings);
 begin
   if Settings=AValue then Exit;
   Disconnect;
-  ldappld.Settings.Assign(AValue^);
+  ///ldappld.Settings.Assign(AValue^);
+  CopyObject(AValue^, ldappld.Settings);
 end;
 
 procedure TLDAPSession.SetPassword(AValue: SpiUtf8);
@@ -1349,7 +1352,7 @@ var
   tempBuffer: RawUtf8;
 begin
   FastSetString(tempBuffer, Data, DataSize);
-  AttributeValueMakeReadable(tempBuffer, AttributeNameType(Attribute.Name));
+  AttributeValueMakeReadable(tempBuffer, atsRawUtf8);
   Result := tempBuffer;
 end;
 
