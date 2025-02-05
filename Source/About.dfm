@@ -14,12 +14,12 @@ object AboutDlg: TAboutDlg
   OnClose = FormClose
   OnCreate = FormCreate
   Position = poScreenCenter
-  LCLVersion = '1.6.0.4'
+  LCLVersion = '3.6.0.0'
   object Label1: TLabel
     Left = 56
     Height = 37
     Top = 16
-    Width = 159
+    Width = 157
     Caption = 'LDAP Admin'
     Font.CharSet = ANSI_CHARSET
     Font.Color = clNavy
@@ -175,10 +175,11 @@ object AboutDlg: TAboutDlg
     BevelOuter = bvLowered
     ClientHeight = 145
     ClientWidth = 249
+    ParentBackground = False
     TabOrder = 1
     object Label2: TLabel
       Left = 24
-      Height = 13
+      Height = 14
       Top = 24
       Width = 46
       Caption = 'Version:'
@@ -186,7 +187,7 @@ object AboutDlg: TAboutDlg
     end
     object Label3: TLabel
       Left = 24
-      Height = 13
+      Height = 14
       Top = 48
       Width = 41
       Caption = 'Author:'
@@ -194,9 +195,9 @@ object AboutDlg: TAboutDlg
     end
     object Label4: TLabel
       Left = 24
-      Height = 13
+      Height = 14
       Top = 72
-      Width = 26
+      Width = 28
       Caption = 'Web:'
       ParentColor = False
     end
@@ -214,9 +215,9 @@ object AboutDlg: TAboutDlg
     end
     object Label6: TLabel
       Left = 72
-      Height = 13
+      Height = 14
       Top = 48
-      Width = 104
+      Width = 103
       Caption = 'Tihomir Karlovic'
       Font.Color = clWindowText
       Font.Height = -11
@@ -228,9 +229,9 @@ object AboutDlg: TAboutDlg
     object Label7: TLabel
       Cursor = crHandPoint
       Left = 72
-      Height = 13
+      Height = 14
       Top = 72
-      Width = 146
+      Width = 143
       Caption = 'http://www.ldapadmin.org'
       Font.Color = clBlue
       Font.Height = -11
@@ -241,11 +242,33 @@ object AboutDlg: TAboutDlg
     end
     object Label8: TLabel
       Left = 55
-      Height = 13
+      Height = 14
       Top = 112
-      Width = 173
+      Width = 170
       Caption = '(c) 2003-2015 Tihomir Karlovic'
       ParentColor = False
+    end
+    object Label9: TLabel
+      Left = 55
+      Height = 14
+      Top = 131
+      Width = 129
+      Caption = '(c) 2016-2025 Ivo Brhel'
+      ParentColor = False
+    end
+    object Label10: TLabel
+      Cursor = crHandPoint
+      Left = 24
+      Height = 14
+      Top = 91
+      Width = 194
+      Caption = 'https://github.com/ibv/LDAP-Admin'
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      ParentColor = False
+      ParentFont = False
+      OnClick = Label10Click
     end
   end
   object BtnClose: TButton

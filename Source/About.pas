@@ -14,9 +14,14 @@ uses
 
 	
 type
+
+  { TAboutDlg }
+
   TAboutDlg = class(TForm)
     Label1: TLabel;
     BtnClose: TButton;
+    Label10: TLabel;
+    Label9: TLabel;
     Panel1: TPanel;
     Label2: TLabel;
     Label3: TLabel;
@@ -27,6 +32,7 @@ type
     Label8: TLabel;
     Image1: TImage;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Label10Click(Sender: TObject);
     procedure Label7Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
@@ -62,9 +68,14 @@ begin
   Action := caFree;
 end;
 
+procedure TAboutDlg.Label10Click(Sender: TObject);
+begin
+  OpenURL(label10.Caption);{ *Převedeno z ShellExecute* }
+end;
+
 procedure TAboutDlg.Label7Click(Sender: TObject);
 begin
-   OpenDocument(PChar(label7.Caption));{ *Převedeno z ShellExecute* }
+   OpenURL(label7.Caption);{ *Převedeno z ShellExecute* }
 end;
 
 procedure TAboutDlg.FormCreate(Sender: TObject);
