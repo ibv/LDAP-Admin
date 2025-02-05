@@ -334,7 +334,7 @@ begin
   if integer(Node.Data)>0 then
   begin
     if not (cdsFocused in State) then View.Canvas.Font.Color:=clBlue;
-    View.Canvas.Font.Style:=[fsUnderline];
+    ///View.Canvas.Font.Style:=[fsUnderline];
     rect:=GetLinkRect(Node);
     n:=pos(':', Node.Text);
     if n>0 then inc(n,2);
