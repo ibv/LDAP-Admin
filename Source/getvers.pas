@@ -93,6 +93,10 @@ begin
        //Version:=V.getVersionSetting('ProductVersion');
        //if (Version='') then
        //  Version:=V.GetVersionSetting('FileVersion');
+       {$ifdef fpc}
+       ReadFileInfo;
+       Version:=V.VersionStrings.Values['FileVersion'];
+       {$endif}
        Result:=(Version<>'');
      Finally
        Free;
