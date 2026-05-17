@@ -1320,7 +1320,7 @@ end;
 
 function ldap_get_option(ld: TLdapClient; option: integer; outvalue: pointer): ULONG;
 begin
-  Result := 0;
+  Result := $51;  // LDAP_NOT_SUPPORTED (or LDAP_PARAM_ERROR = $59)
   //result:=ldap.ldap_get_option(ld,option, outvalue);
 end;
 

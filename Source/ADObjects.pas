@@ -266,14 +266,23 @@ var
   AStringList: TStringList;
 begin
   AProcess := TProcess.Create(nil);
-  AStringList := TStringList.Create;
-  AProcess.CommandLine := 'hostname';
-  AProcess.Options := AProcess.Options + [poWaitOnExit, poUsePipes];
-  AProcess.Execute;
-  AStringList.LoadFromStream(AProcess.Output);
-  Result:=AStringList.Strings[0];
-  AStringList.Free;
-  AProcess.Free;
+  try
+    AStringList := TStringList.Create;
+    try
+      AProcess.CommandLine := 'hostname';
+      AProcess.Options := AProcess.Options + [poWaitOnExit, poUsePipes];
+      AProcess.Execute;
+      AStringList.LoadFromStream(AProcess.Output);
+      if AStringList.Count > 0 then
+        Result := AStringList.Strings[0]
+      else
+        Result := '';
+    finally
+      AStringList.Free;
+    end;
+  finally
+    AProcess.Free;
+  end;
 end;
 
 function WrapGetComputerNameEx({$ifdef WINDOWS}ANameFormat: Windows.COMPUTER_NAME_FORMAT{$endif}): string;
@@ -386,10 +395,14 @@ begin
   begin
     FDNSRoot := TStringList.Create;
     EL := TLdapEntryList.Create;
-    Connection.Search('(&(objectcategory=Crossref)(ncName='+ DefaultNamingContext  + ')(dnsRoot=*))', 'CN=Partitions,' + ConfigurationNamingContext, lssWholeSubtree, ['dnsRoot'], false, EL);
-    for i := 0 to EL.Count - 1 do with EL[i].AttributesByName['dnsRoot'] do
-    for j := 0 to ValueCount - 1 do
-      FDNSRoot.Add(Values[j].AsString);
+    try
+      Connection.Search('(&(objectcategory=Crossref)(ncName='+ DefaultNamingContext  + ')(dnsRoot=*))', 'CN=Partitions,' + ConfigurationNamingContext, lssWholeSubtree, ['dnsRoot'], false, EL);
+      for i := 0 to EL.Count - 1 do with EL[i].AttributesByName['dnsRoot'] do
+      for j := 0 to ValueCount - 1 do
+        FDNSRoot.Add(Values[j].AsString);
+    finally
+      EL.Free;
+    end;
   end;
   Result := FDNSRoot;
 end;

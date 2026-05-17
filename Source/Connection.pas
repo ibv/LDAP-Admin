@@ -184,7 +184,7 @@ implementation
 
 uses SysUtils,  User, Host, Locality, Computer, Group, Ldif, Dialogs,
      ADObjects, ADUser, AdGroup, AdComputer, AdContainer,
-     {$ifdef mswindows} UiTypes,      {$endif}
+     {$if defined(mswindows) and not defined(fpc)} UiTypes, {$endif}
      MailGroup, Transport, Ou, Classes, PassDlg, ADPassDlg, Alias, Ast ;
 
 { IDirectoryIdentity }

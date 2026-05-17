@@ -40,7 +40,7 @@ unit DelphiReader;
 interface
 
 uses
- Classes, SysUtils, LCLStrConsts, LREsources;
+ Classes, SysUtils, LCLStrConsts, LREsources, ProjResProc;
 
 //------------------------------------------------------------------------------
 // Delphi object streams

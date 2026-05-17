@@ -485,7 +485,7 @@ var
 begin
   inherited;
   { Get NT Password }
-  fillchar(passwd, 255, 0);
+  fillchar(passwd, SizeOf(passwd), 0);
   slen := PutUniCode(Passwd, PAnsiChar(AnsiString(Password)));
   fillchar(hash, 17, 0);
   mdfour(hash, Passwd, slen);

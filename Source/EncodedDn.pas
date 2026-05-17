@@ -130,7 +130,9 @@ begin
     Result := TEdit(FControl).OnChange
   else
   if FControl is TComboBox then
-    Result := TComboBox(Fcontrol).OnChange;
+    Result := TComboBox(Fcontrol).OnChange
+  else
+    Result := nil;
 end;
 
 procedure TEncodedDn.SetControlText(Value: string);

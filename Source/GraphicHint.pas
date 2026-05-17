@@ -30,7 +30,7 @@ interface
 
 uses
   LCLIntf, LCLType,
-  Controls, Classes, Graphics, Forms;
+  Controls, Classes, Graphics, Forms, Types;
 
 type
   TGraphicHintWindow = class(THintWindow)
@@ -80,35 +80,41 @@ begin
   if Copy(AHint, 1, 22) <> 'TLdapAttributeDataPtr:' then
   begin
     FInheritedPaint := true;
-    OffsetRect(Rect, Mouse.CursorPos.X - Rect.Right, Mouse.CursorPos.Y - Rect.Bottom);
+    Types.OffsetRect(Rect, Mouse.CursorPos.X - Rect.Right, Mouse.CursorPos.Y - Rect.Bottom);
     inherited;
     exit;
   end;
   FInheritedPaint := false;
-  Value := Pointer(StrToInt(Copy(AHint, 23, 255)));
-  //if Value.DataType = dtJpeg then
   ji := TJpegImage.Create;
   try
-    StreamCopy(Value.SaveToStream, ji.LoadFromStream);
-    FBitmap.Assign(ji);
-    h := Round(FBitmap.Height / FBitmap.Width * 128);
-    Rect.TopLeft := Mouse.CursorPos;
-    Rect.Right := Rect.Left + 128;
-    Rect.Bottom := Rect.Top;
-    Rect.Top := Rect.Top - h;
-    ///UpdateBoundsRect(Rect);
-    if Rect.Top + Height > Screen.DesktopHeight then
-      Rect.Top := Screen.DesktopHeight - Height;
-    if Rect.Left + Width > Screen.DesktopWidth then
-      Rect.Left := Screen.DesktopWidth - Width;
-    if Rect.Left < Screen.DesktopLeft then Rect.Left := Screen.DesktopLeft;
-    if Rect.Bottom < Screen.DesktopTop then Rect.Bottom := Screen.DesktopTop;
-    SetWindowPos(Handle, HWND_TOPMOST, Rect.Left, Rect.Top, Width, Height,
-      SWP_SHOWWINDOW or SWP_NOACTIVATE);
-    Invalidate;
-  except
+    try
+      Value := Pointer(StrToInt(Copy(AHint, 23, 255)));
+      //if Value.DataType = dtJpeg then
+      StreamCopy(Value.SaveToStream, ji.LoadFromStream);
+      FBitmap.Assign(ji);
+      if FBitmap.Width > 0 then
+        h := Round(FBitmap.Height / FBitmap.Width * 128)
+      else
+        h := 128;
+      Rect.TopLeft := Mouse.CursorPos;
+      Rect.Right := Rect.Left + 128;
+      Rect.Bottom := Rect.Top;
+      Rect.Top := Rect.Top - h;
+      ///UpdateBoundsRect(Rect);
+      if Rect.Top + Height > Screen.DesktopHeight then
+        Rect.Top := Screen.DesktopHeight - Height;
+      if Rect.Left + Width > Screen.DesktopWidth then
+        Rect.Left := Screen.DesktopWidth - Width;
+      if Rect.Left < Screen.DesktopLeft then Rect.Left := Screen.DesktopLeft;
+      if Rect.Bottom < Screen.DesktopTop then Rect.Bottom := Screen.DesktopTop;
+      SetWindowPos(Handle, HWND_TOPMOST, Rect.Left, Rect.Top, Width, Height,
+        SWP_SHOWWINDOW or SWP_NOACTIVATE);
+      Invalidate;
+    except
+    end;
+  finally
+    ji.Free;
   end;
-  ji.Free;
 end;
 
 destructor TGraphicHintWindow.Destroy;

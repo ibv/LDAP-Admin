@@ -149,17 +149,20 @@ begin
   begin
     Entry := TLdapEntry.Create(FSession, FBookmarks[Index]);
     try
-      Entry.Read;
-      oi := TObjectInfo.Create(Entry, false);
       try
-        FBookmarks.Objects[Index] := Pointer(oi.ImageIndex);
-      finally
-        oi.Free;
+        Entry.Read;
+        oi := TObjectInfo.Create(Entry, false);
+        try
+          FBookmarks.Objects[Index] := Pointer(oi.ImageIndex);
+        finally
+          oi.Free;
+        end;
+      except
+        FBookmarks.Objects[Index] := Pointer(-1);
       end;
-    except;
-      FBookmarks.Objects[Index] := Pointer(-1);
+    finally
+      Entry.Free;
     end;
-    Entry.Free;
   end;
   Result := Integer(FBookmarks.Objects[Index]);
 end;

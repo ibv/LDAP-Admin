@@ -381,7 +381,9 @@ implementation
 {$I LdapAdmin.inc}
 
 
-uses Misc, Input, Dialogs, Cert, Gss, System.UITypes, mormot.net.dns;
+uses Misc, Input, Dialogs, Cert, Gss
+     {$IFDEF VER_XEH}, System.UITypes{$ENDIF}
+     , mormot.net.dns;
 
 { Name handling routines }
 
@@ -405,6 +407,7 @@ begin
       inc(i);
       if not (Src[i] in LdapEscapableChars) then
       begin
+        if i >= l then break;    // need second hex digit; truncated escape
         HexToBin(PChar(@Src[i]), @Result[d], 1);
         inc(i);
         Delete(Result, d + 1, 1);
@@ -449,16 +452,19 @@ var
 begin
   result:=true;
   comp:=TStringList.Create;
-  if ldap_explode_dn(PChar(Value), comp) then
-  for i:=0 to comp.Count-1 do
-  begin
-    if StrScan(PChar(comp[i]), '=') = nil then
+  try
+    if ldap_explode_dn(PChar(Value), comp) then
+    for i:=0 to comp.Count-1 do
     begin
-      result:=false;
-      break;
+      if StrScan(PChar(comp[i]), '=') = nil then
+      begin
+        result:=false;
+        break;
+      end;
     end;
+  finally
+    comp.Free;
   end;
-  comp.Free;
 end;
 
 function CanonicalName(dn: RawUtf8): RawUtf8;
@@ -468,25 +474,25 @@ var
 begin
   Result := '';
   comp:=TStringList.Create;
-  if ldap_explode_dn(PChar(dn), comp) then
-    for i:=0 to comp.Count-1 do
-    begin
-      Result := Result + comp[i] + '/';
-    end;
-  comp.Free;
+  try
+    if ldap_explode_dn(PChar(dn), comp) then
+      for i:=0 to comp.Count-1 do
+      begin
+        Result := Result + comp[i] + '/';
+      end;
+  finally
+    comp.Free;
+  end;
 end;
 
 function SkipEscaped(p: PChar): PChar; inline;
 begin
-  Result := p + 1;
+  Result := p + 1;    // skip the backslash
   if Result^ = #0 then
     exit;
   if not (Result^ in LdapEscapableChars) then
   begin
-    Result := p + 1;  // skip the two-byte hex code
-    if Result^ = #0 then
-      exit;
-    Result := p + 1;
+    inc(Result);      // advance to second hex digit of \XX escape
   end;
 end;
 
@@ -499,7 +505,8 @@ begin
   while (p^ <> #0) and (p^ <> '=') do
     p := p + 1;
   SetString(attrib, p0, p - p0);
-  p := p + 1;
+  if p^ <> #0 then
+    p := p + 1;
   p1 := p;
   while (p1^ <> #0) and (p1^ <> ',') do
   begin
@@ -532,7 +539,8 @@ begin
   p := PChar(dn);
   while (p^ <> #0) and (p^ <> '=') do
     p := p + 1;
-  p := p + 1;
+  if p^ <> #0 then
+    p := p + 1;
   p1 := p;
   while (p1^ <> #0) and (p1^ <> ',') do
   begin
@@ -615,6 +623,8 @@ var
   msg: RawUtf8;
   c: ULONG;
 begin
+  ErrorEx := nil;
+  c := 0;
   if (err = LDAP_SUCCESS) then exit;
 
   if ((ldap_get_option(pld, LDAP_OPT_SERVER_ERROR, @ErrorEx)=LDAP_SUCCESS) and Assigned(ErrorEx)) then
